@@ -527,6 +527,14 @@
          ========================================================================== */
       const APPS = [
         {
+          name: "CEIR Status Hub",
+          version: "v2.0.1",
+          size: "65.7 MB",
+          updated: "2026-10-12",
+          desc: "ဖုန်းဆိုင်များအတွက် CEIR IMEI စစ်၊ အခွန်ဆောင် app",
+          apkUrl: "https://github.com/HeeHeeHta/Web-download-Installer-/releases/download/v2.0.1/CEIR_Status_Hub.apk"
+        },
+        {
           name: "MM Keyboard Pro",
           version: "v3.2.0",
           size: "18.4 MB",
@@ -549,14 +557,6 @@
           updated: "၂၀၂၆ ဖေဖော်ဝါရီ ၂၈",
           desc: "အင်တာနက်မလိုဘဲ ဖုန်းအချင်းချင်း ဖိုင်များ၊ ဓာတ်ပုံများနှင့် ဗီဒီယိုများကို အမြန်ဆုံး အပြန်အလှန် ပေးပို့နိုင်သည့် ဖိုင်မျှဝေရေးကိရိယာ။",
           apkUrl: "https://raw.githubusercontent.com/google/fonts/main/apache/pyidaungsu/Pyidaungsu-2.5_Regular.ttf"
-        },
-        {
-          name: "Smart Cleaner & Battery",
-          version: "v4.0.1",
-          size: "15.6 MB",
-          updated: "၂၀၂၆ ဖေဖော်ဝါရီ ၂၀",
-          desc: "ဖုန်းမှတ်ဉာဏ် (Storage) ရှင်းလင်းပေးခြင်းနှင့် ဘက်ထရီသက်တမ်း တာရှည်ခံစေရန် စွမ်းဆောင်ရည်မြှင့်တင်ပေးသော အသုံးဝင်ဆော့ဖ်ဝဲလ်။",
-          apkUrl: "https://raw.githubusercontent.com/google/fonts/main/apache/pyidaungsu/Pyidaungsu-2.5_Bold.ttf"
         }
       ];
 
@@ -608,7 +608,7 @@
                   </svg>
                   Download APK
                 </a>
-                <a href="installer.html" class="btn btn-secondary">
+                <a href="installer.html?name=${encodeURIComponent(app.name)}&ver=${encodeURIComponent(app.version)}&url=${encodeURIComponent(app.apkUrl)}" class="btn btn-secondary">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>

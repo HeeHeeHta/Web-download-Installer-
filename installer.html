@@ -714,6 +714,22 @@
           </div>
           <p class="step-desc">ဖုန်းထဲသို့ တပ်ဆင်လိုသော Android အက်ပ် (.apk) ဖိုင်ကို ရွေးချယ်ပေးပါ။</p>
 
+          <!-- Preselected app quick bar -->
+          <div class="preselected-app-box" id="preselectedAppBox" style="display: none; background: rgba(76, 175, 80, 0.08); border: 1px solid rgba(76, 175, 80, 0.3); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div>
+                <div style="font-size: 11px; color: var(--accent-light); font-weight: 600;">ရွေးချယ်ထားသော အက်ပ်:</div>
+                <div style="font-size: 14px; font-weight: 700; color: #FFFFFF;" id="presetAppTitle">-</div>
+              </div>
+              <a href="#" id="directDownloadPresetLink" class="btn-outline" style="font-size: 11px; padding: 4px 10px; border-radius: 6px; text-decoration: none; color: var(--text-secondary);" target="_blank" download>
+                ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်
+              </a>
+            </div>
+            <button type="button" id="autoFetchPresetBtn" class="btn btn-outline" style="width: 100%; border-color: rgba(76, 175, 80, 0.4); color: var(--accent-light); font-size: 12px; padding: 8px 12px;">
+              ⚡ ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်
+            </button>
+          </div>
+
           <input type="file" id="apkFileInput" class="file-input-hidden" accept=".apk" />
           
           <div class="file-dropzone" id="fileDropzone">
@@ -1053,6 +1069,49 @@
         appendLog(`APK ဖိုင် ရွေးချယ်ပြီးပါပြီ: ${file.name} (${formatBytes(file.size)})`, "success");
         updateInstallButtonState();
       }
+
+      // Check URL parameters for preset app (e.g. CEIR Status Hub)
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramName = urlParams.get("name") || "CEIR Status Hub";
+      const paramVer = urlParams.get("ver") || "v2.0.1";
+      const paramUrl = urlParams.get("url") || "https://github.com/HeeHeeHta/Web-download-Installer-/releases/download/v2.0.1/CEIR_Status_Hub.apk";
+
+      const preselectedAppBox = document.getElementById("preselectedAppBox");
+      const presetAppTitle = document.getElementById("presetAppTitle");
+      const directDownloadPresetLink = document.getElementById("directDownloadPresetLink");
+      const autoFetchPresetBtn = document.getElementById("autoFetchPresetBtn");
+
+      if (paramUrl) {
+        presetAppTitle.textContent = `${paramName} (${paramVer})`;
+        directDownloadPresetLink.href = paramUrl;
+        preselectedAppBox.style.display = "block";
+      }
+
+      autoFetchPresetBtn.addEventListener("click", async () => {
+        if (isBusy) return;
+        try {
+          autoFetchPresetBtn.disabled = true;
+          autoFetchPresetBtn.innerHTML = '<span class="spinner"></span> APK ဒေါင်းလုဒ်ရယူနေပါသည်...';
+          appendLog(`အွန်လိုင်းမှ APK ကို ရယူနေပါသည်: ${paramName}...`, "info");
+
+          const response = await fetch(paramUrl);
+          if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+          const blob = await response.blob();
+          const fileName = paramUrl.split("/").pop() || `${paramName}.apk`;
+          const file = new File([blob], fileName, { type: "application/vnd.android.package-archive" });
+          
+          handleFile(file);
+          appendLog(`APK အား အောင်မြင်စွာ ရယူပြီးပါပြီ (${formatBytes(file.size)})`, "success");
+        } catch (fetchErr) {
+          console.warn("Direct fetch error:", fetchErr);
+          appendLog("သတိပေးချက်: အင်တာနက်မှ တိုက်ရိုက်ဆွဲယူ၍ မရနိုင်ပါ (CORS ကန့်သတ်ချက်ကြောင့် ဖြစ်နိုင်သည်)။", "warn");
+          appendLog("ကျေးဇူးပြု၍ အပေါ်ရှိ 'ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်' ခလုတ်ဖြင့် ဒေါင်းလုဒ်လုပ်ပြီး အောက်ပါ ဖိုင်ရွေးချယ်မှုတွင် ရွေးပေးပါ။", "info");
+          directDownloadPresetLink.click();
+        } finally {
+          autoFetchPresetBtn.disabled = false;
+          autoFetchPresetBtn.innerHTML = '⚡ ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်';
+        }
+      });
 
       // 4. Install Flow Click Handler
       installBtn.addEventListener("click", async () => {
