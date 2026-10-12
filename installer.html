@@ -1,0 +1,1133 @@
+<!doctype html>
+<html lang="my">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web ADB တပ်ဆင်ရေး | Web ADB APK Installer</title>
+    <meta name="description" content="ကွန်ပျူတာ Chrome မှတစ်ဆင့် Android ဖုန်းထဲသို့ USB ဖြင့် APK တိုက်ရိုက်သွင်းယူနိုင်သော Web ADB စနစ်။" />
+    <meta property="og:title" content="Web ADB တပ်ဆင်ရေး | Web ADB APK Installer" />
+    <meta property="og:description" content="ကွန်ပျူတာ Chrome မှတစ်ဆင့် Android ဖုန်းထဲသို့ USB ဖြင့် APK တိုက်ရိုက်သွင်းယူနိုင်သော Web ADB စနစ်။" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <style>
+      :root {
+        --bg-color: #0F0F1A;
+        --card-color: #1A1A2E;
+        --card-hover: #22223D;
+        --card-border: #2A2A46;
+        --accent-green: #4CAF50;
+        --accent-hover: #43A047;
+        --accent-light: #81C784;
+        --accent-glow: rgba(76, 175, 80, 0.25);
+        --text-primary: #F3F4F8;
+        --text-secondary: #A0A5BA;
+        --text-muted: #6E738A;
+        --danger: #FF5252;
+        --warning: #FFA726;
+        --warning-bg: rgba(255, 167, 38, 0.12);
+        --warning-border: rgba(255, 167, 38, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        font-family: -apple-system, BlinkMacSystemFont, "Pyidaungsu", "Padauk", "Myanmar Text", "Noto Sans Myanmar", system-ui, sans-serif;
+        line-height: 1.7;
+        letter-spacing: 0.01em;
+        -webkit-font-smoothing: antialiased;
+        min-height: 100vh;
+        padding: 16px;
+      }
+
+      .container {
+        max-width: 640px;
+        margin: 0 auto;
+        padding-bottom: 60px;
+      }
+
+      /* Top Navigation */
+      .top-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0 18px;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 13.5px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--card-border);
+        transition: all 0.2s ease;
+      }
+
+      .back-link:hover {
+        color: #FFFFFF;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--card-border);
+        color: var(--text-muted);
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: var(--text-muted);
+      }
+
+      .status-dot.connected {
+        background-color: var(--accent-green);
+        box-shadow: 0 0 8px var(--accent-green);
+      }
+
+      /* Header */
+      .header {
+        text-align: center;
+        padding: 12px 10px 22px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin-bottom: 6px;
+      }
+
+      .header p {
+        color: var(--text-secondary);
+        font-size: 13.5px;
+      }
+
+      /* Warning Banner */
+      .alert-banner {
+        background-color: var(--warning-bg);
+        border: 1px solid var(--warning-border);
+        border-radius: 14px;
+        padding: 14px 16px;
+        margin-bottom: 20px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .alert-icon {
+        color: var(--warning);
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      .alert-content h3 {
+        font-size: 14px;
+        font-weight: 700;
+        color: #FFE082;
+        margin-bottom: 3px;
+      }
+
+      .alert-content p {
+        font-size: 12.5px;
+        color: #E0E2EC;
+        line-height: 1.6;
+      }
+
+      /* Critical Error Box (WebUSB unsupported) */
+      .critical-error {
+        display: none;
+        background-color: rgba(255, 82, 82, 0.15);
+        border: 1px solid rgba(255, 82, 82, 0.45);
+        border-radius: 14px;
+        padding: 16px;
+        margin-bottom: 20px;
+        color: #FFCDD2;
+        font-size: 13.5px;
+        line-height: 1.6;
+      }
+
+      .critical-error.show {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      /* Requirements Checklist Card */
+      .card {
+        background-color: var(--card-color);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 18px;
+        margin-bottom: 20px;
+      }
+
+      .card-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .checklist {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .checklist-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.55;
+      }
+
+      .check-icon {
+        width: 18px;
+        height: 18px;
+        border-radius: 5px;
+        background: rgba(76, 175, 80, 0.15);
+        border: 1px solid rgba(76, 175, 80, 0.4);
+        color: var(--accent-green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 11px;
+        font-weight: 700;
+        margin-top: 2px;
+      }
+
+      /* Steps Container */
+      .steps-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .step-card {
+        background-color: var(--card-color);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 18px;
+        transition: border-color 0.2s ease;
+      }
+
+      .step-card.active {
+        border-color: rgba(76, 175, 80, 0.45);
+      }
+
+      .step-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+
+      .step-title-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .step-badge {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--card-border);
+        color: var(--text-primary);
+        font-size: 13px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+      }
+
+      .step-badge.completed {
+        background: var(--accent-green);
+        border-color: var(--accent-green);
+        color: #07170A;
+      }
+
+      .step-heading-text {
+        font-size: 15px;
+        font-weight: 700;
+        color: #FFFFFF;
+      }
+
+      .step-status-tag {
+        font-size: 11.5px;
+        color: var(--text-muted);
+      }
+
+      .step-desc {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 14px;
+      }
+
+      /* Buttons */
+      .btn {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 18px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: none;
+        font-family: inherit;
+      }
+
+      .btn-primary {
+        background-color: var(--accent-green);
+        color: #07170A;
+        box-shadow: 0 4px 14px var(--accent-glow);
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        background-color: var(--accent-hover);
+        transform: translateY(-1px);
+      }
+
+      .btn-primary:disabled {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: var(--text-muted);
+        box-shadow: none;
+        cursor: not-allowed;
+        border: 1px solid var(--card-border);
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 1px solid var(--card-border);
+        color: var(--text-primary);
+      }
+
+      .btn-outline:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: #444466;
+      }
+
+      /* Device Details Box */
+      .device-box {
+        display: none;
+        background: rgba(15, 15, 26, 0.7);
+        border: 1px solid rgba(76, 175, 80, 0.35);
+        border-radius: 12px;
+        padding: 14px;
+        margin-top: 14px;
+      }
+
+      .device-box.show {
+        display: block;
+      }
+
+      .device-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        font-size: 12.5px;
+      }
+
+      .device-item {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .device-label {
+        color: var(--text-muted);
+        font-size: 11px;
+        margin-bottom: 2px;
+      }
+
+      .device-val {
+        color: #FFFFFF;
+        font-weight: 600;
+        word-break: break-all;
+      }
+
+      /* File picker styling */
+      .file-dropzone {
+        border: 2px dashed var(--card-border);
+        border-radius: 12px;
+        padding: 20px 14px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: rgba(15, 15, 26, 0.5);
+      }
+
+      .file-dropzone:hover {
+        border-color: var(--accent-green);
+        background: rgba(76, 175, 80, 0.04);
+      }
+
+      .file-dropzone.has-file {
+        border-color: rgba(76, 175, 80, 0.5);
+        background: rgba(76, 175, 80, 0.08);
+      }
+
+      .file-input-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+
+      .file-chosen-info {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        background: #151528;
+        border: 1px solid var(--card-border);
+        border-radius: 10px;
+        padding: 10px 14px;
+        margin-top: 10px;
+        font-size: 13px;
+      }
+
+      .file-chosen-info.show {
+        display: flex;
+      }
+
+      /* Progress Bar */
+      .progress-section {
+        margin: 16px 0 10px;
+      }
+
+      .progress-label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12.5px;
+        margin-bottom: 6px;
+      }
+
+      .progress-label {
+        color: var(--text-secondary);
+      }
+
+      .progress-percent {
+        font-weight: 700;
+        color: var(--accent-light);
+      }
+
+      .progress-bar-bg {
+        width: 100%;
+        height: 10px;
+        background-color: #121222;
+        border-radius: 9999px;
+        overflow: hidden;
+        border: 1px solid var(--card-border);
+      }
+
+      .progress-bar-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #43A047, #4CAF50);
+        border-radius: 9999px;
+        transition: width 0.15s ease-out;
+      }
+
+      /* Monospace Terminal Log */
+      .log-card {
+        background-color: #0A0A12;
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 14px;
+        margin-top: 20px;
+      }
+
+      .log-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #1C1C2E;
+      }
+
+      .log-title {
+        font-size: 12.5px;
+        font-weight: 700;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .btn-clear-log {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-size: 11px;
+        cursor: pointer;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+
+      .btn-clear-log:hover {
+        color: #FFFFFF;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .log-terminal {
+        height: 180px;
+        overflow-y: auto;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 12px;
+        line-height: 1.6;
+        color: #C0C5D8;
+        padding: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .log-terminal::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .log-terminal::-webkit-scrollbar-thumb {
+        background: #25253D;
+        border-radius: 3px;
+      }
+
+      .log-entry {
+        word-break: break-all;
+      }
+
+      .log-time {
+        color: #555A72;
+        margin-right: 6px;
+      }
+
+      .log-info {
+        color: #C0C5D8;
+      }
+
+      .log-success {
+        color: #66BB6A;
+      }
+
+      .log-error {
+        color: #EF5350;
+      }
+
+      .log-warn {
+        color: #FFA726;
+      }
+
+      /* Spinner */
+      .spinner {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        border-radius: 50%;
+        border-top-color: currentColor;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Navigation -->
+      <nav class="top-nav">
+        <a href="index.html" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+          အက်ပ်ဒေါင်းလုဒ် စင်တာသို့ ပြန်သွားမည်
+        </a>
+
+        <div class="status-pill" id="connectionStatusPill">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">ချိတ်ဆက်မထားပါ</span>
+        </div>
+      </nav>
+
+      <!-- Header -->
+      <header class="header">
+        <h1>Web ADB တပ်ဆင်ရေး (Installer)</h1>
+        <p>Google Chrome မှတစ်ဆင့် USB ဒေတာကြိုးဖြင့် Android ဖုန်းထဲသို့ APK တိုက်ရိုက်သွင်းယူပါ</p>
+      </header>
+
+      <!-- Critical WebUSB Guard Error (shown only if WebUSB is unsupported) -->
+      <div id="unsupportedWarning" class="critical-error" role="alert">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <div>
+          <strong style="color: #FF8A80; display: block; margin-bottom: 2px;">WebUSB ကို ဤဘရောက်ဆာတွင် အသုံးမပြုနိုင်ပါ</strong>
+          <span>ဤနည်းပညာသည် Google Chrome သို့မဟုတ် Microsoft Edge ဘရောက်ဆာများတွင်သာ အလုပ်လုပ်ပါသည်။ ကျေးဇူးပြု၍ Chrome/Edge ဖြင့် ဤစာမျက်နှာကို ပြန်လည်ဖွင့်ပေးပါ။</span>
+        </div>
+      </div>
+
+      <!-- Warning Banner -->
+      <div class="alert-banner" role="note">
+        <div class="alert-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div class="alert-content">
+          <h3>အရေးကြီး သတိပေးချက်</h3>
+          <p>
+            ဤစနစ်သည် WebUSB နည်းပညာဖြင့် အလုပ်လုပ်သောကြောင့် Google Chrome သို့မဟုတ် Microsoft Edge ဘရောက်ဆာနှင့် HTTPS လုံခြုံရေးစနစ် အောက်တွင်သာ အသုံးပြုနိုင်ပါသည်။ Firefox၊ Safari နှင့် Facebook/Messenger/Telegram in-app browser များတွင် အလုပ်မလုပ်ပါ။
+          </p>
+        </div>
+      </div>
+
+      <!-- Requirements Checklist Card -->
+      <section class="card">
+        <h2 class="card-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          လိုအပ်ချက်များ စစ်ဆေးရန် (Requirements)
+        </h2>
+        <ul class="checklist">
+          <li class="checklist-item">
+            <span class="check-icon">✓</span>
+            <span><strong>Google Chrome</strong> သို့မဟုတ် <strong>Microsoft Edge</strong> ဘရောက်ဆာ အသုံးပြုထားခြင်း</span>
+          </li>
+          <li class="checklist-item">
+            <span class="check-icon">✓</span>
+            <span>ကွန်ပျူတာနှင့် ဖုန်းကို <strong>USB-C to C</strong> သို့မဟုတ် <strong>OTG ဒေတာကြိုး</strong> ဖြင့် သေချာစွာ ချိတ်ဆက်ထားခြင်း</span>
+          </li>
+          <li class="checklist-item">
+            <span class="check-icon">✓</span>
+            <span>ဖုန်း၏ Developer Options တွင် <strong>"USB debugging" (USB အမှားပြင်ဆင်ခြင်း)</strong> ဖွင့်ထားခြင်း</span>
+          </li>
+          <li class="checklist-item">
+            <span class="check-icon">✓</span>
+            <span>Xiaomi / Redmi / HyperOS ဖုန်းများအတွက် Developer Options ထဲရှိ <strong>"Install via USB"</strong> ခွင့်ပြုချက်ကို ဖွင့်ထားခြင်း</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Three Steps Section -->
+      <div class="steps-container">
+        <!-- STEP 1: Connect Device -->
+        <section class="step-card active" id="step1Card">
+          <div class="step-header">
+            <div class="step-title-group">
+              <div class="step-badge" id="step1Badge">၁</div>
+              <h3 class="step-heading-text">အဆင့် ၁: ဖုန်းချိတ်ဆက်ခြင်း</h3>
+            </div>
+            <span class="step-status-tag" id="step1Status">စောင့်ဆိုင်းဆဲ</span>
+          </div>
+          <p class="step-desc">ဖုန်းကို USB ကြိုးဖြင့် ထိုးထားပြီး အောက်ပါခလုတ်ကို နှိပ်ကာ ပေါ်လာသော စာရင်းမှ မိမိဖုန်းကို ရွေးချယ်ပေးပါ။</p>
+
+          <button type="button" class="btn btn-primary" id="connectBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            <span id="connectBtnText">ဖုန်းချိတ်ဆက်မည် (Connect Device)</span>
+          </button>
+
+          <!-- Connected Device Info Card -->
+          <div class="device-box" id="deviceBox">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+              <span style="font-size: 13px; font-weight: 700; color: var(--accent-light);">✓ ချိတ်ဆက်ထားသော စက်ပစ္စည်း အချက်အလက်</span>
+              <span style="font-size: 11px; background: rgba(76,175,80,0.2); color: var(--accent-green); padding: 2px 6px; border-radius: 4px;">Online</span>
+            </div>
+            <div class="device-grid">
+              <div class="device-item">
+                <span class="device-label">မော်ဒယ် (Model):</span>
+                <span class="device-val" id="infoModel">-</span>
+              </div>
+              <div class="device-item">
+                <span class="device-label">Android ဗားရှင်း:</span>
+                <span class="device-val" id="infoAndroid">-</span>
+              </div>
+              <div class="device-item">
+                <span class="device-label">ထုတ်လုပ်သူ (Brand):</span>
+                <span class="device-val" id="infoBrand">-</span>
+              </div>
+              <div class="device-item">
+                <span class="device-label">Serial နံပါတ်:</span>
+                <span class="device-val" id="infoSerial">-</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 2: Pick APK File -->
+        <section class="step-card" id="step2Card">
+          <div class="step-header">
+            <div class="step-title-group">
+              <div class="step-badge" id="step2Badge">၂</div>
+              <h3 class="step-heading-text">အဆင့် ၂: APK ဖိုင် ရွေးချယ်ခြင်း</h3>
+            </div>
+            <span class="step-status-tag" id="step2Status">မရွေးချယ်ရသေးပါ</span>
+          </div>
+          <p class="step-desc">ဖုန်းထဲသို့ တပ်ဆင်လိုသော Android အက်ပ် (.apk) ဖိုင်ကို ရွေးချယ်ပေးပါ။</p>
+
+          <input type="file" id="apkFileInput" class="file-input-hidden" accept=".apk" />
+          
+          <div class="file-dropzone" id="fileDropzone">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px;">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <div style="font-size: 14px; font-weight: 700; color: #FFFFFF; margin-bottom: 2px;">APK ဖိုင် ရွေးရန် ဤနေရာကို နှိပ်ပါ</div>
+            <div style="font-size: 12px; color: var(--text-muted);">.apk ဖိုင်များကိုသာ လက်ခံပါသည်</div>
+          </div>
+
+          <div class="file-chosen-info" id="fileChosenInfo">
+            <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
+              <span style="color: var(--accent-green); font-size: 16px;">📦</span>
+              <div style="overflow: hidden;">
+                <div id="chosenFileName" style="font-weight: 600; color: #FFFFFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-</div>
+                <div id="chosenFileSize" style="font-size: 11.5px; color: var(--text-muted);">-</div>
+              </div>
+            </div>
+            <button type="button" id="changeFileBtn" class="btn-outline" style="padding: 4px 10px; font-size: 11px; border-radius: 6px; cursor: pointer;">အသစ်ရွေးမည်</button>
+          </div>
+        </section>
+
+        <!-- STEP 3: Install APK -->
+        <section class="step-card" id="step3Card">
+          <div class="step-header">
+            <div class="step-title-group">
+              <div class="step-badge" id="step3Badge">၃</div>
+              <h3 class="step-heading-text">အဆင့် ၃: ဖုန်းထဲသို့ တပ်ဆင်ခြင်း</h3>
+            </div>
+            <span class="step-status-tag" id="step3Status">အဆင်သင့်မဖြစ်သေးပါ</span>
+          </div>
+          <p class="step-desc">ဖုန်းချိတ်ဆက်ပြီး APK ဖိုင် ရွေးချယ်ပြီးပါက အောက်ပါခလုတ်ကို နှိပ်၍ သွင်းယူနိုင်ပါပြီ။</p>
+
+          <button type="button" class="btn btn-primary" id="installBtn" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span id="installBtnText">APK တပ်ဆင်မည် (Install APK)</span>
+          </button>
+
+          <!-- Progress Bar Area -->
+          <div class="progress-section" id="progressSection" style="display: none;">
+            <div class="progress-label-row">
+              <span class="progress-label" id="progressStatusText">ပေးပို့နေဆဲ...</span>
+              <span class="progress-percent" id="progressPercentText">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="progressBarFill"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Scrolling Monospace Log Area -->
+      <section class="log-card">
+        <div class="log-header">
+          <div class="log-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="4 17 10 11 4 5"/>
+              <line x1="12" y1="19" x2="20" y2="19"/>
+            </svg>
+            လုပ်ဆောင်မှု မှတ်တမ်း (Process Terminal Log)
+          </div>
+          <button type="button" class="btn-clear-log" id="clearLogBtn">မှတ်တမ်းရှင်းမည်</button>
+        </div>
+        <div class="log-terminal" id="logTerminal" role="log" aria-live="polite">
+          <!-- Monospace log entries appear here -->
+        </div>
+      </section>
+
+      <!-- Footer Info -->
+      <footer style="text-align: center; margin-top: 30px; font-size: 12px; color: var(--text-muted);">
+        <p>WebUSB ADB Installer • Android 5.0+ နှင့်အထက် စက်ပစ္စည်းများကို ထောက်ပံ့ပါသည်</p>
+      </footer>
+    </div>
+
+    <!-- MAIN TECHNICAL SCRIPT -->
+    <script type="module">
+      /* ==========================================================================
+         PINNED ESM.SH IMPORTS AS SPECIFIED
+         ========================================================================== */
+      import { Adb, adbDaemonAuthenticate } from "https://esm.sh/@yume-chan/adb@2.6.4";
+      import { AdbDaemonWebUsbDeviceManager } from "https://esm.sh/@yume-chan/adb-daemon-webusb@2.3.2";
+      import { AdbWebCryptoCredentialManager, TangoLocalStorage } from "https://esm.sh/@yume-chan/adb-credential-web@2.1.0";
+      import { PackageManager } from "https://esm.sh/@yume-chan/android-bin@2.1.0";
+
+      // Global state
+      let activeDevice = null;
+      let activeAdb = null;
+      let selectedFile = null;
+      let isBusy = false;
+
+      // DOM Elements
+      const unsupportedWarning = document.getElementById("unsupportedWarning");
+      const connectBtn = document.getElementById("connectBtn");
+      const connectBtnText = document.getElementById("connectBtnText");
+      const apkFileInput = document.getElementById("apkFileInput");
+      const fileDropzone = document.getElementById("fileDropzone");
+      const fileChosenInfo = document.getElementById("fileChosenInfo");
+      const chosenFileName = document.getElementById("chosenFileName");
+      const chosenFileSize = document.getElementById("chosenFileSize");
+      const changeFileBtn = document.getElementById("changeFileBtn");
+      const installBtn = document.getElementById("installBtn");
+      const installBtnText = document.getElementById("installBtnText");
+      const progressSection = document.getElementById("progressSection");
+      const progressStatusText = document.getElementById("progressStatusText");
+      const progressPercentText = document.getElementById("progressPercentText");
+      const progressBarFill = document.getElementById("progressBarFill");
+      const logTerminal = document.getElementById("logTerminal");
+      const clearLogBtn = document.getElementById("clearLogBtn");
+
+      const step1Badge = document.getElementById("step1Badge");
+      const step1Status = document.getElementById("step1Status");
+      const step1Card = document.getElementById("step1Card");
+
+      const step2Badge = document.getElementById("step2Badge");
+      const step2Status = document.getElementById("step2Status");
+      const step2Card = document.getElementById("step2Card");
+
+      const step3Badge = document.getElementById("step3Badge");
+      const step3Status = document.getElementById("step3Status");
+      const step3Card = document.getElementById("step3Card");
+
+      const deviceBox = document.getElementById("deviceBox");
+      const infoModel = document.getElementById("infoModel");
+      const infoAndroid = document.getElementById("infoAndroid");
+      const infoBrand = document.getElementById("infoBrand");
+      const infoSerial = document.getElementById("infoSerial");
+
+      const statusDot = document.getElementById("statusDot");
+      const statusText = document.getElementById("statusText");
+
+      // Logging utility
+      function appendLog(message, type = "info") {
+        const now = new Date();
+        const timeStr = [
+          String(now.getHours()).padStart(2, "0"),
+          String(now.getMinutes()).padStart(2, "0"),
+          String(now.getSeconds()).padStart(2, "0"),
+        ].join(":");
+
+        const entry = document.createElement("div");
+        entry.className = `log-entry log-${type}`;
+
+        const timeSpan = document.createElement("span");
+        timeSpan.className = "log-time";
+        timeSpan.textContent = `[${timeStr}]`;
+
+        const textSpan = document.createElement("span");
+        textSpan.textContent = message;
+
+        entry.appendChild(timeSpan);
+        entry.appendChild(textSpan);
+        logTerminal.appendChild(entry);
+        logTerminal.scrollTop = logTerminal.scrollHeight;
+      }
+
+      clearLogBtn.addEventListener("click", () => {
+        logTerminal.innerHTML = "";
+        appendLog("မှတ်တမ်းကို ရှင်းလင်းပြီးပါပြီ။", "info");
+      });
+
+      // Format bytes
+      function formatBytes(bytes) {
+        if (!bytes || bytes === 0) return "0 Bytes";
+        const k = 1024;
+        const sizes = ["Bytes", "KB", "MB", "GB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+      }
+
+      // Update Install Button state
+      function updateInstallButtonState() {
+        if (activeAdb && selectedFile && !isBusy) {
+          installBtn.disabled = false;
+          step3Status.textContent = "တပ်ဆင်ရန် အသင့်ဖြစ်ပါပြီ";
+          step3Card.classList.add("active");
+        } else {
+          installBtn.disabled = true;
+          if (!activeAdb) {
+            step3Status.textContent = "ဖုန်းချိတ်ဆက်ရန် လိုအပ်သည်";
+          } else if (!selectedFile) {
+            step3Status.textContent = "APK ဖိုင်ရွေးရန် လိုအပ်သည်";
+          }
+        }
+      }
+
+      // Update Progress Bar
+      function setProgress(percent, label) {
+        progressSection.style.display = "block";
+        const clamped = Math.max(0, Math.min(100, Math.round(percent)));
+        progressBarFill.style.width = clamped + "%";
+        progressPercentText.textContent = clamped + "%";
+        if (label) {
+          progressStatusText.textContent = label;
+        }
+      }
+
+      // 1. Startup Guard Check: WebUSB support
+      if (!("usb" in navigator)) {
+        unsupportedWarning.classList.add("show");
+        connectBtn.disabled = true;
+        connectBtn.style.opacity = "0.5";
+        connectBtn.style.cursor = "not-allowed";
+        connectBtnText.textContent = "WebUSB အသုံးမပြုနိုင်ပါ (Chrome/Edge ဖွင့်ပါ)";
+        appendLog("သတိပေးချက်: WebUSB ကို ဤဘရောက်ဆာတွင် အသုံးမပြုနိုင်ပါ — ကျေးဇူးပြု၍ Google Chrome သို့မဟုတ် Edge တွင် ဖွင့်ပါ", "error");
+      } else {
+        appendLog("WebUSB အသင့်ရှိပါသည် (Chrome/Edge စနစ် စစ်ဆေးပြီးပါပြီ)", "success");
+        appendLog("ဖုန်းကို USB ကြိုးဖြင့် ချိတ်ဆက်ပြီး Developer Options တွင် USB Debugging ဖွင့်ထားပေးပါ", "info");
+      }
+
+      // 2. Connect Device Click Handler
+      connectBtn.addEventListener("click", async () => {
+        if (isBusy) return;
+
+        try {
+          isBusy = true;
+          connectBtn.disabled = true;
+          connectBtnText.innerHTML = '<span class="spinner"></span> ချိတ်ဆက်နေပါသည်...';
+          appendLog("စက်ပစ္စည်း ချိတ်ဆက်မှုကို စတင်နေပါသည်...", "info");
+
+          // Exact connect flow from specifications
+          const device = await AdbDaemonWebUsbDeviceManager.BROWSER.requestDevice();
+          appendLog(`USB စက်ပစ္စည်းကို ရွေးချယ်ပြီးပါပြီ (Serial: ${device.serial})`, "info");
+
+          appendLog("USB ဆက်သွယ်မှုကို ချိတ်ဆက်နေပါသည်...", "info");
+          const connection = await device.connect();
+
+          appendLog("ADB လုံခြုံရေး သော့ဖွင့်ခြင်း (Authentication) စတင်နေပါသည်...", "info");
+          appendLog("ဖုန်းမျက်နှာပြင်တွင် 'Allow USB Debugging' ခွင့်ပြုချက်တောင်းပါက လက်ခံ (Allow) ပေးပါ", "warn");
+          const credentialManager = new AdbWebCryptoCredentialManager(new TangoLocalStorage("web-adb-installer"));
+          const transport = await adbDaemonAuthenticate({ serial: device.serial, connection, credentialManager });
+          const adb = new Adb(transport);
+
+          activeDevice = device;
+          activeAdb = adb;
+
+          // Fetch device properties
+          appendLog("ဖုန်း၏ အချက်အလက်များကို ရယူနေပါသည်...", "info");
+          const [model, brand, release, sdk] = await Promise.all([
+            adb.getProp("ro.product.model").catch(() => "မသိရပါ"),
+            adb.getProp("ro.product.manufacturer").catch(() => "Android"),
+            adb.getProp("ro.build.version.release").catch(() => "-"),
+            adb.getProp("ro.build.version.sdk").catch(() => ""),
+          ]);
+
+          infoModel.textContent = model || "Android Device";
+          infoBrand.textContent = brand || "Android";
+          infoAndroid.textContent = release ? `Android ${release} (SDK ${sdk})` : `SDK ${sdk}`;
+          infoSerial.textContent = device.serial || "မသိရပါ";
+          deviceBox.classList.add("show");
+
+          // Update UI for Step 1 completion
+          step1Badge.textContent = "✓";
+          step1Badge.classList.add("completed");
+          step1Status.textContent = "ချိတ်ဆက်ပြီးပါပြီ";
+          step1Card.classList.remove("active");
+          step2Card.classList.add("active");
+
+          statusDot.classList.add("connected");
+          statusText.textContent = `${model || "Android"} ချိတ်ဆက်ပြီး`;
+
+          connectBtnText.textContent = "ပြန်လည်ချိတ်ဆက်မည် (Reconnect)";
+          connectBtn.classList.remove("btn-primary");
+          connectBtn.classList.add("btn-outline");
+
+          appendLog(`ဖုန်းချိတ်ဆက်မှု အောင်မြင်ပါသည်: ${brand} ${model} (Android ${release})`, "success");
+          updateInstallButtonState();
+        } catch (err) {
+          console.error("Connect error:", err);
+          const errMsg = err?.message || String(err);
+          if (errMsg.includes("No device selected") || err.name === "NotFoundError") {
+            appendLog("ဖုန်းရွေးချယ်မှုကို ပယ်ဖျက်လိုက်ပါသည် သို့မဟုတ် ဖုန်းကို မတွေ့ရှိပါ။", "warn");
+          } else {
+            appendLog(`ဖုန်းချိတ်ဆက်မှု မအောင်မြင်ပါ: ${errMsg}`, "error");
+            appendLog("အကြံပြုချက်: ဖုန်းမျက်နှာပြင်တွင် 'Allow USB Debugging' ပေါ်လာပါက Allow နှိပ်ပေးပါ။ သို့မဟုတ် USB ကြိုးကို ဖြုတ်ပြီး ပြန်ထိုးကြည့်ပါ။", "warn");
+          }
+        } finally {
+          isBusy = false;
+          connectBtn.disabled = false;
+          if (!activeAdb) {
+            connectBtnText.textContent = "ဖုန်းချိတ်ဆက်မည် (Connect Device)";
+            connectBtn.classList.add("btn-primary");
+            connectBtn.classList.remove("btn-outline");
+          }
+        }
+      });
+
+      // 3. File Selection Handlers
+      fileDropzone.addEventListener("click", () => {
+        if (!isBusy) apkFileInput.click();
+      });
+
+      changeFileBtn.addEventListener("click", () => {
+        if (!isBusy) apkFileInput.click();
+      });
+
+      // Drag and drop handlers
+      fileDropzone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        fileDropzone.classList.add("has-file");
+      });
+
+      fileDropzone.addEventListener("dragleave", () => {
+        if (!selectedFile) fileDropzone.classList.remove("has-file");
+      });
+
+      fileDropzone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+          handleFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      apkFileInput.addEventListener("change", (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (file) handleFile(file);
+      });
+
+      function handleFile(file) {
+        if (!file.name.toLowerCase().endsWith(".apk")) {
+          appendLog(`သတိပေးချက်: ရွေးချယ်ထားသောဖိုင် (${file.name}) သည် .apk အမျိုးအစား မဟုတ်ပါ။`, "warn");
+        }
+
+        selectedFile = file;
+        chosenFileName.textContent = file.name;
+        chosenFileSize.textContent = formatBytes(file.size);
+        fileChosenInfo.classList.add("show");
+        fileDropzone.classList.add("has-file");
+
+        step2Badge.textContent = "✓";
+        step2Badge.classList.add("completed");
+        step2Status.textContent = "ရွေးချယ်ပြီးပါပြီ";
+
+        appendLog(`APK ဖိုင် ရွေးချယ်ပြီးပါပြီ: ${file.name} (${formatBytes(file.size)})`, "success");
+        updateInstallButtonState();
+      }
+
+      // 4. Install Flow Click Handler
+      installBtn.addEventListener("click", async () => {
+        if (!activeAdb || !selectedFile || isBusy) return;
+
+        try {
+          isBusy = true;
+          installBtn.disabled = true;
+          connectBtn.disabled = true;
+          apkFileInput.disabled = true;
+          changeFileBtn.disabled = true;
+          step3Badge.textContent = "၃";
+          step3Badge.classList.remove("completed");
+
+          installBtnText.innerHTML = '<span class="spinner"></span> ဖုန်းထဲသို့ သွင်းနေပါသည်...';
+          setProgress(0, "ဖိုင်စတင် ပို့ဆောင်နေပါသည်...");
+          appendLog(`တပ်ဆင်ခြင်း စတင်ပါပြီ: ${selectedFile.name}...`, "info");
+
+          const adb = activeAdb;
+          const file = selectedFile;
+          const totalBytes = file.size;
+          let uploadedBytes = 0;
+
+          // Install flow as specified:
+          const sdk = parseInt(await adb.getProp("ro.build.version.sdk").catch(() => ""), 10);
+          appendLog(`Android SDK Version: ${Number.isNaN(sdk) ? "Auto" : sdk}`, "info");
+
+          const pm = new PackageManager(adb, Number.isNaN(sdk) ? undefined : sdk);
+
+          // Counted stream with transform stream
+          const countedStream = file.stream().pipeThrough(new TransformStream({
+            transform(chunk, c) {
+              uploadedBytes += chunk.byteLength;
+              const pct = totalBytes > 0 ? (uploadedBytes / totalBytes) * 100 : 0;
+              setProgress(pct, `ဖုန်းထဲသို့ ပေးပို့နေသည်... ${Math.round(pct)}% (${formatBytes(uploadedBytes)} / ${formatBytes(totalBytes)})`);
+              c.enqueue(chunk);
+            }
+          }));
+
+          appendLog("APK ဒေတာများကို ဖုန်းထဲသို့ Streaming ဖြင့် ပို့ဆောင်နေပါသည်...", "info");
+          
+          // pushAndInstallStream
+          const result = await pm.pushAndInstallStream(countedStream, { replaceExisting: true });
+
+          setProgress(100, "တပ်ဆင်မှု ပြီးဆုံးပါပြီ!");
+          appendLog(`တပ်ဆင်မှု ရလဒ်: ${result || "Success"}`, "success");
+          appendLog(`ဂုဏ်ယူပါသည်! "${selectedFile.name}" အား ဖုန်းထဲတွင် အောင်မြင်စွာ တပ်ဆင်ပြီးပါပြီ။`, "success");
+
+          step3Badge.textContent = "✓";
+          step3Badge.classList.add("completed");
+          step3Status.textContent = "အောင်မြင်စွာ တပ်ဆင်ပြီးပါပြီ";
+          installBtnText.textContent = "အောင်မြင်စွာ တပ်ဆင်ပြီးပါပြီ (Success)";
+        } catch (err) {
+          console.error("Install error:", err);
+          const errMsg = err?.message || String(err);
+          setProgress(0, "တပ်ဆင်ခြင်း မအောင်မြင်ပါ");
+          appendLog(`တပ်ဆင်ခြင်း မအောင်မြင်ပါ: ${errMsg}`, "error");
+
+          // Helpful hints for common issues (Xiaomi / User Restricted)
+          if (errMsg.includes("INSTALL_FAILED_USER_RESTRICTED") || errMsg.includes("INSTALL_FAILED") || errMsg.includes("Permission denied")) {
+            appendLog("💡 အရေးကြီး အကြံပြုချက်: Xiaomi / Redmi / HyperOS ဖုန်းများတွင် Developer Options သို့သွား၍ 'Install via USB' ကို ဖွင့်ထားရန် လိုအပ်ပါသည်။", "warn");
+            appendLog("💡 ထို့အပြင် ဖုန်းမျက်နှာပြင်တွင် 'Allow installation from USB' ပေါ်လာပါက လက်ခံပေးပါ။", "warn");
+          } else {
+            appendLog("💡 အကြံပြုချက်: ဖုန်းမှတ်ဉာဏ် (Storage) ပြည့်မပြည့် စစ်ဆေးပြီး Developer Options တွင် 'Install via USB' ခွင့်ပြုထားခြင်း ရှိမရှိ စစ်ဆေးပါ။", "warn");
+          }
+          step3Status.textContent = "မအောင်မြင်ပါ";
+          installBtnText.textContent = "ပြန်လည်ကြိုးစားမည် (Try Again)";
+        } finally {
+          isBusy = false;
+          connectBtn.disabled = false;
+          apkFileInput.disabled = false;
+          changeFileBtn.disabled = false;
+          updateInstallButtonState();
+        }
+      });
+    </script>
+  </body>
+</html>

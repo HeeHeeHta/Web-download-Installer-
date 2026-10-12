@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="my">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>အက်ပ် ဒေါင်းလုဒ် စင်တာ | Burmese App Download Center</title>
+    <meta name="description" content="Android အက်ပ် (APK) များကို လုံခြုံစိတ်ချစွာ တိုက်ရိုက်ဒေါင်းလုဒ်ရယူပါ သို့မဟုတ် Web ADB ဖြင့် တိုက်ရိုက်သွင်းပါ။" />
+    <meta property="og:title" content="အက်ပ် ဒေါင်းလုဒ် စင်တာ | Burmese App Download Center" />
+    <meta property="og:description" content="Android အက်ပ် (APK) များကို တိုက်ရိုက်ဒေါင်းလုဒ်ရယူပါ သို့မဟုတ် Web ADB ဖြင့် တိုက်ရိုက်သွင်းပါ။" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <style>
+      :root {
+        --bg-color: #0F0F1A;
+        --card-color: #1A1A2E;
+        --card-hover: #22223D;
+        --card-border: #2A2A46;
+        --accent-green: #4CAF50;
+        --accent-hover: #43A047;
+        --accent-light: #81C784;
+        --accent-glow: rgba(76, 175, 80, 0.25);
+        --text-primary: #F3F4F8;
+        --text-secondary: #A0A5BA;
+        --text-muted: #6E738A;
+        --danger: #FF5252;
+        --warning: #FFA726;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        font-family: -apple-system, BlinkMacSystemFont, "Pyidaungsu", "Padauk", "Myanmar Text", "Noto Sans Myanmar", system-ui, sans-serif;
+        line-height: 1.7;
+        letter-spacing: 0.01em;
+        -webkit-font-smoothing: antialiased;
+        min-height: 100vh;
+        padding: 16px;
+      }
+
+      .container {
+        max-width: 640px;
+        margin: 0 auto;
+        padding-bottom: 60px;
+      }
+
+      /* Header */
+      .header {
+        text-align: center;
+        padding: 28px 12px 20px;
+      }
+
+      .badge-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(76, 175, 80, 0.12);
+        color: var(--accent-green);
+        border: 1px solid rgba(76, 175, 80, 0.3);
+        border-radius: 9999px;
+        padding: 4px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 14px;
+      }
+
+      .header h1 {
+        font-size: 26px;
+        font-weight: 700;
+        color: #FFFFFF;
+        line-height: 1.4;
+        margin-bottom: 8px;
+      }
+
+      .header p {
+        color: var(--text-secondary);
+        font-size: 14px;
+        max-width: 520px;
+        margin: 0 auto;
+      }
+
+      /* Web ADB Banner Callout */
+      .banner-card {
+        background: linear-gradient(145deg, #1A1A2E 0%, #171E36 100%);
+        border: 1px solid rgba(76, 175, 80, 0.35);
+        border-radius: 16px;
+        padding: 20px;
+        margin: 20px 0 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      }
+
+      .banner-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .banner-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .banner-icon {
+        width: 44px;
+        height: 44px;
+        background: rgba(76, 175, 80, 0.18);
+        border: 1px solid rgba(76, 175, 80, 0.4);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent-green);
+        flex-shrink: 0;
+      }
+
+      .banner-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #FFFFFF;
+      }
+
+      .banner-desc {
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .banner-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: var(--accent-green);
+        color: #0B1C10;
+        font-weight: 700;
+        text-decoration: none;
+        padding: 11px 18px;
+        border-radius: 10px;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 14px var(--accent-glow);
+      }
+
+      .banner-btn:hover {
+        background: var(--accent-hover);
+        transform: translateY(-1px);
+      }
+
+      /* Section Titles */
+      .section-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 24px 0 14px;
+        padding: 0 4px;
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .section-subtitle {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      /* App Cards List */
+      .apps-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .app-card {
+        background-color: var(--card-color);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 18px;
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .app-card:hover {
+        border-color: #38385A;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+      }
+
+      .app-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .app-title-group {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .app-name {
+        font-size: 17px;
+        font-weight: 700;
+        color: #FFFFFF;
+      }
+
+      .version-badge {
+        background: rgba(76, 175, 80, 0.15);
+        color: var(--accent-light);
+        border: 1px solid rgba(76, 175, 80, 0.3);
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 6px;
+        letter-spacing: 0.02em;
+      }
+
+      .app-meta {
+        font-size: 12px;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .app-meta .dot {
+        font-size: 10px;
+      }
+
+      .app-desc {
+        font-size: 13.5px;
+        color: var(--text-secondary);
+        line-height: 1.65;
+        margin-bottom: 16px;
+      }
+
+      .app-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      @media (max-width: 420px) {
+        .app-actions {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: center;
+        border: none;
+      }
+
+      .btn-download {
+        background-color: var(--accent-green);
+        color: #081A0B;
+        box-shadow: 0 2px 8px var(--accent-glow);
+      }
+
+      .btn-download:hover {
+        background-color: var(--accent-hover);
+      }
+
+      .btn-secondary {
+        background-color: rgba(255, 255, 255, 0.06);
+        color: #E2E4EC;
+        border: 1px solid var(--card-border);
+      }
+
+      .btn-secondary:hover {
+        background-color: rgba(255, 255, 255, 0.12);
+        border-color: #444466;
+        color: #FFFFFF;
+      }
+
+      /* How to install guide */
+      .guide-section {
+        margin-top: 36px;
+      }
+
+      .guide-card {
+        background-color: var(--card-color);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 20px;
+      }
+
+      .guide-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 14px;
+      }
+
+      .guide-step {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+      }
+
+      .step-num {
+        width: 32px;
+        height: 32px;
+        background: rgba(76, 175, 80, 0.15);
+        color: var(--accent-green);
+        border: 1px solid rgba(76, 175, 80, 0.3);
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .step-content h3 {
+        font-size: 14.5px;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin-bottom: 2px;
+      }
+
+      .step-content p {
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      /* Footer */
+      .footer {
+        text-align: center;
+        margin-top: 40px;
+        padding: 20px 10px;
+        border-top: 1px solid var(--card-border);
+        color: var(--text-muted);
+        font-size: 12.5px;
+      }
+
+      .footer a {
+        color: var(--accent-green);
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="badge-brand">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+          Android အက်ပ် စင်တာ
+        </div>
+        <h1>အက်ပ် ဒေါင်းလုဒ် စင်တာ</h1>
+        <p>Android စမတ်ဖုန်းများအတွက် စိတ်ချရသော APK များကို တိုက်ရိုက်ဒေါင်းလုဒ်ရယူပါ သို့မဟုတ် Web ADB ဖြင့် ဖုန်းထဲသို့ တိုက်ရိုက်သွင်းယူပါ။</p>
+      </header>
+
+      <!-- Web ADB Banner Callout -->
+      <section class="banner-card" aria-label="Web ADB တပ်ဆင်ရေး အထူးစနစ်">
+        <div class="banner-header">
+          <div class="banner-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+          </div>
+          <div>
+            <div class="banner-title">Web ADB တိုက်ရိုက်တပ်ဆင်ရေး စနစ် ⚡</div>
+            <div class="banner-desc">ဖုန်းထဲသို့ ဖိုင်ကူးစရာမလိုဘဲ ကွန်ပျူတာ Chrome မှတစ်ဆင့် USB ဖြင့် APK တိုက်ရိုက်သွင်းနိုင်ပါသည်။</div>
+          </div>
+        </div>
+        <a href="installer.html" class="banner-btn">
+          Web ADB တပ်ဆင်ရေး စာမျက်နှာသို့ သွားမည်
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </a>
+      </section>
+
+      <!-- App Download Section -->
+      <main>
+        <div class="section-heading">
+          <h2 class="section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            ရရှိနိုင်သော အက်ပ်များ
+          </h2>
+          <span class="section-subtitle" id="appsCountLabel">အက်ပ် ၄ ခု</span>
+        </div>
+
+        <!-- Dynamic Apps Container -->
+        <div class="apps-list" id="appsContainer">
+          <!-- Rendered via JavaScript from APPS array -->
+        </div>
+
+        <!-- How To Install Guide -->
+        <section class="guide-section">
+          <div class="section-heading">
+            <h2 class="section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+              ဖုန်းထဲတွင် APK တပ်ဆင်နည်း လမ်းညွှန်
+            </h2>
+          </div>
+
+          <div class="guide-card">
+            <div class="guide-steps">
+              <div class="guide-step">
+                <div class="step-num">၁</div>
+                <div class="step-content">
+                  <h3>APK ဖိုင်ကို ဒေါင်းလုဒ်လုပ်ပါ</h3>
+                  <p>အထက်ပါ စာရင်းမှ မိမိလိုချင်သော အက်ပ်၏ အစိမ်းရောင် "Download APK" ခလုတ်ကို နှိပ်၍ ဒေါင်းလုဒ်စတင်ပါ။</p>
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="step-num">၂</div>
+                <div class="step-content">
+                  <h3>ဒေါင်းလုဒ်ရယူထားသော ဖိုင်ကို ဖွင့်ပါ</h3>
+                  <p>ဒေါင်းလုဒ်ပြီးဆုံးပါက အသိပေးချက် (Notification) ဘားမှဖြစ်စေ၊ ဖုန်း၏ Downloads ဖိုဒါထဲမှဖြစ်စေ APK ဖိုင်ကို နှိပ်၍ဖွင့်ပါ။</p>
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="step-num">၃</div>
+                <div class="step-content">
+                  <h3>အမည်မသိ ရင်းမြစ်များ ခွင့်ပြုပါ (Allow Unknown Sources)</h3>
+                  <p>လုံခြုံရေးသတိပေးချက် ပေါ်လာပါက Settings သို့သွားပြီး "Allow from this source" (သို့မဟုတ်) "ဤရင်းမြစ်မှ သွင်းယူခွင့်ပြုရန်" ကို ဖွင့်ပေးပါ။</p>
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="step-num">၄</div>
+                <div class="step-content">
+                  <h3>Install ကို နှိပ်၍ အပြီးသတ်ပါ</h3>
+                  <p>ပေါ်လာသော အတည်ပြုချက် မျက်နှာပြင်တွင် "Install" (တပ်ဆင်မည်) ကို နှိပ်ပြီး ခေတ္တစောင့်ဆိုင်းပါက အောင်မြင်စွာ အသုံးပြုနိုင်ပါပြီ။</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Web ADB Installer Link Card -->
+        <section style="margin-top: 28px;">
+          <div class="guide-card" style="border-color: rgba(76, 175, 80, 0.3); background: #151528;">
+            <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 12px;">
+              <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(76, 175, 80, 0.2); color: var(--accent-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                  <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                  <line x1="6" y1="6" x2="6.01" y2="6"/>
+                  <line x1="6" y1="18" x2="6.01" y2="18"/>
+                </svg>
+              </div>
+              <div>
+                <h3 style="font-size: 15px; font-weight: 700; color: #FFFFFF;">USB ကြိုးဖြင့် တိုက်ရိုက်သွင်းလိုပါသလား?</h3>
+                <p style="font-size: 13px; color: var(--text-secondary);">Web ADB စနစ်ဖြင့် ဖုန်းထဲသို့ APK တိုက်ရိုက် ထည့်သွင်းနိုင်ပါသည်</p>
+              </div>
+            </div>
+            <a href="installer.html" class="btn btn-secondary" style="width: 100%; border-color: rgba(76, 175, 80, 0.4); color: var(--accent-light);">
+              Web ADB တပ်ဆင်ရေး စာမျက်နှာ ဖွင့်မည် →
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>© 2026 မြန်မာ အက်ပ် ဒေါင်းလုဒ် စင်တာ • လုံခြုံစိတ်ချရသော APK များကိုသာ တင်ဆက်ထားပါသည်</p>
+        <p style="margin-top: 6px;">
+          <a href="installer.html">Web ADB Installer သို့ သွားရန်</a>
+        </p>
+      </footer>
+    </div>
+
+    <!-- Script rendering apps list -->
+    <script>
+      /* ==========================================================================
+         APPS CONFIGURATION LIST
+         အက်ပ်ပိုင်ရှင်အနေဖြင့် အောက်ပါ APPS စာရင်းတွင် မိမိအက်ပ်များကို လွတ်လပ်စွာ ထည့်သွင်း/ပြင်ဆင်နိုင်ပါသည်
+         Fields: name, version, size, updated, desc, apkUrl
+         ========================================================================== */
+      const APPS = [
+        {
+          name: "MM Keyboard Pro",
+          version: "v3.2.0",
+          size: "18.4 MB",
+          updated: "၂၀၂၆ မတ် ၁၀",
+          desc: "ယူနီကုဒ်နှင့် ဇော်ဂျီ နှစ်မျိုးစလုံးကို စမတ်ကျကျ အလွယ်တကူ ရိုက်နှိပ်နိုင်သော မြန်မာကီးဘုတ်အက်ပ်။ အသံဖြင့် စာရိုက်နိုင်ခြင်း ပါဝင်သည်။",
+          apkUrl: "https://github.com/google/fonts/raw/main/apache/padauk/Padauk-Regular.ttf"
+        },
+        {
+          name: "Burma News Hub",
+          version: "v2.1.5",
+          size: "24.8 MB",
+          updated: "၂၀၂၆ မတ် ၀၅",
+          desc: "မြန်မာနှင့် နိုင်ငံတကာ နောက်ဆုံးရသတင်းများ၊ ရာသီဥတုအခြေအနေနှင့် နေ့စဉ် ငွေလဲလှယ်နှုန်းများကို အချိန်နှင့်တပြေးညီ ကြည့်ရှုနိုင်သော အက်ပ်။",
+          apkUrl: "https://github.com/google/fonts/raw/main/apache/padauk/Padauk-Bold.ttf"
+        },
+        {
+          name: "Speed File Share",
+          version: "v1.8.0",
+          size: "12.2 MB",
+          updated: "၂၀၂၆ ဖေဖော်ဝါရီ ၂၈",
+          desc: "အင်တာနက်မလိုဘဲ ဖုန်းအချင်းချင်း ဖိုင်များ၊ ဓာတ်ပုံများနှင့် ဗီဒီယိုများကို အမြန်ဆုံး အပြန်အလှန် ပေးပို့နိုင်သည့် ဖိုင်မျှဝေရေးကိရိယာ။",
+          apkUrl: "https://raw.githubusercontent.com/google/fonts/main/apache/pyidaungsu/Pyidaungsu-2.5_Regular.ttf"
+        },
+        {
+          name: "Smart Cleaner & Battery",
+          version: "v4.0.1",
+          size: "15.6 MB",
+          updated: "၂၀၂၆ ဖေဖော်ဝါရီ ၂၀",
+          desc: "ဖုန်းမှတ်ဉာဏ် (Storage) ရှင်းလင်းပေးခြင်းနှင့် ဘက်ထရီသက်တမ်း တာရှည်ခံစေရန် စွမ်းဆောင်ရည်မြှင့်တင်ပေးသော အသုံးဝင်ဆော့ဖ်ဝဲလ်။",
+          apkUrl: "https://raw.githubusercontent.com/google/fonts/main/apache/pyidaungsu/Pyidaungsu-2.5_Bold.ttf"
+        }
+      ];
+
+      // Render cards
+      function renderApps() {
+        const container = document.getElementById("appsContainer");
+        const countLabel = document.getElementById("appsCountLabel");
+        if (!container) return;
+
+        if (countLabel) {
+          countLabel.textContent = `အက်ပ် ${APPS.length} ခု`;
+        }
+
+        container.innerHTML = APPS.map((app, index) => {
+          // Escape HTML for safety
+          const escapeHtml = (str) => String(str || '').replace(/[&<>'"]/g, 
+            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+
+          const safeName = escapeHtml(app.name);
+          const safeVer = escapeHtml(app.version);
+          const safeSize = escapeHtml(app.size);
+          const safeDate = escapeHtml(app.updated);
+          const safeDesc = escapeHtml(app.desc);
+          const safeUrl = escapeHtml(app.apkUrl);
+
+          return `
+            <article class="app-card" data-index="${index}">
+              <div class="app-top">
+                <div class="app-title-group">
+                  <h3 class="app-name">${safeName}</h3>
+                  <span class="version-badge">${safeVer}</span>
+                </div>
+              </div>
+
+              <div class="app-meta">
+                <span>📦 ${safeSize}</span>
+                <span class="dot">•</span>
+                <span>📅 မွမ်းမံရက်: ${safeDate}</span>
+              </div>
+
+              <p class="app-desc">${safeDesc}</p>
+
+              <div class="app-actions">
+                <a href="${safeUrl}" class="btn btn-download" download target="_blank" rel="noopener noreferrer">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  Download APK
+                </a>
+                <a href="installer.html" class="btn btn-secondary">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                  </svg>
+                  Web ADB ဖြင့် သွင်းမည်
+                </a>
+              </div>
+            </article>
+          `;
+        }).join("");
+      }
+
+      // Initialize on DOMContentLoaded
+      document.addEventListener("DOMContentLoaded", renderApps);
+    </script>
+  </body>
+</html>
