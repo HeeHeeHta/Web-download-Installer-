@@ -813,10 +813,31 @@
       /* ==========================================================================
          PINNED ESM.SH IMPORTS AS SPECIFIED
          ========================================================================== */
-      import { Adb, adbDaemonAuthenticate } from "https://esm.sh/@yume-chan/adb@2.6.4";
+      import { Adb, AdbDaemonTransport } from "https://esm.sh/@yume-chan/adb@2.6.4";
       import { AdbDaemonWebUsbDeviceManager } from "https://esm.sh/@yume-chan/adb-daemon-webusb@2.3.2";
-      import { AdbWebCryptoCredentialManager, TangoLocalStorage } from "https://esm.sh/@yume-chan/adb-credential-web@2.1.0";
+      import AdbWebCredentialStore from "https://esm.sh/@yume-chan/adb-credential-web@2.1.0";
       import { PackageManager } from "https://esm.sh/@yume-chan/android-bin@2.1.0";
+
+      // Compatibility adapter bridging the authenticate & credential manager API
+      const adbDaemonAuthenticate = (options) => {
+        return AdbDaemonTransport.authenticate({
+          ...options,
+          credentialStore: options.credentialStore || options.credentialManager,
+        });
+      };
+
+      class TangoLocalStorage {
+        constructor(name) {
+          this.name = name;
+        }
+      }
+
+      class AdbWebCryptoCredentialManager {
+        constructor(storage) {
+          const storeName = typeof storage === "string" ? storage : (storage?.name || "web-adb-installer");
+          return new AdbWebCredentialStore(storeName);
+        }
+      }
 
       // Global state
       let activeDevice = null;
