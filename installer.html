@@ -1183,7 +1183,14 @@
             for (;;) {
               const pkt = tryParsePacket();
               if (pkt) { controller.enqueue(pkt); return; }
-              const res = await usbDevice.transferIn(inEndpoint.endpointNumber, 16384);
+              let res;
+              try {
+                res = await usbDevice.transferIn(inEndpoint.endpointNumber, 16384);
+              } catch (e) {
+                appendLog(`[diag] transferIn failed, trying clearHalt: ${e.message}`, "warn");
+                await usbDevice.clearHalt("in", inEndpoint.endpointNumber);
+                res = await usbDevice.transferIn(inEndpoint.endpointNumber, 16384);
+              }
               const bytes = new Uint8Array(res.data.buffer, res.data.byteOffset, res.data.byteLength);
               appendLog(`[diag] USB <- ${bytes.length} bytes`, "info");
               if (bytes.length === 0) continue;
@@ -1209,11 +1216,11 @@
             v.setUint32(16, (packet.checksum >>> 0) || 0, true);
             const magic = packet.magic !== undefined ? packet.magic : (packet.command ^ 0xFFFFFFFF);
             v.setUint32(20, magic >>> 0, true);
-            const full = concat(header, payload);
-            appendLog(`[diag] USB -> ${full.length} bytes`, "info");
-            await usbDevice.transferOut(outEndpoint.endpointNumber, full);
+            appendLog(`[diag] USB -> header 24 bytes + payload ${payload.length} bytes`, "info");
+            await usbDevice.transferOut(outEndpoint.endpointNumber, header);
+            if (payload.length > 0) await usbDevice.transferOut(outEndpoint.endpointNumber, payload);
             const packetSize = outEndpoint.packetSize || 512;
-            if (full.length % packetSize === 0) await usbDevice.transferOut(outEndpoint.endpointNumber, new Uint8Array(0));
+            if ((24 + payload.length) % packetSize === 0) await usbDevice.transferOut(outEndpoint.endpointNumber, new Uint8Array(0));
           }
         });
         return { readable, writable };
