@@ -1119,7 +1119,6 @@
          PINNED ESM.SH IMPORTS AS SPECIFIED
          ========================================================================== */
       import { Adb, AdbDaemonTransport } from "https://esm.sh/@yume-chan/adb@2.6.4";
-      import { AdbDaemonWebUsbDeviceManager } from "https://esm.sh/@yume-chan/adb-daemon-webusb@2.3.2";
       import AdbWebCredentialStore from "https://esm.sh/@yume-chan/adb-credential-web@2.1.0";
       import { PackageManager } from "https://esm.sh/@yume-chan/android-bin@2.1.0";
 
@@ -1142,6 +1141,76 @@
           const storeName = typeof storage === "string" ? storage : (storage?.name || "web-adb-installer");
           return new AdbWebCredentialStore(storeName);
         }
+      }
+
+      // Robust ADB-over-WebUSB connection. Replaces AdbDaemonWebUsbDevice.connect().
+      // Buffers ALL incoming USB bytes and parses ADB packets stream-wise (24-byte
+      // header -> payloadLength -> payload), like native adb. Never discards data.
+      async function openRobustAdbConnection(usbDevice) {
+        await usbDevice.open();
+        let ifaceNumber = -1, inEndpoint = null, outEndpoint = null;
+        const ifaces = usbDevice.configuration ? usbDevice.configuration.interfaces : [];
+        for (const iface of ifaces) {
+          for (const alt of iface.alternates) {
+            if (alt.interfaceClass === 0xFF && alt.interfaceSubclass === 0x42 && alt.interfaceProtocol === 1) {
+              ifaceNumber = iface.interfaceNumber;
+              for (const ep of alt.endpoints) {
+                if (ep.type !== "bulk") continue;
+                if (ep.direction === "in") inEndpoint = ep;
+                else if (ep.direction === "out") outEndpoint = ep;
+              }
+            }
+          }
+        }
+        if (ifaceNumber < 0 || !inEndpoint || !outEndpoint) throw new Error("ADB USB interface not found on this device");
+        await usbDevice.claimInterface(ifaceNumber);
+        const concat = (a, b) => { const n = new Uint8Array(a.length + b.length); n.set(a, 0); n.set(b, a.length); return n; };
+        let buf = new Uint8Array(0);
+        const take = (n) => { if (buf.length < n) return null; const out = buf.slice(0, n); buf = buf.slice(n); return out; };
+        const tryParsePacket = () => {
+          const header = take(24);
+          if (!header) return null;
+          const v = new DataView(header.buffer, header.byteOffset, 24);
+          const command = v.getUint32(0, true), arg0 = v.getUint32(4, true), arg1 = v.getUint32(8, true);
+          const payloadLength = v.getUint32(12, true), checksum = v.getUint32(16, true), magic = v.getUint32(20, true);
+          if ((magic >>> 0) !== ((command ^ 0xFFFFFFFF) >>> 0)) throw new Error("ADB packet out of sync (bad magic)");
+          const payload = take(payloadLength);
+          if (!payload) { buf = concat(header, buf); return null; }
+          return { command, arg0, arg1, payloadLength, checksum, magic, payload };
+        };
+        const readable = new ReadableStream({
+          async pull(controller) {
+            for (;;) {
+              const pkt = tryParsePacket();
+              if (pkt) { controller.enqueue(pkt); return; }
+              const res = await usbDevice.transferIn(inEndpoint.endpointNumber, 16384);
+              const bytes = new Uint8Array(res.data.buffer, res.data.byteOffset, res.data.byteLength);
+              appendLog(`[diag] USB <- ${bytes.length} bytes`, "info");
+              if (bytes.length === 0) continue;
+              buf = concat(buf, bytes);
+            }
+          }
+        });
+        const writable = new WritableStream({
+          async write(packet) {
+            const payload = packet.payload instanceof Uint8Array ? packet.payload : new Uint8Array(0);
+            const header = new Uint8Array(24);
+            const v = new DataView(header.buffer);
+            v.setUint32(0, packet.command >>> 0, true);
+            v.setUint32(4, packet.arg0 >>> 0, true);
+            v.setUint32(8, packet.arg1 >>> 0, true);
+            v.setUint32(12, payload.length >>> 0, true);
+            v.setUint32(16, (packet.checksum >>> 0) || 0, true);
+            const magic = packet.magic !== undefined ? packet.magic : (packet.command ^ 0xFFFFFFFF);
+            v.setUint32(20, magic >>> 0, true);
+            const full = concat(header, payload);
+            appendLog(`[diag] USB -> ${full.length} bytes`, "info");
+            await usbDevice.transferOut(outEndpoint.endpointNumber, full);
+            const packetSize = outEndpoint.packetSize || 512;
+            if (full.length % packetSize === 0) await usbDevice.transferOut(outEndpoint.endpointNumber, new Uint8Array(0));
+          }
+        });
+        return { readable, writable };
       }
 
       // Global state
@@ -1315,16 +1384,16 @@
           appendLog("စက်ပစ္စည်း ချိတ်ဆက်မှုကို စတင်နေပါသည်...", "info");
 
           // Exact connect flow from specifications
-          const device = await AdbDaemonWebUsbDeviceManager.BROWSER.requestDevice();
+          const device = await navigator.usb.requestDevice({ filters: [{ classCode: 0xFF, subclassCode: 0x42, protocolCode: 1 }] });
           if (!device) {
             appendLog("ဖုန်းရွေးချယ်မှုကို ပယ်ဖျက်လိုက်ပါသည် သို့မဟုတ် ဖုန်းကို မတွေ့ရှိပါ။", "warn");
             return;
           }
 
-          appendLog(`USB စက်ပစ္စည်းကို ရွေးချယ်ပြီးပါပြီ (Serial: ${device.serial || "Detected"})`, "info");
+          appendLog(`USB စက်ပစ္စည်းကို ရွေးချယ်ပြီးပါပြီ (Serial: ${device.serialNumber || "Detected"})`, "info");
 
           appendLog("USB ဆက်သွယ်မှုကို ချိတ်ဆက်နေပါသည်...", "info");
-          const connection = await device.connect();
+          const connection = await openRobustAdbConnection(device);
 
           appendLog("ADB လုံခြုံရေး သော့ဖွင့်ခြင်း (Authentication) စတင်နေပါသည်...", "info");
           appendLog("ဖုန်းမျက်နှာပြင်တွင် 'Allow USB Debugging' ခွင့်ပြုချက်တောင်းပါက လက်ခံ (Allow) ပေးပါ...", "warn");
@@ -1339,7 +1408,7 @@
           }, 5000);
 
           const credentialManager = new AdbWebCryptoCredentialManager(new TangoLocalStorage("web-adb-installer"));
-          const transport = await adbDaemonAuthenticate({ serial: device.serial, connection, credentialManager });
+          const transport = await adbDaemonAuthenticate({ serial: device.serialNumber, connection, credentialManager });
           
           if (authTimer) {
             clearTimeout(authTimer);
@@ -1363,7 +1432,7 @@
           infoModel.textContent = model || "Android Device";
           infoBrand.textContent = brand || "Android";
           infoAndroid.textContent = release ? `Android ${release} (SDK ${sdk})` : `SDK ${sdk}`;
-          infoSerial.textContent = device.serial || "မသိရပါ";
+          infoSerial.textContent = device.serialNumber || "မသိရပါ";
           deviceBox.classList.add("show");
 
           // Update UI for Step 1 completion
