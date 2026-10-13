@@ -1192,7 +1192,13 @@
           }
         });
         const writable = new WritableStream({
-          async write(packet) {
+          async write(chunk) {
+            // Unwrap the Consumable wrapper. tryConsume returns the inner packet AND
+            // resolves the wrapper's `consumed` promise (transport awaits it — without
+            // this call the transport hangs forever after the first write).
+            const packet = (chunk && typeof chunk.tryConsume === "function")
+              ? await chunk.tryConsume((v) => v)
+              : chunk;
             const payload = packet.payload instanceof Uint8Array ? packet.payload : new Uint8Array(0);
             const header = new Uint8Array(24);
             const v = new DataView(header.buffer);
