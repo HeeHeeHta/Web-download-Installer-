@@ -1173,7 +1173,10 @@
           const v = new DataView(header.buffer, header.byteOffset, 24);
           const command = v.getUint32(0, true), arg0 = v.getUint32(4, true), arg1 = v.getUint32(8, true);
           const payloadLength = v.getUint32(12, true), checksum = v.getUint32(16, true), magic = v.getUint32(20, true);
-          if ((magic >>> 0) !== ((command ^ 0xFFFFFFFF) >>> 0)) throw new Error("ADB packet out of sync (bad magic)");
+          if ((magic >>> 0) !== ((command ^ 0xFFFFFFFF) >>> 0)) {
+            appendLog(`[diag] BAD MAGIC: command=${command.toString(16)} magic=${magic.toString(16)} buf=${buf.length}`, "error");
+            throw new Error("ADB packet out of sync (bad magic)");
+          }
           const payload = take(payloadLength);
           if (!payload) { buf = concat(header, buf); return null; }
           return { command, arg0, arg1, payloadLength, checksum, magic, payload };
@@ -1421,7 +1424,7 @@
           }, 5000);
 
           const credentialManager = new AdbWebCryptoCredentialManager(new TangoLocalStorage("web-adb-installer"));
-          const transport = await adbDaemonAuthenticate({ serial: device.serialNumber, connection, credentialManager });
+          const transport = await adbDaemonAuthenticate({ serial: device.serialNumber, connection, credentialManager, initialDelayedAckBytes: 0 });
           
           if (authTimer) {
             clearTimeout(authTimer);
