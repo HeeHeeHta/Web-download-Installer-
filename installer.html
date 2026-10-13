@@ -9,6 +9,12 @@
     <meta property="og:description" content=" Chrome မှတစ်ဆင့် Android ဖုန်းထဲသို့ USB ဖြင့် APK တိုက်ရိုက်သွင်းယူနိုင်သော Web ADB စနစ်။" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#0b0b12">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
       :root {
         --bg-color: #0A0A14;
@@ -2080,6 +2086,13 @@
           updateInstallButtonState();
         }
       });
+    </script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("service-worker.js").catch(() => {});
+        });
+      }
     </script>
   </body>
 </html>
