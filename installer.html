@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="my">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Web ADB တပ်ဆင်ရေး | Web ADB APK Installer</title>
-    <meta name="description" content="ကွန်ပျူတာ Chrome မှတစ်ဆင့် Android ဖုန်းထဲသို့ USB ဖြင့် APK တိုက်ရိုက်သွင်းယူနိုင်သော Web ADB စနစ်။" />
+    <meta name="description" content=" Chrome မှတစ်ဆင့် Android ဖုန်းထဲသို့ USB ဖြင့် APK တိုက်ရိုက်သွင်းယူနိုင်သော Web ADB စနစ်။" />
     <meta property="og:title" content="Web ADB တပ်ဆင်ရေး | Web ADB APK Installer" />
-    <meta property="og:description" content="ကွန်ပျူတာ Chrome မှတစ်ဆင့် Android ဖုန်းထဲသို့ USB ဖြင့် APK တိုက်ရိုက်သွင်းယူနိုင်သော Web ADB စနစ်။" />
+    <meta property="og:description" content=" Chrome မှတစ်ဆင့် Android ဖုန်းထဲသို့ USB ဖြင့် APK တိုက်ရိုက်သွင်းယူနိုင်သော Web ADB စနစ်။" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <style>
@@ -125,6 +125,50 @@
         justify-content: space-between;
         padding: 10px 0 20px;
         gap: 12px;
+      }
+
+      .top-nav-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* Liquid Glass Language Switcher */
+      .lang-switcher {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 16px rgba(0, 0, 0, 0.25);
+        border-radius: 9999px;
+        padding: 3px;
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        gap: 2px;
+      }
+
+      .lang-btn {
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 11px;
+        border-radius: 9999px;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        font-family: inherit;
+        line-height: 1.2;
+      }
+
+      .lang-btn:hover {
+        color: #FFFFFF;
+      }
+
+      .lang-btn.active {
+        background: rgba(255, 255, 255, 0.18);
+        color: #FFFFFF;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 8px rgba(0, 0, 0, 0.25);
       }
 
       .back-link {
@@ -815,19 +859,26 @@
             <line x1="19" y1="12" x2="5" y2="12"/>
             <polyline points="12 19 5 12 12 5"/>
           </svg>
-          အက်ပ်ဒေါင်းလုဒ် စင်တာသို့ ပြန်သွားမည်
+          <span data-i18n="backLink">အက်ပ်ဒေါင်းလုဒ် စင်တာသို့ ပြန်သွားမည်</span>
         </a>
 
-        <div class="status-pill" id="connectionStatusPill">
-          <span class="status-dot" id="statusDot"></span>
-          <span id="statusText">ချိတ်ဆက်မထားပါ</span>
+        <div class="top-nav-right">
+          <div class="lang-switcher" role="group" aria-label="Language Switcher">
+            <button type="button" class="lang-btn active" id="langBtnEn">EN</button>
+            <button type="button" class="lang-btn" id="langBtnMy">မြန်မာ</button>
+          </div>
+
+          <div class="status-pill" id="connectionStatusPill">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText" data-i18n="statusDisconnected">ချိတ်ဆက်မထားပါ</span>
+          </div>
         </div>
       </nav>
 
       <!-- Header -->
       <header class="header">
-        <h1>Web ADB တပ်ဆင်ရေး (Installer)</h1>
-        <p>Google Chrome မှတစ်ဆင့် USB ဒေတာကြိုးဖြင့် Android ဖုန်းထဲသို့ APK တိုက်ရိုက်သွင်းယူပါ</p>
+        <h1 data-i18n="headerTitle">Web ADB တပ်ဆင်ရေး (Installer)</h1>
+        <p data-i18n="headerSubtitle">Google Chrome မှတစ်ဆင့် USB ဒေတာကြိုးဖြင့် Android ဖုန်းထဲသို့ APK တိုက်ရိုက်သွင်းယူပါ</p>
       </header>
 
       <!-- Critical WebUSB Guard Error (shown only if WebUSB is unsupported) -->
@@ -838,8 +889,8 @@
           <line x1="12" y1="16" x2="12.01" y2="16"/>
         </svg>
         <div>
-          <strong style="color: #FCA5A5; display: block; margin-bottom: 2px;">WebUSB ကို ဤဘရောက်ဆာတွင် အသုံးမပြုနိုင်ပါ</strong>
-          <span>ဤနည်းပညာသည် Google Chrome သို့မဟုတ် Microsoft Edge ဘရောက်ဆာများတွင်သာ အလုပ်လုပ်ပါသည်။ ကျေးဇူးပြု၍ Chrome/Edge ဖြင့် ဤစာမျက်နှာကို ပြန်လည်ဖွင့်ပေးပါ။</span>
+          <strong style="color: #FCA5A5; display: block; margin-bottom: 2px;" data-i18n="unsupportedTitle">WebUSB ကို ဤဘရောက်ဆာတွင် အသုံးမပြုနိုင်ပါ</strong>
+          <span data-i18n="unsupportedDesc">ဤနည်းပညာသည် Google Chrome သို့မဟုတ် Microsoft Edge ဘရောက်ဆာများတွင်သာ အလုပ်လုပ်ပါသည်။ ကျေးဇူးပြု၍ Chrome/Edge ဖြင့် ဤစာမျက်နှာကို ပြန်လည်ဖွင့်ပေးပါ။</span>
         </div>
       </div>
 
@@ -851,8 +902,8 @@
           <line x1="12" y1="17" x2="12.01" y2="17"/>
         </svg>
         <div style="flex: 1;">
-          <strong style="color: #FDE68A; display: block; font-size: 14px; margin-bottom: 4px;">WebUSB အသုံးပြုခွင့် ကန့်သတ်ထားပါသည် (Permissions Policy)</strong>
-          <span style="color: rgba(255, 255, 255, 0.88); display: block; margin-bottom: 12px; font-size: 12.5px; line-height: 1.6;">
+          <strong style="color: #FDE68A; display: block; font-size: 14px; margin-bottom: 4px;" data-i18n="policyTitle">WebUSB အသုံးပြုခွင့် ကန့်သတ်ထားပါသည် (Permissions Policy)</strong>
+          <span style="color: rgba(255, 255, 255, 0.88); display: block; margin-bottom: 12px; font-size: 12.5px; line-height: 1.6;" data-i18n="policyDesc">
             ဤစာမျက်နှာကို Preview iFrame (ကန့်သတ်ဘောင်) အတွင်း ဖွင့်ထားပါက Browser ၏ လုံခြုံရေးမူဝါဒအရ USB ချိတ်ဆက်မှုကို ခွင့်မပြုပါ (Disallowed by permissions policy)။ ဖုန်းနှင့် တိုက်ရိုက်ချိတ်ဆက်နိုင်ရန် အောက်ပါခလုတ်ကို နှိပ်၍ သီးသန့် Browser Tab အသစ်တွင် ဖွင့်ပေးပါ-
           </span>
           <a id="openInNewTabBtn" href="installer.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 9px 18px; font-size: 13px; width: fit-content;">
@@ -861,7 +912,7 @@
               <polyline points="15 3 21 3 21 9"/>
               <line x1="10" y1="14" x2="21" y2="3"/>
             </svg>
-            Tab အသစ်တွင် သီးသန့်ဖွင့်မည် (Open in New Tab)
+            <span data-i18n="openInNewTabBtn">Tab အသစ်တွင် သီးသန့်ဖွင့်မည် (Open in New Tab)</span>
           </a>
         </div>
       </div>
@@ -876,8 +927,8 @@
           </svg>
         </div>
         <div class="alert-content">
-          <h3>အရေးကြီး သတိပေးချက်</h3>
-          <p>
+          <h3 data-i18n="alertBannerTitle">အရေးကြီး သတိပေးချက်</h3>
+          <p data-i18n="alertBannerDesc">
             ဤစနစ်သည် WebUSB နည်းပညာဖြင့် အလုပ်လုပ်သောကြောင့် Google Chrome သို့မဟုတ် Microsoft Edge ဘရောက်ဆာနှင့် HTTPS လုံခြုံရေးစနစ် အောက်တွင်သာ အသုံးပြုနိုင်ပါသည်။ Firefox၊ Safari နှင့် Facebook/Messenger/Telegram in-app browser များတွင် အလုပ်မလုပ်ပါ။
           </p>
         </div>
@@ -890,7 +941,7 @@
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
             <polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
-          လိုအပ်ချက်များ စစ်ဆေးရန် (Requirements)
+          <span data-i18n="reqTitle">လိုအပ်ချက်များ စစ်ဆေးရန် (Requirements)</span>
         </h2>
         <ul class="checklist">
           <li class="checklist-item">
@@ -899,7 +950,7 @@
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </span>
-            <span><strong>Google Chrome</strong> သို့မဟုတ် <strong>Microsoft Edge</strong> ဘရောက်ဆာ အသုံးပြုထားခြင်း</span>
+            <span data-i18n="req1"><strong>Google Chrome</strong> သို့မဟုတ် <strong>Microsoft Edge</strong> ဘရောက်ဆာ အသုံးပြုထားခြင်း</span>
           </li>
           <li class="checklist-item">
             <span class="check-icon">
@@ -907,7 +958,7 @@
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </span>
-            <span>ကွန်ပျူတာနှင့် ဖုန်းကို <strong>USB-C to C</strong> သို့မဟုတ် <strong>OTG ဒေတာကြိုး</strong> ဖြင့် သေချာစွာ ချိတ်ဆက်ထားခြင်း</span>
+            <span data-i18n="req2">ကွန်ပျူတာနှင့် ဖုန်းကို <strong>USB-C to C</strong> သို့မဟုတ် <strong>OTG ဒေတာကြိုး</strong> ဖြင့် သေချာစွာ ချိတ်ဆက်ထားခြင်း</span>
           </li>
           <li class="checklist-item">
             <span class="check-icon">
@@ -915,7 +966,7 @@
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </span>
-            <span>ဖုန်း၏ Developer Options တွင် <strong>"USB debugging" (USB အမှားပြင်ဆင်ခြင်း)</strong> ဖွင့်ထားခြင်း</span>
+            <span data-i18n="req3">ဖုန်း၏ Developer Options တွင် <strong>"USB debugging" (USB အမှားပြင်ဆင်ခြင်း)</strong> ဖွင့်ထားခြင်း</span>
           </li>
           <li class="checklist-item">
             <span class="check-icon">
@@ -923,7 +974,7 @@
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </span>
-            <span>Xiaomi / Redmi / HyperOS ဖုန်းများအတွက် Developer Options ထဲရှိ <strong>"Install via USB"</strong> ခွင့်ပြုချက်ကို ဖွင့်ထားခြင်း</span>
+            <span data-i18n="req4">Xiaomi / Redmi / HyperOS ဖုန်းများအတွက် Developer Options ထဲရှိ <strong>"Install via USB"</strong> ခွင့်ပြုချက်ကို ဖွင့်ထားခြင်း</span>
           </li>
         </ul>
       </section>
@@ -935,18 +986,18 @@
           <div class="step-header">
             <div class="step-title-group">
               <div class="step-badge" id="step1Badge">၁</div>
-              <h3 class="step-heading-text">အဆင့် ၁: ဖုန်းချိတ်ဆက်ခြင်း</h3>
+              <h3 class="step-heading-text" data-i18n="step1Heading">အဆင့် ၁: ဖုန်းချိတ်ဆက်ခြင်း</h3>
             </div>
-            <span class="step-status-tag" id="step1Status">စောင့်ဆိုင်းဆဲ</span>
+            <span class="step-status-tag" id="step1Status" data-i18n="step1StatusWaiting">စောင့်ဆိုင်းဆဲ</span>
           </div>
-          <p class="step-desc">ဖုန်းကို USB ကြိုးဖြင့် ထိုးထားပြီး အောက်ပါခလုတ်ကို နှိပ်ကာ ပေါ်လာသော စာရင်းမှ မိမိဖုန်းကို ရွေးချယ်ပေးပါ။</p>
+          <p class="step-desc" data-i18n="step1Desc">ဖုန်းကို USB ကြိုးဖြင့် ထိုးထားပြီး အောက်ပါခလုတ်ကို နှိပ်ကာ ပေါ်လာသော စာရင်းမှ မိမိဖုန်းကို ရွေးချယ်ပေးပါ။</p>
 
           <button type="button" class="btn btn-primary" id="connectBtn">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
               <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
             </svg>
-            <span id="connectBtnText">ဖုန်းချိတ်ဆက်မည် (Connect Device)</span>
+            <span id="connectBtnText" data-i18n="connectBtnText">ဖုန်းချိတ်ဆက်မည် </span>
           </button>
 
           <!-- Reset Keys & Troubleshooting Helper -->
@@ -958,7 +1009,7 @@
                 <path d="M3 22v-6h6"/>
                 <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
               </svg>
-              သော့အသစ်ထုတ်၍ ပြန်လည်ချိတ်ဆက်မည် (Reset Keys & Reconnect)
+              <span data-i18n="resetKeysBtn">ကီးအသစ်ထုတ်၍ ပြန်လည်ချိတ်ဆက်မည် </span>
             </button>
 
             <details class="troubleshoot-accordion" id="troubleshootAccordion" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 12px 14px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.65; cursor: pointer;">
@@ -968,39 +1019,10 @@
                   <line x1="12" y1="16" x2="12" y2="12"/>
                   <line x1="12" y1="8" x2="12.01" y2="8"/>
                 </svg>
-                ဖုန်းတွင် "Allow USB Debugging" ပေါ်မလာပါက အရေးကြီး ဖြေရှင်းနည်းများ (နှိပ်၍ကြည့်ပါ)
+                <span data-i18n="troubleshootSummary">ဖုန်းတွင် "Allow USB Debugging" ပေါ်မလာပါက အရေးကြီး ဖြေရှင်းနည်းများ (နှိပ်၍ကြည့်ပါ)</span>
               </summary>
-              <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px;">
-                <p><strong>၁။ USB Mode ကို "File Transfer" သို့ ပြောင်းပါ (အရေးအကြီးဆုံး):</strong><br/>
-                ဖုန်းမျက်နှာပြင်၏ အပေါ် Notification bar ကို ဆွဲချပါ။ "Charging this device via USB" သို့မဟုတ် "No data transfer" ကို နှိပ်ပြီး <strong>"File Transfer" (သို့မဟုတ် MTP / File transfer)</strong> သို့ မဖြစ်မနေ ပြောင်းပေးပါ။ ("Charging only" အားသွင်းခြင်းသာ ဖြစ်နေပါက Debugging ခွင့်ပြုချက် ပေါ်မည် မဟုတ်ပါ)</p>
-
-                <p><strong>၂။ Revoke USB debugging authorizations ပြုလုပ်ပါ (ခွင့်ပြုချက်ဟောင်းများ ဖျက်ခြင်း):</strong><br/>
-                ဖုန်း Settings > Developer Options သို့သွားပြီး <strong>"Revoke USB debugging authorizations"</strong> (USB ချိတ်ဆက်ခွင့်ပြုချက်များကို ပြန်လည်ရုပ်သိမ်းရန်) ကို နှိပ်၍ OK ပေးပါ။ ထို့နောက် USB ကြိုးကို ဖုန်းမှ ဖြုတ်ပြီး ပြန်ထိုးပါ။ (၎င်းသည် ယခင် သော့ဟောင်းများကြောင့် Allow မပေါ်ခြင်းကို ချက်ချင်း ဖြေရှင်းပေးပါသည်)</p>
-
-                <p><strong>၃။ USB ကြိုးသည် Data Cable စစ်စစ် ဖြစ်ပါစေ:</strong><br/>
-                အချို့ အားသွင်းကြိုးများသည် အားသွင်းရုံသာရပြီး အချက်အလက် (Data) မကူးနိုင်ပါ (Charge-only cable)။ ဖုန်းနှင့် ကွန်ပျူတာ အချက်အလက် ပို့နိုင်သော Data Cable စစ်စစ် ဖြစ်ရပါမည်။</p>
-
-                <p><strong>၄။ ကွန်ပျူတာ/Laptop တွင် အခြား ADB ပရိုဂရမ်များ ပိတ်ပါ:</strong><br/>
-                PC တွင် Android Studio, Vysor, Scrcpy, 3uTools သို့မဟုတ် နောက်ကွယ်တွင် <code>adb.exe</code> အလုပ်လုပ်နေပါက WebUSB ချိတ်ဆက်မှု ပိတ်ဆို့နေတတ်ပါသည်။ Command Prompt (CMD) တွင် <code>adb kill-server</code> ရိုက်ထည့်၍ ပိတ်ပေးပါ။</p>
-
-                <p><strong>၅။ Xiaomi / Redmi / POCO (HyperOS / MIUI) ဆက်တင် ၃ ချက်စလုံး ဖွင့်ပါ:</strong><br/>
-                • USB debugging (On ထားပါ)<br/>
-                • Install via USB (On ထားပါ - SIM card ထည့်ထားရန်နှင့် Mi Account ဝင်ထားရန်လို)<br/>
-                • USB debugging (Security settings) (On ထားပါ)<br/>
-                • Default USB configuration ကို "File Transfer" ဟု ရွေးထားပါ။</p>
-
-                <p><strong>၆။ ဖုန်းအချင်းချင်း (Phone-to-Phone / OTG) စမ်းသပ်နေသူများအတွက် (အလွန်အရေးကြီးပါသည်):</strong><br/>
-                Host (Chrome ဖွင့်ထားသော ဖုန်း) နှင့် Target (သွင်းမည့် ဖုန်း) ၂ လုံး ချိတ်ဆက်ရာတွင် Type-C ကြိုးကြောင့် Role ပြောင်းပြန်ဖြစ်နေတတ်ပါသည်-<br/>
-                • <strong>OTG Adapter ကို Host ဖုန်းဘက်တွင် တပ်ဆင်ပါ:</strong> သာမန် Type-C to Type-C ကြိုးသည် မည်သည့်ဖုန်းက Host ဖြစ်သည်ကို အလိုအလျောက် သတ်မှတ်ရာတွင် လွဲမှားတတ်ပါသည်။ OTG ခေါင်းကို Chrome ဖွင့်ထားသော Host ဖုန်းဘက်တွင် မဖြစ်မနေ ထိုးပေးပါ။<br/>
-                • <strong>Host ဖုန်းတွင် OTG Connection ဖွင့်ပါ:</strong> Oppo, Vivo, Realme, OnePlus ဖုန်းများတွင် Settings > System > <strong>"OTG Connection"</strong> ကို On ထားပေးရပါမည် (မဟုတ်ပါက ဖုန်းက USB ကို ပိတ်ထားတတ်ပါသည်)။<br/>
-                • <strong>Target ဖုန်းတွင် Mode ပြောင်းပါ:</strong> Target ဖုန်း၏ Notification တွင် <strong>"PTP (Photo Transfer)"</strong> သို့မဟုတ် <strong>"File Transfer (MTP)"</strong> သို့ ပြောင်းပေးပါ။ (Android 10+ ဖုန်းများတွင် PTP သို့ ပြောင်းလိုက်မှသာ Allow မေးခွန်း ပေါ်တတ်ပါသည်)။<br/>
-                • <strong>Target ဖုန်းတွင်:</strong> "USB controlled by: Connected device" (ချိတ်ဆက်ထားသော စက်ပစ္စည်း) ဖြစ်နေစေရန် စစ်ဆေးပါ။</p>
-
-                <p><strong>၇။ သော့ဟောင်းများ ရှင်းလင်းခြင်း:</strong><br/>
-                အပေါ်ရှိ "သော့အသစ်ထုတ်၍ ပြန်လည်ချိတ်ဆက်မည် (Reset Keys & Reconnect)" ခလုတ်ကို နှိပ်၍ ဘရောက်ဆာတွင်းရှိ သော့ဟောင်းများကို ရှင်းလင်းပြီး ပြန်လည်ချိတ်ဆက်ကြည့်ပါ။</p>
-
-                <p><strong>💡 အကြံပြုချက် (အလွယ်ဆုံးနည်းလမ်း):</strong><br/>
-                ဖုန်းအချင်းချင်း OTG ဖြင့် မရပါက Target ဖုန်း (သွင်းမည့်ဖုန်း) တွင် ဘရောက်ဆာဖြင့် <strong>Home (index.html)</strong> သို့သွား၍ <strong>"Download APK"</strong> ကို တိုက်ရိုက်ဒေါင်းလုဒ်ဆွဲကာ Install လုပ်ပါက စက္ကန့် ၃၀ အတွင်း အမြန်ဆုံးနှင့် အလွယ်ကူဆုံး ပြီးစီးပါမည်။ သို့မဟုတ် ကွန်ပျူတာ (PC/Laptop) တွင် ဤဝဘ်ဆိုက်ဖွင့်ပြီး ဖုန်းကို ချိတ်သွင်းပါက ၁၀၀% အဆင်ပြေပါသည်။</p>
+              <div id="troubleshootBody" style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px;">
+                <!-- Populated by JavaScript according to active language -->
               </div>
             </details>
           </div>
@@ -1012,25 +1034,25 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="20 6 9 17 4 12"/>
                 </svg>
-                ချိတ်ဆက်ထားသော စက်ပစ္စည်း အချက်အလက်
+                <span data-i18n="deviceBoxTitle">ချိတ်ဆက်ထားသော စက်ပစ္စည်း အချက်အလက်</span>
               </span>
               <span style="font-size: 11px; background: rgba(52, 211, 153, 0.15); border: 1px solid rgba(52, 211, 153, 0.28); color: #6EE7B7; padding: 2px 8px; border-radius: 9999px; font-weight: 600;">Online</span>
             </div>
             <div class="device-grid">
               <div class="device-item">
-                <span class="device-label">မော်ဒယ် (Model):</span>
+                <span class="device-label" data-i18n="deviceLabelModel">မော်ဒယ် (Model):</span>
                 <span class="device-val" id="infoModel">-</span>
               </div>
               <div class="device-item">
-                <span class="device-label">Android ဗားရှင်း:</span>
+                <span class="device-label" data-i18n="deviceLabelAndroid">Android ဗားရှင်း:</span>
                 <span class="device-val" id="infoAndroid">-</span>
               </div>
               <div class="device-item">
-                <span class="device-label">ထုတ်လုပ်သူ (Brand):</span>
+                <span class="device-label" data-i18n="deviceLabelBrand">ထုတ်လုပ်သူ (Brand):</span>
                 <span class="device-val" id="infoBrand">-</span>
               </div>
               <div class="device-item">
-                <span class="device-label">Serial နံပါတ်:</span>
+                <span class="device-label" data-i18n="deviceLabelSerial">Serial နံပါတ်:</span>
                 <span class="device-val" id="infoSerial">-</span>
               </div>
             </div>
@@ -1042,17 +1064,17 @@
           <div class="step-header">
             <div class="step-title-group">
               <div class="step-badge" id="step2Badge">၂</div>
-              <h3 class="step-heading-text">အဆင့် ၂: APK ဖိုင် ရွေးချယ်ခြင်း</h3>
+              <h3 class="step-heading-text" data-i18n="step2Heading">အဆင့် ၂: APK ဖိုင် ရွေးချယ်ခြင်း</h3>
             </div>
-            <span class="step-status-tag" id="step2Status">မရွေးချယ်ရသေးပါ</span>
+            <span class="step-status-tag" id="step2Status" data-i18n="step2StatusWaiting">မရွေးချယ်ရသေးပါ</span>
           </div>
-          <p class="step-desc">ဖုန်းထဲသို့ တပ်ဆင်လိုသော Android အက်ပ် (.apk) ဖိုင်ကို ရွေးချယ်ပေးပါ။</p>
+          <p class="step-desc" data-i18n="step2Desc">ဖုန်းထဲသို့ တပ်ဆင်လိုသော Android အက်ပ် (.apk) ဖိုင်ကို ရွေးချယ်ပေးပါ။</p>
 
           <!-- Preselected app quick bar -->
           <div class="preselected-app-box" id="preselectedAppBox" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px;">
               <div>
-                <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">ရွေးချယ်ထားသော အက်ပ်:</div>
+                <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;" data-i18n="presetAppLabel">ရွေးချယ်ထားသော အက်ပ်:</div>
                 <div style="font-size: 14.5px; font-weight: 700; color: #FFFFFF;" id="presetAppTitle">-</div>
               </div>
               <a href="#" id="directDownloadPresetLink" class="btn-outline" style="font-size: 11.5px; padding: 5px 12px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" target="_blank" download>
@@ -1061,7 +1083,7 @@
                   <polyline points="7 10 12 15 17 10"/>
                   <line x1="12" y1="15" x2="12" y2="3"/>
                 </svg>
-                ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်
+                <span data-i18n="presetDownloadBtn">ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်</span>
               </a>
             </div>
             <button type="button" id="autoFetchPresetBtn" class="btn btn-outline" style="font-size: 12.5px; padding: 9px 14px;">
@@ -1070,7 +1092,7 @@
                 <polyline points="7 10 12 15 17 10"/>
                 <line x1="12" y1="15" x2="12" y2="3"/>
               </svg>
-              ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်
+              <span id="autoFetchPresetBtnText" data-i18n="presetAutoFetchBtn">ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်</span>
             </button>
           </div>
 
@@ -1082,8 +1104,8 @@
               <polyline points="17 8 12 3 7 8"/>
               <line x1="12" y1="3" x2="12" y2="15"/>
             </svg>
-            <div style="font-size: 14px; font-weight: 700; color: #FFFFFF; margin-bottom: 2px;">APK ဖိုင် ရွေးရန် ဤနေရာကို နှိပ်ပါ</div>
-            <div style="font-size: 12px; color: var(--text-muted);">.apk ဖိုင်များကိုသာ လက်ခံပါသည်</div>
+            <div style="font-size: 14px; font-weight: 700; color: #FFFFFF; margin-bottom: 2px;" data-i18n="dropzoneTitle">APK ဖိုင် ရွေးရန် ဤနေရာကို နှိပ်ပါ</div>
+            <div style="font-size: 12px; color: var(--text-muted);" data-i18n="dropzoneSubtitle">.apk ဖိုင်များကိုသာ လက်ခံပါသည်</div>
           </div>
 
           <div class="file-chosen-info" id="fileChosenInfo">
@@ -1100,7 +1122,7 @@
                 <div id="chosenFileSize" style="font-size: 11.5px; color: var(--text-muted);">-</div>
               </div>
             </div>
-            <button type="button" id="changeFileBtn" class="btn-outline" style="padding: 5px 12px; font-size: 11.5px; border-radius: 9999px; cursor: pointer; flex-shrink: 0;">အသစ်ရွေးမည်</button>
+            <button type="button" id="changeFileBtn" class="btn-outline" style="padding: 5px 12px; font-size: 11.5px; border-radius: 9999px; cursor: pointer; flex-shrink: 0;" data-i18n="changeFileBtn">အသစ်ရွေးမည်</button>
           </div>
         </section>
 
@@ -1109,17 +1131,17 @@
           <div class="step-header">
             <div class="step-title-group">
               <div class="step-badge" id="step3Badge">၃</div>
-              <h3 class="step-heading-text">အဆင့် ၃: ဖုန်းထဲသို့ တပ်ဆင်ခြင်း</h3>
+              <h3 class="step-heading-text" data-i18n="step3Heading">အဆင့် ၃: ဖုန်းထဲသို့ တပ်ဆင်ခြင်း</h3>
             </div>
-            <span class="step-status-tag" id="step3Status">အဆင်သင့်မဖြစ်သေးပါ</span>
+            <span class="step-status-tag" id="step3Status" data-i18n="step3StatusNotReady">အဆင်သင့်မဖြစ်သေးပါ</span>
           </div>
-          <p class="step-desc">ဖုန်းချိတ်ဆက်ပြီး APK ဖိုင် ရွေးချယ်ပြီးပါက အောက်ပါခလုတ်ကို နှိပ်၍ သွင်းယူနိုင်ပါပြီ။</p>
+          <p class="step-desc" data-i18n="step3Desc">ဖုန်းချိတ်ဆက်ပြီး APK ဖိုင် ရွေးချယ်ပြီးပါက အောက်ပါခလုတ်ကို နှိပ်၍ သွင်းယူနိုင်ပါပြီ။</p>
 
           <button type="button" class="btn btn-primary" id="installBtn" disabled>
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="20 6 9 17 4 12"/>
             </svg>
-            <span id="installBtnText">APK တပ်ဆင်မည် (Install APK)</span>
+            <span id="installBtnText" data-i18n="installBtnText">APK တပ်ဆင်မည် (Install APK)</span>
           </button>
 
           <!-- Progress Bar Area -->
@@ -1143,9 +1165,9 @@
               <polyline points="4 17 10 11 4 5"/>
               <line x1="12" y1="19" x2="20" y2="19"/>
             </svg>
-            လုပ်ဆောင်မှု မှတ်တမ်း (Process Terminal Log)
+            <span data-i18n="logTitle">လုပ်ဆောင်မှု မှတ်တမ်း (Process Terminal Log)</span>
           </div>
-          <button type="button" class="btn-clear-log" id="clearLogBtn">မှတ်တမ်းရှင်းမည်</button>
+          <button type="button" class="btn-clear-log" id="clearLogBtn" data-i18n="clearLogBtn">မှတ်တမ်းရှင်းမည်</button>
         </div>
         <div class="log-terminal" id="logTerminal" role="log" aria-live="polite">
           <!-- Monospace log entries appear here -->
@@ -1154,7 +1176,7 @@
 
       <!-- Footer Info -->
       <footer style="text-align: center; margin-top: 36px; font-size: 12px; color: var(--text-muted);">
-        <p>WebUSB ADB Installer • Android 5.0+ နှင့်အထက် စက်ပစ္စည်းများကို ထောက်ပံ့ပါသည်</p>
+        <p data-i18n="footerText">WebUSB ADB Installer • Android 5.0+ နှင့်အထက် စက်ပစ္စည်းများကို ထောက်ပံ့ပါသည်</p>
       </footer>
     </div>
 
@@ -1292,10 +1314,211 @@
       // Global state
       let activeDevice = null;
       let activeAdb = null;
+      let activeDeviceModel = "";
       let selectedFile = null;
       let isBusy = false;
 
+      // Translation dictionary
+      const TRANSLATIONS = {
+        my: {
+          pageTitle: "Web ADB တပ်ဆင်ရေး | Web ADB APK Installer",
+          backLink: "အက်ပ်ဒေါင်းလုဒ် စင်တာသို့ ပြန်သွားမည်",
+          statusDisconnected: "ချိတ်ဆက်မထားပါ",
+          statusConnectedSuffix: "ချိတ်ဆက်ပြီး",
+          headerTitle: "Web ADB တပ်ဆင်ရေး (Installer)",
+          headerSubtitle: "Google Chrome မှတစ်ဆင့် USB ဒေတာကြိုးဖြင့် Android ဖုန်းထဲသို့ APK တိုက်ရိုက်သွင်းယူပါ",
+          unsupportedTitle: "WebUSB ကို ဤဘရောက်ဆာတွင် အသုံးမပြုနိုင်ပါ",
+          unsupportedDesc: "ဤနည်းပညာသည် Google Chrome သို့မဟုတ် Microsoft Edge ဘရောက်ဆာများတွင်သာ အလုပ်လုပ်ပါသည်။ ကျေးဇူးပြု၍ Chrome/Edge ဖြင့် ဤစာမျက်နှာကို ပြန်လည်ဖွင့်ပေးပါ။",
+          policyTitle: "WebUSB အသုံးပြုခွင့် ကန့်သတ်ထားပါသည် (Permissions Policy)",
+          policyDesc: "ဤစာမျက်နှာကို Preview iFrame (ကန့်သတ်ဘောင်) အတွင်း ဖွင့်ထားပါက Browser ၏ လုံခြုံရေးမူဝါဒအရ USB ချိတ်ဆက်မှုကို ခွင့်မပြုပါ (Disallowed by permissions policy)။ ဖုန်းနှင့် တိုက်ရိုက်ချိတ်ဆက်နိုင်ရန် အောက်ပါခလုတ်ကို နှိပ်၍ သီးသန့် Browser Tab အသစ်တွင် ဖွင့်ပေးပါ-",
+          openInNewTabBtn: "Tab အသစ်တွင် သီးသန့်ဖွင့်မည် (Open in New Tab)",
+          alertBannerTitle: "အရေးကြီး သတိပေးချက်",
+          alertBannerDesc: "ဤစနစ်သည် WebUSB နည်းပညာဖြင့် အလုပ်လုပ်သောကြောင့် Google Chrome သို့မဟုတ် Microsoft Edge ဘရောက်ဆာနှင့် HTTPS လုံခြုံရေးစနစ် အောက်တွင်သာ အသုံးပြုနိုင်ပါသည်။ Firefox၊ Safari နှင့် Facebook/Messenger/Telegram in-app browser များတွင် အလုပ်မလုပ်ပါ။",
+          reqTitle: "လိုအပ်ချက်များ စစ်ဆေးရန် (Requirements)",
+          req1: "Google Chrome သို့မဟုတ် Microsoft Edge ဘရောက်ဆာ အသုံးပြုထားခြင်း",
+          req2: "ကွန်ပျူတာနှင့် ဖုန်းကို USB-C to C သို့မဟုတ် OTG ဒေတာကြိုး ဖြင့် သေချာစွာ ချိတ်ဆက်ထားခြင်း",
+          req3: 'ဖုန်း၏ Developer Options တွင် "USB debugging" (USB အမှားပြင်ဆင်ခြင်း) ဖွင့်ထားခြင်း',
+          req4: 'Xiaomi / Redmi / HyperOS ဖုန်းများအတွက် Developer Options ထဲရှိ "Install via USB" ခွင့်ပြုချက်ကို ဖွင့်ထားခြင်း',
+          step1Num: "၁",
+          step1Heading: "အဆင့် ၁: ဖုန်းချိတ်ဆက်ခြင်း",
+          step1StatusWaiting: "စောင့်ဆိုင်းဆဲ",
+          step1StatusConnected: "ချိတ်ဆက်ပြီးပါပြီ",
+          step1Desc: "ဖုန်းကို USB ကြိုးဖြင့် ထိုးထားပြီး အောက်ပါခလုတ်ကို နှိပ်ကာ ပေါ်လာသော စာရင်းမှ မိမိဖုန်းကို ရွေးချယ်ပေးပါ။",
+          connectBtnText: "ဖုန်းချိတ်ဆက်မည် (Connect Device)",
+          reconnectBtnText: "ပြန်လည်ချိတ်ဆက်မည် (Reconnect)",
+          resetKeysBtn: "သော့အသစ်ထုတ်၍ ပြန်လည်ချိတ်ဆက်မည် (Reset Keys & Reconnect)",
+          troubleshootSummary: 'ဖုန်းတွင် "Allow USB Debugging" ပေါ်မလာပါက အရေးကြီး ဖြေရှင်းနည်းများ (နှိပ်၍ကြည့်ပါ)',
+          deviceBoxTitle: "ချိတ်ဆက်ထားသော စက်ပစ္စည်း အချက်အလက်",
+          deviceLabelModel: "မော်ဒယ် (Model):",
+          deviceLabelAndroid: "Android ဗားရှင်း:",
+          deviceLabelBrand: "ထုတ်လုပ်သူ (Brand):",
+          deviceLabelSerial: "Serial နံပါတ်:",
+          deviceUnknown: "မသိရပါ",
+          step2Num: "၂",
+          step2Heading: "အဆင့် ၂: APK ဖိုင် ရွေးချယ်ခြင်း",
+          step2StatusWaiting: "မရွေးချယ်ရသေးပါ",
+          step2StatusSelected: "ရွေးချယ်ပြီးပါပြီ",
+          step2Desc: "ဖုန်းထဲသို့ တပ်ဆင်လိုသော Android အက်ပ် (.apk) ဖိုင်ကို ရွေးချယ်ပေးပါ။",
+          presetAppLabel: "ရွေးချယ်ထားသော အက်ပ်:",
+          presetDownloadBtn: "ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်",
+          presetAutoFetchBtn: "ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်",
+          dropzoneTitle: "APK ဖိုင် ရွေးရန် ဤနေရာကို နှိပ်ပါ",
+          dropzoneSubtitle: ".apk ဖိုင်များကိုသာ လက်ခံပါသည်",
+          changeFileBtn: "အသစ်ရွေးမည်",
+          step3Num: "၃",
+          step3Heading: "အဆင့် ၃: ဖုန်းထဲသို့ တပ်ဆင်ခြင်း",
+          step3StatusNotReady: "အဆင်သင့်မဖြစ်သေးပါ",
+          step3StatusReady: "တပ်ဆင်ရန် အသင့်ဖြစ်ပါပြီ",
+          step3StatusReqDevice: "ဖုန်းချိတ်ဆက်ရန် လိုအပ်သည်",
+          step3StatusReqFile: "APK ဖိုင်ရွေးရန် လိုအပ်သည်",
+          step3StatusSuccess: "အောင်မြင်စွာ တပ်ဆင်ပြီးပါပြီ",
+          step3StatusFailed: "မအောင်မြင်ပါ",
+          step3Desc: "ဖုန်းချိတ်ဆက်ပြီး APK ဖိုင် ရွေးချယ်ပြီးပါက အောက်ပါခလုတ်ကို နှိပ်၍ သွင်းယူနိုင်ပါပြီ။",
+          installBtnText: "APK တပ်ဆင်မည် (Install APK)",
+          installBtnSuccess: "အောင်မြင်စွာ တပ်ဆင်ပြီးပါပြီ (Success)",
+          installBtnRetry: "ပြန်လည်ကြိုးစားမည် (Try Again)",
+          logTitle: "လုပ်ဆောင်မှု မှတ်တမ်း (Process Terminal Log)",
+          clearLogBtn: "မှတ်တမ်းရှင်းမည်",
+          footerText: "WebUSB ADB Installer • Android 5.0+ နှင့်အထက် စက်ပစ္စည်းများကို ထောက်ပံ့ပါသည်"
+        },
+        en: {
+          pageTitle: "Web ADB APK Installer | Direct USB Installation",
+          backLink: "Back to App Download Center",
+          statusDisconnected: "Disconnected",
+          statusConnectedSuffix: "Connected",
+          headerTitle: "Web ADB APK Installer",
+          headerSubtitle: "Install APKs directly to your Android device via USB cable right in Google Chrome",
+          unsupportedTitle: "WebUSB is not supported in this browser",
+          unsupportedDesc: "This feature requires Google Chrome or Microsoft Edge. Please reopen this page in Chrome or Edge.",
+          policyTitle: "WebUSB Access Restricted (Permissions Policy)",
+          policyDesc: "When embedded inside a preview frame, browser security policy blocks USB device access. To connect your device, please open this installer in a standalone new browser tab:",
+          openInNewTabBtn: "Open in Standalone New Tab",
+          alertBannerTitle: "Important Requirement",
+          alertBannerDesc: "This system relies on WebUSB technology and works only in Google Chrome or Microsoft Edge over HTTPS. It does not work in Firefox, Safari, or in-app browsers like Facebook or Telegram.",
+          reqTitle: "Requirements Checklist",
+          req1: "Google Chrome or Microsoft Edge browser",
+          req2: "PC and phone securely connected via USB-C to C or OTG data cable",
+          req3: 'USB debugging enabled in phone Developer Options',
+          req4: 'For Xiaomi / Redmi / HyperOS devices: "Install via USB" enabled in Developer Options',
+          step1Num: "1",
+          step1Heading: "Step 1: Connect Phone",
+          step1StatusWaiting: "Waiting",
+          step1StatusConnected: "Connected",
+          step1Desc: "Connect your phone via USB cable and click the button below to pair with your device.",
+          connectBtnText: "Connect Device",
+          reconnectBtnText: "Reconnect Device",
+          resetKeysBtn: "Reset Keys & Reconnect",
+          troubleshootSummary: 'Troubleshooting: If "Allow USB Debugging" prompt doesn\'t appear (Click to view)',
+          deviceBoxTitle: "Connected Device Details",
+          deviceLabelModel: "Model:",
+          deviceLabelAndroid: "Android Version:",
+          deviceLabelBrand: "Brand / Manufacturer:",
+          deviceLabelSerial: "Serial Number:",
+          deviceUnknown: "Unknown",
+          step2Num: "2",
+          step2Heading: "Step 2: Select APK File",
+          step2StatusWaiting: "Not selected",
+          step2StatusSelected: "File selected",
+          step2Desc: "Choose the Android application (.apk) file you wish to install onto your device.",
+          presetAppLabel: "Preset Application:",
+          presetDownloadBtn: "Direct Download",
+          presetAutoFetchBtn: "Auto-fetch & Select this APK",
+          dropzoneTitle: "Click or drag & drop APK file here",
+          dropzoneSubtitle: "Only .apk files are accepted",
+          changeFileBtn: "Change File",
+          step3Num: "3",
+          step3Heading: "Step 3: Install to Phone",
+          step3StatusNotReady: "Not ready",
+          step3StatusReady: "Ready to install",
+          step3StatusReqDevice: "Device connection required",
+          step3StatusReqFile: "APK file selection required",
+          step3StatusSuccess: "Installation completed",
+          step3StatusFailed: "Installation failed",
+          step3Desc: "Once your phone is connected and an APK is selected, click below to initiate installation.",
+          installBtnText: "Install APK to Device",
+          installBtnSuccess: "Installation Successful",
+          installBtnRetry: "Try Again",
+          logTitle: "Process Terminal Log",
+          clearLogBtn: "Clear Log",
+          footerText: "WebUSB ADB Installer • Supports Android 5.0 and newer devices"
+        }
+      };
+
+      const TROUBLESHOOT_HTML = {
+        my: `
+          <p><strong>၁။ USB Mode ကို "File Transfer" သို့ ပြောင်းပါ (အရေးအကြီးဆုံး):</strong><br/>
+          ဖုန်းမျက်နှာပြင်၏ အပေါ် Notification bar ကို ဆွဲချပါ။ "Charging this device via USB" သို့မဟုတ် "No data transfer" ကို နှိပ်ပြီး <strong>"File Transfer" (သို့မဟုတ် MTP / File transfer)</strong> သို့ မဖြစ်မနေ ပြောင်းပေးပါ။ ("Charging only" အားသွင်းခြင်းသာ ဖြစ်နေပါက Debugging ခွင့်ပြုချက် ပေါ်မည် မဟုတ်ပါ)</p>
+
+          <p><strong>၂။ Revoke USB debugging authorizations ပြုလုပ်ပါ (ခွင့်ပြုချက်ဟောင်းများ ဖျက်ခြင်း):</strong><br/>
+          ဖုန်း Settings &gt; Developer Options သို့သွားပြီး <strong>"Revoke USB debugging authorizations"</strong> (USB ချိတ်ဆက်ခွင့်ပြုချက်များကို ပြန်လည်ရုပ်သိမ်းရန်) ကို နှိပ်၍ OK ပေးပါ။ ထို့နောက် USB ကြိုးကို ဖုန်းမှ ဖြုတ်ပြီး ပြန်ထိုးပါ။ (၎င်းသည် ယခင် သော့ဟောင်းများကြောင့် Allow မပေါ်ခြင်းကို ချက်ချင်း ဖြေရှင်းပေးပါသည်)</p>
+
+          <p><strong>၃။ USB ကြိုးသည် Data Cable စစ်စစ် ဖြစ်ပါစေ:</strong><br/>
+          အချို့ အားသွင်းကြိုးများသည် အားသွင်းရုံသာရပြီး အချက်အလက် (Data) မကူးနိုင်ပါ (Charge-only cable)။ ဖုန်းနှင့် ကွန်ပျူတာ အချက်အလက် ပို့နိုင်သော Data Cable စစ်စစ် ဖြစ်ရပါမည်။</p>
+
+          <p><strong>၄။ ကွန်ပျူတာ/Laptop တွင် အခြား ADB ပရိုဂရမ်များ ပိတ်ပါ:</strong><br/>
+          PC တွင် Android Studio, Vysor, Scrcpy, 3uTools သို့မဟုတ် နောက်ကွယ်တွင် <code>adb.exe</code> အလုပ်လုပ်နေပါက WebUSB ချိတ်ဆက်မှု ပိတ်ဆို့နေတတ်ပါသည်။ Command Prompt (CMD) တွင် <code>adb kill-server</code> ရိုက်ထည့်၍ ပိတ်ပေးပါ။</p>
+
+          <p><strong>၅။ Xiaomi / Redmi / POCO (HyperOS / MIUI) ဆက်တင် ၃ ချက်စလုံး ဖွင့်ပါ:</strong><br/>
+          • USB debugging (On ထားပါ)<br/>
+          • Install via USB (On ထားပါ - SIM card ထည့်ထားရန်နှင့် Mi Account ဝင်ထားရန်လို)<br/>
+          • USB debugging (Security settings) (On ထားပါ)<br/>
+          • Default USB configuration ကို "File Transfer" ဟု ရွေးထားပါ။</p>
+
+          <p><strong>၆။ ဖုန်းအချင်းချင်း (Phone-to-Phone / OTG) စမ်းသပ်နေသူများအတွက် (အလွန်အရေးကြီးပါသည်):</strong><br/>
+          Host (Chrome ဖွင့်ထားသော ဖုန်း) နှင့် Target (သွင်းမည့် ဖုန်း) ၂ လုံး ချိတ်ဆက်ရာတွင် Type-C ကြိုးကြောင့် Role ပြောင်းပြန်ဖြစ်နေတတ်ပါသည်-<br/>
+          • <strong>OTG Adapter ကို Host ဖုန်းဘက်တွင် တပ်ဆင်ပါ:</strong> သာမန် Type-C to Type-C ကြိုးသည် မည်သည့်ဖုန်းက Host ဖြစ်သည်ကို အလိုအလျောက် သတ်မှတ်ရာတွင် လွဲမှားတတ်ပါသည်။ OTG ခေါင်းကို Chrome ဖွင့်ထားသော Host ဖုန်းဘက်တွင် မဖြစ်မနေ ထိုးပေးပါ။<br/>
+          • <strong>Host ဖုန်းတွင် OTG Connection ဖွင့်ပါ:</strong> Oppo, Vivo, Realme, OnePlus ဖုန်းများတွင် Settings &gt; System &gt; <strong>"OTG Connection"</strong> ကို On ထားပေးရပါမည် (မဟုတ်ပါက ဖုန်းက USB ကို ပိတ်ထားတတ်ပါသည်)။<br/>
+          • <strong>Target ဖုန်းတွင် Mode ပြောင်းပါ:</strong> Target ဖုန်း၏ Notification တွင် <strong>"PTP (Photo Transfer)"</strong> သို့မဟုတ် <strong>"File Transfer (MTP)"</strong> သို့ ပြောင်းပေးပါ။ (Android 10+ ဖုန်းများတွင် PTP သို့ ပြောင်းလိုက်မှသာ Allow မေးခွန်း ပေါ်တတ်ပါသည်)။<br/>
+          • <strong>Target ဖုန်းတွင်:</strong> "USB controlled by: Connected device" (ချိတ်ဆက်ထားသော စက်ပစ္စည်း) ဖြစ်နေစေရန် စစ်ဆေးပါ။</p>
+
+          <p><strong>၇။ သော့ဟောင်းများ ရှင်းလင်းခြင်း:</strong><br/>
+          အပေါ်ရှိ "သော့အသစ်ထုတ်၍ ပြန်လည်ချိတ်ဆက်မည် (Reset Keys &amp; Reconnect)" ခလုတ်ကို နှိပ်၍ ဘရောက်ဆာတွင်းရှိ သော့ဟောင်းများကို ရှင်းလင်းပြီး ပြန်လည်ချိတ်ဆက်ကြည့်ပါ။</p>
+
+          <p><strong>💡 အကြံပြုချက် (အလွယ်ဆုံးနည်းလမ်း):</strong><br/>
+          ဖုန်းအချင်းချင်း OTG ဖြင့် မရပါက Target ဖုန်း (သွင်းမည့်ဖုန်း) တွင် ဘရောက်ဆာဖြင့် <strong>Home (index.html)</strong> သို့သွား၍ <strong>"Download APK"</strong> ကို တိုက်ရိုက်ဒေါင်းလုဒ်ဆွဲကာ Install လုပ်ပါက စက္ကန့် ၃၀ အတွင်း အမြန်ဆုံးနှင့် အလွယ်ကူဆုံး ပြီးစီးပါမည်။ သို့မဟုတ် ကွန်ပျူတာ (PC/Laptop) တွင် ဤဝဘ်ဆိုက်ဖွင့်ပြီး ဖုန်းကို ချိတ်သွင်းပါက ၁၀၀% အဆင်ပြေပါသည်။</p>
+        `,
+        en: `
+          <p><strong>1. Switch USB Mode to "File Transfer" (Most Important):</strong><br/>
+          Swipe down the notification shade on the phone. Tap "Charging this device via USB" or "No data transfer" and change it to <strong>"File Transfer" (or MTP)</strong>. (If set to "Charging only", the USB debugging authorization prompt will not appear).</p>
+
+          <p><strong>2. Revoke USB Debugging Authorizations:</strong><br/>
+          Go to phone Settings &gt; Developer Options &gt; tap <strong>"Revoke USB debugging authorizations"</strong> and confirm OK. Then unplug the USB cable and plug it back in. (This immediately solves permission hangs caused by stale cryptographic keys).</p>
+
+          <p><strong>3. Ensure USB Cable is a True Data Cable:</strong><br/>
+          Some charging cables only carry power without data lines. Ensure you are using a high-quality data-capable USB cable.</p>
+
+          <p><strong>4. Close conflicting ADB programs on your computer:</strong><br/>
+          If running on a PC/laptop, close Android Studio, Scrcpy, Vysor, 3uTools or any background <code>adb.exe</code>. In Command Prompt / Terminal, run <code>adb kill-server</code>.</p>
+
+          <p><strong>5. Xiaomi / Redmi / POCO (HyperOS / MIUI) required settings:</strong><br/>
+          • USB debugging (Turn ON)<br/>
+          • Install via USB (Turn ON - requires active SIM card &amp; Mi Account sign-in)<br/>
+          • USB debugging (Security settings) (Turn ON)<br/>
+          • Set Default USB Configuration to "File Transfer".</p>
+
+          <p><strong>6. For Phone-to-Phone (OTG) Testing:</strong><br/>
+          When connecting two phones (Host running Chrome and Target receiving APK), Type-C cables can swap roles:<br/>
+          • <strong>Attach the OTG adapter to the Host phone:</strong> Always plug the OTG adapter into the Host phone running Chrome.<br/>
+          • <strong>Enable OTG Connection on Host:</strong> On Oppo, Vivo, Realme, or OnePlus, go to Settings &gt; System &gt; turn ON <strong>"OTG Connection"</strong>.<br/>
+          • <strong>Change mode on Target phone:</strong> In Target phone's notification bar, switch USB to <strong>"PTP (Photo Transfer)"</strong> or <strong>"File Transfer (MTP)"</strong>.<br/>
+          • <strong>Ensure:</strong> "USB controlled by: Connected device" is selected on the Target phone.</p>
+
+          <p><strong>7. Reset Stale Keys:</strong><br/>
+          Click the "Reset Keys &amp; Reconnect" button above to clear browser-stored encryption keys, then retry pairing.</p>
+
+          <p><strong>💡 Quick Recommendation:</strong><br/>
+          If Phone-to-Phone OTG proves difficult, open the <strong>Home page (index.html)</strong> directly on the target phone and tap <strong>"Download APK"</strong> to install in under 30 seconds. Alternatively, connecting from a PC/Laptop works with 100% reliability.</p>
+        `
+      };
+
+      // Current active language (default: 'en', syncs with index.html via localStorage "siteLang")
+      let currentLang = localStorage.getItem("siteLang") || "en";
+      if (!TRANSLATIONS[currentLang]) currentLang = "en";
+
       // DOM Elements
+      const langBtnEn = document.getElementById("langBtnEn");
+      const langBtnMy = document.getElementById("langBtnMy");
+      const troubleshootBody = document.getElementById("troubleshootBody");
       const unsupportedWarning = document.getElementById("unsupportedWarning");
       const permissionPolicyWarning = document.getElementById("permissionPolicyWarning");
       const openInNewTabBtn = document.getElementById("openInNewTabBtn");
@@ -1339,11 +1562,83 @@
       const resetKeysBtn = document.getElementById("resetKeysBtn");
       const troubleshootAccordion = document.getElementById("troubleshootAccordion");
 
+      // Language Switcher function
+      function setLang(lang) {
+        if (!TRANSLATIONS[lang]) return;
+        currentLang = lang;
+        try {
+          localStorage.setItem("siteLang", lang);
+        } catch (e) {}
+
+        const t = TRANSLATIONS[lang];
+        document.documentElement.lang = lang;
+        if (t.pageTitle) {
+          document.title = t.pageTitle;
+        }
+
+        if (langBtnEn && langBtnMy) {
+          langBtnEn.classList.toggle("active", lang === "en");
+          langBtnMy.classList.toggle("active", lang === "my");
+        }
+
+        // Update all elements with data-i18n attribute
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (t[key] !== undefined && typeof t[key] === "string") {
+            el.textContent = t[key];
+          }
+        });
+
+        // Update troubleshooting accordion body
+        if (troubleshootBody && TROUBLESHOOT_HTML[lang]) {
+          troubleshootBody.innerHTML = TROUBLESHOOT_HTML[lang];
+        }
+
+        // Update dynamic states
+        if (step1Badge) {
+          if (!activeAdb) step1Badge.textContent = t.step1Num;
+        }
+        if (step2Badge) {
+          if (!selectedFile) step2Badge.textContent = t.step2Num;
+        }
+        if (step3Badge) {
+          if (step3Badge.textContent !== "✓") step3Badge.textContent = t.step3Num;
+        }
+
+        // Connection status pill text
+        if (statusText) {
+          if (!activeAdb) {
+            statusText.textContent = t.statusDisconnected;
+          } else {
+            statusText.textContent = `${activeDeviceModel || "Android"} ${t.statusConnectedSuffix}`;
+          }
+        }
+
+        // Connect button text
+        if (connectBtnText && !isBusy) {
+          connectBtnText.textContent = activeAdb ? t.reconnectBtnText : t.connectBtnText;
+        }
+
+        updateInstallButtonState();
+      }
+
+      // Attach language button listeners
+      if (langBtnEn) langBtnEn.addEventListener("click", () => setLang("en"));
+      if (langBtnMy) langBtnMy.addEventListener("click", () => setLang("my"));
+
+      // Synchronize language across tabs / windows in real-time
+      window.addEventListener("storage", (e) => {
+        if (e.key === "siteLang" && e.newValue && e.newValue !== currentLang) {
+          setLang(e.newValue);
+        }
+      });
+
       // Reset Keys button listener to clear stale keys from IndexedDB
       if (resetKeysBtn) {
         resetKeysBtn.addEventListener("click", async () => {
           try {
-            appendLog("လုံခြုံရေး သော့ဟောင်းများ (RSA Keys) အား စတင်ရှင်းလင်းနေပါသည်...", "info");
+            const isEn = currentLang === "en";
+            appendLog(isEn ? "Clearing stale RSA cryptographic keys..." : "လုံခြုံရေး သော့ဟောင်းများ (RSA Keys) အား စတင်ရှင်းလင်းနေပါသည်...", "info");
             
             // Delete IndexedDB database "Tango"
             await new Promise((resolve) => {
@@ -1358,15 +1653,15 @@
               localStorage.removeItem("Tango");
             } catch (e) {}
 
-            appendLog("ဘရောက်ဆာ၏ သော့ဟောင်းများကို အောင်မြင်စွာ ဖျက်ပစ်ပြီးပါပြီ။", "success");
-            appendLog("⚠️ အရေးကြီး: ဖုန်း Settings > Developer Options ထဲရှိ 'Revoke USB debugging authorizations' (ခွင့်ပြုချက် ရုပ်သိမ်းရန်) ကို နှိပ်ပြီး USB ကြိုးကို ဖြုတ်၍ ပြန်ထိုးပေးပါ။", "warn");
-            appendLog("ထို့နောက် အပေါ်ရှိ 'ဖုန်းချိတ်ဆက်မည်' ခလုတ်ကို ပြန်နှိပ်ပါက ဖုန်းတွင် 'Allow USB Debugging' ပေါ်လာပါမည်။", "info");
+            appendLog(isEn ? "Browser keys cleared successfully." : "ဘရောက်ဆာ၏ သော့ဟောင်းများကို အောင်မြင်စွာ ဖျက်ပစ်ပြီးပါပြီ။", "success");
+            appendLog(isEn ? "⚠️ Important: Go to phone Settings > Developer Options > tap 'Revoke USB debugging authorizations', then reconnect USB cable." : "⚠️ အရေးကြီး: ဖုန်း Settings > Developer Options ထဲရှိ 'Revoke USB debugging authorizations' (ခွင့်ပြုချက် ရုပ်သိမ်းရန်) ကို နှိပ်ပြီး USB ကြိုးကို ဖြုတ်၍ ပြန်ထိုးပေးပါ။", "warn");
+            appendLog(isEn ? "Then tap 'Connect Device' above to trigger the 'Allow USB Debugging' popup on your phone." : "ထို့နောက် အပေါ်ရှိ 'ဖုန်းချိတ်ဆက်မည်' ခလုတ်ကို ပြန်နှိပ်ပါက ဖုန်းတွင် 'Allow USB Debugging' ပေါ်လာပါမည်။", "info");
 
             if (troubleshootAccordion) {
               troubleshootAccordion.open = true;
             }
           } catch (err) {
-            appendLog("သော့ရှင်းလင်းရာတွင် အမှားဖြစ်ပေါ်ပါသည်: " + (err?.message || err), "error");
+            appendLog((currentLang === "en" ? "Error clearing keys: " : "သော့ရှင်းလင်းရာတွင် အမှားဖြစ်ပေါ်ပါသည်: ") + (err?.message || err), "error");
           }
         });
       }
@@ -1398,7 +1693,7 @@
 
       clearLogBtn.addEventListener("click", () => {
         logTerminal.innerHTML = "";
-        appendLog("မှတ်တမ်းကို ရှင်းလင်းပြီးပါပြီ။", "info");
+        appendLog(currentLang === "en" ? "Terminal log cleared." : "မှတ်တမ်းကို ရှင်းလင်းပြီးပါပြီ။", "info");
       });
 
       // Format bytes
@@ -1412,16 +1707,17 @@
 
       // Update Install Button state
       function updateInstallButtonState() {
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
         if (activeAdb && selectedFile && !isBusy) {
           installBtn.disabled = false;
-          step3Status.textContent = "တပ်ဆင်ရန် အသင့်ဖြစ်ပါပြီ";
+          step3Status.textContent = t.step3StatusReady;
           step3Card.classList.add("active");
         } else {
           installBtn.disabled = true;
           if (!activeAdb) {
-            step3Status.textContent = "ဖုန်းချိတ်ဆက်ရန် လိုအပ်သည်";
+            step3Status.textContent = t.step3StatusReqDevice;
           } else if (!selectedFile) {
-            step3Status.textContent = "APK ဖိုင်ရွေးရန် လိုအပ်သည်";
+            step3Status.textContent = t.step3StatusReqFile;
           }
         }
       }
@@ -1446,14 +1742,17 @@
         }
       }
 
+      // Initialize language immediately
+      setLang(currentLang);
+
       // 1. Startup Guard Check: WebUSB support & Permissions Policy
       if (!("usb" in navigator)) {
         unsupportedWarning.classList.add("show");
         connectBtn.disabled = true;
         connectBtn.style.opacity = "0.5";
         connectBtn.style.cursor = "not-allowed";
-        connectBtnText.textContent = "WebUSB အသုံးမပြုနိုင်ပါ (Chrome/Edge ဖွင့်ပါ)";
-        appendLog("သတိပေးချက်: WebUSB ကို ဤဘရောက်ဆာတွင် အသုံးမပြုနိုင်ပါ — ကျေးဇူးပြု၍ Google Chrome သို့မဟုတ် Edge တွင် ဖွင့်ပါ", "error");
+        connectBtnText.textContent = currentLang === "en" ? "WebUSB not supported (Use Chrome/Edge)" : "WebUSB အသုံးမပြုနိုင်ပါ (Chrome/Edge ဖွင့်ပါ)";
+        appendLog(currentLang === "en" ? "Notice: WebUSB is not supported in this browser — please open in Google Chrome or Edge" : "သတိပေးချက်: WebUSB ကို ဤဘရောက်ဆာတွင် အသုံးမပြုနိုင်ပါ — ကျေးဇူးပြု၍ Google Chrome သို့မဟုတ် Edge တွင် ဖွင့်ပါ", "error");
       } else {
         const isDisallowedByPolicy = (typeof document !== "undefined" && document.permissionsPolicy && typeof document.permissionsPolicy.allowsFeature === "function")
           ? !document.permissionsPolicy.allowsFeature("usb")
@@ -1462,10 +1761,10 @@
 
         if (isDisallowedByPolicy || isInIframe) {
           showPermissionPolicyNotice();
-          appendLog("သတိပေးချက်: စာမျက်နှာသည် iFrame Preview (ကန့်သတ်ဘောင်) အတွင်း ဖြစ်နေသောကြောင့် WebUSB အသုံးပြုခွင့်ကို Browser မှ ကန့်သတ်ထားနိုင်ပါသည်။ အဆင်မပြေပါက အပေါ်ရှိ 'Tab အသစ်တွင် သီးသန့်ဖွင့်မည်' ခလုတ်ကို နှိပ်ပါ", "warn");
+          appendLog(currentLang === "en" ? "Notice: Running inside preview iframe where WebUSB is restricted by browser policy. Use 'Open in Standalone New Tab' above if connection is blocked." : "သတိပေးချက်: စာမျက်နှာသည် iFrame Preview (ကန့်သတ်ဘောင်) အတွင်း ဖြစ်နေသောကြောင့် WebUSB အသုံးပြုခွင့်ကို Browser မှ ကန့်သတ်ထားနိုင်ပါသည်။ အဆင်မပြေပါက အပေါ်ရှိ 'Tab အသစ်တွင် သီးသန့်ဖွင့်မည်' ခလုတ်ကို နှိပ်ပါ", "warn");
         } else {
-          appendLog("WebUSB အသင့်ရှိပါသည် (Chrome/Edge စနစ် စစ်ဆေးပြီးပါပြီ)", "success");
-          appendLog("ဖုန်းကို USB ကြိုးဖြင့် ချိတ်ဆက်ပြီး Developer Options တွင် USB Debugging ဖွင့်ထားပေးပါ", "info");
+          appendLog(currentLang === "en" ? "WebUSB is ready (Verified Chrome/Edge browser)" : "WebUSB အသင့်ရှိပါသည် (Chrome/Edge စနစ် စစ်ဆေးပြီးပါပြီ)", "success");
+          appendLog(currentLang === "en" ? "Connect your phone via USB cable and ensure USB Debugging is enabled in Developer Options." : "ဖုန်းကို USB ကြိုးဖြင့် ချိတ်ဆက်ပြီး Developer Options တွင် USB Debugging ဖွင့်ထားပေးပါ", "info");
         }
       }
 
@@ -1473,12 +1772,13 @@
       connectBtn.addEventListener("click", async () => {
         if (isBusy) return;
 
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
         let authTimer = null;
         try {
           isBusy = true;
           connectBtn.disabled = true;
-          connectBtnText.innerHTML = '<span class="spinner"></span> ချိတ်ဆက်နေပါသည်...';
-          appendLog("စက်ပစ္စည်း ချိတ်ဆက်မှုကို စတင်နေပါသည်...", "info");
+          connectBtnText.innerHTML = `<span class="spinner"></span> ${currentLang === "en" ? "Connecting..." : "ချိတ်ဆက်နေပါသည်..."}`;
+          appendLog(currentLang === "en" ? "Initiating device connection..." : "စက်ပစ္စည်း ချိတ်ဆက်မှုကို စတင်နေပါသည်...", "info");
 
           // Pre-check permissions policy
           if (typeof document !== "undefined" && document.permissionsPolicy && typeof document.permissionsPolicy.allowsFeature === "function") {
@@ -1490,24 +1790,31 @@
           // Exact connect flow from specifications
           const device = await navigator.usb.requestDevice({ filters: [{ classCode: 0xFF, subclassCode: 0x42, protocolCode: 1 }] });
           if (!device) {
-            appendLog("ဖုန်းရွေးချယ်မှုကို ပယ်ဖျက်လိုက်ပါသည် သို့မဟုတ် ဖုန်းကို မတွေ့ရှိပါ။", "warn");
+            appendLog(currentLang === "en" ? "Device selection cancelled or device not found." : "ဖုန်းရွေးချယ်မှုကို ပယ်ဖျက်လိုက်ပါသည် သို့မဟုတ် ဖုန်းကို မတွေ့ရှိပါ။", "warn");
             return;
           }
 
-          appendLog(`USB စက်ပစ္စည်းကို ရွေးချယ်ပြီးပါပြီ (Serial: ${device.serialNumber || "Detected"})`, "info");
+          appendLog(`${currentLang === "en" ? "USB device selected" : "USB စက်ပစ္စည်းကို ရွေးချယ်ပြီးပါပြီ"} (Serial: ${device.serialNumber || "Detected"})`, "info");
 
-          appendLog("USB ဆက်သွယ်မှုကို ချိတ်ဆက်နေပါသည်...", "info");
+          appendLog(currentLang === "en" ? "Opening USB ADB connection..." : "USB ဆက်သွယ်မှုကို ချိတ်ဆက်နေပါသည်...", "info");
           const connection = await openRobustAdbConnection(device);
 
-          appendLog("ADB လုံခြုံရေး သော့ဖွင့်ခြင်း (Authentication) စတင်နေပါသည်...", "info");
-          appendLog("ဖုန်းမျက်နှာပြင်တွင် 'Allow USB Debugging' ခွင့်ပြုချက်တောင်းပါက လက်ခံ (Allow) ပေးပါ...", "warn");
+          appendLog(currentLang === "en" ? "Starting ADB authentication handshake..." : "ADB လုံခြုံရေး သော့ဖွင့်ခြင်း (Authentication) စတင်နေပါသည်...", "info");
+          appendLog(currentLang === "en" ? "If 'Allow USB Debugging' appears on your phone screen, tap Allow..." : "ဖုန်းမျက်နှာပြင်တွင် 'Allow USB Debugging' ခွင့်ပြုချက်တောင်းပါက လက်ခံ (Allow) ပေးပါ...", "warn");
 
           // Diagnostic timer: If auth takes longer than 5 seconds, prompt user with steps
           authTimer = setTimeout(() => {
-            appendLog("⚠️ ဖုန်းမျက်နှာပြင်တွင် 'Allow USB debugging' ပေါ်မလာသေးပါက စစ်ဆေးရန်:", "warn");
-            appendLog("၁။ ဖုန်း Notification bar ကို ဆွဲချပြီး USB ကို 'File Transfer (MTP)' သို့ ပြောင်းပေးပါ", "warn");
-            appendLog("၂။ ဖုန်း Settings > Developer Options > 'Revoke USB debugging authorizations' ကို နှိပ်ပြီး USB ကြိုး ဖြုတ်/ပြန်ထိုးပါ", "warn");
-            appendLog("၃။ ဖုန်းမျက်နှာပြင် (Screen) မပိတ်သွားစေရန် ဖွင့်ထားပေးပါ", "warn");
+            if (currentLang === "en") {
+              appendLog("⚠️ If 'Allow USB debugging' has not appeared on your phone:", "warn");
+              appendLog("1. Swipe down notification shade and set USB to 'File Transfer (MTP)'", "warn");
+              appendLog("2. Go to Settings > Developer Options > tap 'Revoke USB debugging authorizations', unplug and re-plug", "warn");
+              appendLog("3. Keep your phone screen awake and unlocked", "warn");
+            } else {
+              appendLog("⚠️ ဖုန်းမျက်နှာပြင်တွင် 'Allow USB debugging' ပေါ်မလာသေးပါက စစ်ဆေးရန်:", "warn");
+              appendLog("၁။ ဖုန်း Notification bar ကို ဆွဲချပြီး USB ကို 'File Transfer (MTP)' သို့ ပြောင်းပေးပါ", "warn");
+              appendLog("၂။ ဖုန်း Settings > Developer Options > 'Revoke USB debugging authorizations' ကို နှိပ်ပြီး USB ကြိုး ဖြုတ်/ပြန်ထိုးပါ", "warn");
+              appendLog("၃။ ဖုန်းမျက်နှာပြင် (Screen) မပိတ်သွားစေရန် ဖွင့်ထားပေးပါ", "warn");
+            }
             if (troubleshootAccordion) troubleshootAccordion.open = true;
           }, 5000);
 
@@ -1525,35 +1832,36 @@
           activeAdb = adb;
 
           // Fetch device properties
-          appendLog("ဖုန်း၏ အချက်အလက်များကို ရယူနေပါသည်...", "info");
+          appendLog(currentLang === "en" ? "Retrieving device details..." : "ဖုန်း၏ အချက်အလက်များကို ရယူနေပါသည်...", "info");
           const [model, brand, release, sdk] = await Promise.all([
-            adb.getProp("ro.product.model").catch(() => "မသိရပါ"),
+            adb.getProp("ro.product.model").catch(() => t.deviceUnknown),
             adb.getProp("ro.product.manufacturer").catch(() => "Android"),
             adb.getProp("ro.build.version.release").catch(() => "-"),
             adb.getProp("ro.build.version.sdk").catch(() => ""),
           ]);
 
-          infoModel.textContent = model || "Android Device";
+          activeDeviceModel = model || "Android Device";
+          infoModel.textContent = activeDeviceModel;
           infoBrand.textContent = brand || "Android";
           infoAndroid.textContent = release ? `Android ${release} (SDK ${sdk})` : `SDK ${sdk}`;
-          infoSerial.textContent = device.serialNumber || "မသိရပါ";
+          infoSerial.textContent = device.serialNumber || t.deviceUnknown;
           deviceBox.classList.add("show");
 
           // Update UI for Step 1 completion
           step1Badge.textContent = "✓";
           step1Badge.classList.add("completed");
-          step1Status.textContent = "ချိတ်ဆက်ပြီးပါပြီ";
+          step1Status.textContent = t.step1StatusConnected;
           step1Card.classList.remove("active");
           step2Card.classList.add("active");
 
           statusDot.classList.add("connected");
-          statusText.textContent = `${model || "Android"} ချိတ်ဆက်ပြီး`;
+          statusText.textContent = `${activeDeviceModel} ${t.statusConnectedSuffix}`;
 
-          connectBtnText.textContent = "ပြန်လည်ချိတ်ဆက်မည် (Reconnect)";
+          connectBtnText.textContent = t.reconnectBtnText;
           connectBtn.classList.remove("btn-primary");
           connectBtn.classList.add("btn-outline");
 
-          appendLog(`ဖုန်းချိတ်ဆက်မှု အောင်မြင်ပါသည်: ${brand} ${model} (Android ${release})`, "success");
+          appendLog(`${currentLang === "en" ? "Device connected successfully:" : "ဖုန်းချိတ်ဆက်မှု အောင်မြင်ပါသည်:"} ${brand} ${model} (Android ${release})`, "success");
           updateInstallButtonState();
         } catch (err) {
           if (authTimer) {
@@ -1565,21 +1873,18 @@
           const isPolicyError = err.name === "SecurityError" || errMsg.includes("permissions policy") || errMsg.includes("disallowed by permissions policy");
 
           if (errMsg.includes("No device selected") || err.name === "NotFoundError") {
-            appendLog("ဖုန်းရွေးချယ်မှုကို ပယ်ဖျက်လိုက်ပါသည် သို့မဟုတ် ဖုန်းကို မတွေ့ရှိပါ။", "warn");
+            appendLog(currentLang === "en" ? "Device pairing was cancelled or device was not found." : "ဖုန်းရွေးချယ်မှုကို ပယ်ဖျက်လိုက်ပါသည် သို့မဟုတ် ဖုန်းကို မတွေ့ရှိပါ။", "warn");
           } else if (isPolicyError) {
-            appendLog("❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ: Browser လုံခြုံရေးမူဝါဒ ကန့်သတ်ချက် (Permissions Policy Disallowed)", "error");
-            appendLog("စာမျက်နှာကို Preview iFrame အတွင်း ဖွင့်ထားသောကြောင့် Browser မှ WebUSB ကို ပိတ်ထားပါသည်", "warn");
-            appendLog("👉 ကျေးဇူးပြု၍ စာမျက်နှာကို Browser Tab အသစ် (တိုက်ရိုက်လင့်ခ်) တွင် ဖွင့်ပြီးမှ ချိတ်ဆက်ပေးပါ (အပေါ်ရှိ 'Tab အသစ်တွင် သီးသန့်ဖွင့်မည်' ခလုတ်ကို နှိပ်ပါ)", "warn");
+            appendLog(currentLang === "en" ? "❌ Connection failed: Browser Permissions Policy Disallowed" : "❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ: Browser လုံခြုံရေးမူဝါဒ ကန့်သတ်ချက် (Permissions Policy Disallowed)", "error");
+            appendLog(currentLang === "en" ? "The page is embedded in an iframe that blocks WebUSB access." : "စာမျက်နှာကို Preview iFrame အတွင်း ဖွင့်ထားသောကြောင့် Browser မှ WebUSB ကို ပိတ်ထားပါသည်", "warn");
+            appendLog(currentLang === "en" ? "👉 Please open the page in a standalone new tab (click 'Open in Standalone New Tab' above)" : "👉 ကျေးဇူးပြု၍ စာမျက်နှာကို Browser Tab အသစ် (တိုက်ရိုက်လင့်ခ်) တွင် ဖွင့်ပြီးမှ ချိတ်ဆက်ပေးပါ (အပေါ်ရှိ 'Tab အသစ်တွင် သီးသန့်ဖွင့်မည်' ခလုတ်ကို နှိပ်ပါ)", "warn");
             showPermissionPolicyNotice();
             if (permissionPolicyWarning) {
               permissionPolicyWarning.scrollIntoView({ behavior: "smooth", block: "center" });
             }
           } else {
-            appendLog(`ဖုန်းချိတ်ဆက်မှု မအောင်မြင်ပါ: ${errMsg}`, "error");
-            appendLog("အရေးကြီး အကြံပြုချက်: ဖုန်းမျက်နှာပြင်တွင် 'Allow USB Debugging' ပေါ်မလာပါက အောက်ပါ အချက် ၃ ချက်ကို စစ်ဆေးပါ:", "warn");
-            appendLog("• ၁။ ဖုန်း Notification bar တွင် USB ကို 'File Transfer (MTP)' သို့ ပြောင်းပါ", "warn");
-            appendLog("• ၂။ ဖုန်း Settings > Developer Options > 'Revoke USB debugging authorizations' ကို နှိပ်ပြီး ကြိုးဖြုတ်ပြန်ထိုးပါ", "warn");
-            appendLog("• ၃။ အထက်ရှိ 'သော့အသစ်ထုတ်၍ ပြန်လည်ချိတ်ဆက်မည်' ခလုတ်ကို နှိပ်ပါ", "warn");
+            appendLog(`${currentLang === "en" ? "Connection failed:" : "ဖုန်းချိတ်ဆက်မှု မအောင်မြင်ပါ:"} ${errMsg}`, "error");
+            appendLog(currentLang === "en" ? "Troubleshooting hint: Check USB mode (File Transfer/MTP), revoke authorizations in Developer Options, and try Reset Keys." : "အရေးကြီး အကြံပြုချက်: ဖုန်းမျက်နှာပြင်တွင် 'Allow USB Debugging' ပေါ်မလာပါက USB Mode ကို File Transfer ပြောင်းပြီး Revoke ပြုလုပ်ပါ", "warn");
             if (troubleshootAccordion) troubleshootAccordion.open = true;
           }
         } finally {
@@ -1590,7 +1895,7 @@
           isBusy = false;
           connectBtn.disabled = false;
           if (!activeAdb) {
-            connectBtnText.textContent = "ဖုန်းချိတ်ဆက်မည် (Connect Device)";
+            connectBtnText.textContent = t.connectBtnText;
             connectBtn.classList.add("btn-primary");
             connectBtn.classList.remove("btn-outline");
           }
@@ -1629,8 +1934,9 @@
       });
 
       function handleFile(file) {
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
         if (!file.name.toLowerCase().endsWith(".apk")) {
-          appendLog(`သတိပေးချက်: ရွေးချယ်ထားသောဖိုင် (${file.name}) သည် .apk အမျိုးအစား မဟုတ်ပါ။`, "warn");
+          appendLog(currentLang === "en" ? `Warning: Selected file (${file.name}) does not have an .apk extension.` : `သတိပေးချက်: ရွေးချယ်ထားသောဖိုင် (${file.name}) သည် .apk အမျိုးအစား မဟုတ်ပါ။`, "warn");
         }
 
         selectedFile = file;
@@ -1641,9 +1947,9 @@
 
         step2Badge.textContent = "✓";
         step2Badge.classList.add("completed");
-        step2Status.textContent = "ရွေးချယ်ပြီးပါပြီ";
+        step2Status.textContent = t.step2StatusSelected;
 
-        appendLog(`APK ဖိုင် ရွေးချယ်ပြီးပါပြီ: ${file.name} (${formatBytes(file.size)})`, "success");
+        appendLog(`${currentLang === "en" ? "APK file selected:" : "APK ဖိုင် ရွေးချယ်ပြီးပါပြီ:"} ${file.name} (${formatBytes(file.size)})`, "success");
         updateInstallButtonState();
       }
 
@@ -1668,8 +1974,8 @@
         if (isBusy) return;
         try {
           autoFetchPresetBtn.disabled = true;
-          autoFetchPresetBtn.innerHTML = '<span class="spinner"></span> APK ဒေါင်းလုဒ်ရယူနေပါသည်...';
-          appendLog(`အွန်လိုင်းမှ APK ကို ရယူနေပါသည်: ${paramName}...`, "info");
+          autoFetchPresetBtn.innerHTML = `<span class="spinner"></span> ${currentLang === "en" ? "Downloading APK..." : "APK ဒေါင်းလုဒ်ရယူနေပါသည်..."}`;
+          appendLog(currentLang === "en" ? `Fetching APK online: ${paramName}...` : `အွန်လိုင်းမှ APK ကို ရယူနေပါသည်: ${paramName}...`, "info");
 
           const response = await fetch(paramUrl);
           if (!response.ok) throw new Error(`HTTP error ${response.status}`);
@@ -1678,15 +1984,16 @@
           const file = new File([blob], fileName, { type: "application/vnd.android.package-archive" });
           
           handleFile(file);
-          appendLog(`APK အား အောင်မြင်စွာ ရယူပြီးပါပြီ (${formatBytes(file.size)})`, "success");
+          appendLog(currentLang === "en" ? `APK fetched successfully (${formatBytes(file.size)})` : `APK အား အောင်မြင်စွာ ရယူပြီးပါပြီ (${formatBytes(file.size)})`, "success");
         } catch (fetchErr) {
           console.warn("Direct fetch error:", fetchErr);
-          appendLog("သတိပေးချက်: အင်တာနက်မှ တိုက်ရိုက်ဆွဲယူ၍ မရနိုင်ပါ (CORS ကန့်သတ်ချက်ကြောင့် ဖြစ်နိုင်သည်)။", "warn");
-          appendLog("ကျေးဇူးပြု၍ အပေါ်ရှိ 'ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်' ခလုတ်ဖြင့် ဒေါင်းလုဒ်လုပ်ပြီး အောက်ပါ ဖိုင်ရွေးချယ်မှုတွင် ရွေးပေးပါ။", "info");
+          appendLog(currentLang === "en" ? "Notice: Could not fetch APK directly (likely CORS policy). Please use direct download above and select file below." : "သတိပေးချက်: အင်တာနက်မှ တိုက်ရိုက်ဆွဲယူ၍ မရနိုင်ပါ (CORS ကန့်သတ်ချက်ကြောင့် ဖြစ်နိုင်သည်)။", "warn");
+          appendLog(currentLang === "en" ? "Please click 'Direct Download' and choose the downloaded file." : "ကျေးဇူးပြု၍ အပေါ်ရှိ 'ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်' ခလုတ်ဖြင့် ဒေါင်းလုဒ်လုပ်ပြီး အောက်ပါ ဖိုင်ရွေးချယ်မှုတွင် ရွေးပေးပါ။", "info");
           directDownloadPresetLink.click();
         } finally {
+          const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
           autoFetchPresetBtn.disabled = false;
-          autoFetchPresetBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.85"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်';
+          autoFetchPresetBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.85"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> <span id="autoFetchPresetBtnText">${t.presetAutoFetchBtn}</span>`;
         }
       });
 
@@ -1694,18 +2001,19 @@
       installBtn.addEventListener("click", async () => {
         if (!activeAdb || !selectedFile || isBusy) return;
 
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
         try {
           isBusy = true;
           installBtn.disabled = true;
           connectBtn.disabled = true;
           apkFileInput.disabled = true;
           changeFileBtn.disabled = true;
-          step3Badge.textContent = "၃";
+          step3Badge.textContent = t.step3Num;
           step3Badge.classList.remove("completed");
 
-          installBtnText.innerHTML = '<span class="spinner"></span> ဖုန်းထဲသို့ သွင်းနေပါသည်...';
-          setProgress(0, "ဖိုင်စတင် ပို့ဆောင်နေပါသည်...");
-          appendLog(`တပ်ဆင်ခြင်း စတင်ပါပြီ: ${selectedFile.name}...`, "info");
+          installBtnText.innerHTML = `<span class="spinner"></span> ${currentLang === "en" ? "Installing to device..." : "ဖုန်းထဲသို့ သွင်းနေပါသည်..."}`;
+          setProgress(0, currentLang === "en" ? "Initiating file transfer..." : "ဖိုင်စတင် ပို့ဆောင်နေပါသည်...");
+          appendLog(`${currentLang === "en" ? "Installation started:" : "တပ်ဆင်ခြင်း စတင်ပါပြီ:"} ${selectedFile.name}...`, "info");
 
           const adb = activeAdb;
           const file = selectedFile;
@@ -1723,13 +2031,16 @@
             transform(chunk, c) {
               uploadedBytes += chunk.byteLength;
               const pct = totalBytes > 0 ? (uploadedBytes / totalBytes) * 100 : 0;
-              setProgress(pct, `ဖုန်းထဲသို့ ပေးပို့နေသည်... ${Math.round(pct)}% (${formatBytes(uploadedBytes)} / ${formatBytes(totalBytes)})`);
+              const statusMsg = currentLang === "en"
+                ? `Streaming to device... ${Math.round(pct)}% (${formatBytes(uploadedBytes)} / ${formatBytes(totalBytes)})`
+                : `ဖုန်းထဲသို့ ပေးပို့နေသည်... ${Math.round(pct)}% (${formatBytes(uploadedBytes)} / ${formatBytes(totalBytes)})`;
+              setProgress(pct, statusMsg);
               c.enqueue(chunk);
             }
           }));
 
-          appendLog("APK ဒေတာများကို ဖုန်းထဲသို့ Streaming စနစ်ဖြင့် စတင်ပို့ဆောင်နေပါသည်...", "info");
-          appendLog("💡 ဖုန်းမျက်နှာပြင်တွင် 'Install via USB' ခွင့်ပြုချက်မေးခွန်း ပေါ်လာပါက 'Install' ကို နှိပ်ပေးပါ", "warn");
+          appendLog(currentLang === "en" ? "Streaming APK packet payload to Android device..." : "APK ဒေတာများကို ဖုန်းထဲသို့ Streaming စနစ်ဖြင့် စတင်ပို့ဆောင်နေပါသည်...", "info");
+          appendLog(currentLang === "en" ? "💡 If 'Install via USB' appears on phone screen, tap Install" : "💡 ဖုန်းမျက်နှာပြင်တွင် 'Install via USB' ခွင့်ပြုချက်မေးခွန်း ပေါ်လာပါက 'Install' ကို နှိပ်ပေးပါ", "warn");
           
           let result;
           if (typeof pm.installStream === "function") {
@@ -1738,29 +2049,29 @@
             result = await pm.pushAndInstallStream(countedStream, { replaceExisting: true });
           }
 
-          setProgress(100, "တပ်ဆင်မှု ပြီးဆုံးပါပြီ!");
-          appendLog(`တပ်ဆင်မှု ရလဒ်: ${result || "Success"}`, "success");
-          appendLog(`ဂုဏ်ယူပါသည်! "${selectedFile.name}" အား ဖုန်းထဲတွင် အောင်မြင်စွာ တပ်ဆင်ပြီးပါပြီ။`, "success");
+          setProgress(100, currentLang === "en" ? "Installation complete!" : "တပ်ဆင်မှု ပြီးဆုံးပါပြီ!");
+          appendLog(`${currentLang === "en" ? "Install Result:" : "တပ်ဆင်မှု ရလဒ်:"} ${result || "Success"}`, "success");
+          appendLog(currentLang === "en" ? `Congratulations! "${selectedFile.name}" has been installed successfully.` : `ဂုဏ်ယူပါသည်! "${selectedFile.name}" အား ဖုန်းထဲတွင် အောင်မြင်စွာ တပ်ဆင်ပြီးပါပြီ။`, "success");
 
           step3Badge.textContent = "✓";
           step3Badge.classList.add("completed");
-          step3Status.textContent = "အောင်မြင်စွာ တပ်ဆင်ပြီးပါပြီ";
-          installBtnText.textContent = "အောင်မြင်စွာ တပ်ဆင်ပြီးပါပြီ (Success)";
+          step3Status.textContent = t.step3StatusSuccess;
+          installBtnText.textContent = t.installBtnSuccess;
         } catch (err) {
           console.error("Install error:", err);
           const errMsg = err?.message || String(err);
-          setProgress(0, "တပ်ဆင်ခြင်း မအောင်မြင်ပါ");
-          appendLog(`တပ်ဆင်ခြင်း မအောင်မြင်ပါ: ${errMsg}`, "error");
+          setProgress(0, currentLang === "en" ? "Installation failed" : "တပ်ဆင်ခြင်း မအောင်မြင်ပါ");
+          appendLog(`${currentLang === "en" ? "Installation failed:" : "တပ်ဆင်ခြင်း မအောင်မြင်ပါ:"} ${errMsg}`, "error");
 
           // Helpful hints for common issues (Xiaomi / User Restricted)
           if (errMsg.includes("INSTALL_FAILED_USER_RESTRICTED") || errMsg.includes("INSTALL_FAILED") || errMsg.includes("Permission denied")) {
-            appendLog("အရေးကြီး အကြံပြုချက်: Xiaomi / Redmi / HyperOS ဖုန်းများတွင် Developer Options သို့သွား၍ 'Install via USB' ကို ဖွင့်ထားရန် လိုအပ်ပါသည်။", "warn");
-            appendLog("ထို့အပြင် ဖုန်းမျက်နှာပြင်တွင် 'Allow installation from USB' ပေါ်လာပါက လက်ခံပေးပါ။", "warn");
+            appendLog(currentLang === "en" ? "Important: On Xiaomi / Redmi / HyperOS devices, enable 'Install via USB' in Developer Options." : "အရေးကြီး အကြံပြုချက်: Xiaomi / Redmi / HyperOS ဖုန်းများတွင် Developer Options သို့သွား၍ 'Install via USB' ကို ဖွင့်ထားရန် လိုအပ်ပါသည်။", "warn");
+            appendLog(currentLang === "en" ? "Also accept 'Allow installation from USB' if prompted on phone screen." : "ထို့အပြင် ဖုန်းမျက်နှာပြင်တွင် 'Allow installation from USB' ပေါ်လာပါက လက်ခံပေးပါ။", "warn");
           } else {
-            appendLog("အကြံပြုချက်: ဖုန်းမှတ်ဉာဏ် (Storage) ပြည့်မပြည့် စစ်ဆေးပြီး Developer Options တွင် 'Install via USB' ခွင့်ပြုထားခြင်း ရှိမရှိ စစ်ဆေးပါ။", "warn");
+            appendLog(currentLang === "en" ? "Tip: Check if phone storage is full and ensure 'Install via USB' is allowed in Developer Options." : "အကြံပြုချက်: ဖုန်းမှတ်ဉာဏ် (Storage) ပြည့်မပြည့် စစ်ဆေးပြီး Developer Options တွင် 'Install via USB' ခွင့်ပြုထားခြင်း ရှိမရှိ စစ်ဆေးပါ။", "warn");
           }
-          step3Status.textContent = "မအောင်မြင်ပါ";
-          installBtnText.textContent = "ပြန်လည်ကြိုးစားမည် (Try Again)";
+          step3Status.textContent = t.step3StatusFailed;
+          installBtnText.textContent = t.installBtnRetry;
         } finally {
           isBusy = false;
           connectBtn.disabled = false;

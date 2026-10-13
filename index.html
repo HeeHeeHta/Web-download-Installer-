@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="my">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -355,10 +355,32 @@
 
       .app-top {
         display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 6px;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 12px;
+      }
+
+      .app-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(44, 186, 248, 0.22) 0%, rgba(59, 130, 246, 0.28) 50%, rgba(99, 102, 241, 0.25) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        flex-shrink: 0;
+      }
+
+      .app-icon svg {
+        opacity: 0.95;
+      }
+
+      .app-header-info {
+        flex: 1;
+        min-width: 0;
       }
 
       .app-title-group {
@@ -366,12 +388,14 @@
         align-items: center;
         flex-wrap: wrap;
         gap: 8px;
+        margin-bottom: 2px;
       }
 
       .app-name {
         font-size: 17.5px;
         font-weight: 700;
-        color: #FFFFFF;
+        color: #2cbaf8;
+        font-family: "Times New Roman", Times, serif;
         letter-spacing: -0.01em;
       }
 
@@ -392,8 +416,8 @@
         color: var(--text-muted);
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         gap: 8px;
-        margin-bottom: 12px;
       }
 
       .app-meta .dot {
@@ -499,17 +523,49 @@
         font-size: 12.5px;
       }
 
-      .footer a {
-        color: rgba(255, 255, 255, 0.85);
-        text-decoration: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        padding-bottom: 1px;
-        transition: all 0.2s ease;
+      /* Top Bar & Language Switcher */
+      .top-nav {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 8px;
       }
 
-      .footer a:hover {
+      .lang-switcher {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 16px rgba(0, 0, 0, 0.25);
+        border-radius: 9999px;
+        padding: 3px;
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        gap: 2px;
+      }
+
+      .lang-btn {
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 9999px;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        font-family: inherit;
+        line-height: 1.2;
+      }
+
+      .lang-btn:hover {
         color: #FFFFFF;
-        border-color: rgba(255, 255, 255, 0.6);
+      }
+
+      .lang-btn.active {
+        background: rgba(255, 255, 255, 0.18);
+        color: #FFFFFF;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 8px rgba(0, 0, 0, 0.25);
       }
     </style>
   </head>
@@ -522,6 +578,14 @@
     </div>
 
     <div class="container">
+      <!-- Top Navigation with Language Switcher -->
+      <div class="top-nav">
+        <div class="lang-switcher" role="group" aria-label="Language Switcher">
+          <button type="button" class="lang-btn active" id="langBtnEn" onclick="setLang('en')">EN</button>
+          <button type="button" class="lang-btn" id="langBtnMy" onclick="setLang('my')">မြန်မာ</button>
+        </div>
+      </div>
+
       <!-- Header -->
       <header class="header">
         <div class="badge-brand">
@@ -529,14 +593,14 @@
             <rect x="5" y="2" width="14" height="20" rx="3"/>
             <path d="M12 18h.01"/>
           </svg>
-          Android အက်ပ် စင်တာ
+          <span data-i18n="badgeBrand">Android အက်ပ် စင်တာ</span>
         </div>
-        <h1>အက်ပ် ဒေါင်းလုဒ် စင်တာ</h1>
-        <p>Android စမတ်ဖုန်းများအတွက် စိတ်ချရသော APK များကို တိုက်ရိုက်ဒေါင်းလုဒ်ရယူပါ သို့မဟုတ် Web ADB ဖြင့် ဖုန်းထဲသို့ တိုက်ရိုက်သွင်းယူပါ။</p>
+        <h1 data-i18n="headerTitle">အက်ပ် ဒေါင်းလုဒ် စင်တာ</h1>
+        <p data-i18n="headerSubtitle">Android စမတ်ဖုန်းများအတွက် စိတ်ချရသော APK များကို တိုက်ရိုက်ဒေါင်းလုဒ်ရယူပါ သို့မဟုတ် Web ADB ဖြင့် ဖုန်းထဲသို့ တိုက်ရိုက်သွင်းယူပါ။</p>
       </header>
 
-      <!-- Web ADB Banner Callout -->
-      <section class="banner-card" aria-label="Web ADB တပ်ဆင်ရေး အထူးစနစ်">
+      <!-- Web ADB Banner Callout (informational banner, button removed per requirement) -->
+      <section class="banner-card" aria-label="Web ADB Direct Install System">
         <div class="banner-header">
           <div class="banner-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -545,16 +609,10 @@
             </svg>
           </div>
           <div>
-            <div class="banner-title">Web ADB တိုက်ရိုက်တပ်ဆင်ရေး စနစ်</div>
-            <div class="banner-desc">ဖုန်းထဲသို့ ဖိုင်ကူးစရာမလိုဘဲ ကွန်ပျူတာ Chrome မှတစ်ဆင့် USB ဖြင့် APK တိုက်ရိုက်သွင်းနိုင်ပါသည်။</div>
+            <div class="banner-title" data-i18n="bannerTitle">Web ADB တိုက်ရိုက်တပ်ဆင်ရေး စနစ်</div>
+            <div class="banner-desc" data-i18n="bannerDesc">ဖုန်းထဲသို့ ဖိုင်ကူးစရာမလိုဘဲ Chrome မှတစ်ဆင့် USB ဖြင့် APK တိုက်ရိုက်သွင်းနိုင်ပါသည်။</div>
           </div>
         </div>
-        <a href="installer.html" target="_blank" rel="noopener noreferrer" class="btn banner-btn">
-          Web ADB တပ်ဆင်ရေး စာမျက်နှာသို့ သွားမည်
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"/>
-          </svg>
-        </a>
       </section>
 
       <!-- App Download Section -->
@@ -566,7 +624,7 @@
               <polyline points="7 10 12 15 17 10"/>
               <line x1="12" y1="15" x2="12" y2="3"/>
             </svg>
-            ရရှိနိုင်သော အက်ပ်များ
+            <span data-i18n="sectionAppsTitle">ရရှိနိုင်သော အက်ပ်များ</span>
           </h2>
           <span class="section-subtitle" id="appsCountLabel">အက်ပ် ၁ ခု</span>
         </div>
@@ -585,48 +643,48 @@
                 <line x1="12" y1="16" x2="12" y2="12"/>
                 <line x1="12" y1="8" x2="12.01" y2="8"/>
               </svg>
-              ဖုန်းထဲတွင် APK တပ်ဆင်နည်း လမ်းညွှန်
+              <span data-i18n="guideTitle">ဖုန်းထဲတွင် APK တပ်ဆင်နည်း လမ်းညွှန်</span>
             </h2>
           </div>
 
           <div class="guide-card">
             <div class="guide-steps">
               <div class="guide-step">
-                <div class="step-num">၁</div>
+                <div class="step-num" data-i18n="step1Num">၁</div>
                 <div class="step-content">
-                  <h3>APK ဖိုင်ကို ဒေါင်းလုဒ်လုပ်ပါ</h3>
-                  <p>အထက်ပါ စာရင်းမှ မိမိလိုချင်သော အက်ပ်၏ Download APK ခလုတ်ကို နှိပ်၍ ဒေါင်းလုဒ်စတင်ပါ။</p>
+                  <h3 data-i18n="step1Title">APK ဖိုင်ကို ဒေါင်းလုဒ်လုပ်ပါ</h3>
+                  <p data-i18n="step1Desc">အထက်ပါ စာရင်းမှ မိမိလိုချင်သော အက်ပ်၏ Download APK ခလုတ်ကို နှိပ်၍ ဒေါင်းလုဒ်စတင်ပါ။</p>
                 </div>
               </div>
 
               <div class="guide-step">
-                <div class="step-num">၂</div>
+                <div class="step-num" data-i18n="step2Num">၂</div>
                 <div class="step-content">
-                  <h3>ဒေါင်းလုဒ်ရယူထားသော ဖိုင်ကို ဖွင့်ပါ</h3>
-                  <p>ဒေါင်းလုဒ်ပြီးဆုံးပါက အသိပေးချက် (Notification) ဘားမှဖြစ်စေ၊ ဖုန်း၏ Downloads ဖိုဒါထဲမှဖြစ်စေ APK ဖိုင်ကို နှိပ်၍ဖွင့်ပါ။</p>
+                  <h3 data-i18n="step2Title">ဒေါင်းလုဒ်ရယူထားသော ဖိုင်ကို ဖွင့်ပါ</h3>
+                  <p data-i18n="step2Desc">ဒေါင်းလုဒ်ပြီးဆုံးပါက အသိပေးချက် (Notification) ဘားမှဖြစ်စေ၊ ဖုန်း၏ Downloads ဖိုဒါထဲမှဖြစ်စေ APK ဖိုင်ကို နှိပ်၍ဖွင့်ပါ။</p>
                 </div>
               </div>
 
               <div class="guide-step">
-                <div class="step-num">၃</div>
+                <div class="step-num" data-i18n="step3Num">၃</div>
                 <div class="step-content">
-                  <h3>အမည်မသိ ရင်းမြစ်များ ခွင့်ပြုပါ (Allow Unknown Sources)</h3>
-                  <p>လုံခြုံရေးသတိပေးချက် ပေါ်လာပါက Settings သို့သွားပြီး "Allow from this source" (သို့မဟုတ်) "ဤရင်းမြစ်မှ သွင်းယူခွင့်ပြုရန်" ကို ဖွင့်ပေးပါ။</p>
+                  <h3 data-i18n="step3Title">အမည်မသိ ရင်းမြစ်များ ခွင့်ပြုပါ (Allow Unknown Sources)</h3>
+                  <p data-i18n="step3Desc">လုံခြုံရေးသတိပေးချက် ပေါ်လာပါက Settings သို့သွားပြီး "Allow from this source" (သို့မဟုတ်) "ဤရင်းမြစ်မှ သွင်းယူခွင့်ပြုရန်" ကို ဖွင့်ပေးပါ။</p>
                 </div>
               </div>
 
               <div class="guide-step">
-                <div class="step-num">၄</div>
+                <div class="step-num" data-i18n="step4Num">၄</div>
                 <div class="step-content">
-                  <h3>Install ကို နှိပ်၍ အပြီးသတ်ပါ</h3>
-                  <p>ပေါ်လာသော အတည်ပြုချက် မျက်နှာပြင်တွင် "Install" (တပ်ဆင်မည်) ကို နှိပ်ပြီး ခေတ္တစောင့်ဆိုင်းပါက အောင်မြင်စွာ အသုံးပြုနိုင်ပါပြီ။</p>
+                  <h3 data-i18n="step4Title">Install ကို နှိပ်၍ အပြီးသတ်ပါ</h3>
+                  <p data-i18n="step4Desc">ပေါ်လာသော အတည်ပြုချက် မျက်နှာပြင်တွင် "Install" (တပ်ဆင်မည်) ကို နှိပ်ပြီး ခေတ္တစောင့်ဆိုင်းပါက အောင်မြင်စွာ အသုံးပြုနိုင်ပါပြီ။</p>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- Web ADB Installer Link Card -->
+        <!-- Web ADB Installer Link Card (Single preserved installer link on page) -->
         <section style="margin-top: 24px;">
           <div class="guide-card" style="padding: 20px;">
             <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
@@ -639,12 +697,12 @@
                 </svg>
               </div>
               <div>
-                <h3 style="font-size: 15px; font-weight: 700; color: #FFFFFF;">USB ကြိုးဖြင့် တိုက်ရိုက်သွင်းလိုပါသလား?</h3>
-                <p style="font-size: 13px; color: var(--text-secondary);">Web ADB စနစ်ဖြင့် ဖုန်းထဲသို့ APK တိုက်ရိုက် ထည့်သွင်းနိုင်ပါသည်</p>
+                <h3 style="font-size: 15px; font-weight: 700; color: #FFFFFF;" data-i18n="usbSectionTitle">USB ကြိုးဖြင့် တိုက်ရိုက်သွင်းလိုပါသလား?</h3>
+                <p style="font-size: 13px; color: var(--text-secondary);" data-i18n="usbSectionDesc">Web ADB စနစ်ဖြင့် ဖုန်းထဲသို့ APK တိုက်ရိုက် ထည့်သွင်းနိုင်ပါသည်</p>
               </div>
             </div>
             <a href="installer.html" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="width: 100%;">
-              Web ADB တပ်ဆင်ရေး စာမျက်နှာ ဖွင့်မည်
+              <span data-i18n="openInstallerBtn">Web ADB တပ်ဆင်ရေး စာမျက်နှာ ဖွင့်မည်</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="9 18 15 12 9 6"/>
               </svg>
@@ -653,21 +711,18 @@
         </section>
       </main>
 
-      <!-- Footer -->
+      <!-- Footer (Footer installer link removed per requirement) -->
       <footer class="footer">
-        <p>© 2026 မြန်မာ အက်ပ် ဒေါင်းလုဒ် စင်တာ • လုံခြုံစိတ်ချရသော APK များကိုသာ တင်ဆက်ထားပါသည်</p>
-        <p style="margin-top: 6px;">
-          <a href="installer.html" target="_blank" rel="noopener noreferrer">Web ADB Installer သို့ သွားရန်</a>
-        </p>
+        <p data-i18n="footerText">© 2026 မြန်မာ အက်ပ် ဒေါင်းလုဒ် စင်တာ • လုံခြုံစိတ်ချရသော APK များကိုသာ တင်ဆက်ထားပါသည်</p>
       </footer>
     </div>
 
-    <!-- Script rendering apps list -->
+    <!-- Script rendering apps list and i18n -->
     <script>
       /* ==========================================================================
          APPS CONFIGURATION LIST
          အက်ပ်ပိုင်ရှင်အနေဖြင့် အောက်ပါ APPS စာရင်းတွင် မိမိအက်ပ်များကို လွတ်လပ်စွာ ထည့်သွင်း/ပြင်ဆင်နိုင်ပါသည်
-         Fields: name, version, size, updated, desc, apkUrl
+         Fields: name, version, size, updated, desc, descEn, apkUrl
          ========================================================================== */
       const APPS = [
         {
@@ -676,9 +731,117 @@
           size: "65.7 MB",
           updated: "2026-10-12",
           desc: "ဖုန်းဆိုင်များအတွက် CEIR IMEI စစ်၊ အခွန်ဆောင် app",
+          descEn: "CEIR IMEI verification and tax clearance tool for mobile phone shops",
           apkUrl: "https://github.com/HeeHeeHta/Web-download-Installer-/releases/download/v2.0.1/CEIR_Status_Hub.apk"
         }
       ];
+
+      /* ==========================================================================
+         TRANSLATIONS DICTIONARY
+         ========================================================================== */
+      const TRANSLATIONS = {
+        my: {
+          pageTitle: "အက်ပ် ဒေါင်းလုဒ် စင်တာ | Burmese App Download Center",
+          badgeBrand: "Android အက်ပ် စင်တာ",
+          headerTitle: "အက်ပ် ဒေါင်းလုဒ် စင်တာ",
+          headerSubtitle: "Android စမတ်ဖုန်းများအတွက် စိတ်ချရသော APK များကို တိုက်ရိုက်ဒေါင်းလုဒ်ရယူပါ သို့မဟုတ် Web ADB ဖြင့် ဖုန်းထဲသို့ တိုက်ရိုက်သွင်းယူပါ။",
+          bannerTitle: "Web ADB တိုက်ရိုက်တပ်ဆင်ရေး စနစ်",
+          bannerDesc: "ဖုန်းထဲသို့ ဖိုင်ကူးစရာမလိုဘဲ  Chrome မှတစ်ဆင့် USB ဖြင့် APK တိုက်ရိုက်သွင်းနိုင်ပါသည်။",
+          sectionAppsTitle: "ရရှိနိုင်သော အက်ပ်များ",
+          appsCount: (n) => `အက်ပ် ${n} ခု`,
+          updatedPrefix: "မွမ်းမံရက်: ",
+          downloadBtn: "Download APK",
+          webAdbBtn: "Web ADB ဖြင့် သွင်းမည်",
+          guideTitle: "ဖုန်းထဲတွင် APK တပ်ဆင်နည်း လမ်းညွှန်",
+          step1Num: "၁",
+          step1Title: "APK ဖိုင်ကို ဒေါင်းလုဒ်လုပ်ပါ",
+          step1Desc: "အထက်ပါ စာရင်းမှ မိမိလိုချင်သော အက်ပ်၏ Download APK ခလုတ်ကို နှိပ်၍ ဒေါင်းလုဒ်စတင်ပါ။",
+          step2Num: "၂",
+          step2Title: "ဒေါင်းလုဒ်ရယူထားသော ဖိုင်ကို ဖွင့်ပါ",
+          step2Desc: "ဒေါင်းလုဒ်ပြီးဆုံးပါက အသိပေးချက် (Notification) ဘားမှဖြစ်စေ၊ ဖုန်း၏ Downloads ဖိုဒါထဲမှဖြစ်စေ APK ဖိုင်ကို နှိပ်၍ဖွင့်ပါ။",
+          step3Num: "၃",
+          step3Title: "အမည်မသိ ရင်းမြစ်များ ခွင့်ပြုပါ (Allow Unknown Sources)",
+          step3Desc: 'လုံခြုံရေးသတိပေးချက် ပေါ်လာပါက Settings သို့သွားပြီး "Allow from this source" (သို့မဟုတ်) "ဤရင်းမြစ်မှ သွင်းယူခွင့်ပြုရန်" ကို ဖွင့်ပေးပါ။',
+          step4Num: "၄",
+          step4Title: "Install ကို နှိပ်၍ အပြီးသတ်ပါ",
+          step4Desc: 'ပေါ်လာသော အတည်ပြုချက် မျက်နှာပြင်တွင် "Install" (တပ်ဆင်မည်) ကို နှိပ်ပြီး ခေတ္တစောင့်ဆိုင်းပါက အောင်မြင်စွာ အသုံးပြုနိုင်ပါပြီ။',
+          usbSectionTitle: "USB ကြိုးဖြင့် တိုက်ရိုက်သွင်းလိုပါသလား?",
+          usbSectionDesc: "Web ADB စနစ်ဖြင့် ဖုန်းထဲသို့ APK တိုက်ရိုက် ထည့်သွင်းနိုင်ပါသည်",
+          openInstallerBtn: "Web ADB တပ်ဆင်ရေး စာမျက်နှာ ဖွင့်မည်",
+          footerText: "© 2026 မြန်မာ အက်ပ် ဒေါင်းလုဒ် စင်တာ • လုံခြုံစိတ်ချရသော APK များကိုသာ တင်ဆက်ထားပါသည်"
+        },
+        en: {
+          pageTitle: "App Download Center | Burmese App Download Center",
+          badgeBrand: "Android App Center",
+          headerTitle: "App Download Center",
+          headerSubtitle: "Directly download verified Android APKs or install directly onto your device via Web ADB.",
+          bannerTitle: "Web ADB Direct Installer",
+          bannerDesc: "Install APKs directly onto Android devices over USB via Chrome without manual file transfer.",
+          sectionAppsTitle: "Available Applications",
+          appsCount: (n) => `${n} Application${n === 1 ? '' : 's'}`,
+          updatedPrefix: "Updated: ",
+          downloadBtn: "Download APK",
+          webAdbBtn: "Install via Web ADB",
+          guideTitle: "How to Install APK on Android",
+          step1Num: "1",
+          step1Title: "Download the APK file",
+          step1Desc: "Select your desired app from above and click the Download APK button to start downloading.",
+          step2Num: "2",
+          step2Title: "Open the downloaded file",
+          step2Desc: "Once download completes, tap the APK in the notification drawer or your phone's Downloads folder.",
+          step3Num: "3",
+          step3Title: "Allow Unknown Sources",
+          step3Desc: 'If prompted by Android security, open Settings and enable "Allow from this source".',
+          step4Num: "4",
+          step4Title: "Tap Install to complete",
+          step4Desc: 'In the confirmation prompt, tap "Install" and wait a few moments for the installation to finish.',
+          usbSectionTitle: "Want to install directly via USB cable?",
+          usbSectionDesc: "Install APK directly to your phone using our browser-based Web ADB system",
+          openInstallerBtn: "Open Web ADB Installer",
+          footerText: "© 2026 Myanmar App Download Center • Only safe and verified APK packages provided"
+        }
+      };
+
+      // Current active language (default: 'en')
+      let currentLang = localStorage.getItem("siteLang") || "en";
+      if (!TRANSLATIONS[currentLang]) currentLang = "en";
+
+      // Set and persist language
+      function setLang(lang) {
+        if (!TRANSLATIONS[lang]) return;
+        currentLang = lang;
+        try {
+          localStorage.setItem("siteLang", lang);
+        } catch (e) {
+          // localStorage disabled/quota exceeded
+        }
+
+        // Update document lang & title
+        document.documentElement.lang = lang;
+        if (TRANSLATIONS[lang].pageTitle) {
+          document.title = TRANSLATIONS[lang].pageTitle;
+        }
+
+        // Update toggle button states
+        const btnEn = document.getElementById("langBtnEn");
+        const btnMy = document.getElementById("langBtnMy");
+        if (btnEn && btnMy) {
+          btnEn.classList.toggle("active", lang === "en");
+          btnMy.classList.toggle("active", lang === "my");
+        }
+
+        // Update all data-i18n elements
+        const t = TRANSLATIONS[lang];
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (t[key] !== undefined && typeof t[key] === "string") {
+            el.textContent = t[key];
+          }
+        });
+
+        // Re-render apps cards with updated language
+        renderApps();
+      }
 
       // Render cards
       function renderApps() {
@@ -686,8 +849,10 @@
         const countLabel = document.getElementById("appsCountLabel");
         if (!container) return;
 
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+
         if (countLabel) {
-          countLabel.textContent = `အက်ပ် ${APPS.length} ခု`;
+          countLabel.textContent = typeof t.appsCount === "function" ? t.appsCount(APPS.length) : `${APPS.length} apps`;
         }
 
         container.innerHTML = APPS.map((app, index) => {
@@ -699,37 +864,48 @@
           const safeVer = escapeHtml(app.version);
           const safeSize = escapeHtml(app.size);
           const safeDate = escapeHtml(app.updated);
-          const safeDesc = escapeHtml(app.desc);
+          // Pick description based on current language
+          const rawDesc = (currentLang === "en" && app.descEn) ? app.descEn : (app.desc || "");
+          const safeDesc = escapeHtml(rawDesc);
           const safeUrl = escapeHtml(app.apkUrl);
 
           return `
             <article class="app-card" data-index="${index}">
               <div class="app-top">
-                <div class="app-title-group">
-                  <h3 class="app-name">${safeName}</h3>
-                  <span class="version-badge">${safeVer}</span>
+                <div class="app-icon" aria-hidden="true">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="5" y="2" width="14" height="20" rx="3"/>
+                    <path d="M12 18h.01"/>
+                    <path d="m9 9 3 3 3-3"/>
+                    <path d="M12 6v6"/>
+                  </svg>
                 </div>
-              </div>
-
-              <div class="app-meta">
-                <span class="app-meta-tag">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                    <line x1="12" y1="22.08" x2="12" y2="12"/>
-                  </svg>
-                  ${safeSize}
-                </span>
-                <span class="dot">•</span>
-                <span class="app-meta-tag">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
-                  မွမ်းမံရက်: ${safeDate}
-                </span>
+                <div class="app-header-info">
+                  <div class="app-title-group">
+                    <h3 class="app-name">${safeName}</h3>
+                    <span class="version-badge">${safeVer}</span>
+                  </div>
+                  <div class="app-meta">
+                    <span class="app-meta-tag">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                      </svg>
+                      ${safeSize}
+                    </span>
+                    <span class="dot">•</span>
+                    <span class="app-meta-tag">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                      </svg>
+                      ${t.updatedPrefix}${safeDate}
+                    </span>
+                  </div>
+                </div>
               </div>
 
               <p class="app-desc">${safeDesc}</p>
@@ -741,14 +917,14 @@
                     <polyline points="7 10 12 15 17 10"/>
                     <line x1="12" y1="15" x2="12" y2="3"/>
                   </svg>
-                  Download APK
+                  ${t.downloadBtn}
                 </a>
                 <a href="installer.html?name=${encodeURIComponent(app.name)}&ver=${encodeURIComponent(app.version)}&url=${encodeURIComponent(app.apkUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                   </svg>
-                  Web ADB ဖြင့် သွင်းမည်
+                  ${t.webAdbBtn}
                 </a>
               </div>
             </article>
@@ -756,8 +932,10 @@
         }).join("");
       }
 
-      // Initialize on DOMContentLoaded
-      document.addEventListener("DOMContentLoaded", renderApps);
+      // Initialize on DOMContentLoaded with persisted or default language
+      document.addEventListener("DOMContentLoaded", () => {
+        setLang(currentLang);
+      });
     </script>
   </body>
 </html>
