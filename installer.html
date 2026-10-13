@@ -11,21 +11,21 @@
     <meta name="twitter:card" content="summary_large_image" />
     <style>
       :root {
-        --bg-color: #0F0F1A;
-        --card-color: #1A1A2E;
-        --card-hover: #22223D;
-        --card-border: #2A2A46;
-        --accent-green: #4CAF50;
-        --accent-hover: #43A047;
-        --accent-light: #81C784;
-        --accent-glow: rgba(76, 175, 80, 0.25);
-        --text-primary: #F3F4F8;
-        --text-secondary: #A0A5BA;
-        --text-muted: #6E738A;
-        --danger: #FF5252;
-        --warning: #FFA726;
-        --warning-bg: rgba(255, 167, 38, 0.12);
-        --warning-border: rgba(255, 167, 38, 0.35);
+        --bg-color: #0A0A14;
+        --glass-bg: rgba(255, 255, 255, 0.065);
+        --glass-bg-hover: rgba(255, 255, 255, 0.095);
+        --glass-border: rgba(255, 255, 255, 0.13);
+        --glass-border-subtle: rgba(255, 255, 255, 0.08);
+        --glass-highlight: rgba(255, 255, 255, 0.18);
+        --text-primary: #FFFFFF;
+        --text-secondary: rgba(255, 255, 255, 0.72);
+        --text-muted: rgba(255, 255, 255, 0.44);
+        --accent-emerald: rgba(52, 211, 153, 0.9);
+        --accent-emerald-glow: rgba(52, 211, 153, 0.15);
+        --warning-tint: rgba(251, 191, 36, 0.08);
+        --warning-border: rgba(251, 191, 36, 0.22);
+        --danger-tint: rgba(248, 113, 113, 0.12);
+        --danger-border: rgba(248, 113, 113, 0.28);
       }
 
       * {
@@ -37,18 +37,85 @@
       body {
         background-color: var(--bg-color);
         color: var(--text-primary);
-        font-family: -apple-system, BlinkMacSystemFont, "Pyidaungsu", "Padauk", "Myanmar Text", "Noto Sans Myanmar", system-ui, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Pyidaungsu", "Padauk", "Myanmar Text", "Noto Sans Myanmar", system-ui, sans-serif;
         line-height: 1.7;
         letter-spacing: 0.01em;
         -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
         min-height: 100vh;
-        padding: 16px;
+        padding: 20px 16px;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* Liquid Glass Aurora Mesh Background */
+      .aurora-bg {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .aurora-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(90px);
+        opacity: 0.6;
+        will-change: transform;
+      }
+
+      .aurora-orb-1 {
+        top: -8%;
+        left: 20%;
+        width: 460px;
+        height: 460px;
+        background: radial-gradient(circle, rgba(30, 64, 175, 0.35) 0%, rgba(14, 165, 233, 0.14) 50%, transparent 70%);
+        animation: auroraMove1 28s ease-in-out infinite alternate;
+      }
+
+      .aurora-orb-2 {
+        top: 40%;
+        right: -8%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(13, 148, 136, 0.28) 0%, rgba(16, 185, 129, 0.12) 50%, transparent 70%);
+        animation: auroraMove2 32s ease-in-out infinite alternate;
+      }
+
+      .aurora-orb-3 {
+        bottom: -8%;
+        left: 10%;
+        width: 540px;
+        height: 540px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.24) 0%, rgba(168, 85, 247, 0.12) 50%, transparent 70%);
+        animation: auroraMove3 30s ease-in-out infinite alternate;
+      }
+
+      @keyframes auroraMove1 {
+        0% { transform: translate3d(0, 0, 0) scale(1); }
+        50% { transform: translate3d(40px, 60px, 0) scale(1.08); }
+        100% { transform: translate3d(-30px, 30px, 0) scale(0.95); }
+      }
+
+      @keyframes auroraMove2 {
+        0% { transform: translate3d(0, 0, 0) scale(1); }
+        50% { transform: translate3d(-50px, -40px, 0) scale(1.12); }
+        100% { transform: translate3d(20px, 40px, 0) scale(0.92); }
+      }
+
+      @keyframes auroraMove3 {
+        0% { transform: translate3d(0, 0, 0) scale(1); }
+        50% { transform: translate3d(30px, -50px, 0) scale(1.06); }
+        100% { transform: translate3d(-40px, -20px, 0) scale(0.96); }
       }
 
       .container {
+        position: relative;
+        z-index: 1;
         max-width: 640px;
         margin: 0 auto;
-        padding-bottom: 60px;
+        padding-bottom: 70px;
       }
 
       /* Top Navigation */
@@ -56,85 +123,114 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 0 18px;
+        padding: 10px 0 20px;
+        gap: 12px;
       }
 
       .back-link {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        color: var(--text-secondary);
+        color: rgba(255, 255, 255, 0.85);
         text-decoration: none;
-        font-size: 13.5px;
+        font-size: 13px;
         font-weight: 600;
-        padding: 6px 12px;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid var(--card-border);
-        transition: all 0.2s ease;
+        padding: 7px 14px;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--glass-border);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .back-link:hover {
         color: #FFFFFF;
-        background: rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.11);
+        border-color: rgba(255, 255, 255, 0.22);
+        transform: translateY(-1px);
       }
 
       .status-pill {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 7px;
         font-size: 12px;
-        padding: 4px 10px;
+        padding: 5px 12px;
         border-radius: 9999px;
         background: rgba(255, 255, 255, 0.05);
-        border: 1px solid var(--card-border);
+        border: 1px solid var(--glass-border-subtle);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
         color: var(--text-muted);
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
       }
 
       .status-dot {
-        width: 8px;
-        height: 8px;
+        width: 7px;
+        height: 7px;
         border-radius: 50%;
-        background-color: var(--text-muted);
+        background-color: rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
       }
 
       .status-dot.connected {
-        background-color: var(--accent-green);
-        box-shadow: 0 0 8px var(--accent-green);
+        background-color: #34D399;
+        box-shadow: 0 0 10px rgba(52, 211, 153, 0.7);
       }
 
       /* Header */
       .header {
         text-align: center;
-        padding: 12px 10px 22px;
+        padding: 14px 10px 24px;
       }
 
       .header h1 {
-        font-size: 24px;
+        font-size: 26px;
         font-weight: 700;
         color: #FFFFFF;
         margin-bottom: 6px;
+        letter-spacing: -0.015em;
       }
 
       .header p {
         color: var(--text-secondary);
         font-size: 13.5px;
+        line-height: 1.65;
       }
 
-      /* Warning Banner */
+      /* Liquid Glass Warning Banner */
       .alert-banner {
-        background-color: var(--warning-bg);
+        background: var(--warning-tint);
         border: 1px solid var(--warning-border);
-        border-radius: 14px;
-        padding: 14px 16px;
+        box-shadow: inset 0 1px 0 rgba(251, 191, 36, 0.18), 0 16px 40px -12px rgba(0, 0, 0, 0.35);
+        -webkit-backdrop-filter: blur(24px) saturate(160%);
+        backdrop-filter: blur(24px) saturate(160%);
+        border-radius: 20px;
+        padding: 16px 18px;
         margin-bottom: 20px;
         display: flex;
-        gap: 12px;
+        gap: 13px;
         align-items: flex-start;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .alert-banner::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 10%;
+        right: 10%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.35), transparent);
+        pointer-events: none;
       }
 
       .alert-icon {
-        color: var(--warning);
+        color: #FBBF24;
+        opacity: 0.9;
         flex-shrink: 0;
         margin-top: 2px;
       }
@@ -142,27 +238,31 @@
       .alert-content h3 {
         font-size: 14px;
         font-weight: 700;
-        color: #FFE082;
+        color: #FDE68A;
         margin-bottom: 3px;
+        letter-spacing: -0.01em;
       }
 
       .alert-content p {
         font-size: 12.5px;
-        color: #E0E2EC;
-        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.62;
       }
 
       /* Critical Error Box (WebUSB unsupported) */
       .critical-error {
         display: none;
-        background-color: rgba(255, 82, 82, 0.15);
-        border: 1px solid rgba(255, 82, 82, 0.45);
-        border-radius: 14px;
-        padding: 16px;
+        background: var(--danger-tint);
+        border: 1px solid var(--danger-border);
+        box-shadow: inset 0 1px 0 rgba(248, 113, 113, 0.2), 0 16px 40px -12px rgba(0, 0, 0, 0.4);
+        -webkit-backdrop-filter: blur(24px);
+        backdrop-filter: blur(24px);
+        border-radius: 20px;
+        padding: 16px 18px;
         margin-bottom: 20px;
-        color: #FFCDD2;
-        font-size: 13.5px;
-        line-height: 1.6;
+        color: rgba(254, 202, 202, 0.92);
+        font-size: 13px;
+        line-height: 1.62;
       }
 
       .critical-error.show {
@@ -171,30 +271,53 @@
         align-items: flex-start;
       }
 
-      /* Requirements Checklist Card */
+      /* Liquid Glass Generic Card */
       .card {
-        background-color: var(--card-color);
-        border: 1px solid var(--card-border);
-        border-radius: 16px;
-        padding: 18px;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 44px -10px rgba(0, 0, 0, 0.4);
+        -webkit-backdrop-filter: blur(28px) saturate(160%);
+        backdrop-filter: blur(28px) saturate(160%);
+        border-radius: 24px;
+        padding: 22px;
         margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::before,
+      .step-card::before,
+      .log-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 8%;
+        right: 8%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+        pointer-events: none;
       }
 
       .card-title {
-        font-size: 15px;
+        font-size: 15.5px;
         font-weight: 700;
         color: #FFFFFF;
         display: flex;
         align-items: center;
         gap: 8px;
-        margin-bottom: 12px;
+        margin-bottom: 14px;
+        letter-spacing: -0.01em;
+      }
+
+      .card-title svg {
+        opacity: 0.75;
       }
 
       .checklist {
         list-style: none;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 11px;
       }
 
       .checklist-item {
@@ -203,23 +326,30 @@
         gap: 10px;
         font-size: 13px;
         color: var(--text-secondary);
-        line-height: 1.55;
+        line-height: 1.58;
+      }
+
+      .checklist-item strong {
+        color: rgba(255, 255, 255, 0.95);
       }
 
       .check-icon {
         width: 18px;
         height: 18px;
-        border-radius: 5px;
-        background: rgba(76, 175, 80, 0.15);
-        border: 1px solid rgba(76, 175, 80, 0.4);
-        color: var(--accent-green);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        color: #FFFFFF;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        font-size: 11px;
-        font-weight: 700;
         margin-top: 2px;
+      }
+
+      .check-icon svg {
+        opacity: 0.85;
       }
 
       /* Steps Container */
@@ -231,22 +361,28 @@
       }
 
       .step-card {
-        background-color: var(--card-color);
-        border: 1px solid var(--card-border);
-        border-radius: 16px;
-        padding: 18px;
-        transition: border-color 0.2s ease;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 44px -10px rgba(0, 0, 0, 0.4);
+        -webkit-backdrop-filter: blur(28px) saturate(160%);
+        backdrop-filter: blur(28px) saturate(160%);
+        border-radius: 24px;
+        padding: 22px;
+        position: relative;
+        overflow: hidden;
+        transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
       }
 
       .step-card.active {
-        border-color: rgba(76, 175, 80, 0.45);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.22);
       }
 
       .step-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 14px;
+        margin-bottom: 12px;
       }
 
       .step-title-group {
@@ -258,9 +394,10 @@
       .step-badge {
         width: 28px;
         height: 28px;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid var(--card-border);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
         color: var(--text-primary);
         font-size: 13px;
         font-weight: 700;
@@ -268,91 +405,136 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        transition: all 0.2s ease;
+        transition: all 0.25s ease;
       }
 
       .step-badge.completed {
-        background: var(--accent-green);
-        border-color: var(--accent-green);
-        color: #07170A;
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.35);
+        color: #FFFFFF;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
       }
 
       .step-heading-text {
         font-size: 15px;
         font-weight: 700;
         color: #FFFFFF;
+        letter-spacing: -0.01em;
       }
 
       .step-status-tag {
         font-size: 11.5px;
         color: var(--text-muted);
+        background: rgba(255, 255, 255, 0.05);
+        padding: 3px 9px;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
       }
 
       .step-desc {
         font-size: 13px;
         color: var(--text-secondary);
         margin-bottom: 14px;
+        line-height: 1.62;
       }
 
-      /* Buttons */
+      /* Liquid Glass Buttons */
       .btn {
         width: 100%;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        padding: 12px 18px;
-        border-radius: 12px;
+        padding: 13px 20px;
+        border-radius: 9999px;
         font-size: 14px;
-        font-weight: 700;
+        font-weight: 600;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
         border: none;
         font-family: inherit;
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+      }
+
+      .btn svg {
+        opacity: 0.85;
       }
 
       .btn-primary {
-        background-color: var(--accent-green);
-        color: #07170A;
-        box-shadow: 0 4px 14px var(--accent-glow);
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        color: #FFFFFF;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32), 0 8px 24px rgba(0, 0, 0, 0.32);
       }
 
       .btn-primary:hover:not(:disabled) {
-        background-color: var(--accent-hover);
-        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.24);
+        border-color: rgba(255, 255, 255, 0.38);
+        transform: translateY(-1.5px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 12px 28px rgba(0, 0, 0, 0.4);
+        color: #FFFFFF;
+      }
+
+      .btn-primary:active:not(:disabled) {
+        transform: translateY(0);
+        background: rgba(255, 255, 255, 0.15);
       }
 
       .btn-primary:disabled {
-        background-color: rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.05);
         color: var(--text-muted);
         box-shadow: none;
         cursor: not-allowed;
-        border: 1px solid var(--card-border);
+        border: 1px solid rgba(255, 255, 255, 0.08);
       }
 
       .btn-outline {
-        background: transparent;
-        border: 1px solid var(--card-border);
-        color: var(--text-primary);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.88);
       }
 
       .btn-outline:hover {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: #444466;
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.22);
+        color: #FFFFFF;
       }
 
       /* Device Details Box */
       .device-box {
         display: none;
-        background: rgba(15, 15, 26, 0.7);
-        border: 1px solid rgba(76, 175, 80, 0.35);
-        border-radius: 12px;
-        padding: 14px;
+        background: rgba(0, 0, 0, 0.22);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        padding: 16px;
         margin-top: 14px;
       }
 
       .device-box.show {
         display: block;
+      }
+
+      .device-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .device-header-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .device-header-title svg {
+        opacity: 0.8;
       }
 
       .device-grid {
@@ -379,25 +561,36 @@
         word-break: break-all;
       }
 
-      /* File picker styling */
+      /* Preselected App Box */
+      .preselected-app-box {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border-radius: 18px;
+        padding: 14px 16px;
+        margin-bottom: 14px;
+      }
+
+      /* File Picker Dropzone */
       .file-dropzone {
-        border: 2px dashed var(--card-border);
-        border-radius: 12px;
-        padding: 20px 14px;
+        border: 1px dashed rgba(255, 255, 255, 0.2);
+        border-radius: 18px;
+        padding: 24px 16px;
         text-align: center;
         cursor: pointer;
-        transition: all 0.2s ease;
-        background: rgba(15, 15, 26, 0.5);
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        background: rgba(0, 0, 0, 0.18);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
       }
 
       .file-dropzone:hover {
-        border-color: var(--accent-green);
-        background: rgba(76, 175, 80, 0.04);
+        border-color: rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.04);
       }
 
       .file-dropzone.has-file {
-        border-color: rgba(76, 175, 80, 0.5);
-        background: rgba(76, 175, 80, 0.08);
+        border-color: rgba(255, 255, 255, 0.28);
+        background: rgba(255, 255, 255, 0.06);
       }
 
       .file-input-hidden {
@@ -415,12 +608,13 @@
         display: none;
         align-items: center;
         justify-content: space-between;
-        gap: 8px;
-        background: #151528;
-        border: 1px solid var(--card-border);
-        border-radius: 10px;
-        padding: 10px 14px;
-        margin-top: 10px;
+        gap: 10px;
+        background: rgba(0, 0, 0, 0.22);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 12px 16px;
+        margin-top: 12px;
         font-size: 13px;
       }
 
@@ -430,7 +624,7 @@
 
       /* Progress Bar */
       .progress-section {
-        margin: 16px 0 10px;
+        margin: 18px 0 10px;
       }
 
       .progress-label-row {
@@ -438,7 +632,7 @@
         justify-content: space-between;
         align-items: center;
         font-size: 12.5px;
-        margin-bottom: 6px;
+        margin-bottom: 7px;
       }
 
       .progress-label {
@@ -447,66 +641,77 @@
 
       .progress-percent {
         font-weight: 700;
-        color: var(--accent-light);
+        color: #FFFFFF;
       }
 
       .progress-bar-bg {
         width: 100%;
-        height: 10px;
-        background-color: #121222;
+        height: 8px;
+        background-color: rgba(0, 0, 0, 0.3);
         border-radius: 9999px;
         overflow: hidden;
-        border: 1px solid var(--card-border);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
       }
 
       .progress-bar-fill {
         height: 100%;
         width: 0%;
-        background: linear-gradient(90deg, #43A047, #4CAF50);
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), #FFFFFF);
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
         border-radius: 9999px;
         transition: width 0.15s ease-out;
       }
 
       /* Monospace Terminal Log */
       .log-card {
-        background-color: #0A0A12;
-        border: 1px solid var(--card-border);
-        border-radius: 16px;
-        padding: 14px;
-        margin-top: 20px;
+        background: rgba(6, 6, 12, 0.65);
+        border: 1px solid var(--glass-border);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 20px 48px -12px rgba(0, 0, 0, 0.5);
+        -webkit-backdrop-filter: blur(28px);
+        backdrop-filter: blur(28px);
+        border-radius: 24px;
+        padding: 18px;
+        margin-top: 22px;
+        position: relative;
+        overflow: hidden;
       }
 
       .log-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding-bottom: 10px;
+        padding-bottom: 12px;
         margin-bottom: 10px;
-        border-bottom: 1px solid #1C1C2E;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       }
 
       .log-title {
         font-size: 12.5px;
-        font-weight: 700;
-        color: var(--text-secondary);
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.85);
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 7px;
+        letter-spacing: -0.01em;
       }
 
       .btn-clear-log {
-        background: transparent;
-        border: none;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         color: var(--text-muted);
         font-size: 11px;
+        font-weight: 500;
         cursor: pointer;
-        padding: 2px 6px;
-        border-radius: 4px;
+        padding: 4px 10px;
+        border-radius: 9999px;
+        transition: all 0.2s ease;
       }
 
       .btn-clear-log:hover {
         color: #FFFFFF;
-        background: rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
       }
 
       .log-terminal {
@@ -514,21 +719,21 @@
         overflow-y: auto;
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         font-size: 12px;
-        line-height: 1.6;
-        color: #C0C5D8;
+        line-height: 1.62;
+        color: rgba(255, 255, 255, 0.72);
         padding: 4px;
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 5px;
       }
 
       .log-terminal::-webkit-scrollbar {
-        width: 6px;
+        width: 5px;
       }
 
       .log-terminal::-webkit-scrollbar-thumb {
-        background: #25253D;
-        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.16);
+        border-radius: 9999px;
       }
 
       .log-entry {
@@ -536,24 +741,24 @@
       }
 
       .log-time {
-        color: #555A72;
+        color: rgba(255, 255, 255, 0.35);
         margin-right: 6px;
       }
 
       .log-info {
-        color: #C0C5D8;
+        color: rgba(255, 255, 255, 0.75);
       }
 
       .log-success {
-        color: #66BB6A;
+        color: #6EE7B7;
       }
 
       .log-error {
-        color: #EF5350;
+        color: #FCA5A5;
       }
 
       .log-warn {
-        color: #FFA726;
+        color: #FCD34D;
       }
 
       /* Spinner */
@@ -561,7 +766,7 @@
         display: inline-block;
         width: 14px;
         height: 14px;
-        border: 2px solid rgba(0, 0, 0, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.2);
         border-radius: 50%;
         border-top-color: currentColor;
         animation: spin 0.8s linear infinite;
@@ -573,11 +778,18 @@
     </style>
   </head>
   <body>
+    <!-- Liquid Glass Aurora Mesh Background Layer -->
+    <div class="aurora-bg" aria-hidden="true">
+      <div class="aurora-orb aurora-orb-1"></div>
+      <div class="aurora-orb aurora-orb-2"></div>
+      <div class="aurora-orb aurora-orb-3"></div>
+    </div>
+
     <div class="container">
       <!-- Navigation -->
       <nav class="top-nav">
         <a href="index.html" class="back-link">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
             <line x1="19" y1="12" x2="5" y2="12"/>
             <polyline points="12 19 5 12 12 5"/>
           </svg>
@@ -598,13 +810,13 @@
 
       <!-- Critical WebUSB Guard Error (shown only if WebUSB is unsupported) -->
       <div id="unsupportedWarning" class="critical-error" role="alert">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;">
           <circle cx="12" cy="12" r="10"/>
           <line x1="12" y1="8" x2="12" y2="12"/>
           <line x1="12" y1="16" x2="12.01" y2="16"/>
         </svg>
         <div>
-          <strong style="color: #FF8A80; display: block; margin-bottom: 2px;">WebUSB ကို ဤဘရောက်ဆာတွင် အသုံးမပြုနိုင်ပါ</strong>
+          <strong style="color: #FCA5A5; display: block; margin-bottom: 2px;">WebUSB ကို ဤဘရောက်ဆာတွင် အသုံးမပြုနိုင်ပါ</strong>
           <span>ဤနည်းပညာသည် Google Chrome သို့မဟုတ် Microsoft Edge ဘရောက်ဆာများတွင်သာ အလုပ်လုပ်ပါသည်။ ကျေးဇူးပြု၍ Chrome/Edge ဖြင့် ဤစာမျက်နှာကို ပြန်လည်ဖွင့်ပေးပါ။</span>
         </div>
       </div>
@@ -612,7 +824,7 @@
       <!-- Warning Banner -->
       <div class="alert-banner" role="note">
         <div class="alert-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
             <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
             <line x1="12" y1="9" x2="12" y2="13"/>
             <line x1="12" y1="17" x2="12.01" y2="17"/>
@@ -629,7 +841,7 @@
       <!-- Requirements Checklist Card -->
       <section class="card">
         <h2 class="card-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
             <polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
@@ -637,19 +849,35 @@
         </h2>
         <ul class="checklist">
           <li class="checklist-item">
-            <span class="check-icon">✓</span>
+            <span class="check-icon">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </span>
             <span><strong>Google Chrome</strong> သို့မဟုတ် <strong>Microsoft Edge</strong> ဘရောက်ဆာ အသုံးပြုထားခြင်း</span>
           </li>
           <li class="checklist-item">
-            <span class="check-icon">✓</span>
+            <span class="check-icon">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </span>
             <span>ကွန်ပျူတာနှင့် ဖုန်းကို <strong>USB-C to C</strong> သို့မဟုတ် <strong>OTG ဒေတာကြိုး</strong> ဖြင့် သေချာစွာ ချိတ်ဆက်ထားခြင်း</span>
           </li>
           <li class="checklist-item">
-            <span class="check-icon">✓</span>
+            <span class="check-icon">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </span>
             <span>ဖုန်း၏ Developer Options တွင် <strong>"USB debugging" (USB အမှားပြင်ဆင်ခြင်း)</strong> ဖွင့်ထားခြင်း</span>
           </li>
           <li class="checklist-item">
-            <span class="check-icon">✓</span>
+            <span class="check-icon">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </span>
             <span>Xiaomi / Redmi / HyperOS ဖုန်းများအတွက် Developer Options ထဲရှိ <strong>"Install via USB"</strong> ခွင့်ပြုချက်ကို ဖွင့်ထားခြင်း</span>
           </li>
         </ul>
@@ -669,7 +897,7 @@
           <p class="step-desc">ဖုန်းကို USB ကြိုးဖြင့် ထိုးထားပြီး အောက်ပါခလုတ်ကို နှိပ်ကာ ပေါ်လာသော စာရင်းမှ မိမိဖုန်းကို ရွေးချယ်ပေးပါ။</p>
 
           <button type="button" class="btn btn-primary" id="connectBtn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
               <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
             </svg>
@@ -678,9 +906,14 @@
 
           <!-- Connected Device Info Card -->
           <div class="device-box" id="deviceBox">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-              <span style="font-size: 13px; font-weight: 700; color: var(--accent-light);">✓ ချိတ်ဆက်ထားသော စက်ပစ္စည်း အချက်အလက်</span>
-              <span style="font-size: 11px; background: rgba(76,175,80,0.2); color: var(--accent-green); padding: 2px 6px; border-radius: 4px;">Online</span>
+            <div class="device-header">
+              <span class="device-header-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                ချိတ်ဆက်ထားသော စက်ပစ္စည်း အချက်အလက်
+              </span>
+              <span style="font-size: 11px; background: rgba(52, 211, 153, 0.15); border: 1px solid rgba(52, 211, 153, 0.28); color: #6EE7B7; padding: 2px 8px; border-radius: 9999px; font-weight: 600;">Online</span>
             </div>
             <div class="device-grid">
               <div class="device-item">
@@ -715,25 +948,35 @@
           <p class="step-desc">ဖုန်းထဲသို့ တပ်ဆင်လိုသော Android အက်ပ် (.apk) ဖိုင်ကို ရွေးချယ်ပေးပါ။</p>
 
           <!-- Preselected app quick bar -->
-          <div class="preselected-app-box" id="preselectedAppBox" style="display: none; background: rgba(76, 175, 80, 0.08); border: 1px solid rgba(76, 175, 80, 0.3); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <div class="preselected-app-box" id="preselectedAppBox" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px;">
               <div>
-                <div style="font-size: 11px; color: var(--accent-light); font-weight: 600;">ရွေးချယ်ထားသော အက်ပ်:</div>
-                <div style="font-size: 14px; font-weight: 700; color: #FFFFFF;" id="presetAppTitle">-</div>
+                <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">ရွေးချယ်ထားသော အက်ပ်:</div>
+                <div style="font-size: 14.5px; font-weight: 700; color: #FFFFFF;" id="presetAppTitle">-</div>
               </div>
-              <a href="#" id="directDownloadPresetLink" class="btn-outline" style="font-size: 11px; padding: 4px 10px; border-radius: 6px; text-decoration: none; color: var(--text-secondary);" target="_blank" download>
+              <a href="#" id="directDownloadPresetLink" class="btn-outline" style="font-size: 11.5px; padding: 5px 12px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" target="_blank" download>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
                 ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်
               </a>
             </div>
-            <button type="button" id="autoFetchPresetBtn" class="btn btn-outline" style="width: 100%; border-color: rgba(76, 175, 80, 0.4); color: var(--accent-light); font-size: 12px; padding: 8px 12px;">
-              ⚡ ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်
+            <button type="button" id="autoFetchPresetBtn" class="btn btn-outline" style="font-size: 12.5px; padding: 9px 14px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်
             </button>
           </div>
 
           <input type="file" id="apkFileInput" class="file-input-hidden" accept=".apk" />
           
           <div class="file-dropzone" id="fileDropzone">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px; opacity: 0.75;">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
               <polyline points="17 8 12 3 7 8"/>
               <line x1="12" y1="3" x2="12" y2="15"/>
@@ -743,14 +986,20 @@
           </div>
 
           <div class="file-chosen-info" id="fileChosenInfo">
-            <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
-              <span style="color: var(--accent-green); font-size: 16px;">📦</span>
+            <div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">
+              <div style="width: 32px; height: 32px; border-radius: 10px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.14); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.85;">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                  <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+              </div>
               <div style="overflow: hidden;">
                 <div id="chosenFileName" style="font-weight: 600; color: #FFFFFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-</div>
                 <div id="chosenFileSize" style="font-size: 11.5px; color: var(--text-muted);">-</div>
               </div>
             </div>
-            <button type="button" id="changeFileBtn" class="btn-outline" style="padding: 4px 10px; font-size: 11px; border-radius: 6px; cursor: pointer;">အသစ်ရွေးမည်</button>
+            <button type="button" id="changeFileBtn" class="btn-outline" style="padding: 5px 12px; font-size: 11.5px; border-radius: 9999px; cursor: pointer; flex-shrink: 0;">အသစ်ရွေးမည်</button>
           </div>
         </section>
 
@@ -766,7 +1015,7 @@
           <p class="step-desc">ဖုန်းချိတ်ဆက်ပြီး APK ဖိုင် ရွေးချယ်ပြီးပါက အောက်ပါခလုတ်ကို နှိပ်၍ သွင်းယူနိုင်ပါပြီ။</p>
 
           <button type="button" class="btn btn-primary" id="installBtn" disabled>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="20 6 9 17 4 12"/>
             </svg>
             <span id="installBtnText">APK တပ်ဆင်မည် (Install APK)</span>
@@ -789,7 +1038,7 @@
       <section class="log-card">
         <div class="log-header">
           <div class="log-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.75;">
               <polyline points="4 17 10 11 4 5"/>
               <line x1="12" y1="19" x2="20" y2="19"/>
             </svg>
@@ -803,7 +1052,7 @@
       </section>
 
       <!-- Footer Info -->
-      <footer style="text-align: center; margin-top: 30px; font-size: 12px; color: var(--text-muted);">
+      <footer style="text-align: center; margin-top: 36px; font-size: 12px; color: var(--text-muted);">
         <p>WebUSB ADB Installer • Android 5.0+ နှင့်အထက် စက်ပစ္စည်းများကို ထောက်ပံ့ပါသည်</p>
       </footer>
     </div>
@@ -1130,7 +1379,7 @@
           directDownloadPresetLink.click();
         } finally {
           autoFetchPresetBtn.disabled = false;
-          autoFetchPresetBtn.innerHTML = '⚡ ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်';
+          autoFetchPresetBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.85"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်';
         }
       });
 
@@ -1193,10 +1442,10 @@
 
           // Helpful hints for common issues (Xiaomi / User Restricted)
           if (errMsg.includes("INSTALL_FAILED_USER_RESTRICTED") || errMsg.includes("INSTALL_FAILED") || errMsg.includes("Permission denied")) {
-            appendLog("💡 အရေးကြီး အကြံပြုချက်: Xiaomi / Redmi / HyperOS ဖုန်းများတွင် Developer Options သို့သွား၍ 'Install via USB' ကို ဖွင့်ထားရန် လိုအပ်ပါသည်။", "warn");
-            appendLog("💡 ထို့အပြင် ဖုန်းမျက်နှာပြင်တွင် 'Allow installation from USB' ပေါ်လာပါက လက်ခံပေးပါ။", "warn");
+            appendLog("အရေးကြီး အကြံပြုချက်: Xiaomi / Redmi / HyperOS ဖုန်းများတွင် Developer Options သို့သွား၍ 'Install via USB' ကို ဖွင့်ထားရန် လိုအပ်ပါသည်။", "warn");
+            appendLog("ထို့အပြင် ဖုန်းမျက်နှာပြင်တွင် 'Allow installation from USB' ပေါ်လာပါက လက်ခံပေးပါ။", "warn");
           } else {
-            appendLog("💡 အကြံပြုချက်: ဖုန်းမှတ်ဉာဏ် (Storage) ပြည့်မပြည့် စစ်ဆေးပြီး Developer Options တွင် 'Install via USB' ခွင့်ပြုထားခြင်း ရှိမရှိ စစ်ဆေးပါ။", "warn");
+            appendLog("အကြံပြုချက်: ဖုန်းမှတ်ဉာဏ် (Storage) ပြည့်မပြည့် စစ်ဆေးပြီး Developer Options တွင် 'Install via USB' ခွင့်ပြုထားခြင်း ရှိမရှိ စစ်ဆေးပါ။", "warn");
           }
           step3Status.textContent = "မအောင်မြင်ပါ";
           installBtnText.textContent = "ပြန်လည်ကြိုးစားမည် (Try Again)";

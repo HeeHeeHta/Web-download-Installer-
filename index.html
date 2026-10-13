@@ -11,19 +11,17 @@
     <meta name="twitter:card" content="summary_large_image" />
     <style>
       :root {
-        --bg-color: #0F0F1A;
-        --card-color: #1A1A2E;
-        --card-hover: #22223D;
-        --card-border: #2A2A46;
-        --accent-green: #4CAF50;
-        --accent-hover: #43A047;
-        --accent-light: #81C784;
-        --accent-glow: rgba(76, 175, 80, 0.25);
-        --text-primary: #F3F4F8;
-        --text-secondary: #A0A5BA;
-        --text-muted: #6E738A;
-        --danger: #FF5252;
-        --warning: #FFA726;
+        --bg-color: #0A0A14;
+        --glass-bg: rgba(255, 255, 255, 0.065);
+        --glass-bg-hover: rgba(255, 255, 255, 0.095);
+        --glass-border: rgba(255, 255, 255, 0.13);
+        --glass-border-subtle: rgba(255, 255, 255, 0.08);
+        --glass-highlight: rgba(255, 255, 255, 0.18);
+        --text-primary: #FFFFFF;
+        --text-secondary: rgba(255, 255, 255, 0.72);
+        --text-muted: rgba(255, 255, 255, 0.44);
+        --accent-emerald: rgba(52, 211, 153, 0.9);
+        --accent-emerald-glow: rgba(52, 211, 153, 0.15);
       }
 
       * {
@@ -35,104 +33,194 @@
       body {
         background-color: var(--bg-color);
         color: var(--text-primary);
-        font-family: -apple-system, BlinkMacSystemFont, "Pyidaungsu", "Padauk", "Myanmar Text", "Noto Sans Myanmar", system-ui, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Pyidaungsu", "Padauk", "Myanmar Text", "Noto Sans Myanmar", system-ui, sans-serif;
         line-height: 1.7;
         letter-spacing: 0.01em;
         -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
         min-height: 100vh;
-        padding: 16px;
+        padding: 20px 16px;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* Liquid Glass Aurora Mesh Background */
+      .aurora-bg {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .aurora-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(90px);
+        opacity: 0.6;
+        will-change: transform;
+      }
+
+      .aurora-orb-1 {
+        top: -10%;
+        left: 15%;
+        width: 480px;
+        height: 480px;
+        background: radial-gradient(circle, rgba(30, 64, 175, 0.35) 0%, rgba(14, 165, 233, 0.15) 50%, transparent 70%);
+        animation: auroraMove1 28s ease-in-out infinite alternate;
+      }
+
+      .aurora-orb-2 {
+        top: 35%;
+        right: -10%;
+        width: 520px;
+        height: 520px;
+        background: radial-gradient(circle, rgba(13, 148, 136, 0.28) 0%, rgba(16, 185, 129, 0.12) 50%, transparent 70%);
+        animation: auroraMove2 32s ease-in-out infinite alternate;
+      }
+
+      .aurora-orb-3 {
+        bottom: -10%;
+        left: 5%;
+        width: 560px;
+        height: 560px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(168, 85, 247, 0.12) 50%, transparent 70%);
+        animation: auroraMove3 30s ease-in-out infinite alternate;
+      }
+
+      @keyframes auroraMove1 {
+        0% { transform: translate3d(0, 0, 0) scale(1); }
+        50% { transform: translate3d(40px, 60px, 0) scale(1.08); }
+        100% { transform: translate3d(-30px, 30px, 0) scale(0.95); }
+      }
+
+      @keyframes auroraMove2 {
+        0% { transform: translate3d(0, 0, 0) scale(1); }
+        50% { transform: translate3d(-50px, -40px, 0) scale(1.12); }
+        100% { transform: translate3d(20px, 40px, 0) scale(0.92); }
+      }
+
+      @keyframes auroraMove3 {
+        0% { transform: translate3d(0, 0, 0) scale(1); }
+        50% { transform: translate3d(30px, -50px, 0) scale(1.06); }
+        100% { transform: translate3d(-40px, -20px, 0) scale(0.96); }
       }
 
       .container {
+        position: relative;
+        z-index: 1;
         max-width: 640px;
         margin: 0 auto;
-        padding-bottom: 60px;
+        padding-bottom: 70px;
       }
 
       /* Header */
       .header {
         text-align: center;
-        padding: 28px 12px 20px;
+        padding: 24px 12px 18px;
       }
 
       .badge-brand {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        background: rgba(76, 175, 80, 0.12);
-        color: var(--accent-green);
-        border: 1px solid rgba(76, 175, 80, 0.3);
+        gap: 7px;
+        background: rgba(255, 255, 255, 0.07);
+        color: rgba(255, 255, 255, 0.88);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 16px rgba(0, 0, 0, 0.2);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
         border-radius: 9999px;
-        padding: 4px 14px;
-        font-size: 13px;
+        padding: 5px 14px;
+        font-size: 12.5px;
         font-weight: 600;
-        margin-bottom: 14px;
+        margin-bottom: 16px;
+      }
+
+      .badge-brand svg {
+        opacity: 0.75;
       }
 
       .header h1 {
-        font-size: 26px;
+        font-size: 27px;
         font-weight: 700;
         color: #FFFFFF;
-        line-height: 1.4;
+        line-height: 1.35;
         margin-bottom: 8px;
+        letter-spacing: -0.015em;
       }
 
       .header p {
         color: var(--text-secondary);
         font-size: 14px;
-        max-width: 520px;
+        max-width: 500px;
         margin: 0 auto;
+        line-height: 1.65;
       }
 
-      /* Web ADB Banner Callout */
+      /* Liquid Glass Banner Card */
       .banner-card {
-        background: linear-gradient(145deg, #1A1A2E 0%, #171E36 100%);
-        border: 1px solid rgba(76, 175, 80, 0.35);
-        border-radius: 16px;
-        padding: 20px;
-        margin: 20px 0 28px;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 20px 48px -12px rgba(0, 0, 0, 0.45);
+        -webkit-backdrop-filter: blur(28px) saturate(160%);
+        backdrop-filter: blur(28px) saturate(160%);
+        border-radius: 24px;
+        padding: 22px;
+        margin: 22px 0 30px;
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 16px;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
       }
 
-      .banner-card::before {
+      /* Specular edge highlight */
+      .banner-card::before,
+      .app-card::before,
+      .guide-card::before {
         content: "";
         position: absolute;
         top: 0;
-        right: 0;
-        width: 120px;
-        height: 120px;
-        background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+        left: 8%;
+        right: 8%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
         pointer-events: none;
       }
 
       .banner-header {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 14px;
       }
 
       .banner-icon {
         width: 44px;
         height: 44px;
-        background: rgba(76, 175, 80, 0.18);
-        border: 1px solid rgba(76, 175, 80, 0.4);
-        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--accent-green);
+        color: #FFFFFF;
         flex-shrink: 0;
       }
 
+      .banner-icon svg {
+        opacity: 0.85;
+      }
+
       .banner-title {
-        font-size: 16px;
+        font-size: 15.5px;
         font-weight: 700;
         color: #FFFFFF;
+        margin-bottom: 2px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
 
       .banner-desc {
@@ -141,51 +229,105 @@
         line-height: 1.6;
       }
 
-      .banner-btn {
+      /* Glass Buttons */
+      .btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        background: var(--accent-green);
-        color: #0B1C10;
-        font-weight: 700;
+        padding: 12px 18px;
+        border-radius: 9999px;
+        font-size: 13.5px;
+        font-weight: 600;
         text-decoration: none;
-        padding: 11px 18px;
-        border-radius: 10px;
-        font-size: 14px;
-        transition: all 0.2s ease;
-        box-shadow: 0 4px 14px var(--accent-glow);
+        cursor: pointer;
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        text-align: center;
+        border: none;
+        font-family: inherit;
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
       }
 
-      .banner-btn:hover {
-        background: var(--accent-hover);
-        transform: translateY(-1px);
+      .btn svg {
+        opacity: 0.8;
       }
 
-      /* Section Titles */
+      .banner-btn,
+      .btn-download {
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        color: #FFFFFF;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32), 0 8px 24px rgba(0, 0, 0, 0.3);
+      }
+
+      .banner-btn:hover,
+      .btn-download:hover {
+        background: rgba(255, 255, 255, 0.24);
+        border-color: rgba(255, 255, 255, 0.38);
+        transform: translateY(-1.5px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 12px 28px rgba(0, 0, 0, 0.4);
+        color: #FFFFFF;
+      }
+
+      .banner-btn:active,
+      .btn-download:active {
+        transform: translateY(0);
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.88);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.09);
+        border-color: rgba(255, 255, 255, 0.22);
+        color: #FFFFFF;
+        transform: translateY(-1.5px);
+      }
+
+      .btn-secondary:active {
+        transform: translateY(0);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      /* Section Heading */
       .section-heading {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin: 24px 0 14px;
+        margin: 26px 0 14px;
         padding: 0 4px;
       }
 
       .section-title {
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 700;
         color: #FFFFFF;
         display: flex;
         align-items: center;
         gap: 8px;
+        letter-spacing: -0.01em;
+      }
+
+      .section-title svg {
+        opacity: 0.7;
       }
 
       .section-subtitle {
         font-size: 12px;
         color: var(--text-muted);
+        background: rgba(255, 255, 255, 0.05);
+        padding: 3px 10px;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
       }
 
-      /* App Cards List */
+      /* App Card */
       .apps-list {
         display: flex;
         flex-direction: column;
@@ -193,16 +335,22 @@
       }
 
       .app-card {
-        background-color: var(--card-color);
-        border: 1px solid var(--card-border);
-        border-radius: 16px;
-        padding: 18px;
-        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 44px -10px rgba(0, 0, 0, 0.4);
+        -webkit-backdrop-filter: blur(28px) saturate(160%);
+        backdrop-filter: blur(28px) saturate(160%);
+        border-radius: 24px;
+        padding: 22px;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, background-color 0.25s ease;
       }
 
       .app-card:hover {
-        border-color: #38385A;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        background: var(--glass-bg-hover);
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
       }
 
       .app-top {
@@ -210,7 +358,7 @@
         align-items: flex-start;
         justify-content: space-between;
         gap: 12px;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }
 
       .app-title-group {
@@ -221,40 +369,53 @@
       }
 
       .app-name {
-        font-size: 17px;
+        font-size: 17.5px;
         font-weight: 700;
         color: #FFFFFF;
+        letter-spacing: -0.01em;
       }
 
       .version-badge {
-        background: rgba(76, 175, 80, 0.15);
-        color: var(--accent-light);
-        border: 1px solid rgba(76, 175, 80, 0.3);
+        background: rgba(255, 255, 255, 0.09);
+        color: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
         font-size: 11px;
         font-weight: 600;
-        padding: 2px 8px;
-        border-radius: 6px;
+        padding: 2px 9px;
+        border-radius: 9999px;
         letter-spacing: 0.02em;
       }
 
       .app-meta {
-        font-size: 12px;
+        font-size: 12.5px;
         color: var(--text-muted);
         display: flex;
         align-items: center;
         gap: 8px;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
       }
 
       .app-meta .dot {
-        font-size: 10px;
+        font-size: 8px;
+        opacity: 0.5;
+      }
+
+      .app-meta-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .app-meta-tag svg {
+        opacity: 0.6;
       }
 
       .app-desc {
         font-size: 13.5px;
         color: var(--text-secondary);
-        line-height: 1.65;
-        margin-bottom: 16px;
+        line-height: 1.68;
+        margin-bottom: 18px;
       }
 
       .app-actions {
@@ -263,60 +424,27 @@
         gap: 10px;
       }
 
-      @media (max-width: 420px) {
+      @media (max-width: 440px) {
         .app-actions {
           grid-template-columns: 1fr;
         }
       }
 
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        padding: 10px 14px;
-        border-radius: 10px;
-        font-size: 13px;
-        font-weight: 600;
-        text-decoration: none;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-align: center;
-        border: none;
-      }
-
-      .btn-download {
-        background-color: var(--accent-green);
-        color: #081A0B;
-        box-shadow: 0 2px 8px var(--accent-glow);
-      }
-
-      .btn-download:hover {
-        background-color: var(--accent-hover);
-      }
-
-      .btn-secondary {
-        background-color: rgba(255, 255, 255, 0.06);
-        color: #E2E4EC;
-        border: 1px solid var(--card-border);
-      }
-
-      .btn-secondary:hover {
-        background-color: rgba(255, 255, 255, 0.12);
-        border-color: #444466;
-        color: #FFFFFF;
-      }
-
-      /* How to install guide */
+      /* Guide Section */
       .guide-section {
-        margin-top: 36px;
+        margin-top: 34px;
       }
 
       .guide-card {
-        background-color: var(--card-color);
-        border: 1px solid var(--card-border);
-        border-radius: 16px;
-        padding: 20px;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 44px -10px rgba(0, 0, 0, 0.4);
+        -webkit-backdrop-filter: blur(28px) saturate(160%);
+        backdrop-filter: blur(28px) saturate(160%);
+        border-radius: 24px;
+        padding: 22px;
+        position: relative;
+        overflow: hidden;
       }
 
       .guide-steps {
@@ -335,12 +463,13 @@
       .step-num {
         width: 32px;
         height: 32px;
-        background: rgba(76, 175, 80, 0.15);
-        color: var(--accent-green);
-        border: 1px solid rgba(76, 175, 80, 0.3);
-        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #FFFFFF;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
         font-weight: 700;
-        font-size: 14px;
+        font-size: 13px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -357,36 +486,48 @@
       .step-content p {
         font-size: 13px;
         color: var(--text-secondary);
-        line-height: 1.6;
+        line-height: 1.62;
       }
 
       /* Footer */
       .footer {
         text-align: center;
-        margin-top: 40px;
-        padding: 20px 10px;
-        border-top: 1px solid var(--card-border);
+        margin-top: 42px;
+        padding: 22px 10px;
+        border-top: 1px solid var(--glass-border-subtle);
         color: var(--text-muted);
         font-size: 12.5px;
       }
 
       .footer a {
-        color: var(--accent-green);
+        color: rgba(255, 255, 255, 0.85);
         text-decoration: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding-bottom: 1px;
+        transition: all 0.2s ease;
       }
 
       .footer a:hover {
-        text-decoration: underline;
+        color: #FFFFFF;
+        border-color: rgba(255, 255, 255, 0.6);
       }
     </style>
   </head>
   <body>
+    <!-- Liquid Glass Aurora Mesh Background Layer -->
+    <div class="aurora-bg" aria-hidden="true">
+      <div class="aurora-orb aurora-orb-1"></div>
+      <div class="aurora-orb aurora-orb-2"></div>
+      <div class="aurora-orb aurora-orb-3"></div>
+    </div>
+
     <div class="container">
       <!-- Header -->
       <header class="header">
         <div class="badge-brand">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="3"/>
+            <path d="M12 18h.01"/>
           </svg>
           Android အက်ပ် စင်တာ
         </div>
@@ -398,19 +539,19 @@
       <section class="banner-card" aria-label="Web ADB တပ်ဆင်ရေး အထူးစနစ်">
         <div class="banner-header">
           <div class="banner-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
               <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
             </svg>
           </div>
           <div>
-            <div class="banner-title">Web ADB တိုက်ရိုက်တပ်ဆင်ရေး စနစ် ⚡</div>
+            <div class="banner-title">Web ADB တိုက်ရိုက်တပ်ဆင်ရေး စနစ်</div>
             <div class="banner-desc">ဖုန်းထဲသို့ ဖိုင်ကူးစရာမလိုဘဲ ကွန်ပျူတာ Chrome မှတစ်ဆင့် USB ဖြင့် APK တိုက်ရိုက်သွင်းနိုင်ပါသည်။</div>
           </div>
         </div>
-        <a href="installer.html" class="banner-btn">
+        <a href="installer.html" class="btn banner-btn">
           Web ADB တပ်ဆင်ရေး စာမျက်နှာသို့ သွားမည်
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="9 18 15 12 9 6"/>
           </svg>
         </a>
@@ -420,7 +561,7 @@
       <main>
         <div class="section-heading">
           <h2 class="section-title">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
               <polyline points="7 10 12 15 17 10"/>
               <line x1="12" y1="15" x2="12" y2="3"/>
@@ -439,7 +580,7 @@
         <section class="guide-section">
           <div class="section-heading">
             <h2 class="section-title">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="12" y1="16" x2="12" y2="12"/>
                 <line x1="12" y1="8" x2="12.01" y2="8"/>
@@ -454,7 +595,7 @@
                 <div class="step-num">၁</div>
                 <div class="step-content">
                   <h3>APK ဖိုင်ကို ဒေါင်းလုဒ်လုပ်ပါ</h3>
-                  <p>အထက်ပါ စာရင်းမှ မိမိလိုချင်သော အက်ပ်၏ အစိမ်းရောင် "Download APK" ခလုတ်ကို နှိပ်၍ ဒေါင်းလုဒ်စတင်ပါ။</p>
+                  <p>အထက်ပါ စာရင်းမှ မိမိလိုချင်သော အက်ပ်၏ Download APK ခလုတ်ကို နှိပ်၍ ဒေါင်းလုဒ်စတင်ပါ။</p>
                 </div>
               </div>
 
@@ -486,11 +627,11 @@
         </section>
 
         <!-- Web ADB Installer Link Card -->
-        <section style="margin-top: 28px;">
-          <div class="guide-card" style="border-color: rgba(76, 175, 80, 0.3); background: #151528;">
-            <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 12px;">
-              <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(76, 175, 80, 0.2); color: var(--accent-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <section style="margin-top: 24px;">
+          <div class="guide-card" style="padding: 20px;">
+            <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
+              <div style="width: 38px; height: 38px; border-radius: 12px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.14); color: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.85;">
                   <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
                   <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
                   <line x1="6" y1="6" x2="6.01" y2="6"/>
@@ -502,8 +643,11 @@
                 <p style="font-size: 13px; color: var(--text-secondary);">Web ADB စနစ်ဖြင့် ဖုန်းထဲသို့ APK တိုက်ရိုက် ထည့်သွင်းနိုင်ပါသည်</p>
               </div>
             </div>
-            <a href="installer.html" class="btn btn-secondary" style="width: 100%; border-color: rgba(76, 175, 80, 0.4); color: var(--accent-light);">
-              Web ADB တပ်ဆင်ရေး စာမျက်နှာ ဖွင့်မည် →
+            <a href="installer.html" class="btn btn-secondary" style="width: 100%;">
+              Web ADB တပ်ဆင်ရေး စာမျက်နှာ ဖွင့်မည်
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
             </a>
           </div>
         </section>
@@ -568,16 +712,31 @@
               </div>
 
               <div class="app-meta">
-                <span>📦 ${safeSize}</span>
+                <span class="app-meta-tag">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                    <line x1="12" y1="22.08" x2="12" y2="12"/>
+                  </svg>
+                  ${safeSize}
+                </span>
                 <span class="dot">•</span>
-                <span>📅 မွမ်းမံရက်: ${safeDate}</span>
+                <span class="app-meta-tag">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                  </svg>
+                  မွမ်းမံရက်: ${safeDate}
+                </span>
               </div>
 
               <p class="app-desc">${safeDesc}</p>
 
               <div class="app-actions">
                 <a href="${safeUrl}" class="btn btn-download" download target="_blank" rel="noopener noreferrer">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                     <polyline points="7 10 12 15 17 10"/>
                     <line x1="12" y1="15" x2="12" y2="3"/>
@@ -585,7 +744,7 @@
                   Download APK
                 </a>
                 <a href="installer.html?name=${encodeURIComponent(app.name)}&ver=${encodeURIComponent(app.version)}&url=${encodeURIComponent(app.apkUrl)}" class="btn btn-secondary">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                   </svg>
