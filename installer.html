@@ -904,6 +904,55 @@
             <span id="connectBtnText">ဖုန်းချိတ်ဆက်မည် (Connect Device)</span>
           </button>
 
+          <!-- Reset Keys & Troubleshooting Helper -->
+          <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+            <button type="button" class="btn btn-outline" id="resetKeysBtn" style="font-size: 12px; padding: 9px 14px; border-radius: 9999px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 2v6h-6"/>
+                <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+                <path d="M3 22v-6h6"/>
+                <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+              </svg>
+              သော့အသစ်ထုတ်၍ ပြန်လည်ချိတ်ဆက်မည် (Reset Keys & Reconnect)
+            </button>
+
+            <details class="troubleshoot-accordion" id="troubleshootAccordion" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 12px 14px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.65; cursor: pointer;">
+              <summary style="font-weight: 600; color: rgba(255, 255, 255, 0.95); display: flex; align-items: center; gap: 6px; outline: none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="16" x2="12" y2="12"/>
+                  <line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                ဖုန်းတွင် "Allow USB Debugging" ပေါ်မလာပါက အရေးကြီး ဖြေရှင်းနည်းများ (နှိပ်၍ကြည့်ပါ)
+              </summary>
+              <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px;">
+                <p><strong>၁။ USB Mode ကို "File Transfer" သို့ ပြောင်းပါ (အရေးအကြီးဆုံး):</strong><br/>
+                ဖုန်းမျက်နှာပြင်၏ အပေါ် Notification bar ကို ဆွဲချပါ။ "Charging this device via USB" သို့မဟုတ် "No data transfer" ကို နှိပ်ပြီး <strong>"File Transfer" (သို့မဟုတ် MTP / File transfer)</strong> သို့ မဖြစ်မနေ ပြောင်းပေးပါ။ ("Charging only" အားသွင်းခြင်းသာ ဖြစ်နေပါက Debugging ခွင့်ပြုချက် ပေါ်မည် မဟုတ်ပါ)</p>
+
+                <p><strong>၂။ Revoke USB debugging authorizations ပြုလုပ်ပါ (ခွင့်ပြုချက်ဟောင်းများ ဖျက်ခြင်း):</strong><br/>
+                ဖုန်း Settings > Developer Options သို့သွားပြီး <strong>"Revoke USB debugging authorizations"</strong> (USB ချိတ်ဆက်ခွင့်ပြုချက်များကို ပြန်လည်ရုပ်သိမ်းရန်) ကို နှိပ်၍ OK ပေးပါ။ ထို့နောက် USB ကြိုးကို ဖုန်းမှ ဖြုတ်ပြီး ပြန်ထိုးပါ။ (၎င်းသည် ယခင် သော့ဟောင်းများကြောင့် Allow မပေါ်ခြင်းကို ချက်ချင်း ဖြေရှင်းပေးပါသည်)</p>
+
+                <p><strong>၃။ USB ကြိုးသည် Data Cable စစ်စစ် ဖြစ်ပါစေ:</strong><br/>
+                အချို့ အားသွင်းကြိုးများသည် အားသွင်းရုံသာရပြီး အချက်အလက် (Data) မကူးနိုင်ပါ (Charge-only cable)။ ဖုန်းနှင့် ကွန်ပျူတာ အချက်အလက် ပို့နိုင်သော Data Cable စစ်စစ် ဖြစ်ရပါမည်။</p>
+
+                <p><strong>၄။ ကွန်ပျူတာ/Laptop တွင် အခြား ADB ပရိုဂရမ်များ ပိတ်ပါ:</strong><br/>
+                PC တွင် Android Studio, Vysor, Scrcpy, 3uTools သို့မဟုတ် နောက်ကွယ်တွင် <code>adb.exe</code> အလုပ်လုပ်နေပါက WebUSB ချိတ်ဆက်မှု ပိတ်ဆို့နေတတ်ပါသည်။ Command Prompt (CMD) တွင် <code>adb kill-server</code> ရိုက်ထည့်၍ ပိတ်ပေးပါ။</p>
+
+                <p><strong>၅။ Xiaomi / Redmi / POCO (HyperOS / MIUI) ဆက်တင် ၃ ချက်စလုံး ဖွင့်ပါ:</strong><br/>
+                • USB debugging (On ထားပါ)<br/>
+                • Install via USB (On ထားပါ - SIM card ထည့်ထားရန်နှင့် Mi Account ဝင်ထားရန်လို)<br/>
+                • USB debugging (Security settings) (On ထားပါ)<br/>
+                • Default USB configuration ကို "File Transfer" ဟု ရွေးထားပါ။</p>
+
+                <p><strong>၆။ Type-C to Type-C ကြိုး ဦးတည်ချက် (ဖုန်းမှ ဖုန်းသို့ / Tablet):</strong><br/>
+                Tablet နှင့် ဖုန်း အချင်းချင်း ချိတ်ဆက်ထားပါက Notification ထဲတွင် "USB controlled by: Connected device" ဖြစ်နေစေရန် သို့မဟုတ် Type-C ကြိုးခေါင်းကို အပြန်အလှန် လှည့်ထိုးကြည့်ပါ။</p>
+
+                <p><strong>၇။ သော့ဟောင်းများ ရှင်းလင်းခြင်း:</strong><br/>
+                အပေါ်ရှိ "သော့အသစ်ထုတ်၍ ပြန်လည်ချိတ်ဆက်မည် (Reset Keys & Reconnect)" ခလုတ်ကို နှိပ်၍ ဘရောက်ဆာတွင်းရှိ သော့ဟောင်းများကို ရှင်းလင်းပြီး ပြန်လည်ချိတ်ဆက်ကြည့်ပါ။</p>
+              </div>
+            </details>
+          </div>
+
           <!-- Connected Device Info Card -->
           <div class="device-box" id="deviceBox">
             <div class="device-header">
@@ -1133,6 +1182,40 @@
 
       const statusDot = document.getElementById("statusDot");
       const statusText = document.getElementById("statusText");
+      const resetKeysBtn = document.getElementById("resetKeysBtn");
+      const troubleshootAccordion = document.getElementById("troubleshootAccordion");
+
+      // Reset Keys button listener to clear stale keys from IndexedDB
+      if (resetKeysBtn) {
+        resetKeysBtn.addEventListener("click", async () => {
+          try {
+            appendLog("လုံခြုံရေး သော့ဟောင်းများ (RSA Keys) အား စတင်ရှင်းလင်းနေပါသည်...", "info");
+            
+            // Delete IndexedDB database "Tango"
+            await new Promise((resolve) => {
+              const req = indexedDB.deleteDatabase("Tango");
+              req.onsuccess = () => resolve(true);
+              req.onerror = () => resolve(false);
+              req.onblocked = () => resolve(false);
+            });
+
+            try {
+              localStorage.removeItem("web-adb-installer");
+              localStorage.removeItem("Tango");
+            } catch (e) {}
+
+            appendLog("ဘရောက်ဆာ၏ သော့ဟောင်းများကို အောင်မြင်စွာ ဖျက်ပစ်ပြီးပါပြီ။", "success");
+            appendLog("⚠️ အရေးကြီး: ဖုန်း Settings > Developer Options ထဲရှိ 'Revoke USB debugging authorizations' (ခွင့်ပြုချက် ရုပ်သိမ်းရန်) ကို နှိပ်ပြီး USB ကြိုးကို ဖြုတ်၍ ပြန်ထိုးပေးပါ။", "warn");
+            appendLog("ထို့နောက် အပေါ်ရှိ 'ဖုန်းချိတ်ဆက်မည်' ခလုတ်ကို ပြန်နှိပ်ပါက ဖုန်းတွင် 'Allow USB Debugging' ပေါ်လာပါမည်။", "info");
+
+            if (troubleshootAccordion) {
+              troubleshootAccordion.open = true;
+            }
+          } catch (err) {
+            appendLog("သော့ရှင်းလင်းရာတွင် အမှားဖြစ်ပေါ်ပါသည်: " + (err?.message || err), "error");
+          }
+        });
+      }
 
       // Logging utility
       function appendLog(message, type = "info") {
@@ -1217,6 +1300,7 @@
       connectBtn.addEventListener("click", async () => {
         if (isBusy) return;
 
+        let authTimer = null;
         try {
           isBusy = true;
           connectBtn.disabled = true;
@@ -1225,15 +1309,36 @@
 
           // Exact connect flow from specifications
           const device = await AdbDaemonWebUsbDeviceManager.BROWSER.requestDevice();
-          appendLog(`USB စက်ပစ္စည်းကို ရွေးချယ်ပြီးပါပြီ (Serial: ${device.serial})`, "info");
+          if (!device) {
+            appendLog("ဖုန်းရွေးချယ်မှုကို ပယ်ဖျက်လိုက်ပါသည် သို့မဟုတ် ဖုန်းကို မတွေ့ရှိပါ။", "warn");
+            return;
+          }
+
+          appendLog(`USB စက်ပစ္စည်းကို ရွေးချယ်ပြီးပါပြီ (Serial: ${device.serial || "Detected"})`, "info");
 
           appendLog("USB ဆက်သွယ်မှုကို ချိတ်ဆက်နေပါသည်...", "info");
           const connection = await device.connect();
 
           appendLog("ADB လုံခြုံရေး သော့ဖွင့်ခြင်း (Authentication) စတင်နေပါသည်...", "info");
-          appendLog("ဖုန်းမျက်နှာပြင်တွင် 'Allow USB Debugging' ခွင့်ပြုချက်တောင်းပါက လက်ခံ (Allow) ပေးပါ", "warn");
+          appendLog("ဖုန်းမျက်နှာပြင်တွင် 'Allow USB Debugging' ခွင့်ပြုချက်တောင်းပါက လက်ခံ (Allow) ပေးပါ...", "warn");
+
+          // Diagnostic timer: If auth takes longer than 5 seconds, prompt user with steps
+          authTimer = setTimeout(() => {
+            appendLog("⚠️ ဖုန်းမျက်နှာပြင်တွင် 'Allow USB debugging' ပေါ်မလာသေးပါက စစ်ဆေးရန်:", "warn");
+            appendLog("၁။ ဖုန်း Notification bar ကို ဆွဲချပြီး USB ကို 'File Transfer (MTP)' သို့ ပြောင်းပေးပါ", "warn");
+            appendLog("၂။ ဖုန်း Settings > Developer Options > 'Revoke USB debugging authorizations' ကို နှိပ်ပြီး USB ကြိုး ဖြုတ်/ပြန်ထိုးပါ", "warn");
+            appendLog("၃။ ဖုန်းမျက်နှာပြင် (Screen) မပိတ်သွားစေရန် ဖွင့်ထားပေးပါ", "warn");
+            if (troubleshootAccordion) troubleshootAccordion.open = true;
+          }, 5000);
+
           const credentialManager = new AdbWebCryptoCredentialManager(new TangoLocalStorage("web-adb-installer"));
           const transport = await adbDaemonAuthenticate({ serial: device.serial, connection, credentialManager });
+          
+          if (authTimer) {
+            clearTimeout(authTimer);
+            authTimer = null;
+          }
+
           const adb = new Adb(transport);
 
           activeDevice = device;
@@ -1271,15 +1376,27 @@
           appendLog(`ဖုန်းချိတ်ဆက်မှု အောင်မြင်ပါသည်: ${brand} ${model} (Android ${release})`, "success");
           updateInstallButtonState();
         } catch (err) {
+          if (authTimer) {
+            clearTimeout(authTimer);
+            authTimer = null;
+          }
           console.error("Connect error:", err);
           const errMsg = err?.message || String(err);
           if (errMsg.includes("No device selected") || err.name === "NotFoundError") {
             appendLog("ဖုန်းရွေးချယ်မှုကို ပယ်ဖျက်လိုက်ပါသည် သို့မဟုတ် ဖုန်းကို မတွေ့ရှိပါ။", "warn");
           } else {
             appendLog(`ဖုန်းချိတ်ဆက်မှု မအောင်မြင်ပါ: ${errMsg}`, "error");
-            appendLog("အကြံပြုချက်: ဖုန်းမျက်နှာပြင်တွင် 'Allow USB Debugging' ပေါ်လာပါက Allow နှိပ်ပေးပါ။ သို့မဟုတ် USB ကြိုးကို ဖြုတ်ပြီး ပြန်ထိုးကြည့်ပါ။", "warn");
+            appendLog("အရေးကြီး အကြံပြုချက်: ဖုန်းမျက်နှာပြင်တွင် 'Allow USB Debugging' ပေါ်မလာပါက အောက်ပါ အချက် ၃ ချက်ကို စစ်ဆေးပါ:", "warn");
+            appendLog("• ၁။ ဖုန်း Notification bar တွင် USB ကို 'File Transfer (MTP)' သို့ ပြောင်းပါ", "warn");
+            appendLog("• ၂။ ဖုန်း Settings > Developer Options > 'Revoke USB debugging authorizations' ကို နှိပ်ပြီး ကြိုးဖြုတ်ပြန်ထိုးပါ", "warn");
+            appendLog("• ၃။ အထက်ရှိ 'သော့အသစ်ထုတ်၍ ပြန်လည်ချိတ်ဆက်မည်' ခလုတ်ကို နှိပ်ပါ", "warn");
+            if (troubleshootAccordion) troubleshootAccordion.open = true;
           }
         } finally {
+          if (authTimer) {
+            clearTimeout(authTimer);
+            authTimer = null;
+          }
           isBusy = false;
           connectBtn.disabled = false;
           if (!activeAdb) {
