@@ -271,6 +271,28 @@
         align-items: flex-start;
       }
 
+      /* Permission Policy Warning Box */
+      .policy-warning {
+        display: none;
+        background: rgba(245, 158, 11, 0.12);
+        border: 1px solid rgba(245, 158, 11, 0.35);
+        box-shadow: inset 0 1px 0 rgba(251, 191, 36, 0.25), 0 16px 40px -12px rgba(0, 0, 0, 0.4);
+        -webkit-backdrop-filter: blur(24px);
+        backdrop-filter: blur(24px);
+        border-radius: 20px;
+        padding: 16px 18px;
+        margin-bottom: 20px;
+        color: rgba(254, 243, 199, 0.95);
+        font-size: 13px;
+        line-height: 1.62;
+      }
+
+      .policy-warning.show {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+      }
+
       /* Liquid Glass Generic Card */
       .card {
         background: var(--glass-bg);
@@ -821,6 +843,29 @@
         </div>
       </div>
 
+      <!-- Permission Policy / Iframe Disallowed Warning Banner -->
+      <div id="permissionPolicyWarning" class="policy-warning" role="alert">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <div style="flex: 1;">
+          <strong style="color: #FDE68A; display: block; font-size: 14px; margin-bottom: 4px;">WebUSB အသုံးပြုခွင့် ကန့်သတ်ထားပါသည် (Permissions Policy)</strong>
+          <span style="color: rgba(255, 255, 255, 0.88); display: block; margin-bottom: 12px; font-size: 12.5px; line-height: 1.6;">
+            ဤစာမျက်နှာကို Preview iFrame (ကန့်သတ်ဘောင်) အတွင်း ဖွင့်ထားပါက Browser ၏ လုံခြုံရေးမူဝါဒအရ USB ချိတ်ဆက်မှုကို ခွင့်မပြုပါ (Disallowed by permissions policy)။ ဖုန်းနှင့် တိုက်ရိုက်ချိတ်ဆက်နိုင်ရန် အောက်ပါခလုတ်ကို နှိပ်၍ သီးသန့် Browser Tab အသစ်တွင် ဖွင့်ပေးပါ-
+          </span>
+          <a id="openInNewTabBtn" href="installer.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 9px 18px; font-size: 13px; width: fit-content;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+            Tab အသစ်တွင် သီးသန့်ဖွင့်မည် (Open in New Tab)
+          </a>
+        </div>
+      </div>
+
       <!-- Warning Banner -->
       <div class="alert-banner" role="note">
         <div class="alert-icon">
@@ -1167,6 +1212,18 @@
         const concat = (a, b) => { const n = new Uint8Array(a.length + b.length); n.set(a, 0); n.set(b, a.length); return n; };
         let buf = new Uint8Array(0);
         const take = (n) => { if (buf.length < n) return null; const out = buf.slice(0, n); buf = buf.slice(n); return out; };
+        const cmdName = (cmd) => {
+          switch (cmd) {
+            case 0x4e45504f: return "OPEN";
+            case 0x59414b4f: return "OKAY";
+            case 0x45534c43: return "CLSE";
+            case 0x45545257: return "WRTE";
+            case 0x48545541: return "AUTH";
+            case 0x4e595343: return "CNXN";
+            default: return "0x" + cmd.toString(16);
+          }
+        };
+
         const tryParsePacket = () => {
           const header = take(24);
           if (!header) return null;
@@ -1179,6 +1236,7 @@
           }
           const payload = take(payloadLength);
           if (!payload) { buf = concat(header, buf); return null; }
+          appendLog(`[diag] USB <- packet ${cmdName(command)} arg0=${arg0} arg1=${arg1} len=${payloadLength}`, "info");
           return { command, arg0, arg1, payloadLength, checksum, magic, payload };
         };
         const readable = new ReadableStream({
@@ -1219,11 +1277,13 @@
             v.setUint32(16, (packet.checksum >>> 0) || 0, true);
             const magic = packet.magic !== undefined ? packet.magic : (packet.command ^ 0xFFFFFFFF);
             v.setUint32(20, magic >>> 0, true);
-            appendLog(`[diag] USB -> header 24 bytes + payload ${payload.length} bytes`, "info");
+            appendLog(`[diag] USB -> packet ${cmdName(packet.command)} arg0=${packet.arg0} arg1=${packet.arg1} len=${payload.length}`, "info");
             await usbDevice.transferOut(outEndpoint.endpointNumber, header);
             if (payload.length > 0) await usbDevice.transferOut(outEndpoint.endpointNumber, payload);
             const packetSize = outEndpoint.packetSize || 512;
-            if ((24 + payload.length) % packetSize === 0) await usbDevice.transferOut(outEndpoint.endpointNumber, new Uint8Array(0));
+            if (payload.length > 0 && payload.length % packetSize === 0) {
+              await usbDevice.transferOut(outEndpoint.endpointNumber, new Uint8Array(0));
+            }
           }
         });
         return { readable, writable };
@@ -1237,6 +1297,8 @@
 
       // DOM Elements
       const unsupportedWarning = document.getElementById("unsupportedWarning");
+      const permissionPolicyWarning = document.getElementById("permissionPolicyWarning");
+      const openInNewTabBtn = document.getElementById("openInNewTabBtn");
       const connectBtn = document.getElementById("connectBtn");
       const connectBtnText = document.getElementById("connectBtnText");
       const apkFileInput = document.getElementById("apkFileInput");
@@ -1375,7 +1437,16 @@
         }
       }
 
-      // 1. Startup Guard Check: WebUSB support
+      function showPermissionPolicyNotice() {
+        if (permissionPolicyWarning) {
+          permissionPolicyWarning.classList.add("show");
+          if (openInNewTabBtn) {
+            openInNewTabBtn.href = window.location.href;
+          }
+        }
+      }
+
+      // 1. Startup Guard Check: WebUSB support & Permissions Policy
       if (!("usb" in navigator)) {
         unsupportedWarning.classList.add("show");
         connectBtn.disabled = true;
@@ -1384,8 +1455,18 @@
         connectBtnText.textContent = "WebUSB အသုံးမပြုနိုင်ပါ (Chrome/Edge ဖွင့်ပါ)";
         appendLog("သတိပေးချက်: WebUSB ကို ဤဘရောက်ဆာတွင် အသုံးမပြုနိုင်ပါ — ကျေးဇူးပြု၍ Google Chrome သို့မဟုတ် Edge တွင် ဖွင့်ပါ", "error");
       } else {
-        appendLog("WebUSB အသင့်ရှိပါသည် (Chrome/Edge စနစ် စစ်ဆေးပြီးပါပြီ)", "success");
-        appendLog("ဖုန်းကို USB ကြိုးဖြင့် ချိတ်ဆက်ပြီး Developer Options တွင် USB Debugging ဖွင့်ထားပေးပါ", "info");
+        const isDisallowedByPolicy = (typeof document !== "undefined" && document.permissionsPolicy && typeof document.permissionsPolicy.allowsFeature === "function")
+          ? !document.permissionsPolicy.allowsFeature("usb")
+          : false;
+        const isInIframe = window.self !== window.top;
+
+        if (isDisallowedByPolicy || isInIframe) {
+          showPermissionPolicyNotice();
+          appendLog("သတိပေးချက်: စာမျက်နှာသည် iFrame Preview (ကန့်သတ်ဘောင်) အတွင်း ဖြစ်နေသောကြောင့် WebUSB အသုံးပြုခွင့်ကို Browser မှ ကန့်သတ်ထားနိုင်ပါသည်။ အဆင်မပြေပါက အပေါ်ရှိ 'Tab အသစ်တွင် သီးသန့်ဖွင့်မည်' ခလုတ်ကို နှိပ်ပါ", "warn");
+        } else {
+          appendLog("WebUSB အသင့်ရှိပါသည် (Chrome/Edge စနစ် စစ်ဆေးပြီးပါပြီ)", "success");
+          appendLog("ဖုန်းကို USB ကြိုးဖြင့် ချိတ်ဆက်ပြီး Developer Options တွင် USB Debugging ဖွင့်ထားပေးပါ", "info");
+        }
       }
 
       // 2. Connect Device Click Handler
@@ -1398,6 +1479,13 @@
           connectBtn.disabled = true;
           connectBtnText.innerHTML = '<span class="spinner"></span> ချိတ်ဆက်နေပါသည်...';
           appendLog("စက်ပစ္စည်း ချိတ်ဆက်မှုကို စတင်နေပါသည်...", "info");
+
+          // Pre-check permissions policy
+          if (typeof document !== "undefined" && document.permissionsPolicy && typeof document.permissionsPolicy.allowsFeature === "function") {
+            if (!document.permissionsPolicy.allowsFeature("usb")) {
+              throw new DOMException("Access to the feature 'usb' is disallowed by permissions policy.", "SecurityError");
+            }
+          }
 
           // Exact connect flow from specifications
           const device = await navigator.usb.requestDevice({ filters: [{ classCode: 0xFF, subclassCode: 0x42, protocolCode: 1 }] });
@@ -1474,8 +1562,18 @@
           }
           console.error("Connect error:", err);
           const errMsg = err?.message || String(err);
+          const isPolicyError = err.name === "SecurityError" || errMsg.includes("permissions policy") || errMsg.includes("disallowed by permissions policy");
+
           if (errMsg.includes("No device selected") || err.name === "NotFoundError") {
             appendLog("ဖုန်းရွေးချယ်မှုကို ပယ်ဖျက်လိုက်ပါသည် သို့မဟုတ် ဖုန်းကို မတွေ့ရှိပါ။", "warn");
+          } else if (isPolicyError) {
+            appendLog("❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ: Browser လုံခြုံရေးမူဝါဒ ကန့်သတ်ချက် (Permissions Policy Disallowed)", "error");
+            appendLog("စာမျက်နှာကို Preview iFrame အတွင်း ဖွင့်ထားသောကြောင့် Browser မှ WebUSB ကို ပိတ်ထားပါသည်", "warn");
+            appendLog("👉 ကျေးဇူးပြု၍ စာမျက်နှာကို Browser Tab အသစ် (တိုက်ရိုက်လင့်ခ်) တွင် ဖွင့်ပြီးမှ ချိတ်ဆက်ပေးပါ (အပေါ်ရှိ 'Tab အသစ်တွင် သီးသန့်ဖွင့်မည်' ခလုတ်ကို နှိပ်ပါ)", "warn");
+            showPermissionPolicyNotice();
+            if (permissionPolicyWarning) {
+              permissionPolicyWarning.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
           } else {
             appendLog(`ဖုန်းချိတ်ဆက်မှု မအောင်မြင်ပါ: ${errMsg}`, "error");
             appendLog("အရေးကြီး အကြံပြုချက်: ဖုန်းမျက်နှာပြင်တွင် 'Allow USB Debugging' ပေါ်မလာပါက အောက်ပါ အချက် ၃ ချက်ကို စစ်ဆေးပါ:", "warn");
@@ -1630,10 +1728,15 @@
             }
           }));
 
-          appendLog("APK ဒေတာများကို ဖုန်းထဲသို့ Streaming ဖြင့် ပို့ဆောင်နေပါသည်...", "info");
+          appendLog("APK ဒေတာများကို ဖုန်းထဲသို့ Streaming စနစ်ဖြင့် စတင်ပို့ဆောင်နေပါသည်...", "info");
+          appendLog("💡 ဖုန်းမျက်နှာပြင်တွင် 'Install via USB' ခွင့်ပြုချက်မေးခွန်း ပေါ်လာပါက 'Install' ကို နှိပ်ပေးပါ", "warn");
           
-          // pushAndInstallStream
-          const result = await pm.pushAndInstallStream(countedStream, { replaceExisting: true });
+          let result;
+          if (typeof pm.installStream === "function") {
+            result = await pm.installStream(totalBytes, countedStream, { replaceExisting: true });
+          } else {
+            result = await pm.pushAndInstallStream(countedStream, { replaceExisting: true });
+          }
 
           setProgress(100, "တပ်ဆင်မှု ပြီးဆုံးပါပြီ!");
           appendLog(`တပ်ဆင်မှု ရလဒ်: ${result || "Success"}`, "success");

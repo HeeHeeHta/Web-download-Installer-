@@ -1,6 +1,6 @@
 {
   "name": "Burmese App Download & Web ADB Installer",
   "description": "App Download Center and WebUSB Web ADB APK Installer with full Burmese UI support.",
-  "requestFramePermissions": [],
+  "requestFramePermissions": ["usb"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
