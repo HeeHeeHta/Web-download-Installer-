@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Web ADB တပ်ဆင်ရေး | Web ADB APK Installer</title>
+    <title>Web ADB တပ်ဆင်ရေး | Web ADB & Fastbot Tool </title>
     <meta name="description" content=" Chrome မှတစ်ဆင့် Android ဖုန်းထဲသို့ USB ဖြင့် APK တိုက်ရိုက်သွင်းယူနိုင်သော Web ADB စနစ်။" />
-    <meta property="og:title" content="Web ADB တပ်ဆင်ရေး | Web ADB APK Installer" />
+    <meta property="og:title" content="Web ADB တပ်ဆင်ရေး | Web ADB & Fastboot Installer" />
     <meta property="og:description" content=" Chrome မှတစ်ဆင့် Android ဖုန်းထဲသို့ USB ဖြင့် APK တိုက်ရိုက်သွင်းယူနိုင်သော Web ADB စနစ်။" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -844,8 +844,91 @@
         animation: spin 0.8s linear infinite;
       }
 
-      @keyframes spin {
-        to { transform: rotate(360deg); }
+      /* Mode Switcher (ADB Install | Fastboot Tools) */
+      .mode-switcher-wrap {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0 28px;
+      }
+
+      .mode-switcher {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.35);
+        border-radius: 9999px;
+        padding: 4px;
+        -webkit-backdrop-filter: blur(24px);
+        backdrop-filter: blur(24px);
+        gap: 4px;
+      }
+
+      .mode-tab-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 13.5px;
+        font-weight: 600;
+        padding: 8px 18px;
+        border-radius: 9999px;
+        cursor: pointer;
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        font-family: inherit;
+        line-height: 1.2;
+      }
+
+      .mode-tab-btn:hover {
+        color: #FFFFFF;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .mode-tab-btn.active {
+        background: rgba(255, 255, 255, 0.18);
+        color: #FFFFFF;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 3px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Liquid Glass Inputs & Fastboot Styles */
+      .input-glass {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        padding: 10px 14px;
+        color: #FFFFFF;
+        font-size: 13.5px;
+        font-family: inherit;
+        outline: none;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+        transition: all 0.2s ease;
+      }
+
+      .input-glass:focus {
+        border-color: rgba(52, 211, 153, 0.55);
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15);
+      }
+
+      .fastboot-chip-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 9999px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        font-family: monospace;
+      }
+
+      .fastboot-chip-btn:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #FFFFFF;
+        border-color: rgba(255, 255, 255, 0.25);
       }
     </style>
   </head>
@@ -886,6 +969,25 @@
         <h1 data-i18n="headerTitle">Web ADB တပ်ဆင်ရေး </h1>
         <p data-i18n="headerSubtitle">Google Chrome မှတစ်ဆင့် USB ဒေတာကြိုးဖြင့် Android ဖုန်းထဲသို့ APK တိုက်ရိုက်သွင်းယူပါ</p>
       </header>
+
+      <!-- Segmented Mode Switcher (ADB Install | Fastboot Tools) -->
+      <div class="mode-switcher-wrap">
+        <div class="mode-switcher" role="tablist" aria-label="Tool Mode Switcher">
+          <button type="button" class="mode-tab-btn active" id="tabAdbMode" role="tab" aria-selected="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+            <span data-i18n="tabAdbMode">ADB Install</span>
+          </button>
+          <button type="button" class="mode-tab-btn" id="tabFastbootMode" role="tab" aria-selected="false">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            <span data-i18n="tabFastbootMode">Fastboot Tools</span>
+          </button>
+        </div>
+      </div>
 
       <!-- Critical WebUSB Guard Error (shown only if WebUSB is unsupported) -->
       <div id="unsupportedWarning" class="critical-error" role="alert">
@@ -940,8 +1042,10 @@
         </div>
       </div>
 
-      <!-- Requirements Checklist Card -->
-      <section class="card">
+      <!-- ADB MODE SECTION WRAPPER -->
+      <div id="adbModeSection">
+        <!-- Requirements Checklist Card -->
+        <section class="card">
         <h2 class="card-title">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
@@ -1227,6 +1331,347 @@
           </div>
         </section>
       </div>
+      </div> <!-- End of adbModeSection -->
+
+      <!-- FASTBOOT MODE SECTION (For Mobile Service Technicians) -->
+      <div id="fastbootModeSection" style="display: none;">
+        <!-- Fastboot Mode Tech Banner -->
+        <div class="alert-banner" style="background: rgba(56, 189, 248, 0.08); border-color: rgba(56, 189, 248, 0.28); box-shadow: inset 0 1px 0 rgba(56, 189, 248, 0.2), 0 16px 40px -12px rgba(0, 0, 0, 0.35);" role="note">
+          <div class="alert-icon" style="color: #38BDF8;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <div class="alert-content">
+            <h3 style="color: #BAE6FD;" data-i18n="fbTechBannerTitle">မိုဘိုင်းလ်ဖုန်း ပြုပြင်ရေးပညာရှင်သုံး Fastboot စနစ် (Fastboot Tools)</h3>
+            <p style="color: rgba(255, 255, 255, 0.85);" data-i18n="fbTechBannerDesc">
+              ဖုန်းကို Fastboot / Bootloader mode ဖြင့် USB ကြိုးထိုး၍ ချိတ်ဆက်ပါ။ Partition image များ ရေးသွင်းခြင်း၊ ယာယီ Boot တက်စမ်းသပ်ခြင်းနှင့် Bootloader အဆင့် ထိန်းချုပ်မှုများ ပြုလုပ်နိုင်ပါသည်။
+            </p>
+          </div>
+        </div>
+
+        <!-- Fastboot Cards Container -->
+        <div class="steps-container">
+          <!-- FASTBOOT STEP 1: Connect Fastboot Device -->
+          <section class="step-card active" id="fbStep1Card">
+            <div class="step-header">
+              <div class="step-title-group">
+                <div class="step-badge" id="fbStep1Badge" style="background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.35); color: #38BDF8;">FB</div>
+                <h3 class="step-heading-text" data-i18n="fbConnectHeading">Fastboot စက်ပစ္စည်း ချိတ်ဆက်ခြင်း</h3>
+              </div>
+              <span class="step-status-tag" id="fbStep1Status" data-i18n="step1StatusWaiting">စောင့်ဆိုင်းဆဲ</span>
+            </div>
+            <p class="step-desc" data-i18n="fbConnectDesc">ဖုန်းကို Fastboot/Bootloader mode ဖွင့်ထားပြီး USB ကြိုးဖြင့် ကွန်ပျူတာနှင့် ချိတ်ဆက်ကာ အောက်ပါခလုတ်ကို နှိပ်ပါ။</p>
+
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-primary" id="fbConnectBtn" style="flex: 1; min-width: 200px;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+                <span id="fbConnectBtnText" data-i18n="fbConnectBtn">Connect Fastboot Device</span>
+              </button>
+
+              <button type="button" class="btn btn-outline" id="fbDisconnectBtn" style="display: none; padding: 12px 18px; border-radius: 14px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+                <span data-i18n="fbDisconnectBtn">Disconnect / Reset</span>
+              </button>
+            </div>
+
+            <!-- Fastboot Device Info Box -->
+            <div class="device-box" id="fbDeviceBox" style="display: none; margin-top: 16px;">
+              <div class="device-header">
+                <span class="device-header-title">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                  <span data-i18n="fbDeviceBoxTitle">ချိတ်ဆက်ထားသော Fastboot စက်ပစ္စည်း အချက်အလက်</span>
+                </span>
+                <span style="font-size: 11px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #38BDF8; padding: 2px 8px; border-radius: 9999px; font-weight: 600;">Fastboot Online</span>
+              </div>
+              <div class="device-grid">
+                <div class="device-item">
+                  <span class="device-label" data-i18n="fbLabelProduct">Product (မော်ဒယ်):</span>
+                  <span class="device-val" id="fbValProduct">-</span>
+                </div>
+                <div class="device-item">
+                  <span class="device-label" data-i18n="fbLabelSerial">Serial နံပါတ်:</span>
+                  <span class="device-val" id="fbValSerial">-</span>
+                </div>
+                <div class="device-item">
+                  <span class="device-label" data-i18n="fbLabelBootloader">Bootloader ဗားရှင်း:</span>
+                  <span class="device-val" id="fbValBootloader">-</span>
+                </div>
+                <div class="device-item">
+                  <span class="device-label" data-i18n="fbLabelUnlocked">Bootloader Lock:</span>
+                  <span class="device-val" id="fbValUnlocked">-</span>
+                </div>
+                <div class="device-item">
+                  <span class="device-label" data-i18n="fbLabelSlot">Current Slot:</span>
+                  <span class="device-val" id="fbValSlot">-</span>
+                </div>
+                <div class="device-item">
+                  <span class="device-label" data-i18n="fbLabelSecure">Secure Boot:</span>
+                  <span class="device-val" id="fbValSecure">-</span>
+                </div>
+                <div class="device-item" style="grid-column: 1 / -1;">
+                  <span class="device-label" data-i18n="fbLabelBaseband">Baseband ဗားရှင်း:</span>
+                  <span class="device-val" id="fbValBaseband">-</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- FASTBOOT REBOOT ROW CARD -->
+          <section class="step-card" id="fbRebootCard">
+            <div class="step-header" style="margin-bottom: 12px;">
+              <div class="step-title-group">
+                <div class="step-badge" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                </div>
+                <h3 class="step-heading-text" data-i18n="fbRebootTitle">Fastboot Reboot ထိန်းချုပ်မှုများ</h3>
+              </div>
+            </div>
+            <p class="step-desc" data-i18n="fbRebootDesc">Bootloader အဆင့်မှတစ်ဆင့် ဖုန်းကို ပုံစံအမျိုးမျိုးဖြင့် ပြန်လည်စတင်ရန် အောက်ပါခလုတ်များကို အသုံးပြုနိုင်ပါသည်။</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;">
+              <button type="button" class="btn btn-outline fb-action-btn" id="fbBtnRebootSystem" style="font-size: 12.5px; padding: 10px 12px; border-radius: 14px;" disabled>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 4 23 10 17 10"/>
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                </svg>
+                <span data-i18n="fbRebootSystem">Reboot System</span>
+              </button>
+              <button type="button" class="btn btn-outline fb-action-btn" id="fbBtnRebootBootloader" style="font-size: 12.5px; padding: 10px 12px; border-radius: 14px;" disabled>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+                <span data-i18n="fbRebootBootloader">Reboot Bootloader</span>
+              </button>
+              <button type="button" class="btn btn-outline fb-action-btn" id="fbBtnRebootRecovery" style="font-size: 12.5px; padding: 10px 12px; border-radius: 14px;" disabled>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <span data-i18n="fbRebootRecovery">Reboot Recovery</span>
+              </button>
+              <button type="button" class="btn btn-outline fb-action-btn" id="fbBtnContinue" style="font-size: 12.5px; padding: 10px 12px; border-radius: 14px;" disabled>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                <span data-i18n="fbRebootContinue">Continue Boot</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- FLASH PARTITION CARD -->
+          <section class="step-card" id="fbFlashCard">
+            <div class="step-header">
+              <div class="step-title-group">
+                <div class="step-badge" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                </div>
+                <h3 class="step-heading-text" data-i18n="fbFlashTitle">Flash Partition</h3>
+              </div>
+            </div>
+            <p class="step-desc" data-i18n="fbFlashDesc">ဖုန်း၏ သတ်မှတ် Partition ထဲသို့ Image (.img, .bin) ဖိုင် ရေးသွင်းပါမည်။</p>
+
+            <!-- Warning Notice -->
+            <div style="background: var(--warning-tint); border: 1px solid var(--warning-border); border-radius: 14px; padding: 12px 14px; margin-bottom: 16px; font-size: 12.5px; color: #FDE68A; display: flex; gap: 10px; align-items: flex-start;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span data-i18n="fbFlashWarning">Flashing the wrong image can brick the device. Proceed with caution.</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;" data-i18n="fbPartitionLabel">Partition အမည် (Partition Name):</label>
+                <input type="text" id="fbFlashPartition" class="input-glass" list="fbPartitionList" placeholder="e.g. boot, recovery, vbmeta, super..." autocomplete="off" />
+                <datalist id="fbPartitionList">
+                  <option value="boot"></option>
+                  <option value="init_boot"></option>
+                  <option value="recovery"></option>
+                  <option value="vbmeta"></option>
+                  <option value="vbmeta_system"></option>
+                  <option value="dtbo"></option>
+                  <option value="vendor_boot"></option>
+                  <option value="super"></option>
+                  <option value="userdata"></option>
+                  <option value="cache"></option>
+                </datalist>
+              </div>
+
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;" data-i18n="fbSelectImageLabel">Partition Image (.img, .bin):</label>
+                <input type="file" id="fbFlashFileInput" class="file-input-hidden" accept=".img,.bin" />
+                <div class="file-dropzone" id="fbFlashDropzone" style="padding: 16px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 6px; opacity: 0.75;">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="12" y1="18" x2="12" y2="12"/>
+                    <line x1="9" y1="15" x2="15" y2="15"/>
+                  </svg>
+                  <div id="fbFlashFileName" style="font-size: 13.5px; font-weight: 600; color: #FFFFFF;" data-i18n="fbFlashDropzoneText">Image ဖိုင် ရွေးချယ်ရန် နှိပ်ပါ သို့မဟုတ် ဖိုင်ဆွဲထည့်ပါ (.img, .bin)</div>
+                  <div id="fbFlashFileSize" style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;"></div>
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-primary" id="fbFlashBtn" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+                <span id="fbFlashBtnText" data-i18n="fbFlashBtn">Flash Partition</span>
+              </button>
+
+              <!-- Flash Progress Bar -->
+              <div class="progress-section" id="fbFlashProgressSection" style="display: none;">
+                <div class="progress-label-row">
+                  <span class="progress-label" id="fbFlashProgressStatus">Flashing image...</span>
+                  <span class="progress-percent" id="fbFlashProgressPercent">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill" id="fbFlashProgressBarFill"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- BOOT IMAGE (NO FLASH) CARD -->
+          <section class="step-card" id="fbBootCard">
+            <div class="step-header">
+              <div class="step-title-group">
+                <div class="step-badge" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                  </svg>
+                </div>
+                <h3 class="step-heading-text" data-i18n="fbBootTitle">Boot Temporary Image (No Flash)</h3>
+              </div>
+            </div>
+            <p class="step-desc" data-i18n="fbBootDesc">ဖုန်း၏ flash memory သို့ အပြီးမရေးဘဲ ယာယီ Boot စမ်းသပ်တက်ကြည့်ခြင်း ဖြစ်ပါသည်။</p>
+
+            <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 10px 14px; margin-bottom: 14px; font-size: 12px; color: var(--text-secondary);" data-i18n="fbBootNote">
+              Boots temporarily without writing to flash. Ideal for testing custom recovery or kernel images.
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;" data-i18n="fbBootFileLabel">Boot Image (.img):</label>
+                <input type="file" id="fbBootFileInput" class="file-input-hidden" accept=".img" />
+                <div class="file-dropzone" id="fbBootDropzone" style="padding: 16px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 6px; opacity: 0.75;">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                  </svg>
+                  <div id="fbBootFileName" style="font-size: 13.5px; font-weight: 600; color: #FFFFFF;" data-i18n="fbBootDropzoneText">boot.img ဖိုင် ရွေးချယ်ရန် နှိပ်ပါ သို့မဟုတ် ဆွဲထည့်ပါ</div>
+                  <div id="fbBootFileSize" style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;"></div>
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-primary" id="fbBootBtn" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                <span id="fbBootBtnText" data-i18n="fbBootBtn">Boot Image</span>
+              </button>
+
+              <!-- Boot Progress Bar -->
+              <div class="progress-section" id="fbBootProgressSection" style="display: none;">
+                <div class="progress-label-row">
+                  <span class="progress-label" id="fbBootProgressStatus">Uploading & Booting...</span>
+                  <span class="progress-percent" id="fbBootProgressPercent">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill" id="fbBootProgressBarFill"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ERASE PARTITION CARD -->
+          <section class="step-card" id="fbEraseCard">
+            <div class="step-header">
+              <div class="step-title-group">
+                <div class="step-badge" style="background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.28); color: #FCA5A5;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  </svg>
+                </div>
+                <h3 class="step-heading-text" data-i18n="fbEraseTitle">Erase Partition</h3>
+              </div>
+            </div>
+            <p class="step-desc" data-i18n="fbEraseDesc">သတ်မှတ်ထားသော Partition အတွင်းရှိ ဒေတာများကို ဖျက်ထုတ်ရှင်းလင်းပါမည်။</p>
+
+            <!-- Warning Notice -->
+            <div style="background: var(--danger-tint); border: 1px solid var(--danger-border); border-radius: 14px; padding: 12px 14px; margin-bottom: 14px; font-size: 12.5px; color: #FCA5A5; display: flex; gap: 10px; align-items: flex-start;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <span data-i18n="fbEraseWarning">WARNING: Erasing a partition will permanently delete its data. System partitions will brick the device.</span>
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <input type="text" id="fbErasePartition" class="input-glass" list="fbPartitionList" placeholder="e.g. cache, userdata, boot..." style="flex: 1; min-width: 180px;" autocomplete="off" />
+              <button type="button" class="btn btn-outline fb-action-btn" id="fbEraseBtn" style="color: #FCA5A5; border-color: rgba(239, 68, 68, 0.35); padding: 11px 20px; font-size: 13px;" disabled>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+                <span data-i18n="fbEraseBtn">Erase Partition</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- CUSTOM FASTBOOT COMMAND CARD -->
+          <section class="step-card" id="fbCmdCard">
+            <div class="step-header">
+              <div class="step-title-group">
+                <div class="step-badge" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="4 17 10 11 4 5"/>
+                    <line x1="12" y1="19" x2="20" y2="19"/>
+                  </svg>
+                </div>
+                <h3 class="step-heading-text" data-i18n="fbCmdTitle">Custom Fastboot Command</h3>
+              </div>
+            </div>
+            <p class="step-desc" data-i18n="fbCmdDesc">Fastboot command များ တိုက်ရိုက် ပေးပို့အမိန့်ပေးနိုင်ပါသည် (ဥပမာ- getvar all, oem device-info)။</p>
+
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;">
+              <span style="font-size: 11px; color: var(--text-muted); align-self: center;" data-i18n="fbQuickChips">Quick:</span>
+              <button type="button" class="fastboot-chip-btn" data-cmd="getvar all">getvar all</button>
+              <button type="button" class="fastboot-chip-btn" data-cmd="getvar current-slot">getvar current-slot</button>
+              <button type="button" class="fastboot-chip-btn" data-cmd="set_active other">set_active other</button>
+              <button type="button" class="fastboot-chip-btn" data-cmd="oem device-info">oem device-info</button>
+              <button type="button" class="fastboot-chip-btn" data-cmd="flashing get_unlock_ability">get_unlock_ability</button>
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <input type="text" id="fbCustomCmdInput" class="input-glass" placeholder="e.g. getvar all, oem unlock..." style="flex: 1; min-width: 180px;" autocomplete="off" />
+              <button type="button" class="btn btn-outline fb-action-btn" id="fbCustomCmdBtn" style="padding: 11px 20px; font-size: 13px;" disabled>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"/>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+                <span data-i18n="fbCmdBtn">Send Command</span>
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
 
       <!-- Scrolling Monospace Log Area -->
       <section class="log-card">
@@ -1259,6 +1704,7 @@
       import { Adb, AdbDaemonTransport } from "https://esm.sh/@yume-chan/adb@2.6.4";
       import AdbWebCredentialStore from "https://esm.sh/@yume-chan/adb-credential-web@2.1.0";
       import { PackageManager } from "https://esm.sh/@yume-chan/android-bin@2.1.0";
+      import { FastbootDevice } from "https://esm.sh/android-fastboot@1.1.3";
 
       // Compatibility adapter bridging the authenticate & credential manager API
       const adbDaemonAuthenticate = (options) => {
@@ -1388,11 +1834,13 @@
       let activeDeviceModel = "";
       let selectedFiles = [];
       let isBusy = false;
+      let activeFb = null;
+      let currentMode = "adb";
 
       // Translation dictionary
       const TRANSLATIONS = {
         my: {
-          pageTitle: "Web ADB တပ်ဆင်ရေး | Web ADB APK Installer",
+          pageTitle: "Web ADB တပ်ဆင်ရေး | Web ADB & Fastboot Tool",
           backLink: "ပင်မမျက်နှာသို့",
           statusDisconnected: "ချိတ်ဆက်မထားပါ",
           statusConnectedSuffix: "ချိတ်ဆက်ပြီး",
@@ -1457,16 +1905,59 @@
           installBtnText: "APK တပ်ဆင်မည်",
           installBtnSuccess: "အောင်မြင်စွာ တပ်ဆင်ပြီးပါပြီ",
           installBtnRetry: "ပြန်လည်ကြိုးစားမည် ",
+          tabAdbMode: "ADB Install",
+          tabFastbootMode: "Fastboot Tools",
+          fbTechBannerTitle: "မိုဘိုင်းလ်ဖုန်း ပြုပြင်ရေးပညာရှင်သုံး Fastboot စနစ် (Fastboot Tools)",
+          fbTechBannerDesc: "ဖုန်းကို Fastboot / Bootloader mode ဖြင့် USB ကြိုးထိုး၍ ချိတ်ဆက်ပါ။ Partition image များ ရေးသွင်းခြင်း၊ ယာယီ Boot တက်စမ်းသပ်ခြင်းနှင့် Bootloader အဆင့် ထိန်းချုပ်မှုများ ပြုလုပ်နိုင်ပါသည်။",
+          fbConnectHeading: "Fastboot စက်ပစ္စည်း ချိတ်ဆက်ခြင်း",
+          fbConnectDesc: "ဖုန်းကို Fastboot/Bootloader mode ဖွင့်ထားပြီး USB ကြိုးဖြင့် ကွန်ပျူတာနှင့် ချိတ်ဆက်ကာ အောက်ပါခလုတ်ကို နှိပ်ပါ။",
+          fbConnectBtn: "Fastboot စက် ချိတ်ဆက်မည်",
+          fbDisconnectBtn: "ချိတ်ဆက်မှု ဖြုတ်မည်",
+          fbDeviceBoxTitle: "ချိတ်ဆက်ထားသော Fastboot စက်ပစ္စည်း အချက်အလက်",
+          fbLabelProduct: "Product (မော်ဒယ်):",
+          fbLabelSerial: "Serial နံပါတ်:",
+          fbLabelBootloader: "Bootloader ဗားရှင်း:",
+          fbLabelUnlocked: "Bootloader Lock:",
+          fbLabelSlot: "Current Slot:",
+          fbLabelSecure: "Secure Boot:",
+          fbLabelBaseband: "Baseband ဗားရှင်း:",
+          fbRebootTitle: "Fastboot Reboot ထိန်းချုပ်မှုများ",
+          fbRebootDesc: "Bootloader အဆင့်မှတစ်ဆင့် ဖုန်းကို ပုံစံအမျိုးမျိုးဖြင့် ပြန်လည်စတင်ရန် အောက်ပါခလုတ်များကို အသုံးပြုနိုင်ပါသည်။",
+          fbRebootSystem: "Reboot System",
+          fbRebootBootloader: "Reboot Bootloader",
+          fbRebootRecovery: "Reboot Recovery",
+          fbRebootContinue: "Continue Boot",
+          fbFlashTitle: "Flash Partition",
+          fbFlashDesc: "ဖုန်း၏ သတ်မှတ် Partition ထဲသို့ Image (.img, .bin) ဖိုင် ရေးသွင်းပါမည်။",
+          fbFlashWarning: "သတိပေးချက်: မှားယွင်းသော partition သို့မဟုတ် image ရေးသွင်းမိပါက ဖုန်း ပျက်စီး (Brick) နိုင်ပါသည်။ သတိပြုလုပ်ဆောင်ပါ။",
+          fbPartitionLabel: "Partition အမည် (Partition Name):",
+          fbSelectImageLabel: "Partition Image (.img, .bin):",
+          fbFlashDropzoneText: "Image ဖိုင် ရွေးချယ်ရန် နှိပ်ပါ သို့မဟုတ် ဖိုင်ဆွဲထည့်ပါ (.img, .bin)",
+          fbFlashBtn: "Partition ရေးသွင်းမည် (Flash)",
+          fbBootTitle: "Boot Temporary Image (No Flash)",
+          fbBootDesc: "ဖုန်း၏ flash memory သို့ အပြီးမရေးဘဲ ယာယီ Boot စမ်းသပ်တက်ကြည့်ခြင်း ဖြစ်ပါသည်။",
+          fbBootNote: "Flash memory ထဲသို့ အပြီးမရေးဘဲ recovery သို့မဟုတ် boot image ကို ယာယီ စမ်းသပ် Boot တက်ကြည့်ခြင်း ဖြစ်ပါသည်။",
+          fbBootFileLabel: "Boot Image (.img):",
+          fbBootDropzoneText: "boot.img ဖိုင် ရွေးချယ်ရန် နှိပ်ပါ သို့မဟုတ် ဆွဲထည့်ပါ",
+          fbBootBtn: "ယာယီ Boot တက်မည်",
+          fbEraseTitle: "Erase Partition",
+          fbEraseDesc: "သတ်မှတ်ထားသော Partition အတွင်းရှိ ဒေတာများကို ဖျက်ထုတ်ရှင်းလင်းပါမည်။",
+          fbEraseWarning: "သတိပေးချက်: Partition အား ဖျက်ထုတ်ပါက ၎င်းအတွင်းရှိ ဒေတာများ လုံးဝပျက်စီးသွားမည် ဖြစ်ပါသည်။",
+          fbEraseBtn: "Partition အား ဖျက်မည်",
+          fbCmdTitle: "Custom Fastboot Command",
+          fbCmdDesc: "Fastboot command များ တိုက်ရိုက် ပေးပို့အမိန့်ပေးနိုင်ပါသည် (ဥပမာ- getvar all, oem device-info)။",
+          fbCmdBtn: "အမိန့်ပေးမည် (Send)",
+          fbQuickChips: "Quick:",
           logTitle: "လုပ်ဆောင်မှု မှတ်တမ်း ",
           clearLogBtn: "မှတ်တမ်းရှင်းမည်",
           footerText: "WebUSB ADB Installer • Android 5.0+ နှင့်အထက် စက်ပစ္စည်းများကို ထောက်ပံ့ပါသည်"
         },
         en: {
-          pageTitle: "Web ADB APK Installer | Direct USB Installation",
+          pageTitle: "Web ADB & Fastboot Tool | Direct USB Installation",
           backLink: "Home",
           statusDisconnected: "Disconnected",
           statusConnectedSuffix: "Connected",
-          headerTitle: "Web ADB APK Installer",
+          headerTitle: "Web ADB & Fastboot Tool",
           headerSubtitle: "Install APKs directly to your Android device via USB cable right in Google Chrome",
           unsupportedTitle: "WebUSB is not supported in this browser",
           unsupportedDesc: "This feature requires Google Chrome or Microsoft Edge. Please reopen this page in Chrome or Edge.",
@@ -1527,6 +2018,49 @@
           installBtnText: "Install APK to Device",
           installBtnSuccess: "Installation Successful",
           installBtnRetry: "Try Again",
+          tabAdbMode: "ADB Install",
+          tabFastbootMode: "Fastboot Tools",
+          fbTechBannerTitle: "Mobile Service Technician Mode (Fastboot Tools)",
+          fbTechBannerDesc: "Connect phone in Fastboot / Bootloader mode via USB. Direct partition flashing, temporary booting, and low-level device control.",
+          fbConnectHeading: "Fastboot Device Connection",
+          fbConnectDesc: "Put device into Fastboot/Bootloader mode and connect via USB, then click the button below.",
+          fbConnectBtn: "Connect Fastboot Device",
+          fbDisconnectBtn: "Disconnect / Reset",
+          fbDeviceBoxTitle: "Fastboot Device Information",
+          fbLabelProduct: "Product (Model):",
+          fbLabelSerial: "Serial Number:",
+          fbLabelBootloader: "Bootloader Version:",
+          fbLabelUnlocked: "Bootloader Lock:",
+          fbLabelSlot: "Current Slot:",
+          fbLabelSecure: "Secure Boot:",
+          fbLabelBaseband: "Baseband Version:",
+          fbRebootTitle: "Fastboot Reboot Controls",
+          fbRebootDesc: "Reboot device into various operating modes directly from the bootloader.",
+          fbRebootSystem: "Reboot System",
+          fbRebootBootloader: "Reboot Bootloader",
+          fbRebootRecovery: "Reboot Recovery",
+          fbRebootContinue: "Continue Boot",
+          fbFlashTitle: "Flash Partition",
+          fbFlashDesc: "Write an image file (.img, .bin) directly to a device partition.",
+          fbFlashWarning: "WARNING: Flashing the wrong image can brick the device. Proceed with caution.",
+          fbPartitionLabel: "Partition Name:",
+          fbSelectImageLabel: "Partition Image (.img, .bin):",
+          fbFlashDropzoneText: "Click or drop image file here (.img, .bin)",
+          fbFlashBtn: "Flash Partition",
+          fbBootTitle: "Boot Temporary Image (No Flash)",
+          fbBootDesc: "Boots an image file temporarily without modifying device storage.",
+          fbBootNote: "Boots temporarily without writing to flash. Ideal for testing custom recovery or kernel images.",
+          fbBootFileLabel: "Boot Image (.img):",
+          fbBootDropzoneText: "Click or drop boot.img file here",
+          fbBootBtn: "Boot Image",
+          fbEraseTitle: "Erase Partition",
+          fbEraseDesc: "Erase all contents of a specific partition.",
+          fbEraseWarning: "WARNING: Erasing a partition will permanently delete its data. System partitions will brick the device.",
+          fbEraseBtn: "Erase Partition",
+          fbCmdTitle: "Custom Fastboot Command",
+          fbCmdDesc: "Execute raw fastboot command (e.g. getvar all, oem device-info).",
+          fbCmdBtn: "Send Command",
+          fbQuickChips: "Quick:",
           logTitle: "Process Terminal Log",
           clearLogBtn: "Clear Log",
           footerText: "WebUSB ADB Installer • Supports Android 5.0 and newer devices"
@@ -1720,10 +2254,18 @@
 
         // Connection status pill text
         if (statusText) {
-          if (!activeAdb) {
-            statusText.textContent = t.statusDisconnected;
+          if (currentMode === "fastboot") {
+            if (!activeFb) {
+              statusText.textContent = t.statusDisconnected;
+            } else {
+              statusText.textContent = `Fastboot (${activeFbProduct || "Device"}) ${t.statusConnectedSuffix}`;
+            }
           } else {
-            statusText.textContent = `${activeDeviceModel || "Android"} ${t.statusConnectedSuffix}`;
+            if (!activeAdb) {
+              statusText.textContent = t.statusDisconnected;
+            } else {
+              statusText.textContent = `${activeDeviceModel || "Android"} ${t.statusConnectedSuffix}`;
+            }
           }
         }
 
@@ -2470,6 +3012,579 @@
           updateInstallButtonState();
         }
       });
+
+      // ==========================================================================
+      // MODE SWITCHER (ADB Install vs Fastboot Tools)
+      // ==========================================================================
+      const tabAdbMode = document.getElementById("tabAdbMode");
+      const tabFastbootMode = document.getElementById("tabFastbootMode");
+      const adbModeSection = document.getElementById("adbModeSection");
+      const fastbootModeSection = document.getElementById("fastbootModeSection");
+
+      function switchMode(mode) {
+        currentMode = mode;
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+        if (mode === "fastboot") {
+          if (tabFastbootMode) {
+            tabFastbootMode.classList.add("active");
+            tabFastbootMode.setAttribute("aria-selected", "true");
+          }
+          if (tabAdbMode) {
+            tabAdbMode.classList.remove("active");
+            tabAdbMode.setAttribute("aria-selected", "false");
+          }
+          if (adbModeSection) adbModeSection.style.display = "none";
+          if (fastbootModeSection) fastbootModeSection.style.display = "block";
+
+          if (statusText) {
+            if (activeFb) {
+              statusDot.classList.add("connected");
+              statusText.textContent = `Fastboot (${activeFbProduct || "Device"}) ${t.statusConnectedSuffix}`;
+            } else {
+              statusDot.classList.remove("connected");
+              statusText.textContent = t.statusDisconnected;
+            }
+          }
+          appendLog(currentLang === "en" ? "[Mode] Switched to Fastboot Tools" : "[Mode] Fastboot Tools စနစ်သို့ ပြောင်းလဲလိုက်ပါသည်", "info");
+        } else {
+          if (tabAdbMode) {
+            tabAdbMode.classList.add("active");
+            tabAdbMode.setAttribute("aria-selected", "true");
+          }
+          if (tabFastbootMode) {
+            tabFastbootMode.classList.remove("active");
+            tabFastbootMode.setAttribute("aria-selected", "false");
+          }
+          if (fastbootModeSection) fastbootModeSection.style.display = "none";
+          if (adbModeSection) adbModeSection.style.display = "block";
+
+          if (statusText) {
+            if (activeAdb) {
+              statusDot.classList.add("connected");
+              statusText.textContent = `${activeDeviceModel || "Android"} ${t.statusConnectedSuffix}`;
+            } else {
+              statusDot.classList.remove("connected");
+              statusText.textContent = t.statusDisconnected;
+            }
+          }
+          appendLog(currentLang === "en" ? "[Mode] Switched to ADB Install" : "[Mode] ADB Install စနစ်သို့ ပြောင်းလဲလိုက်ပါသည်", "info");
+        }
+      }
+
+      if (tabAdbMode) tabAdbMode.addEventListener("click", () => switchMode("adb"));
+      if (tabFastbootMode) tabFastbootMode.addEventListener("click", () => switchMode("fastboot"));
+
+      // ==========================================================================
+      // FASTBOOT TOOLS CONTROLLER
+      // ==========================================================================
+      let activeFbProduct = "";
+      let fbSelectedFlashFile = null;
+      let fbSelectedBootFile = null;
+
+      // Fastboot DOM Elements
+      const fbStep1Badge = document.getElementById("fbStep1Badge");
+      const fbStep1Status = document.getElementById("fbStep1Status");
+      const fbConnectBtn = document.getElementById("fbConnectBtn");
+      const fbConnectBtnText = document.getElementById("fbConnectBtnText");
+      const fbDisconnectBtn = document.getElementById("fbDisconnectBtn");
+      const fbDeviceBox = document.getElementById("fbDeviceBox");
+
+      const fbValProduct = document.getElementById("fbValProduct");
+      const fbValSerial = document.getElementById("fbValSerial");
+      const fbValBootloader = document.getElementById("fbValBootloader");
+      const fbValUnlocked = document.getElementById("fbValUnlocked");
+      const fbValSlot = document.getElementById("fbValSlot");
+      const fbValSecure = document.getElementById("fbValSecure");
+      const fbValBaseband = document.getElementById("fbValBaseband");
+
+      const fbBtnRebootSystem = document.getElementById("fbBtnRebootSystem");
+      const fbBtnRebootBootloader = document.getElementById("fbBtnRebootBootloader");
+      const fbBtnRebootRecovery = document.getElementById("fbBtnRebootRecovery");
+      const fbBtnContinue = document.getElementById("fbBtnContinue");
+
+      const fbFlashPartition = document.getElementById("fbFlashPartition");
+      const fbFlashFileInput = document.getElementById("fbFlashFileInput");
+      const fbFlashDropzone = document.getElementById("fbFlashDropzone");
+      const fbFlashFileName = document.getElementById("fbFlashFileName");
+      const fbFlashFileSize = document.getElementById("fbFlashFileSize");
+      const fbFlashBtn = document.getElementById("fbFlashBtn");
+      const fbFlashProgressSection = document.getElementById("fbFlashProgressSection");
+      const fbFlashProgressStatus = document.getElementById("fbFlashProgressStatus");
+      const fbFlashProgressPercent = document.getElementById("fbFlashProgressPercent");
+      const fbFlashProgressBarFill = document.getElementById("fbFlashProgressBarFill");
+
+      const fbBootFileInput = document.getElementById("fbBootFileInput");
+      const fbBootDropzone = document.getElementById("fbBootDropzone");
+      const fbBootFileName = document.getElementById("fbBootFileName");
+      const fbBootFileSize = document.getElementById("fbBootFileSize");
+      const fbBootBtn = document.getElementById("fbBootBtn");
+      const fbBootProgressSection = document.getElementById("fbBootProgressSection");
+      const fbBootProgressStatus = document.getElementById("fbBootProgressStatus");
+      const fbBootProgressPercent = document.getElementById("fbBootProgressPercent");
+      const fbBootProgressBarFill = document.getElementById("fbBootProgressBarFill");
+
+      const fbErasePartition = document.getElementById("fbErasePartition");
+      const fbEraseBtn = document.getElementById("fbEraseBtn");
+
+      const fbCustomCmdInput = document.getElementById("fbCustomCmdInput");
+      const fbCustomCmdBtn = document.getElementById("fbCustomCmdBtn");
+
+      function updateFbActionButtons() {
+        const connected = !!activeFb && !isBusy;
+
+        // Reboot buttons
+        [fbBtnRebootSystem, fbBtnRebootBootloader, fbBtnRebootRecovery, fbBtnContinue].forEach((btn) => {
+          if (btn) btn.disabled = !connected;
+        });
+
+        // Flash button
+        const partVal = (fbFlashPartition?.value || "").trim();
+        if (fbFlashBtn) {
+          fbFlashBtn.disabled = !connected || !partVal || !fbSelectedFlashFile;
+        }
+
+        // Boot button
+        if (fbBootBtn) {
+          fbBootBtn.disabled = !connected || !fbSelectedBootFile;
+        }
+
+        // Erase button
+        const erasePart = (fbErasePartition?.value || "").trim();
+        if (fbEraseBtn) {
+          fbEraseBtn.disabled = !connected || !erasePart;
+        }
+
+        // Custom command button
+        const cmdVal = (fbCustomCmdInput?.value || "").trim();
+        if (fbCustomCmdBtn) {
+          fbCustomCmdBtn.disabled = !connected || !cmdVal;
+        }
+      }
+
+      async function connectFastbootDevice() {
+        if (!navigator.usb) {
+          appendLog("[Fastboot] WebUSB is not supported in this browser.", "error");
+          return;
+        }
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+        isBusy = true;
+        if (fbConnectBtn) fbConnectBtn.disabled = true;
+        if (fbConnectBtnText) {
+          fbConnectBtnText.textContent = currentLang === "en" ? "Connecting..." : "ချိတ်ဆက်နေသည်...";
+        }
+        appendLog("[Fastboot] Requesting WebUSB Fastboot device pairing...", "info");
+
+        try {
+          const fb = new FastbootDevice();
+          await fb.connect();
+          activeFb = fb;
+          appendLog("[Fastboot] Fastboot device claimed and USB interface initialized.", "success");
+
+          // Auto-fetch device info variables (skip any that throw)
+          let product = "-";
+          let serial = "-";
+          let bootloader = "-";
+          let unlocked = "-";
+          let slot = "-";
+          let secure = "-";
+          let baseband = "-";
+
+          try { product = (await fb.getVariable("product")) || "-"; } catch (e) {}
+          try { serial = (await fb.getVariable("serialno")) || (fb.device?.serialNumber) || "-"; } catch (e) {}
+          try { bootloader = (await fb.getVariable("version-bootloader")) || "-"; } catch (e) {}
+          try { unlocked = (await fb.getVariable("unlocked")) || "-"; } catch (e) {}
+          try { slot = (await fb.getVariable("current-slot")) || "-"; } catch (e) {}
+          try { secure = (await fb.getVariable("secure")) || "-"; } catch (e) {}
+          try { baseband = (await fb.getVariable("version-baseband")) || "-"; } catch (e) {}
+
+          activeFbProduct = product !== "-" ? product : (fb.device?.productName || "Fastboot Device");
+          if (fbValProduct) fbValProduct.textContent = activeFbProduct;
+          if (fbValSerial) fbValSerial.textContent = serial;
+          if (fbValBootloader) fbValBootloader.textContent = bootloader;
+          if (fbValUnlocked) fbValUnlocked.textContent = unlocked;
+          if (fbValSlot) fbValSlot.textContent = slot;
+          if (fbValSecure) fbValSecure.textContent = secure;
+          if (fbValBaseband) fbValBaseband.textContent = baseband;
+
+          appendLog(`[Fastboot] Device info: Product=${activeFbProduct}, Serial=${serial}, Bootloader=${bootloader}, Unlocked=${unlocked}, Slot=${slot}`, "info");
+
+          // UI updates
+          if (fbDeviceBox) fbDeviceBox.style.display = "block";
+          if (fbDisconnectBtn) fbDisconnectBtn.style.display = "inline-flex";
+          if (fbStep1Status) {
+            fbStep1Status.textContent = t.step1StatusConnected;
+            fbStep1Status.classList.add("connected");
+          }
+          if (fbStep1Badge) {
+            fbStep1Badge.textContent = "✓";
+            fbStep1Badge.classList.add("completed");
+          }
+          if (fbConnectBtn) fbConnectBtn.style.display = "none";
+
+          if (currentMode === "fastboot" && statusText) {
+            statusDot.classList.add("connected");
+            statusText.textContent = `Fastboot (${activeFbProduct}) ${t.statusConnectedSuffix}`;
+          }
+
+          // Register disconnect listener on device if available
+          if (navigator.usb) {
+            const onFbUsbDisconnect = (e) => {
+              if (activeFb && e.device === activeFb.device) {
+                appendLog("[Fastboot] Fastboot USB device disconnected.", "warn");
+                disconnectFastbootDevice();
+                navigator.usb.removeEventListener("disconnect", onFbUsbDisconnect);
+              }
+            };
+            navigator.usb.addEventListener("disconnect", onFbUsbDisconnect);
+          }
+
+        } catch (err) {
+          console.error("Fastboot connect error:", err);
+          activeFb = null;
+          appendLog(`[Fastboot] Connection error: ${err?.message || err}`, "error");
+        } finally {
+          isBusy = false;
+          if (fbConnectBtn) {
+            fbConnectBtn.disabled = false;
+            if (fbConnectBtnText) fbConnectBtnText.textContent = t.fbConnectBtn;
+          }
+          updateFbActionButtons();
+        }
+      }
+
+      async function disconnectFastbootDevice() {
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+        if (activeFb) {
+          try {
+            if (activeFb.device && activeFb.device.opened) {
+              await activeFb.device.close();
+            }
+          } catch (e) {}
+          activeFb = null;
+        }
+        activeFbProduct = "";
+        if (fbDeviceBox) fbDeviceBox.style.display = "none";
+        if (fbDisconnectBtn) fbDisconnectBtn.style.display = "none";
+        if (fbConnectBtn) {
+          fbConnectBtn.style.display = "inline-flex";
+          fbConnectBtn.disabled = false;
+          if (fbConnectBtnText) fbConnectBtnText.textContent = t.fbConnectBtn;
+        }
+        if (fbStep1Status) {
+          fbStep1Status.textContent = t.step1StatusWaiting;
+          fbStep1Status.classList.remove("connected");
+        }
+        if (fbStep1Badge) {
+          fbStep1Badge.textContent = "FB";
+          fbStep1Badge.classList.remove("completed");
+        }
+
+        if (currentMode === "fastboot" && statusText) {
+          statusDot.classList.remove("connected");
+          statusText.textContent = t.statusDisconnected;
+        }
+        updateFbActionButtons();
+        appendLog("[Fastboot] Fastboot device released / reset to disconnected state.", "info");
+      }
+
+      if (fbConnectBtn) fbConnectBtn.addEventListener("click", connectFastbootDevice);
+      if (fbDisconnectBtn) fbDisconnectBtn.addEventListener("click", disconnectFastbootDevice);
+
+      // Fastboot Reboot Actions
+      async function handleFastbootReboot(target, label) {
+        if (!activeFb || isBusy) return;
+        isBusy = true;
+        updateFbActionButtons();
+        appendLog(`[Fastboot] Sending reboot action: ${label}...`, "info");
+        try {
+          if (target === "continue") {
+            const res = await activeFb.runCommand("continue");
+            appendLog(`[Fastboot] Continue boot response: ${res?.text || "OKAY"}`, "success");
+          } else {
+            await activeFb.reboot(target);
+            appendLog(`[Fastboot] Reboot (${target || "system"}) command issued successfully. Device is restarting...`, "success");
+          }
+          setTimeout(() => {
+            disconnectFastbootDevice();
+          }, 1200);
+        } catch (err) {
+          console.error("Fastboot reboot error:", err);
+          appendLog(`[Fastboot] Reboot error: ${err?.message || err}`, "error");
+        } finally {
+          isBusy = false;
+          updateFbActionButtons();
+        }
+      }
+
+      if (fbBtnRebootSystem) fbBtnRebootSystem.addEventListener("click", () => handleFastbootReboot("", "Reboot to System"));
+      if (fbBtnRebootBootloader) fbBtnRebootBootloader.addEventListener("click", () => handleFastbootReboot("bootloader", "Reboot to Bootloader"));
+      if (fbBtnRebootRecovery) fbBtnRebootRecovery.addEventListener("click", () => handleFastbootReboot("recovery", "Reboot to Recovery"));
+      if (fbBtnContinue) fbBtnContinue.addEventListener("click", () => handleFastbootReboot("continue", "Continue Boot"));
+
+      // Fastboot Flash File & Action
+      if (fbFlashDropzone) {
+        fbFlashDropzone.addEventListener("click", () => {
+          if (!isBusy && fbFlashFileInput) fbFlashFileInput.click();
+        });
+        fbFlashDropzone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          fbFlashDropzone.style.borderColor = "rgba(56, 189, 248, 0.6)";
+        });
+        fbFlashDropzone.addEventListener("dragleave", () => {
+          fbFlashDropzone.style.borderColor = "";
+        });
+        fbFlashDropzone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          fbFlashDropzone.style.borderColor = "";
+          if (e.dataTransfer?.files?.length) {
+            handleFlashFileSelect(e.dataTransfer.files[0]);
+          }
+        });
+      }
+
+      if (fbFlashFileInput) {
+        fbFlashFileInput.addEventListener("change", (e) => {
+          if (e.target.files?.length) {
+            handleFlashFileSelect(e.target.files[0]);
+          }
+        });
+      }
+
+      if (fbFlashPartition) {
+        fbFlashPartition.addEventListener("input", () => updateFbActionButtons());
+      }
+
+      function handleFlashFileSelect(file) {
+        if (!file) return;
+        fbSelectedFlashFile = file;
+        if (fbFlashFileName) fbFlashFileName.textContent = file.name;
+        if (fbFlashFileSize) fbFlashFileSize.textContent = formatBytes(file.size);
+
+        // Auto-suggest partition from filename if recognized
+        const lower = file.name.toLowerCase();
+        if (fbFlashPartition && !fbFlashPartition.value) {
+          const suggestions = ["boot", "init_boot", "recovery", "vbmeta", "vbmeta_system", "dtbo", "vendor_boot", "super", "userdata"];
+          for (const s of suggestions) {
+            if (lower.includes(s)) {
+              fbFlashPartition.value = s;
+              break;
+            }
+          }
+        }
+        updateFbActionButtons();
+      }
+
+      if (fbFlashBtn) {
+        fbFlashBtn.addEventListener("click", async () => {
+          if (!activeFb || !fbSelectedFlashFile || isBusy) return;
+          const partition = (fbFlashPartition?.value || "").trim();
+          if (!partition) return;
+
+          const warnMsg = currentLang === "en"
+            ? `Flash "${fbSelectedFlashFile.name}" (${formatBytes(fbSelectedFlashFile.size)}) into partition "${partition}"? This will overwrite the partition.`
+            : `ဖိုင် "${fbSelectedFlashFile.name}" အား partition "${partition}" သို့ ရေးသွင်း (Flash) ရန် သေချာပါသလား? ၎င်း partition အဟောင်း ပျက်စီးအစားထိုးခံရပါမည်။`;
+
+          if (!window.confirm(warnMsg)) return;
+
+          isBusy = true;
+          updateFbActionButtons();
+          if (fbFlashProgressSection) fbFlashProgressSection.style.display = "block";
+          if (fbFlashProgressBarFill) fbFlashProgressBarFill.style.width = "0%";
+          if (fbFlashProgressPercent) fbFlashProgressPercent.textContent = "0%";
+          if (fbFlashProgressStatus) {
+            fbFlashProgressStatus.textContent = currentLang === "en" ? `Flashing ${partition}...` : `${partition} သို့ ရေးသွင်းနေပါသည်...`;
+          }
+
+          appendLog(`[Fastboot] Starting flash of ${fbSelectedFlashFile.name} (${formatBytes(fbSelectedFlashFile.size)}) to partition "${partition}"...`, "info");
+
+          try {
+            await activeFb.flashBlob(partition, fbSelectedFlashFile, (progress) => {
+              const pct = Math.min(100, Math.max(0, Math.round(progress * 100)));
+              if (fbFlashProgressBarFill) fbFlashProgressBarFill.style.width = `${pct}%`;
+              if (fbFlashProgressPercent) fbFlashProgressPercent.textContent = `${pct}%`;
+              if (fbFlashProgressStatus) {
+                fbFlashProgressStatus.textContent = `${currentLang === "en" ? "Flashing" : "ရေးသွင်းနေဆဲ"} ${partition}... ${pct}%`;
+              }
+            });
+
+            if (fbFlashProgressBarFill) fbFlashProgressBarFill.style.width = "100%";
+            if (fbFlashProgressPercent) fbFlashProgressPercent.textContent = "100%";
+            if (fbFlashProgressStatus) {
+              fbFlashProgressStatus.textContent = currentLang === "en" ? "Flashing completed!" : "ရေးသွင်းမှု အောင်မြင်ပါပြီ!";
+            }
+            appendLog(`[Fastboot] Successfully flashed partition "${partition}" with ${fbSelectedFlashFile.name}`, "success");
+          } catch (err) {
+            console.error("Flash error:", err);
+            if (fbFlashProgressStatus) {
+              fbFlashProgressStatus.textContent = currentLang === "en" ? "Flash failed" : "ရေးသွင်းမှု မအောင်မြင်ပါ";
+            }
+            appendLog(`[Fastboot] Flash failed on partition "${partition}": ${err?.message || err}`, "error");
+          } finally {
+            isBusy = false;
+            updateFbActionButtons();
+          }
+        });
+      }
+
+      // Fastboot Boot File & Action (No Flash)
+      if (fbBootDropzone) {
+        fbBootDropzone.addEventListener("click", () => {
+          if (!isBusy && fbBootFileInput) fbBootFileInput.click();
+        });
+        fbBootDropzone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          fbBootDropzone.style.borderColor = "rgba(56, 189, 248, 0.6)";
+        });
+        fbBootDropzone.addEventListener("dragleave", () => {
+          fbBootDropzone.style.borderColor = "";
+        });
+        fbBootDropzone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          fbBootDropzone.style.borderColor = "";
+          if (e.dataTransfer?.files?.length) {
+            handleBootFileSelect(e.dataTransfer.files[0]);
+          }
+        });
+      }
+
+      if (fbBootFileInput) {
+        fbBootFileInput.addEventListener("change", (e) => {
+          if (e.target.files?.length) {
+            handleBootFileSelect(e.target.files[0]);
+          }
+        });
+      }
+
+      function handleBootFileSelect(file) {
+        if (!file) return;
+        fbSelectedBootFile = file;
+        if (fbBootFileName) fbBootFileName.textContent = file.name;
+        if (fbBootFileSize) fbBootFileSize.textContent = formatBytes(file.size);
+        updateFbActionButtons();
+      }
+
+      if (fbBootBtn) {
+        fbBootBtn.addEventListener("click", async () => {
+          if (!activeFb || !fbSelectedBootFile || isBusy) return;
+
+          isBusy = true;
+          updateFbActionButtons();
+          if (fbBootProgressSection) fbBootProgressSection.style.display = "block";
+          if (fbBootProgressBarFill) fbBootProgressBarFill.style.width = "0%";
+          if (fbBootProgressPercent) fbBootProgressPercent.textContent = "0%";
+          if (fbBootProgressStatus) {
+            fbBootProgressStatus.textContent = currentLang === "en" ? "Uploading boot image..." : "Boot image တင်ပို့နေသည်...";
+          }
+
+          appendLog(`[Fastboot] Initiating temporary boot of ${fbSelectedBootFile.name} (${formatBytes(fbSelectedBootFile.size)})...`, "info");
+
+          try {
+            await activeFb.bootBlob(fbSelectedBootFile, (progress) => {
+              const pct = Math.min(100, Math.max(0, Math.round(progress * 100)));
+              if (fbBootProgressBarFill) fbBootProgressBarFill.style.width = `${pct}%`;
+              if (fbBootProgressPercent) fbBootProgressPercent.textContent = `${pct}%`;
+            });
+
+            if (fbBootProgressBarFill) fbBootProgressBarFill.style.width = "100%";
+            if (fbBootProgressPercent) fbBootProgressPercent.textContent = "100%";
+            if (fbBootProgressStatus) {
+              fbBootProgressStatus.textContent = currentLang === "en" ? "Boot command sent!" : "ယာယီ Boot တက်ခြင်း အောင်မြင်ပါသည်!";
+            }
+            appendLog(`[Fastboot] Temporary boot image booted successfully. Device should reboot into image shortly.`, "success");
+            setTimeout(() => {
+              disconnectFastbootDevice();
+            }, 1500);
+          } catch (err) {
+            console.error("Boot error:", err);
+            if (fbBootProgressStatus) {
+              fbBootProgressStatus.textContent = currentLang === "en" ? "Boot failed" : "Boot တက်ခြင်း မအောင်မြင်ပါ";
+            }
+            appendLog(`[Fastboot] Boot failed: ${err?.message || err}`, "error");
+          } finally {
+            isBusy = false;
+            updateFbActionButtons();
+          }
+        });
+      }
+
+      // Fastboot Erase Partition Action
+      if (fbErasePartition) {
+        fbErasePartition.addEventListener("input", () => updateFbActionButtons());
+      }
+
+      if (fbEraseBtn) {
+        fbEraseBtn.addEventListener("click", async () => {
+          if (!activeFb || isBusy) return;
+          const partition = (fbErasePartition?.value || "").trim();
+          if (!partition) return;
+
+          const confirmMsg = currentLang === "en"
+            ? `ARE YOU SURE you want to ERASE partition "${partition}"? ALL data in this partition will be permanently deleted!`
+            : `Partition "${partition}" အား ဖျက်ထုတ်ရန် (Erase) သေချာပါသလား? ၎င်း partition အတွင်းရှိ အချက်အလက်များ လုံးဝပျက်စီးသွားပါမည်။`;
+
+          if (!window.confirm(confirmMsg)) return;
+
+          isBusy = true;
+          updateFbActionButtons();
+          appendLog(`[Fastboot] Erasing partition "${partition}"...`, "warn");
+
+          try {
+            const res = await activeFb.runCommand(`erase:${partition}`);
+            appendLog(`[Fastboot] Erase partition "${partition}" result: ${res?.text || "OKAY"}`, "success");
+          } catch (err) {
+            console.error("Erase error:", err);
+            appendLog(`[Fastboot] Erase partition "${partition}" error: ${err?.message || err}`, "error");
+          } finally {
+            isBusy = false;
+            updateFbActionButtons();
+          }
+        });
+      }
+
+      // Fastboot Custom Command Action
+      if (fbCustomCmdInput) {
+        fbCustomCmdInput.addEventListener("input", () => updateFbActionButtons());
+        fbCustomCmdInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && fbCustomCmdBtn && !fbCustomCmdBtn.disabled) {
+            fbCustomCmdBtn.click();
+          }
+        });
+      }
+
+      // Quick command chips
+      document.querySelectorAll(".fastboot-chip-btn").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const cmd = chip.getAttribute("data-cmd");
+          if (cmd && fbCustomCmdInput) {
+            fbCustomCmdInput.value = cmd;
+            updateFbActionButtons();
+            fbCustomCmdInput.focus();
+          }
+        });
+      });
+
+      if (fbCustomCmdBtn) {
+        fbCustomCmdBtn.addEventListener("click", async () => {
+          if (!activeFb || isBusy) return;
+          const cmd = (fbCustomCmdInput?.value || "").trim();
+          if (!cmd) return;
+
+          isBusy = true;
+          updateFbActionButtons();
+          appendLog(`[Fastboot] Running command: "${cmd}"...`, "info");
+
+          try {
+            const res = await activeFb.runCommand(cmd);
+            appendLog(`[Fastboot] Response (${cmd}): ${res?.text || "OKAY"}`, "success");
+          } catch (err) {
+            console.error("Fastboot command error:", err);
+            appendLog(`[Fastboot] Command "${cmd}" error: ${err?.message || err}`, "error");
+          } finally {
+            isBusy = false;
+            updateFbActionButtons();
+          }
+        });
+      }
     </script>
     <script>
       if ("serviceWorker" in navigator) {
