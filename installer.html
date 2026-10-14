@@ -1065,6 +1065,68 @@
           </div>
         </section>
 
+        <!-- DEVICE CONTROLS CARD (Visible only when connected) -->
+        <section class="step-card" id="deviceControlsCard" style="display: none;">
+          <div class="step-header" style="margin-bottom: 12px;">
+            <div class="step-title-group">
+              <div class="step-badge" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="4" width="16" height="16" rx="2" ry="2"/>
+                  <rect x="9" y="9" width="6" height="6"/>
+                  <line x1="9" y1="1" x2="9" y2="4"/>
+                  <line x1="15" y1="1" x2="15" y2="4"/>
+                  <line x1="9" y1="20" x2="9" y2="23"/>
+                  <line x1="15" y1="20" x2="15" y2="23"/>
+                  <line x1="20" y1="9" x2="23" y2="9"/>
+                  <line x1="20" y1="14" x2="23" y2="14"/>
+                  <line x1="1" y1="9" x2="4" y2="9"/>
+                  <line x1="1" y1="14" x2="4" y2="14"/>
+                </svg>
+              </div>
+              <h3 class="step-heading-text" data-i18n="deviceControlsTitle">စက်ပစ္စည်း ထိန်းချုပ်မှုများ (Device Controls)</h3>
+            </div>
+            <span class="step-status-tag" style="background: rgba(52, 211, 153, 0.15); border-color: rgba(52, 211, 153, 0.28); color: #6EE7B7;" data-i18n="deviceControlsActiveTag">Active</span>
+          </div>
+          <p class="step-desc" data-i18n="deviceControlsDesc">ဖုန်းကို ပုံစံအမျိုးမျိုးဖြင့် ပြန်လည်စတင်ရန် (Reboot) သို့မဟုတ် ပါဝါပိတ်ရန် အောက်ပါခလုတ်များကို အသုံးပြုနိုင်ပါသည်။</p>
+
+          <div class="device-controls-grid" id="deviceControlsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlRebootBtn" style="font-size: 12px; padding: 10px 12px; border-radius: 14px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"/>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+              </svg>
+              <span data-i18n="ctrlReboot">Reboot</span>
+            </button>
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlBootloaderBtn" style="font-size: 12px; padding: 10px 12px; border-radius: 14px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                <polyline points="2 17 12 22 22 17"/>
+                <polyline points="2 12 12 17 22 12"/>
+              </svg>
+              <span data-i18n="ctrlBootloader">Reboot Bootloader</span>
+            </button>
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlFastbootBtn" style="font-size: 12px; padding: 10px 12px; border-radius: 14px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+              <span data-i18n="ctrlFastboot">Reboot Fastboot</span>
+            </button>
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlRecoveryBtn" style="font-size: 12px; padding: 10px 12px; border-radius: 14px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span data-i18n="ctrlRecovery">Reboot Recovery</span>
+            </button>
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlPowerOffBtn" style="font-size: 12px; padding: 10px 12px; border-radius: 14px; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.25);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+                <line x1="12" y1="2" x2="12" y2="12"/>
+              </svg>
+              <span data-i18n="ctrlPowerOff">Power Off</span>
+            </button>
+          </div>
+        </section>
+
         <!-- STEP 2: Pick APK File -->
         <section class="step-card" id="step2Card">
           <div class="step-header">
@@ -1076,7 +1138,7 @@
           </div>
           <p class="step-desc" data-i18n="step2Desc">ဖုန်းထဲသို့ တပ်ဆင်လိုသော Android အက်ပ် (.apk) ဖိုင်ကို ရွေးချယ်ပေးပါ။</p>
 
-          <!-- Preselected app quick bar -->
+          <!-- Preselected app quick bar (rendered only if name, ver, and url query params exist) -->
           <div class="preselected-app-box" id="preselectedAppBox" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px;">
               <div>
@@ -1102,7 +1164,7 @@
             </button>
           </div>
 
-          <input type="file" id="apkFileInput" class="file-input-hidden" accept=".apk" />
+          <input type="file" id="apkFileInput" class="file-input-hidden" accept=".apk" multiple />
           
           <div class="file-dropzone" id="fileDropzone">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px; opacity: 0.75;">
@@ -1110,25 +1172,28 @@
               <polyline points="17 8 12 3 7 8"/>
               <line x1="12" y1="3" x2="12" y2="15"/>
             </svg>
-            <div style="font-size: 14px; font-weight: 700; color: #FFFFFF; margin-bottom: 2px;" data-i18n="dropzoneTitle">APK ဖိုင် ရွေးရန် ဤနေရာကို နှိပ်ပါ</div>
-            <div style="font-size: 12px; color: var(--text-muted);" data-i18n="dropzoneSubtitle">.apk ဖိုင်များကိုသာ လက်ခံပါသည်</div>
+            <div style="font-size: 14px; font-weight: 700; color: #FFFFFF; margin-bottom: 2px;" data-i18n="dropzoneTitle">APK ဖိုင်(များ) ရွေးရန် ဤနေရာကို နှိပ်ပါ</div>
+            <div style="font-size: 12px; color: var(--text-muted);" data-i18n="dropzoneSubtitle">.apk ဖိုင်များကိုသာ လက်ခံပါသည် (ဖိုင်တစ်ခုထက်ပို၍ ရွေးချယ်နိုင်သည်)</div>
           </div>
 
-          <div class="file-chosen-info" id="fileChosenInfo">
-            <div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">
-              <div style="width: 32px; height: 32px; border-radius: 10px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.14); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.85;">
-                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                  <line x1="12" y1="22.08" x2="12" y2="12"/>
-                </svg>
-              </div>
-              <div style="overflow: hidden;">
-                <div id="chosenFileName" style="font-weight: 600; color: #FFFFFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-</div>
-                <div id="chosenFileSize" style="font-size: 11.5px; color: var(--text-muted);">-</div>
+          <!-- Multiple Selected Files Container -->
+          <div class="files-container" id="filesContainer" style="display: none; margin-top: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <span style="font-size: 12.5px; font-weight: 600; color: rgba(255, 255, 255, 0.9);" id="filesCountHeader">0 files</span>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" id="addMoreFilesBtn" class="btn-outline" style="font-size: 11.5px; padding: 4px 11px; border-radius: 9999px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                  </svg>
+                  <span data-i18n="addMoreFilesBtn">ဖိုင်ထပ်ထည့်မည်</span>
+                </button>
+                <button type="button" id="clearFilesBtn" class="btn-outline" style="font-size: 11.5px; padding: 4px 11px; border-radius: 9999px; cursor: pointer; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.25);" data-i18n="clearFilesBtn">အားလုံးရှင်းမည်</button>
               </div>
             </div>
-            <button type="button" id="changeFileBtn" class="btn-outline" style="padding: 5px 12px; font-size: 11.5px; border-radius: 9999px; cursor: pointer; flex-shrink: 0;" data-i18n="changeFileBtn">အသစ်ရွေးမည်</button>
+            <div id="fileListItems" style="display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; padding-right: 2px;">
+              <!-- Individual APK file items will be dynamically appended here -->
+            </div>
           </div>
         </section>
 
@@ -1321,7 +1386,7 @@
       let activeDevice = null;
       let activeAdb = null;
       let activeDeviceModel = "";
-      let selectedFile = null;
+      let selectedFiles = [];
       let isBusy = false;
 
       // Translation dictionary
@@ -1354,6 +1419,14 @@
           reconnectBtnText: "ပြန်လည်ချိတ်ဆက်မည်",
           resetKeysBtn: "ကီးအသစ်ထုတ်၍ ပြန်လည်ချိတ်ဆက်မည်",
           troubleshootSummary: 'ဖုန်းတွင် "Allow USB Debugging" ပေါ်မလာပါက အရေးကြီး ဖြေရှင်းနည်းများ (နှိပ်၍ကြည့်ပါ)',
+          deviceControlsTitle: "စက်ပစ္စည်း ထိန်းချုပ်မှုများ (Device Controls)",
+          deviceControlsActiveTag: "ချိတ်ဆက်ထားသည်",
+          deviceControlsDesc: "ဖုန်းကို စနစ်ပုံစံအမျိုးမျိုးဖြင့် ပြန်လည်စတင်ရန် (Reboot) သို့မဟုတ် ပါဝါပိတ်ရန် အောက်ပါခလုတ်များကို အသုံးပြုနိုင်ပါသည်။",
+          ctrlReboot: "Reboot",
+          ctrlBootloader: "Reboot Bootloader",
+          ctrlFastboot: "Reboot Fastboot",
+          ctrlRecovery: "Reboot Recovery",
+          ctrlPowerOff: "Power Off",
           deviceBoxTitle: "ချိတ်ဆက်ထားသော စက်ပစ္စည်း အချက်အလက်",
           deviceLabelModel: "မော်ဒယ် (Model):",
           deviceLabelAndroid: "Android ဗားရှင်း:",
@@ -1368,9 +1441,10 @@
           presetAppLabel: "ရွေးချယ်ထားသော အက်ပ်:",
           presetDownloadBtn: "ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်",
           presetAutoFetchBtn: "ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်",
-          dropzoneTitle: "APK ဖိုင် ရွေးရန် ဤနေရာကို နှိပ်ပါ",
-          dropzoneSubtitle: ".apk ဖိုင်များကိုသာ လက်ခံပါသည်",
-          changeFileBtn: "အသစ်ရွေးမည်",
+          dropzoneTitle: "APK ဖိုင်(များ) ရွေးရန် ဤနေရာကို နှိပ်ပါ",
+          dropzoneSubtitle: ".apk ဖိုင်များကိုသာ လက်ခံပါသည် (ဖိုင်တစ်ခုထက်ပို၍ ရွေးချယ်နိုင်သည်)",
+          addMoreFilesBtn: "ဖိုင်ထပ်ထည့်မည်",
+          clearFilesBtn: "အားလုံးရှင်းမည်",
           step3Num: "၃",
           step3Heading: "အဆင့် ၃: ဖုန်းထဲသို့ တပ်ဆင်ခြင်း",
           step3StatusNotReady: "အဆင်သင့်မဖြစ်သေးပါ",
@@ -1415,6 +1489,14 @@
           reconnectBtnText: "Reconnect Device",
           resetKeysBtn: "Reset Keys & Reconnect",
           troubleshootSummary: 'Troubleshooting: If "Allow USB Debugging" prompt doesn\'t appear (Click to view)',
+          deviceControlsTitle: "Device Controls",
+          deviceControlsActiveTag: "Active",
+          deviceControlsDesc: "Reboot device into various modes or power off directly via ADB commands.",
+          ctrlReboot: "Reboot",
+          ctrlBootloader: "Reboot Bootloader",
+          ctrlFastboot: "Reboot Fastboot",
+          ctrlRecovery: "Reboot Recovery",
+          ctrlPowerOff: "Power Off",
           deviceBoxTitle: "Connected Device Details",
           deviceLabelModel: "Model:",
           deviceLabelAndroid: "Android Version:",
@@ -1429,9 +1511,10 @@
           presetAppLabel: "Preset Application:",
           presetDownloadBtn: "Direct Download",
           presetAutoFetchBtn: "Auto-fetch & Select this APK",
-          dropzoneTitle: "Click or drag & drop APK file here",
-          dropzoneSubtitle: "Only .apk files are accepted",
-          changeFileBtn: "Change File",
+          dropzoneTitle: "Click or drag & drop APK files here",
+          dropzoneSubtitle: "Only .apk files are accepted (multiple files allowed)",
+          addMoreFilesBtn: "Add More APKs",
+          clearFilesBtn: "Clear All",
           step3Num: "3",
           step3Heading: "Step 3: Install to Phone",
           step3StatusNotReady: "Not ready",
@@ -1530,12 +1613,22 @@
       const openInNewTabBtn = document.getElementById("openInNewTabBtn");
       const connectBtn = document.getElementById("connectBtn");
       const connectBtnText = document.getElementById("connectBtnText");
+      
+      const deviceControlsCard = document.getElementById("deviceControlsCard");
+      const ctrlRebootBtn = document.getElementById("ctrlRebootBtn");
+      const ctrlBootloaderBtn = document.getElementById("ctrlBootloaderBtn");
+      const ctrlFastbootBtn = document.getElementById("ctrlFastbootBtn");
+      const ctrlRecoveryBtn = document.getElementById("ctrlRecoveryBtn");
+      const ctrlPowerOffBtn = document.getElementById("ctrlPowerOffBtn");
+
       const apkFileInput = document.getElementById("apkFileInput");
       const fileDropzone = document.getElementById("fileDropzone");
-      const fileChosenInfo = document.getElementById("fileChosenInfo");
-      const chosenFileName = document.getElementById("chosenFileName");
-      const chosenFileSize = document.getElementById("chosenFileSize");
-      const changeFileBtn = document.getElementById("changeFileBtn");
+      const filesContainer = document.getElementById("filesContainer");
+      const filesCountHeader = document.getElementById("filesCountHeader");
+      const addMoreFilesBtn = document.getElementById("addMoreFilesBtn");
+      const clearFilesBtn = document.getElementById("clearFilesBtn");
+      const fileListItems = document.getElementById("fileListItems");
+
       const installBtn = document.getElementById("installBtn");
       const installBtnText = document.getElementById("installBtnText");
       const progressSection = document.getElementById("progressSection");
@@ -1605,7 +1698,21 @@
           if (!activeAdb) step1Badge.textContent = t.step1Num;
         }
         if (step2Badge) {
-          if (!selectedFile) step2Badge.textContent = t.step2Num;
+          if (selectedFiles.length === 0) step2Badge.textContent = t.step2Num;
+        }
+        if (step2Status) {
+          if (selectedFiles.length === 0) {
+            step2Status.textContent = t.step2StatusWaiting;
+          } else {
+            step2Status.textContent = lang === "en"
+              ? `${selectedFiles.length} file${selectedFiles.length > 1 ? "s" : ""} selected`
+              : `${selectedFiles.length} ဖိုင် ရွေးချယ်ပြီးပါပြီ`;
+          }
+        }
+        if (filesCountHeader && selectedFiles.length > 0) {
+          filesCountHeader.textContent = lang === "en"
+            ? `${selectedFiles.length} APK file${selectedFiles.length > 1 ? "s" : ""} selected`
+            : `ရွေးချယ်ထားသော APK ဖိုင် ${selectedFiles.length} ခု`;
         }
         if (step3Badge) {
           if (step3Badge.textContent !== "✓") step3Badge.textContent = t.step3Num;
@@ -1714,7 +1821,8 @@
       // Update Install Button state
       function updateInstallButtonState() {
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
-        if (activeAdb && selectedFile && !isBusy) {
+        const hasFiles = selectedFiles.length > 0;
+        if (activeAdb && hasFiles && !isBusy) {
           installBtn.disabled = false;
           step3Status.textContent = t.step3StatusReady;
           step3Card.classList.add("active");
@@ -1722,7 +1830,7 @@
           installBtn.disabled = true;
           if (!activeAdb) {
             step3Status.textContent = t.step3StatusReqDevice;
-          } else if (!selectedFile) {
+          } else if (!hasFiles) {
             step3Status.textContent = t.step3StatusReqFile;
           }
         }
@@ -1867,6 +1975,12 @@
           connectBtn.classList.remove("btn-primary");
           connectBtn.classList.add("btn-outline");
 
+          // Show device controls card
+          if (deviceControlsCard) {
+            deviceControlsCard.style.display = "block";
+          }
+          setDeviceControlsDisabled(false);
+
           appendLog(`${currentLang === "en" ? "Device connected successfully:" : "ဖုန်းချိတ်ဆက်မှု အောင်မြင်ပါသည်:"} ${brand} ${model} (Android ${release})`, "success");
           updateInstallButtonState();
         } catch (err) {
@@ -1908,181 +2022,451 @@
         }
       });
 
-      // 3. File Selection Handlers
-      fileDropzone.addEventListener("click", () => {
-        if (!isBusy) apkFileInput.click();
-      });
+      // ==========================================================================
+      // DEVICE CONTROLS (ADB POWER ACTIONS)
+      // ==========================================================================
+      function setDeviceControlsDisabled(disabled) {
+        const btns = [ctrlRebootBtn, ctrlBootloaderBtn, ctrlFastbootBtn, ctrlRecoveryBtn, ctrlPowerOffBtn];
+        btns.forEach((btn) => {
+          if (btn) {
+            btn.disabled = disabled;
+            btn.style.opacity = disabled ? "0.5" : "1";
+            btn.style.cursor = disabled ? "not-allowed" : "pointer";
+          }
+        });
+      }
 
-      changeFileBtn.addEventListener("click", () => {
-        if (!isBusy) apkFileInput.click();
-      });
-
-      // Drag and drop handlers
-      fileDropzone.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        fileDropzone.classList.add("has-file");
-      });
-
-      fileDropzone.addEventListener("dragleave", () => {
-        if (!selectedFile) fileDropzone.classList.remove("has-file");
-      });
-
-      fileDropzone.addEventListener("drop", (e) => {
-        e.preventDefault();
-        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
-          handleFile(e.dataTransfer.files[0]);
-        }
-      });
-
-      apkFileInput.addEventListener("change", (e) => {
-        const file = e.target.files && e.target.files[0];
-        if (file) handleFile(file);
-      });
-
-      function handleFile(file) {
+      async function resetToDisconnectedState() {
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
-        if (!file.name.toLowerCase().endsWith(".apk")) {
-          appendLog(currentLang === "en" ? `Warning: Selected file (${file.name}) does not have an .apk extension.` : `သတိပေးချက်: ရွေးချယ်ထားသောဖိုင် (${file.name}) သည် .apk အမျိုးအစား မဟုတ်ပါ။`, "warn");
+        try {
+          if (activeDevice) {
+            await activeDevice.close().catch(() => {});
+          }
+        } catch (e) {}
+
+        activeDevice = null;
+        activeAdb = null;
+        activeDeviceModel = "";
+
+        if (deviceControlsCard) {
+          deviceControlsCard.style.display = "none";
+        }
+        if (deviceBox) {
+          deviceBox.classList.remove("show");
         }
 
-        selectedFile = file;
-        chosenFileName.textContent = file.name;
-        chosenFileSize.textContent = formatBytes(file.size);
-        fileChosenInfo.classList.add("show");
-        fileDropzone.classList.add("has-file");
+        // Reset Step 1
+        if (step1Badge) {
+          step1Badge.textContent = t.step1Num;
+          step1Badge.classList.remove("completed");
+        }
+        if (step1Status) {
+          step1Status.textContent = t.step1StatusWaiting;
+        }
+        if (step1Card) {
+          step1Card.classList.add("active");
+        }
+        if (connectBtnText) {
+          connectBtnText.textContent = t.connectBtnText;
+        }
+        if (connectBtn) {
+          connectBtn.classList.add("btn-primary");
+          connectBtn.classList.remove("btn-outline");
+          connectBtn.disabled = false;
+        }
 
-        step2Badge.textContent = "✓";
-        step2Badge.classList.add("completed");
-        step2Status.textContent = t.step2StatusSelected;
+        // Status pill
+        if (statusDot) statusDot.classList.remove("connected");
+        if (statusText) statusText.textContent = t.statusDisconnected;
 
-        appendLog(`${currentLang === "en" ? "APK file selected:" : "APK ဖိုင် ရွေးချယ်ပြီးပါပြီ:"} ${file.name} (${formatBytes(file.size)})`, "success");
         updateInstallButtonState();
       }
 
-      // Check URL parameters for preset app (e.g. CEIR Status Hub)
+      async function handleDevicePowerAction(actionId, actionName, powerPromiseFn) {
+        if (!activeAdb || isBusy) return;
+        const isEn = currentLang === "en";
+        setDeviceControlsDisabled(true);
+        appendLog(isEn ? `Sending command to device: ${actionName}...` : `ဖုန်းထဲသို့ ${actionName} အမိန့်ပေးပို့နေပါသည်...`, "info");
+
+        let commandSent = false;
+        try {
+          await powerPromiseFn();
+          commandSent = true;
+          appendLog(isEn ? `Command "${actionName}" acknowledged by device.` : `"${actionName}" အမိန့် ဖုန်းသို့ အောင်မြင်စွာ ပို့ဆောင်ပြီးပါပြီ။`, "success");
+        } catch (err) {
+          const errMsg = err?.message || String(err);
+          // Android drops USB connection almost instantly when initiating reboot/shutdown
+          if (errMsg.includes("closed") || errMsg.includes("disconnect") || errMsg.includes("reset") || errMsg.includes("NetworkError") || errMsg.includes("transfer") || errMsg.includes("claimInterface")) {
+            commandSent = true;
+            appendLog(isEn ? `Command executed (device rebooting/powering off).` : `အမိန့် ပေးပို့ပြီးပါပြီ (ဖုန်း Restart/Power-off ဖြစ်သွားသဖြင့် USB ဆက်သွယ်မှု ပြတ်တောက်သွားပါသည်)။`, "info");
+          } else {
+            appendLog((isEn ? `Command failed: ` : `လုပ်ဆောင်မှု မအောင်မြင်ပါ: `) + errMsg, "error");
+            setDeviceControlsDisabled(false);
+            return;
+          }
+        }
+
+        if (commandSent) {
+          appendLog(isEn ? "Device is rebooting — reconnect after it boots up" : "Device is rebooting — reconnect after it boots up (ဖုန်း ပြန်လည်စတင်နေပါသည် — ဖုန်းပြန်ပွင့်လာပါက ပြန်လည်ချိတ်ဆက်ပေးပါ)", "warn");
+          await resetToDisconnectedState();
+        }
+      }
+
+      if (ctrlRebootBtn) {
+        ctrlRebootBtn.addEventListener("click", () => {
+          handleDevicePowerAction("reboot", "Reboot", () => activeAdb.power.reboot());
+        });
+      }
+      if (ctrlBootloaderBtn) {
+        ctrlBootloaderBtn.addEventListener("click", () => {
+          handleDevicePowerAction("bootloader", "Reboot to Bootloader", () => activeAdb.power.bootloader());
+        });
+      }
+      if (ctrlFastbootBtn) {
+        ctrlFastbootBtn.addEventListener("click", () => {
+          handleDevicePowerAction("fastboot", "Reboot to Fastboot", () => activeAdb.power.fastboot());
+        });
+      }
+      if (ctrlRecoveryBtn) {
+        ctrlRecoveryBtn.addEventListener("click", () => {
+          handleDevicePowerAction("recovery", "Reboot to Recovery", () => activeAdb.power.recovery());
+        });
+      }
+      if (ctrlPowerOffBtn) {
+        ctrlPowerOffBtn.addEventListener("click", () => {
+          handleDevicePowerAction("powerOff", "Power Off", () => activeAdb.power.powerOff());
+        });
+      }
+
+      // ==========================================================================
+      // MULTIPLE FILE SELECTION & LIST RENDERING
+      // ==========================================================================
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function addFiles(fileList) {
+        if (!fileList || fileList.length === 0) return;
+        let addedCount = 0;
+        const incoming = Array.from(fileList);
+        for (const file of incoming) {
+          if (!file.name.toLowerCase().endsWith(".apk")) {
+            appendLog(currentLang === "en" ? `Warning: File (${file.name}) does not have an .apk extension.` : `သတိပေးချက်: ဖိုင် (${file.name}) သည် .apk အမျိုးအစား မဟုတ်ပါ။`, "warn");
+          }
+          const alreadyExists = selectedFiles.some((f) => f.name === file.name && f.size === file.size);
+          if (!alreadyExists) {
+            selectedFiles.push(file);
+            addedCount++;
+          }
+        }
+        if (addedCount > 0) {
+          renderFileList();
+          appendLog(currentLang === "en" ? `Added ${addedCount} APK file(s). Total: ${selectedFiles.length}` : `APK ဖိုင် ${addedCount} ခု ထပ်မံရွေးချယ်ထားပါသည်။ စုစုပေါင်း: ${selectedFiles.length} ခု`, "info");
+        }
+      }
+
+      function renderFileList() {
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+        const count = selectedFiles.length;
+
+        if (count === 0) {
+          if (filesContainer) filesContainer.style.display = "none";
+          if (fileDropzone) fileDropzone.classList.remove("has-file");
+          if (step2Badge) {
+            step2Badge.textContent = t.step2Num;
+            step2Badge.classList.remove("completed");
+          }
+          if (step2Status) {
+            step2Status.textContent = t.step2StatusWaiting;
+          }
+        } else {
+          if (filesContainer) filesContainer.style.display = "block";
+          if (fileDropzone) fileDropzone.classList.add("has-file");
+          if (step2Badge) {
+            step2Badge.textContent = "✓";
+            step2Badge.classList.add("completed");
+          }
+          if (step2Status) {
+            step2Status.textContent = currentLang === "en"
+              ? `${count} file${count > 1 ? "s" : ""} selected`
+              : `${count} ဖိုင် ရွေးချယ်ပြီးပါပြီ`;
+          }
+          if (filesCountHeader) {
+            filesCountHeader.textContent = currentLang === "en"
+              ? `${count} APK file${count > 1 ? "s" : ""} selected`
+              : `ရွေးချယ်ထားသော APK ဖိုင် ${count} ခု`;
+          }
+
+          if (fileListItems) {
+            fileListItems.innerHTML = "";
+            selectedFiles.forEach((file, index) => {
+              const row = document.createElement("div");
+              row.className = "file-item-row";
+              row.style.cssText = "display: flex; align-items: center; justify-content: space-between; gap: 10px; background: rgba(0, 0, 0, 0.22); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; padding: 9px 12px; font-size: 12.5px;";
+
+              const infoLeft = document.createElement("div");
+              infoLeft.style.cssText = "display: flex; align-items: center; gap: 10px; overflow: hidden; min-width: 0; flex: 1;";
+              infoLeft.innerHTML = `
+                <div style="width: 28px; height: 28px; border-radius: 8px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.85;">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                    <line x1="12" y1="22.08" x2="12" y2="12"/>
+                  </svg>
+                </div>
+                <div style="overflow: hidden; min-width: 0;">
+                  <div style="font-weight: 600; color: #FFFFFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(file.name)}</div>
+                  <div style="font-size: 11px; color: var(--text-muted);">${formatBytes(file.size)}</div>
+                </div>
+              `;
+
+              const removeBtn = document.createElement("button");
+              removeBtn.type = "button";
+              removeBtn.style.cssText = "background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); color: rgba(255, 255, 255, 0.7); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: all 0.2s;";
+              removeBtn.innerHTML = `
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              `;
+              removeBtn.setAttribute("aria-label", "Remove " + file.name);
+              removeBtn.addEventListener("click", () => {
+                if (isBusy) return;
+                selectedFiles.splice(index, 1);
+                renderFileList();
+                updateInstallButtonState();
+              });
+              removeBtn.addEventListener("mouseenter", () => {
+                removeBtn.style.color = "#FCA5A5";
+                removeBtn.style.borderColor = "rgba(239, 68, 68, 0.35)";
+                removeBtn.style.background = "rgba(239, 68, 68, 0.1)";
+              });
+              removeBtn.addEventListener("mouseleave", () => {
+                removeBtn.style.color = "rgba(255, 255, 255, 0.7)";
+                removeBtn.style.borderColor = "rgba(255, 255, 255, 0.12)";
+                removeBtn.style.background = "rgba(255, 255, 255, 0.05)";
+              });
+
+              row.appendChild(infoLeft);
+              row.appendChild(removeBtn);
+              fileListItems.appendChild(row);
+            });
+          }
+        }
+        updateInstallButtonState();
+      }
+
+      // Event listeners for file selection
+      if (fileDropzone) {
+        fileDropzone.addEventListener("click", () => {
+          if (!isBusy && apkFileInput) apkFileInput.click();
+        });
+
+        fileDropzone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          fileDropzone.classList.add("has-file");
+        });
+
+        fileDropzone.addEventListener("dragleave", () => {
+          if (selectedFiles.length === 0) fileDropzone.classList.remove("has-file");
+        });
+
+        fileDropzone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            addFiles(e.dataTransfer.files);
+          }
+        });
+      }
+
+      if (addMoreFilesBtn) {
+        addMoreFilesBtn.addEventListener("click", () => {
+          if (!isBusy && apkFileInput) apkFileInput.click();
+        });
+      }
+
+      if (clearFilesBtn) {
+        clearFilesBtn.addEventListener("click", () => {
+          if (isBusy) return;
+          selectedFiles = [];
+          if (apkFileInput) apkFileInput.value = "";
+          renderFileList();
+          appendLog(currentLang === "en" ? "All selected files cleared." : "ရွေးချယ်ထားသော ဖိုင်များ အားလုံးကို ရှင်းလင်းပြီးပါပြီ။", "info");
+        });
+      }
+
+      if (apkFileInput) {
+        apkFileInput.addEventListener("change", (e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            addFiles(e.target.files);
+          }
+        });
+      }
+
+      // ==========================================================================
+      // URL QUERY PARAMS PRESET APP HANDLING
+      // ==========================================================================
       const urlParams = new URLSearchParams(window.location.search);
-      const paramName = urlParams.get("name") || "CEIR Status Hub";
-      const paramVer = urlParams.get("ver") || "v2.0.1";
-      const paramUrl = urlParams.get("url") || "https://github.com/HeeHeeHta/Web-download-Installer-/releases/download/v2.0.1/CEIR_Status_Hub.apk";
+      const paramName = urlParams.get("name")?.trim();
+      const paramVer = urlParams.get("ver")?.trim();
+      const paramUrl = urlParams.get("url")?.trim();
+
+      const hasPreset = Boolean(paramName && paramVer && paramUrl);
 
       const preselectedAppBox = document.getElementById("preselectedAppBox");
       const presetAppTitle = document.getElementById("presetAppTitle");
       const directDownloadPresetLink = document.getElementById("directDownloadPresetLink");
       const autoFetchPresetBtn = document.getElementById("autoFetchPresetBtn");
 
-      if (paramUrl) {
+      if (hasPreset && preselectedAppBox && presetAppTitle && directDownloadPresetLink) {
         presetAppTitle.textContent = `${paramName} (${paramVer})`;
         directDownloadPresetLink.href = paramUrl;
         preselectedAppBox.style.display = "block";
+      } else if (preselectedAppBox) {
+        preselectedAppBox.style.display = "none";
       }
 
-      autoFetchPresetBtn.addEventListener("click", async () => {
-        if (isBusy) return;
-        try {
-          autoFetchPresetBtn.disabled = true;
-          autoFetchPresetBtn.innerHTML = `<span class="spinner"></span> ${currentLang === "en" ? "Downloading APK..." : "APK ဒေါင်းလုဒ်ရယူနေပါသည်..."}`;
-          appendLog(currentLang === "en" ? `Fetching APK online: ${paramName}...` : `အွန်လိုင်းမှ APK ကို ရယူနေပါသည်: ${paramName}...`, "info");
+      if (autoFetchPresetBtn && hasPreset) {
+        autoFetchPresetBtn.addEventListener("click", async () => {
+          if (isBusy) return;
+          try {
+            autoFetchPresetBtn.disabled = true;
+            autoFetchPresetBtn.innerHTML = `<span class="spinner"></span> ${currentLang === "en" ? "Downloading APK..." : "APK ဒေါင်းလုဒ်ရယူနေပါသည်..."}`;
+            appendLog(currentLang === "en" ? `Fetching APK online: ${paramName}...` : `အွန်လိုင်းမှ APK ကို ရယူနေပါသည်: ${paramName}...`, "info");
 
-          const response = await fetch(paramUrl);
-          if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-          const blob = await response.blob();
-          const fileName = paramUrl.split("/").pop() || `${paramName}.apk`;
-          const file = new File([blob], fileName, { type: "application/vnd.android.package-archive" });
-          
-          handleFile(file);
-          appendLog(currentLang === "en" ? `APK fetched successfully (${formatBytes(file.size)})` : `APK အား အောင်မြင်စွာ ရယူပြီးပါပြီ (${formatBytes(file.size)})`, "success");
-        } catch (fetchErr) {
-          console.warn("Direct fetch error:", fetchErr);
-          appendLog(currentLang === "en" ? "Notice: Could not fetch APK directly (likely CORS policy). Please use direct download above and select file below." : "သတိပေးချက်: အင်တာနက်မှ တိုက်ရိုက်ဆွဲယူ၍ မရနိုင်ပါ (CORS ကန့်သတ်ချက်ကြောင့် ဖြစ်နိုင်သည်)။", "warn");
-          appendLog(currentLang === "en" ? "Please click 'Direct Download' and choose the downloaded file." : "ကျေးဇူးပြု၍ အပေါ်ရှိ 'ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်' ခလုတ်ဖြင့် ဒေါင်းလုဒ်လုပ်ပြီး အောက်ပါ ဖိုင်ရွေးချယ်မှုတွင် ရွေးပေးပါ။", "info");
-          directDownloadPresetLink.click();
-        } finally {
-          const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
-          autoFetchPresetBtn.disabled = false;
-          autoFetchPresetBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.85"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> <span id="autoFetchPresetBtnText">${t.presetAutoFetchBtn}</span>`;
-        }
-      });
+            const response = await fetch(paramUrl);
+            if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+            const blob = await response.blob();
+            const fileName = paramUrl.split("/").pop()?.split("?")[0] || `${paramName}.apk`;
+            const file = new File([blob], fileName.endsWith(".apk") ? fileName : `${fileName}.apk`, { type: "application/vnd.android.package-archive" });
+            
+            // Auto-fetch preset appends to selectedFiles instead of replacing
+            addFiles([file]);
+            appendLog(currentLang === "en" ? `APK fetched successfully: ${file.name} (${formatBytes(file.size)})` : `APK အား အောင်မြင်စွာ ရယူပြီးပါပြီ: ${file.name} (${formatBytes(file.size)})`, "success");
+          } catch (fetchErr) {
+            console.warn("Direct fetch error:", fetchErr);
+            appendLog(currentLang === "en" ? "Notice: Could not fetch APK directly (likely CORS policy). Please use direct download above and select file below." : "သတိပေးချက်: အင်တာနက်မှ တိုက်ရိုက်ဆွဲယူ၍ မရနိုင်ပါ (CORS ကန့်သတ်ချက်ကြောင့် ဖြစ်နိုင်သည်)။", "warn");
+            appendLog(currentLang === "en" ? "Please click 'Direct Download' and choose the downloaded file." : "ကျေးဇူးပြု၍ အပေါ်ရှိ 'ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်' ခလုတ်ဖြင့် ဒေါင်းလုဒ်လုပ်ပြီး အောက်ပါ ဖိုင်ရွေးချယ်မှုတွင် ရွေးပေးပါ။", "info");
+            if (directDownloadPresetLink) directDownloadPresetLink.click();
+          } finally {
+            const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+            autoFetchPresetBtn.disabled = false;
+            autoFetchPresetBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.85"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> <span id="autoFetchPresetBtnText">${t.presetAutoFetchBtn}</span>`;
+          }
+        });
+      }
 
-      // 4. Install Flow Click Handler
+      // ==========================================================================
+      // BATCH SEQUENTIAL INSTALL FLOW CLICK HANDLER
+      // ==========================================================================
       installBtn.addEventListener("click", async () => {
-        if (!activeAdb || !selectedFile || isBusy) return;
+        if (!activeAdb || selectedFiles.length === 0 || isBusy) return;
 
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
         try {
           isBusy = true;
           installBtn.disabled = true;
           connectBtn.disabled = true;
-          apkFileInput.disabled = true;
-          changeFileBtn.disabled = true;
+          setDeviceControlsDisabled(true);
+          if (apkFileInput) apkFileInput.disabled = true;
+          if (clearFilesBtn) clearFilesBtn.disabled = true;
+          if (addMoreFilesBtn) addMoreFilesBtn.disabled = true;
           step3Badge.textContent = t.step3Num;
           step3Badge.classList.remove("completed");
 
-          installBtnText.innerHTML = `<span class="spinner"></span> ${currentLang === "en" ? "Installing to device..." : "ဖုန်းထဲသို့ သွင်းနေပါသည်..."}`;
-          setProgress(0, currentLang === "en" ? "Initiating file transfer..." : "ဖိုင်စတင် ပို့ဆောင်နေပါသည်...");
-          appendLog(`${currentLang === "en" ? "Installation started:" : "တပ်ဆင်ခြင်း စတင်ပါပြီ:"} ${selectedFile.name}...`, "info");
+          const totalFiles = selectedFiles.length;
+          let successCount = 0;
+          let failedCount = 0;
+
+          installBtnText.innerHTML = `<span class="spinner"></span> ${currentLang === "en" ? "Installing files..." : "ဖုန်းထဲသို့ သွင်းနေပါသည်..."}`;
+          appendLog(`${currentLang === "en" ? "Batch installation started:" : "အစီအစဉ်လိုက် တပ်ဆင်ခြင်း စတင်ပါပြီ:"} (${totalFiles} ${currentLang === "en" ? "files" : "ဖိုင်"})`, "info");
 
           const adb = activeAdb;
-          const file = selectedFile;
-          const totalBytes = file.size;
-          let uploadedBytes = 0;
-
-          // Install flow as specified:
           const sdk = parseInt(await adb.getProp("ro.build.version.sdk").catch(() => ""), 10);
           appendLog(`Android SDK Version: ${Number.isNaN(sdk) ? "Auto" : sdk}`, "info");
 
           const pm = new PackageManager(adb, Number.isNaN(sdk) ? undefined : sdk);
 
-          // Counted stream with transform stream
-          const countedStream = file.stream().pipeThrough(new TransformStream({
-            transform(chunk, c) {
-              uploadedBytes += chunk.byteLength;
-              const pct = totalBytes > 0 ? (uploadedBytes / totalBytes) * 100 : 0;
-              const statusMsg = currentLang === "en"
-                ? `Streaming to device... ${Math.round(pct)}% (${formatBytes(uploadedBytes)} / ${formatBytes(totalBytes)})`
-                : `ဖုန်းထဲသို့ ပေးပို့နေသည်... ${Math.round(pct)}% (${formatBytes(uploadedBytes)} / ${formatBytes(totalBytes)})`;
-              setProgress(pct, statusMsg);
-              c.enqueue(chunk);
-            }
-          }));
+          // Install each file sequentially
+          for (let i = 0; i < totalFiles; i++) {
+            const file = selectedFiles[i];
+            const fileNum = i + 1;
+            const filePrefix = currentLang === "en"
+              ? `Installing ${fileNum} of ${totalFiles}: ${file.name}`
+              : `တပ်ဆင်နေသည် (${fileNum}/${totalFiles}): ${file.name}`;
 
-          appendLog(currentLang === "en" ? "Streaming APK packet payload to Android device..." : "APK ဒေတာများကို ဖုန်းထဲသို့ Streaming စနစ်ဖြင့် စတင်ပို့ဆောင်နေပါသည်...", "info");
-          appendLog(currentLang === "en" ? "💡 If 'Install via USB' appears on phone screen, tap Install" : "💡 ဖုန်းမျက်နှာပြင်တွင် 'Install via USB' ခွင့်ပြုချက်မေးခွန်း ပေါ်လာပါက 'Install' ကို နှိပ်ပေးပါ", "warn");
-          
-          let result;
-          if (typeof pm.installStream === "function") {
-            result = await pm.installStream(totalBytes, countedStream, { replaceExisting: true });
-          } else {
-            result = await pm.pushAndInstallStream(countedStream, { replaceExisting: true });
+            setProgress(0, filePrefix);
+            appendLog(`[${fileNum}/${totalFiles}] ${filePrefix}...`, "info");
+
+            let uploadedBytes = 0;
+            const totalBytes = file.size;
+
+            const countedStream = file.stream().pipeThrough(new TransformStream({
+              transform(chunk, c) {
+                uploadedBytes += chunk.byteLength;
+                const pct = totalBytes > 0 ? (uploadedBytes / totalBytes) * 100 : 0;
+                const statusMsg = `${filePrefix} (${Math.round(pct)}% - ${formatBytes(uploadedBytes)} / ${formatBytes(totalBytes)})`;
+                setProgress(pct, statusMsg);
+                c.enqueue(chunk);
+              }
+            }));
+
+            try {
+              let result;
+              if (typeof pm.installStream === "function") {
+                result = await pm.installStream(totalBytes, countedStream, { replaceExisting: true });
+              } else {
+                result = await pm.pushAndInstallStream(countedStream, { replaceExisting: true });
+              }
+              successCount++;
+              appendLog(`${currentLang === "en" ? "✓ Successfully installed:" : "✓ အောင်မြင်စွာ တပ်ဆင်ပြီး:"} ${file.name}${result ? ` (${result})` : ""}`, "success");
+            } catch (fileErr) {
+              failedCount++;
+              console.error(`Error installing ${file.name}:`, fileErr);
+              const errMsg = fileErr?.message || String(fileErr);
+              appendLog(`${currentLang === "en" ? "✗ Failed to install" : "✗ တပ်ဆင်မှု မအောင်မြင်ပါ:"} ${file.name} - ${errMsg}`, "error");
+              if (errMsg.includes("INSTALL_FAILED_USER_RESTRICTED") || errMsg.includes("INSTALL_FAILED") || errMsg.includes("Permission denied")) {
+                appendLog(currentLang === "en" ? "Note: On Xiaomi/HyperOS devices, 'Install via USB' must be enabled in Developer Options." : "သတိပြုရန်: Xiaomi/HyperOS ဖုန်းများတွင် Developer Options ထဲရှိ 'Install via USB' ကို ဖွင့်ထားပေးရပါမည်။", "warn");
+              }
+            }
           }
 
-          setProgress(100, currentLang === "en" ? "Installation complete!" : "တပ်ဆင်မှု ပြီးဆုံးပါပြီ!");
-          appendLog(`${currentLang === "en" ? "Install Result:" : "တပ်ဆင်မှု ရလဒ်:"} ${result || "Success"}`, "success");
-          appendLog(currentLang === "en" ? `Congratulations! "${selectedFile.name}" has been installed successfully.` : `ဂုဏ်ယူပါသည်! "${selectedFile.name}" အား ဖုန်းထဲတွင် အောင်မြင်စွာ တပ်ဆင်ပြီးပါပြီ။`, "success");
+          // At the end show a summary
+          const summaryMsg = currentLang === "en"
+            ? `${successCount} installed, ${failedCount} failed`
+            : `${successCount} ခု အောင်မြင်၊ ${failedCount} ခု မအောင်မြင်`;
 
-          step3Badge.textContent = "✓";
-          step3Badge.classList.add("completed");
-          step3Status.textContent = t.step3StatusSuccess;
-          installBtnText.textContent = t.installBtnSuccess;
+          appendLog(`${currentLang === "en" ? "Batch install summary:" : "တပ်ဆင်မှု အနှစ်ချုပ်:"} ${summaryMsg}`, successCount > 0 ? "success" : "warn");
+          setProgress(100, summaryMsg);
+
+          if (failedCount === 0) {
+            step3Badge.textContent = "✓";
+            step3Badge.classList.add("completed");
+            step3Status.textContent = t.step3StatusSuccess;
+            installBtnText.textContent = t.installBtnSuccess;
+          } else {
+            step3Status.textContent = summaryMsg;
+            installBtnText.textContent = t.installBtnRetry;
+          }
         } catch (err) {
-          console.error("Install error:", err);
+          console.error("Install fatal error:", err);
           const errMsg = err?.message || String(err);
           setProgress(0, currentLang === "en" ? "Installation failed" : "တပ်ဆင်ခြင်း မအောင်မြင်ပါ");
           appendLog(`${currentLang === "en" ? "Installation failed:" : "တပ်ဆင်ခြင်း မအောင်မြင်ပါ:"} ${errMsg}`, "error");
-
-          // Helpful hints for common issues (Xiaomi / User Restricted)
-          if (errMsg.includes("INSTALL_FAILED_USER_RESTRICTED") || errMsg.includes("INSTALL_FAILED") || errMsg.includes("Permission denied")) {
-            appendLog(currentLang === "en" ? "Important: On Xiaomi / Redmi / HyperOS devices, enable 'Install via USB' in Developer Options." : "အရေးကြီး အကြံပြုချက်: Xiaomi / Redmi / HyperOS ဖုန်းများတွင် Developer Options သို့သွား၍ 'Install via USB' ကို ဖွင့်ထားရန် လိုအပ်ပါသည်။", "warn");
-            appendLog(currentLang === "en" ? "Also accept 'Allow installation from USB' if prompted on phone screen." : "ထို့အပြင် ဖုန်းမျက်နှာပြင်တွင် 'Allow installation from USB' ပေါ်လာပါက လက်ခံပေးပါ။", "warn");
-          } else {
-            appendLog(currentLang === "en" ? "Tip: Check if phone storage is full and ensure 'Install via USB' is allowed in Developer Options." : "အကြံပြုချက်: ဖုန်းမှတ်ဉာဏ် (Storage) ပြည့်မပြည့် စစ်ဆေးပြီး Developer Options တွင် 'Install via USB' ခွင့်ပြုထားခြင်း ရှိမရှိ စစ်ဆေးပါ။", "warn");
-          }
           step3Status.textContent = t.step3StatusFailed;
           installBtnText.textContent = t.installBtnRetry;
         } finally {
           isBusy = false;
           connectBtn.disabled = false;
-          apkFileInput.disabled = false;
-          changeFileBtn.disabled = false;
+          setDeviceControlsDisabled(false);
+          if (apkFileInput) apkFileInput.disabled = false;
+          if (clearFilesBtn) clearFilesBtn.disabled = false;
+          if (addMoreFilesBtn) addMoreFilesBtn.disabled = false;
           updateInstallButtonState();
         }
       });
