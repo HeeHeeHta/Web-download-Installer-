@@ -913,7 +913,7 @@
         box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15);
       }
 
-      .fastboot-chip-btn {
+      .fastboot-chip-btn, .adb-chip-btn {
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.12);
         color: rgba(255, 255, 255, 0.8);
@@ -925,7 +925,7 @@
         font-family: monospace;
       }
 
-      .fastboot-chip-btn:hover {
+      .fastboot-chip-btn:hover, .adb-chip-btn:hover {
         background: rgba(255, 255, 255, 0.12);
         color: #FFFFFF;
         border-color: rgba(255, 255, 255, 0.25);
@@ -1193,41 +1193,96 @@
           </div>
           <p class="step-desc" data-i18n="deviceControlsDesc">ဖုန်းကို ပုံစံအမျိုးမျိုးဖြင့် ပြန်လည်စတင်ရန် (Reboot) သို့မဟုတ် ပါဝါပိတ်ရန် အောက်ပါခလုတ်များကို အသုံးပြုနိုင်ပါသည်။</p>
 
-          <div class="device-controls-grid" id="deviceControlsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
-            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlRebootBtn" style="font-size: 12px; padding: 10px 12px; border-radius: 14px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="23 4 23 10 17 10"/>
-                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-              </svg>
-              <span data-i18n="ctrlReboot">Reboot</span>
+          <div class="device-controls-grid" id="deviceControlsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px;">
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlRebootBtn" style="font-size: 12px; padding: 11px 12px; border-radius: 14px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                  <polyline points="23 4 23 10 17 10"/>
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                </svg>
+                <span data-i18n="ctrlReboot">Reboot</span>
+              </div>
+              <span style="font-size: 10.5px; opacity: 0.7; font-weight: normal; line-height: 1.3;" data-i18n="ctrlRebootHint">Standard device reboot to Android OS</span>
             </button>
-            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlBootloaderBtn" style="font-size: 12px; padding: 10px 12px; border-radius: 14px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                <polyline points="2 17 12 22 22 17"/>
-                <polyline points="2 12 12 17 22 12"/>
-              </svg>
-              <span data-i18n="ctrlBootloader">Reboot Bootloader</span>
+
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlBootloaderBtn" style="font-size: 12px; padding: 11px 12px; border-radius: 14px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                  <polyline points="2 17 12 22 22 17"/>
+                  <polyline points="2 12 12 17 22 12"/>
+                </svg>
+                <span data-i18n="ctrlBootloader">Reboot to Bootloader (Fastboot Mode)</span>
+              </div>
+              <span style="font-size: 10.5px; opacity: 0.72; font-weight: normal; line-height: 1.3;" data-i18n="ctrlBootloaderHint">Traditional FASTBOOT screen — use this before opening the Fastboot Tools tab</span>
             </button>
-            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlFastbootBtn" style="font-size: 12px; padding: 10px 12px; border-radius: 14px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-              </svg>
-              <span data-i18n="ctrlFastboot">Reboot Fastboot</span>
+
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlFastbootBtn" style="font-size: 12px; padding: 11px 12px; border-radius: 14px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+                <span data-i18n="ctrlFastboot">Reboot to Fastbootd</span>
+              </div>
+              <span style="font-size: 10.5px; opacity: 0.72; font-weight: normal; line-height: 1.3;" data-i18n="ctrlFastbootHint">Userspace fastboot for dynamic partitions (newer devices)</span>
             </button>
-            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlRecoveryBtn" style="font-size: 12px; padding: 10px 12px; border-radius: 14px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-              <span data-i18n="ctrlRecovery">Reboot Recovery</span>
+
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlRecoveryBtn" style="font-size: 12px; padding: 11px 12px; border-radius: 14px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <span data-i18n="ctrlRecovery">Reboot Recovery</span>
+              </div>
+              <span style="font-size: 10.5px; opacity: 0.7; font-weight: normal; line-height: 1.3;" data-i18n="ctrlRecoveryHint">Recovery mode for firmware / wipe</span>
             </button>
-            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlPowerOffBtn" style="font-size: 12px; padding: 10px 12px; border-radius: 14px; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.25);">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
-                <line x1="12" y1="2" x2="12" y2="12"/>
-              </svg>
-              <span data-i18n="ctrlPowerOff">Power Off</span>
+
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlPowerOffBtn" style="font-size: 12px; padding: 11px 12px; border-radius: 14px; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.25); display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                  <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+                  <line x1="12" y1="2" x2="12" y2="12"/>
+                </svg>
+                <span data-i18n="ctrlPowerOff">Power Off</span>
+              </div>
+              <span style="font-size: 10.5px; opacity: 0.7; font-weight: normal; line-height: 1.3;" data-i18n="ctrlPowerOffHint">Safely shutdown the device</span>
             </button>
+          </div>
+
+          <!-- Custom ADB Shell Command Section -->
+          <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <label for="adbCustomCmdInput" style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--text-secondary);">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="4 17 10 11 4 5"/>
+                  <line x1="12" y1="19" x2="20" y2="19"/>
+                </svg>
+                <span data-i18n="adbCustomCmdTitle">Custom ADB Shell Command</span>
+              </label>
+              <button type="button" id="adbClearOutputBtn" style="display: none; background: transparent; border: none; font-size: 11px; color: var(--text-muted); cursor: pointer; text-decoration: underline;" data-i18n="adbClearOutput">Clear Output</button>
+            </div>
+
+            <!-- Quick suggestion chips -->
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;">
+              <span style="font-size: 11px; color: var(--text-muted); align-self: center;" data-i18n="adbQuickChips">Quick:</span>
+              <button type="button" class="adb-chip-btn" data-cmd="getprop ro.product.model">getprop ro.product.model</button>
+              <button type="button" class="adb-chip-btn" data-cmd="dumpsys battery">dumpsys battery</button>
+              <button type="button" class="adb-chip-btn" data-cmd="pm list packages -3">pm list packages -3</button>
+              <button type="button" class="adb-chip-btn" data-cmd="uname -a">uname -a</button>
+            </div>
+
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="text" id="adbCustomCmdInput" class="input-glass" placeholder="e.g. getprop ro.product.model" data-i18n-placeholder="adbCustomCmdPlaceholder" autocomplete="off" spellcheck="false" style="font-family: monospace; font-size: 12.5px; padding: 9px 12px;" />
+              <button type="button" class="btn btn-outline" id="adbCustomCmdRunBtn" style="padding: 9px 18px; font-size: 12.5px; border-radius: 12px; font-weight: 600; flex-shrink: 0;" disabled>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                <span data-i18n="adbRunBtn">Run</span>
+              </button>
+            </div>
+
+            <!-- Scrollable Output Box -->
+            <pre id="adbCmdOutput" style="display: none; margin-top: 10px; background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11.5px; color: #6EE7B7; max-height: 180px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;"></pre>
           </div>
         </section>
 
@@ -1871,10 +1926,20 @@
           deviceControlsActiveTag: "ချိတ်ဆက်ထားသည်",
           deviceControlsDesc: "ဖုန်းကို စနစ်ပုံစံအမျိုးမျိုးဖြင့် ပြန်လည်စတင်ရန် (Reboot) သို့မဟုတ် ပါဝါပိတ်ရန် အောက်ပါခလုတ်များကို အသုံးပြုနိုင်ပါသည်။",
           ctrlReboot: "Reboot",
-          ctrlBootloader: "Reboot Bootloader",
-          ctrlFastboot: "Reboot Fastboot",
+          ctrlRebootHint: "ဖုန်းကို ပုံမှန် Android OS သို့ ပြန်လည်စတင်မည်",
+          ctrlBootloader: "Reboot to Bootloader (Fastboot Mode)",
+          ctrlBootloaderHint: "မူလ Fastboot မျက်နှာပြင် — Fastboot Tools tab သို့ မသွားမီ ဤခလုတ်ကို နှိပ်ပါ",
+          ctrlFastboot: "Reboot to Fastbootd",
+          ctrlFastbootHint: "Dynamic partitions သုံး စက်ပစ္စည်းအသစ်များအတွက် Userspace fastbootd",
           ctrlRecovery: "Reboot Recovery",
+          ctrlRecoveryHint: "Recovery mode သို့ ပြန်လည်စတင်မည်",
           ctrlPowerOff: "Power Off",
+          ctrlPowerOffHint: "ဖုန်းစက်ပစ္စည်းကို ဘေးကင်းစွာ ပါဝါပိတ်မည်",
+          adbCustomCmdTitle: "စိတ်ကြိုက် ADB Shell အမိန့်ပေးညွှန်ကြားချက်",
+          adbCustomCmdPlaceholder: "ဥပမာ - getprop ro.product.model",
+          adbRunBtn: "အမိန့်ပေးမည် (Run)",
+          adbClearOutput: "မှတ်တမ်းရှင်းမည်",
+          adbQuickChips: "အမြန်သုံး:",
           deviceBoxTitle: "ချိတ်ဆက်ထားသော စက်ပစ္စည်း အချက်အလက်",
           deviceLabelModel: "မော်ဒယ် (Model):",
           deviceLabelAndroid: "Android ဗားရှင်း:",
@@ -1984,10 +2049,20 @@
           deviceControlsActiveTag: "Active",
           deviceControlsDesc: "Reboot device into various modes or power off directly via ADB commands.",
           ctrlReboot: "Reboot",
-          ctrlBootloader: "Reboot Bootloader",
-          ctrlFastboot: "Reboot Fastboot",
+          ctrlRebootHint: "Standard device reboot to Android OS",
+          ctrlBootloader: "Reboot to Bootloader (Fastboot Mode)",
+          ctrlBootloaderHint: "Traditional FASTBOOT screen — use this before opening the Fastboot Tools tab",
+          ctrlFastboot: "Reboot to Fastbootd",
+          ctrlFastbootHint: "Userspace fastboot for dynamic partitions (newer devices)",
           ctrlRecovery: "Reboot Recovery",
+          ctrlRecoveryHint: "Recovery mode for firmware / wipe",
           ctrlPowerOff: "Power Off",
+          ctrlPowerOffHint: "Safely shutdown the device",
+          adbCustomCmdTitle: "Custom ADB Shell Command",
+          adbCustomCmdPlaceholder: "e.g. getprop ro.product.model",
+          adbRunBtn: "Run",
+          adbClearOutput: "Clear Output",
+          adbQuickChips: "Quick:",
           deviceBoxTitle: "Connected Device Details",
           deviceLabelModel: "Model:",
           deviceLabelAndroid: "Android Version:",
@@ -2154,6 +2229,10 @@
       const ctrlFastbootBtn = document.getElementById("ctrlFastbootBtn");
       const ctrlRecoveryBtn = document.getElementById("ctrlRecoveryBtn");
       const ctrlPowerOffBtn = document.getElementById("ctrlPowerOffBtn");
+      const adbCustomCmdInput = document.getElementById("adbCustomCmdInput");
+      const adbCustomCmdRunBtn = document.getElementById("adbCustomCmdRunBtn");
+      const adbCmdOutput = document.getElementById("adbCmdOutput");
+      const adbClearOutputBtn = document.getElementById("adbClearOutputBtn");
 
       const apkFileInput = document.getElementById("apkFileInput");
       const fileDropzone = document.getElementById("fileDropzone");
@@ -2219,6 +2298,14 @@
           const key = el.getAttribute("data-i18n");
           if (t[key] !== undefined && typeof t[key] === "string") {
             el.textContent = t[key];
+          }
+        });
+
+        // Update elements with data-i18n-placeholder attribute
+        document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+          const key = el.getAttribute("data-i18n-placeholder");
+          if (t[key] !== undefined && typeof t[key] === "string") {
+            el.setAttribute("placeholder", t[key]);
           }
         });
 
@@ -2576,6 +2663,12 @@
             btn.style.cursor = disabled ? "not-allowed" : "pointer";
           }
         });
+        if (adbCustomCmdRunBtn) {
+          adbCustomCmdRunBtn.disabled = disabled || !activeAdb || !adbCustomCmdInput?.value?.trim();
+        }
+        if (adbCustomCmdInput) {
+          adbCustomCmdInput.disabled = disabled || !activeAdb;
+        }
       }
 
       async function resetToDisconnectedState() {
@@ -2592,6 +2685,20 @@
 
         if (deviceControlsCard) {
           deviceControlsCard.style.display = "none";
+        }
+        if (adbCmdOutput) {
+          adbCmdOutput.textContent = "";
+          adbCmdOutput.style.display = "none";
+        }
+        if (adbClearOutputBtn) {
+          adbClearOutputBtn.style.display = "none";
+        }
+        if (adbCustomCmdRunBtn) {
+          adbCustomCmdRunBtn.disabled = true;
+        }
+        if (adbCustomCmdInput) {
+          adbCustomCmdInput.disabled = true;
+          adbCustomCmdInput.value = "";
         }
         if (deviceBox) {
           deviceBox.classList.remove("show");
@@ -2661,12 +2768,12 @@
       }
       if (ctrlBootloaderBtn) {
         ctrlBootloaderBtn.addEventListener("click", () => {
-          handleDevicePowerAction("bootloader", "Reboot to Bootloader", () => activeAdb.power.bootloader());
+          handleDevicePowerAction("bootloader", "Reboot to Bootloader (Fastboot Mode)", () => activeAdb.power.bootloader());
         });
       }
       if (ctrlFastbootBtn) {
         ctrlFastbootBtn.addEventListener("click", () => {
-          handleDevicePowerAction("fastboot", "Reboot to Fastboot", () => activeAdb.power.fastboot());
+          handleDevicePowerAction("fastboot", "Reboot to Fastbootd", () => activeAdb.power.fastboot());
         });
       }
       if (ctrlRecoveryBtn) {
@@ -2677,6 +2784,89 @@
       if (ctrlPowerOffBtn) {
         ctrlPowerOffBtn.addEventListener("click", () => {
           handleDevicePowerAction("powerOff", "Power Off", () => activeAdb.power.powerOff());
+        });
+      }
+
+      // ==========================================================================
+      // CUSTOM ADB SHELL COMMAND
+      // ==========================================================================
+      function updateAdbCustomCmdState() {
+        if (!adbCustomCmdRunBtn) return;
+        const val = (adbCustomCmdInput?.value || "").trim();
+        adbCustomCmdRunBtn.disabled = !activeAdb || isBusy || !val;
+      }
+
+      if (adbCustomCmdInput) {
+        adbCustomCmdInput.addEventListener("input", updateAdbCustomCmdState);
+        adbCustomCmdInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && adbCustomCmdRunBtn && !adbCustomCmdRunBtn.disabled) {
+            runAdbCustomCommand();
+          }
+        });
+      }
+
+      document.querySelectorAll(".adb-chip-btn").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const cmd = chip.getAttribute("data-cmd");
+          if (cmd && adbCustomCmdInput) {
+            adbCustomCmdInput.value = cmd;
+            updateAdbCustomCmdState();
+            adbCustomCmdInput.focus();
+          }
+        });
+      });
+
+      async function runAdbCustomCommand() {
+        if (!activeAdb || isBusy) return;
+        const rawInput = (adbCustomCmdInput?.value || "").trim();
+        if (!rawInput) return;
+
+        const argv = rawInput.split(/\s+/).filter(Boolean);
+        if (argv.length === 0) return;
+
+        const runBtn = adbCustomCmdRunBtn;
+        try {
+          if (runBtn) runBtn.disabled = true;
+          appendLog("$ " + rawInput, "info");
+
+          const out = await activeAdb.subprocess.noneProtocol.spawnWaitText(argv);
+
+          if (adbCmdOutput) {
+            adbCmdOutput.style.display = "block";
+            adbCmdOutput.textContent = out !== "" ? out : "(command executed, no output returned)";
+            adbCmdOutput.scrollTop = adbCmdOutput.scrollHeight;
+          }
+          if (adbClearOutputBtn) {
+            adbClearOutputBtn.style.display = "inline-block";
+          }
+          appendLog(`[ADB Shell] Command completed.`, "success");
+        } catch (err) {
+          console.error("ADB command error:", err);
+          const errMsg = err?.message || String(err);
+          if (adbCmdOutput) {
+            adbCmdOutput.style.display = "block";
+            adbCmdOutput.textContent = `Error: ${errMsg}`;
+          }
+          if (adbClearOutputBtn) {
+            adbClearOutputBtn.style.display = "inline-block";
+          }
+          appendLog(`[ADB Shell] Error executing "$ ${rawInput}": ${errMsg}`, "error");
+        } finally {
+          updateAdbCustomCmdState();
+        }
+      }
+
+      if (adbCustomCmdRunBtn) {
+        adbCustomCmdRunBtn.addEventListener("click", runAdbCustomCommand);
+      }
+
+      if (adbClearOutputBtn) {
+        adbClearOutputBtn.addEventListener("click", () => {
+          if (adbCmdOutput) {
+            adbCmdOutput.textContent = "";
+            adbCmdOutput.style.display = "none";
+          }
+          adbClearOutputBtn.style.display = "none";
         });
       }
 
