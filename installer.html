@@ -1334,6 +1334,122 @@
         height: 15px;
         cursor: pointer;
       }
+
+      /* Colored MST Status Values */
+      .mst-val-yes {
+        color: #34D399 !important;
+        font-weight: 700;
+      }
+      .mst-val-no {
+        color: #F87171 !important;
+        font-weight: 700;
+      }
+
+      /* ADB App Manager List */
+      .adb-apps-list {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        max-height: 230px;
+        overflow-y: auto;
+        padding-right: 4px;
+        margin-top: 8px;
+      }
+      .adb-app-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        background: rgba(0, 0, 0, 0.28);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        padding: 6px 10px;
+        font-size: 11.5px;
+      }
+      .adb-app-name {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        color: #E2E8F0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        flex: 1;
+        min-width: 0;
+      }
+      .adb-app-uninstall-btn {
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        color: #FCA5A5;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: 6px;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: all 0.15s ease;
+      }
+      .adb-app-uninstall-btn:hover:not(:disabled) {
+        background: rgba(239, 68, 68, 0.25);
+        color: #FFFFFF;
+      }
+      .adb-app-uninstall-btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      /* Input Control Buttons Grid */
+      .adb-input-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 6px;
+      }
+      @media (max-width: 600px) {
+        .adb-input-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      .adb-key-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 11.5px;
+        font-weight: 600;
+        padding: 8px 6px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        min-height: 38px;
+        transition: all 0.15s ease;
+      }
+      .adb-key-btn:hover:not(:disabled) {
+        background: rgba(56, 189, 248, 0.14);
+        border-color: rgba(56, 189, 248, 0.35);
+        color: #BAE6FD;
+      }
+      .adb-key-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* Logcat Terminal */
+      .adb-logcat-pre {
+        background: #0a0a10 !important;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 10px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 11px;
+        color: #93C5FD;
+        height: 220px;
+        max-height: 220px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        word-break: break-all;
+        margin-top: 8px;
+        margin-bottom: 0;
+      }
     </style>
   </head>
   <body>
@@ -1446,350 +1562,516 @@
         </div>
       </div>
 
-      <!-- ADB MODE SECTION WRAPPER -->
+      <!-- ADB MODE SECTION WRAPPER (MST Service Tool Layout) -->
       <div id="adbModeSection">
-        <!-- Requirements Checklist Card -->
-        <section class="card">
-        <h2 class="card-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-            <polyline points="22 4 12 14.01 9 11.01"/>
-          </svg>
-          <span data-i18n="reqTitle">လိုအပ်ချက်များ စစ်ဆေးရန် (Requirements)</span>
-        </h2>
-        <ul class="checklist">
-          <li class="checklist-item">
-            <span class="check-icon">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </span>
-            <span data-i18n="req1"><strong>Google Chrome</strong> သို့မဟုတ် <strong>Microsoft Edge</strong> ဘရောက်ဆာ အသုံးပြုထားခြင်း</span>
-          </li>
-          <li class="checklist-item">
-            <span class="check-icon">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </span>
-            <span data-i18n="req2">ကွန်ပျူတာနှင့် ဖုန်းကို <strong>USB-C to C</strong> သို့မဟုတ် <strong>OTG ဒေတာကြိုး</strong> ဖြင့် သေချာစွာ ချိတ်ဆက်ထားခြင်း</span>
-          </li>
-          <li class="checklist-item">
-            <span class="check-icon">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </span>
-            <span data-i18n="req3">ဖုန်း၏ Developer Options တွင် <strong>"USB debugging" (USB အမှားပြင်ဆင်ခြင်း)</strong> ဖွင့်ထားခြင်း</span>
-          </li>
-          <li class="checklist-item">
-            <span class="check-icon">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </span>
-            <span data-i18n="req4">Xiaomi / Redmi / HyperOS ဖုန်းများအတွက် Developer Options ထဲရှိ <strong>"Install via USB"</strong> ခွင့်ပြုချက်ကို ဖွင့်ထားခြင်း</span>
-          </li>
-        </ul>
-      </section>
 
-      <!-- Three Steps Section -->
-      <div class="steps-container">
-        <!-- STEP 1: Connect Device -->
-        <section class="step-card active" id="step1Card">
-          <div class="step-header">
-            <div class="step-title-group">
-              <div class="step-badge" id="step1Badge">၁</div>
-              <h3 class="step-heading-text" data-i18n="step1Heading">အဆင့် ၁: ဖုန်းချိတ်ဆက်ခြင်း</h3>
+        <!-- 1. STICKY STATUS BAR (sticks to top while scrolling inside ADB tab) -->
+        <div class="fb-sticky-bar" id="adbStickyBar">
+          <div class="fb-sticky-left">
+            <div class="fb-sticky-title" style="color: #34D399;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                <line x1="12" y1="18" x2="12.01" y2="18"/>
+              </svg>
+              <span data-i18n="adbStickyTitle">ADB Service Tool</span>
             </div>
-            <span class="step-status-tag" id="step1Status" data-i18n="step1StatusWaiting">စောင့်ဆိုင်းဆဲ</span>
+            <div class="fb-sticky-divider">|</div>
+            <div class="fb-sticky-status">
+              <span class="fb-status-dot" id="adbStickyDot"></span>
+              <span class="fb-status-label" id="adbStickyDeviceLabel" data-i18n="statusDisconnected">Not connected</span>
+            </div>
           </div>
-          <p class="step-desc" data-i18n="step1Desc">ဖုန်းကို USB ကြိုးဖြင့် ထိုးထားပြီး အောက်ပါခလုတ်ကို နှိပ်ကာ ပေါ်လာသော စာရင်းမှ မိမိဖုန်းကို ရွေးချယ်ပေးပါ။</p>
-
-          <button type="button" class="btn btn-primary" id="connectBtn">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-            </svg>
-            <span id="connectBtnText" data-i18n="connectBtnText">ဖုန်းချိတ်ဆက်မည် </span>
-          </button>
-
-          <!-- Reset Keys & Troubleshooting Helper -->
-          <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
-            <button type="button" class="btn btn-outline" id="resetKeysBtn" style="font-size: 12px; padding: 9px 14px; border-radius: 9999px;">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 2v6h-6"/>
-                <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
-                <path d="M3 22v-6h6"/>
-                <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+          <div class="fb-sticky-right">
+            <button type="button" class="btn btn-primary fb-sticky-btn" id="connectBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
               </svg>
-              <span data-i18n="resetKeysBtn">ကီးအသစ်ထုတ်၍ ပြန်လည်ချိတ်ဆက်မည် </span>
+              <span id="connectBtnText" data-i18n="connectBtnText">Connect Device</span>
             </button>
-
-            <details class="troubleshoot-accordion" id="troubleshootAccordion" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 12px 14px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.65; cursor: pointer;">
-              <summary style="font-weight: 600; color: rgba(255, 255, 255, 0.95); display: flex; align-items: center; gap: 6px; outline: none;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <line x1="12" y1="16" x2="12" y2="12"/>
-                  <line x1="12" y1="8" x2="12.01" y2="8"/>
-                </svg>
-                <span data-i18n="troubleshootSummary">ဖုန်းတွင် "Allow USB Debugging" ပေါ်မလာပါက အရေးကြီး ဖြေရှင်းနည်းများ (နှိပ်၍ကြည့်ပါ)</span>
-              </summary>
-              <div id="troubleshootBody" style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px;">
-                <!-- Populated by JavaScript according to active language -->
-              </div>
-            </details>
+            <button type="button" class="btn btn-outline fb-sticky-btn" id="adbDisconnectBtn" style="display: none; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.35);">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span data-i18n="adbDisconnectBtn">Disconnect</span>
+            </button>
           </div>
+        </div>
 
-          <!-- Connected Device Info Card -->
-          <div class="device-box" id="deviceBox">
-            <div class="device-header">
-              <span class="device-header-title">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-                <span data-i18n="deviceBoxTitle">ချိတ်ဆက်ထားသော စက်ပစ္စည်း အချက်အလက်</span>
-              </span>
-              <span style="font-size: 11px; background: rgba(52, 211, 153, 0.15); border: 1px solid rgba(52, 211, 153, 0.28); color: #6EE7B7; padding: 2px 8px; border-radius: 9999px; font-weight: 600;">Online</span>
+        <!-- Setup Guide & Troubleshooting Accordion (Compact helper) -->
+        <details class="troubleshoot-accordion mst-card" id="troubleshootAccordion" style="margin-bottom: 10px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 10px 14px;">
+          <summary style="font-weight: 600; font-size: 12px; color: rgba(255, 255, 255, 0.9); display: flex; align-items: center; justify-content: space-between; cursor: pointer; outline: none;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+              <span data-i18n="troubleshootSummary">Setup Guide & Troubleshooting (USB Debugging, Drivers, OTG)</span>
             </div>
-            <div class="device-grid">
-              <div class="device-item">
-                <span class="device-label" data-i18n="deviceLabelModel">မော်ဒယ် (Model):</span>
-                <span class="device-val" id="infoModel">-</span>
-              </div>
-              <div class="device-item">
-                <span class="device-label" data-i18n="deviceLabelAndroid">Android ဗားရှင်း:</span>
-                <span class="device-val" id="infoAndroid">-</span>
-              </div>
-              <div class="device-item">
-                <span class="device-label" data-i18n="deviceLabelBrand">ထုတ်လုပ်သူ (Brand):</span>
-                <span class="device-val" id="infoBrand">-</span>
-              </div>
-              <div class="device-item">
-                <span class="device-label" data-i18n="deviceLabelSerial">Serial နံပါတ်:</span>
-                <span class="device-val" id="infoSerial">-</span>
-              </div>
+            <button type="button" class="btn btn-outline" id="resetKeysBtn" style="font-size: 11px; padding: 4px 10px; border-radius: 9999px;" onclick="event.stopPropagation();">
+              <span data-i18n="resetKeysBtn">Reset Keys</span>
+            </button>
+          </summary>
+          <div id="troubleshootBody" style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; line-height: 1.6; color: var(--text-secondary);">
+          </div>
+        </details>
+
+        <!-- Hidden state compatibility containers for step badges and legacy queries -->
+        <div style="display: none;" id="step1Card">
+          <span id="step1Badge">1</span>
+          <span id="step1Status"></span>
+        </div>
+        <div style="display: none;" id="deviceBox">
+          <span id="infoModel">-</span>
+          <span id="infoAndroid">-</span>
+          <span id="infoBrand">-</span>
+          <span id="infoSerial">-</span>
+        </div>
+
+        <!-- 2. DEVICE DETAILS CARD (Shown after connect) -->
+        <section class="step-card mst-card" id="adbDeviceBox" style="display: none;">
+          <div class="mst-group-header">
+            <div class="mst-group-title" style="color: #A7F3D0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+              <span data-i18n="adbDeviceDetailsTitle">Device Hardware & System Parameters</span>
+            </div>
+            <button type="button" class="mst-icon-btn" id="adbRefreshDetailsBtn" title="Refresh Parameters" aria-label="Refresh Device Parameters">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+              </svg>
+            </button>
+          </div>
+          <div class="mst-info-grid">
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="adbLabelModel">Model:</span>
+              <span class="mst-mono-val" id="adbValModel">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="adbLabelBrand">Brand:</span>
+              <span class="mst-mono-val" id="adbValBrand">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="adbLabelAndroid">Android:</span>
+              <span class="mst-mono-val" id="adbValAndroid">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="adbLabelSdk">SDK:</span>
+              <span class="mst-mono-val" id="adbValSdk">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="adbLabelBuild">Build ID:</span>
+              <span class="mst-mono-val" id="adbValBuild">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="adbLabelSecurity">Security patch:</span>
+              <span class="mst-mono-val" id="adbValSecurity">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="adbLabelSerial">Serial:</span>
+              <span class="mst-mono-val" id="adbValSerial">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="adbLabelChipset">Chipset:</span>
+              <span class="mst-mono-val" id="adbValChipset">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="adbLabelCpu">CPU ABI:</span>
+              <span class="mst-mono-val" id="adbValCpu">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="adbLabelBattery">Battery:</span>
+              <span class="mst-mono-val" id="adbValBattery">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="adbLabelScreen">Screen size:</span>
+              <span class="mst-mono-val" id="adbValScreen">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="adbLabelDensity">Density:</span>
+              <span class="mst-mono-val" id="adbValDensity">-</span>
+            </div>
+            <div class="mst-info-item" style="grid-column: 1 / -1;">
+              <span class="mst-info-label" data-i18n="adbLabelRoot">Root:</span>
+              <span class="mst-mono-val" id="adbValRoot">-</span>
             </div>
           </div>
         </section>
 
-        <!-- DEVICE CONTROLS CARD (Visible only when connected) -->
-        <section class="step-card" id="deviceControlsCard" style="display: none;">
-          <div class="step-header" style="margin-bottom: 12px;">
-            <div class="step-title-group">
-              <div class="step-badge" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="4" y="4" width="16" height="16" rx="2" ry="2"/>
-                  <rect x="9" y="9" width="6" height="6"/>
-                  <line x1="9" y1="1" x2="9" y2="4"/>
-                  <line x1="15" y1="1" x2="15" y2="4"/>
-                  <line x1="9" y1="20" x2="9" y2="23"/>
-                  <line x1="15" y1="20" x2="15" y2="23"/>
-                  <line x1="20" y1="9" x2="23" y2="9"/>
-                  <line x1="20" y1="14" x2="23" y2="14"/>
-                  <line x1="1" y1="9" x2="4" y2="9"/>
-                  <line x1="1" y1="14" x2="4" y2="14"/>
-                </svg>
-              </div>
-              <h3 class="step-heading-text" data-i18n="deviceControlsTitle">စက်ပစ္စည်း ထိန်းချုပ်မှုများ (Device Controls)</h3>
+        <!-- 3. OPERATION CARDS -->
+
+        <!-- 3A. APK INSTALL CARD (Batch Install UI) -->
+        <section class="step-card mst-card" id="step2Card">
+          <div class="mst-group-header">
+            <div class="mst-group-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                <line x1="12" y1="22.08" x2="12" y2="12"/>
+              </svg>
+              <span data-i18n="adbApkInstallTitle">APK Batch Installation</span>
             </div>
-            <span class="step-status-tag" style="background: rgba(52, 211, 153, 0.15); border-color: rgba(52, 211, 153, 0.28); color: #6EE7B7;" data-i18n="deviceControlsActiveTag">Active</span>
-          </div>
-          <p class="step-desc" data-i18n="deviceControlsDesc">ဖုန်းကို ပုံစံအမျိုးမျိုးဖြင့် ပြန်လည်စတင်ရန် (Reboot) သို့မဟုတ် ပါဝါပိတ်ရန် အောက်ပါခလုတ်များကို အသုံးပြုနိုင်ပါသည်။</p>
-
-          <div class="device-controls-grid" id="deviceControlsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px;">
-            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlRebootBtn" style="font-size: 12px; padding: 11px 12px; border-radius: 14px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
-              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
-                  <polyline points="23 4 23 10 17 10"/>
-                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-                </svg>
-                <span data-i18n="ctrlReboot">Reboot</span>
-              </div>
-              <span style="font-size: 10.5px; opacity: 0.7; font-weight: normal; line-height: 1.3;" data-i18n="ctrlRebootHint">Standard device reboot to Android OS</span>
-            </button>
-
-            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlBootloaderBtn" style="font-size: 12px; padding: 11px 12px; border-radius: 14px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
-              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
-                  <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                  <polyline points="2 17 12 22 22 17"/>
-                  <polyline points="2 12 12 17 22 12"/>
-                </svg>
-                <span data-i18n="ctrlBootloader">Reboot to Bootloader (Fastboot Mode)</span>
-              </div>
-              <span style="font-size: 10.5px; opacity: 0.72; font-weight: normal; line-height: 1.3;" data-i18n="ctrlBootloaderHint">Traditional FASTBOOT screen — use this before opening the Fastboot Tools tab</span>
-            </button>
-
-            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlFastbootBtn" style="font-size: 12px; padding: 11px 12px; border-radius: 14px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
-              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                </svg>
-                <span data-i18n="ctrlFastboot">Reboot to Fastbootd</span>
-              </div>
-              <span style="font-size: 10.5px; opacity: 0.72; font-weight: normal; line-height: 1.3;" data-i18n="ctrlFastbootHint">Userspace fastboot for dynamic partitions (newer devices)</span>
-            </button>
-
-            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlRecoveryBtn" style="font-size: 12px; padding: 11px 12px; border-radius: 14px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
-              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                </svg>
-                <span data-i18n="ctrlRecovery">Reboot Recovery</span>
-              </div>
-              <span style="font-size: 10.5px; opacity: 0.7; font-weight: normal; line-height: 1.3;" data-i18n="ctrlRecoveryHint">Recovery mode for firmware / wipe</span>
-            </button>
-
-            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlPowerOffBtn" style="font-size: 12px; padding: 11px 12px; border-radius: 14px; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.25); display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
-              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
-                  <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
-                  <line x1="12" y1="2" x2="12" y2="12"/>
-                </svg>
-                <span data-i18n="ctrlPowerOff">Power Off</span>
-              </div>
-              <span style="font-size: 10.5px; opacity: 0.7; font-weight: normal; line-height: 1.3;" data-i18n="ctrlPowerOffHint">Safely shutdown the device</span>
-            </button>
+            <span class="step-status-tag" id="step2Status" data-i18n="step2StatusWaiting" style="font-size: 11px;">မရွေးချယ်ရသေးပါ</span>
           </div>
 
-          <!-- Custom ADB Shell Command Section -->
-          <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <label for="adbCustomCmdInput" style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--text-secondary);">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="4 17 10 11 4 5"/>
-                  <line x1="12" y1="19" x2="20" y2="19"/>
-                </svg>
-                <span data-i18n="adbCustomCmdTitle">Custom ADB Shell Command</span>
-              </label>
-              <button type="button" id="adbClearOutputBtn" style="display: none; background: transparent; border: none; font-size: 11px; color: var(--text-muted); cursor: pointer; text-decoration: underline;" data-i18n="adbClearOutput">Clear Output</button>
-            </div>
-
-            <!-- Quick suggestion chips -->
-            <div class="mst-chips-wrap" style="margin-bottom: 10px;">
-              <span class="mst-chips-label" data-i18n="adbQuickChips">Quick:</span>
-              <button type="button" class="adb-chip-btn" data-cmd="getprop ro.product.model">getprop ro.product.model</button>
-              <button type="button" class="adb-chip-btn" data-cmd="dumpsys battery">dumpsys battery</button>
-              <button type="button" class="adb-chip-btn" data-cmd="pm list packages -3">pm list packages -3</button>
-              <button type="button" class="adb-chip-btn" data-cmd="uname -a">uname -a</button>
-            </div>
-
-            <div class="fb-cmd-row">
-              <input type="text" id="adbCustomCmdInput" class="input-glass" placeholder="e.g. getprop ro.product.model" data-i18n-placeholder="adbCustomCmdPlaceholder" autocomplete="off" spellcheck="false" style="font-family: monospace; font-size: 12.5px; padding: 9px 12px;" />
-              <button type="button" class="btn btn-outline" id="adbCustomCmdRunBtn" style="padding: 9px 18px; font-size: 12.5px; border-radius: 12px; font-weight: 600;" disabled>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polygon points="5 3 19 12 5 21 5 3"/>
-                </svg>
-                <span data-i18n="adbRunBtn">Run</span>
-              </button>
-            </div>
-
-            <!-- Scrollable Output Box -->
-            <pre id="adbCmdOutput" style="display: none; margin-top: 10px; background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11.5px; color: #6EE7B7; max-height: 180px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;"></pre>
-          </div>
-        </section>
-
-        <!-- STEP 2: Pick APK File -->
-        <section class="step-card" id="step2Card">
-          <div class="step-header">
-            <div class="step-title-group">
-              <div class="step-badge" id="step2Badge">၂</div>
-              <h3 class="step-heading-text" data-i18n="step2Heading">အဆင့် ၂: APK ဖိုင် ရွေးချယ်ခြင်း</h3>
-            </div>
-            <span class="step-status-tag" id="step2Status" data-i18n="step2StatusWaiting">မရွေးချယ်ရသေးပါ</span>
-          </div>
-          <p class="step-desc" data-i18n="step2Desc">ဖုန်းထဲသို့ တပ်ဆင်လိုသော Android အက်ပ် (.apk) ဖိုင်ကို ရွေးချယ်ပေးပါ။</p>
-
-          <!-- Preselected app quick bar (rendered only if name, ver, and url query params exist) -->
-          <div class="preselected-app-box" id="preselectedAppBox" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px;">
+          <!-- Preselected app quick bar -->
+          <div class="preselected-app-box" id="preselectedAppBox" style="display: none; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px;">
               <div>
-                <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;" data-i18n="presetAppLabel">ရွေးချယ်ထားသော အက်ပ်:</div>
-                <div style="font-size: 14.5px; font-weight: 700; color: #FFFFFF;" id="presetAppTitle">-</div>
+                <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 600;" data-i18n="presetAppLabel">ရွေးချယ်ထားသော အက်ပ်:</div>
+                <div style="font-size: 13.5px; font-weight: 700; color: #FFFFFF;" id="presetAppTitle">-</div>
               </div>
-              <a href="#" id="directDownloadPresetLink" class="btn-outline" style="font-size: 11.5px; padding: 5px 12px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" target="_blank" download>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="7 10 12 15 17 10"/>
-                  <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
+              <a href="#" id="directDownloadPresetLink" class="btn-outline" style="font-size: 11px; padding: 4px 10px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" target="_blank" download>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 <span data-i18n="presetDownloadBtn">ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်</span>
               </a>
             </div>
-            <button type="button" id="autoFetchPresetBtn" class="btn btn-outline" style="font-size: 12.5px; padding: 9px 14px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
+            <button type="button" id="autoFetchPresetBtn" class="btn btn-outline" style="font-size: 11.5px; padding: 7px 12px; width: 100%;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               <span id="autoFetchPresetBtnText" data-i18n="presetAutoFetchBtn">ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်</span>
             </button>
           </div>
 
           <input type="file" id="apkFileInput" class="file-input-hidden" accept=".apk" multiple />
           
-          <div class="file-dropzone" id="fileDropzone">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px; opacity: 0.75;">
+          <div class="file-dropzone mst-file-dropzone" id="fileDropzone" style="padding: 12px !important;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 4px; opacity: 0.75;">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
               <polyline points="17 8 12 3 7 8"/>
               <line x1="12" y1="3" x2="12" y2="15"/>
             </svg>
-            <div style="font-size: 14px; font-weight: 700; color: #FFFFFF; margin-bottom: 2px;" data-i18n="dropzoneTitle">APK ဖိုင်(များ) ရွေးရန် ဤနေရာကို နှိပ်ပါ</div>
-            <div style="font-size: 12px; color: var(--text-muted);" data-i18n="dropzoneSubtitle">.apk ဖိုင်များကိုသာ လက်ခံပါသည် (ဖိုင်တစ်ခုထက်ပို၍ ရွေးချယ်နိုင်သည်)</div>
+            <div style="font-size: 13px; font-weight: 700; color: #FFFFFF;" data-i18n="dropzoneTitle">Click or drop APK files here</div>
+            <div style="font-size: 11px; color: var(--text-muted);" data-i18n="dropzoneSubtitle">Accepts .apk files (batch install supported)</div>
           </div>
 
           <!-- Multiple Selected Files Container -->
-          <div class="files-container" id="filesContainer" style="display: none; margin-top: 14px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-              <span style="font-size: 12.5px; font-weight: 600; color: rgba(255, 255, 255, 0.9);" id="filesCountHeader">0 files</span>
-              <div style="display: flex; gap: 8px;">
-                <button type="button" id="addMoreFilesBtn" class="btn-outline" style="font-size: 11.5px; padding: 4px 11px; border-radius: 9999px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"/>
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                  </svg>
-                  <span data-i18n="addMoreFilesBtn">ဖိုင်ထပ်ထည့်မည်</span>
+          <div class="files-container" id="filesContainer" style="display: none; margin-top: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 11.5px; font-weight: 600; color: rgba(255, 255, 255, 0.9);" id="filesCountHeader">0 files</span>
+              <div style="display: flex; gap: 6px;">
+                <button type="button" id="addMoreFilesBtn" class="btn-outline" style="font-size: 11px; padding: 3px 9px; border-radius: 9999px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span data-i18n="addMoreFilesBtn">Add More</span>
                 </button>
-                <button type="button" id="clearFilesBtn" class="btn-outline" style="font-size: 11.5px; padding: 4px 11px; border-radius: 9999px; cursor: pointer; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.25);" data-i18n="clearFilesBtn">အားလုံးရှင်းမည်</button>
+                <button type="button" id="clearFilesBtn" class="btn-outline" style="font-size: 11px; padding: 3px 9px; border-radius: 9999px; cursor: pointer; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.25);" data-i18n="clearFilesBtn">Clear</button>
               </div>
             </div>
-            <div id="fileListItems" style="display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; padding-right: 2px;">
-              <!-- Individual APK file items will be dynamically appended here -->
+            <div id="fileListItems" style="display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto; padding-right: 2px;"></div>
+          </div>
+
+          <!-- Install Action & Progress -->
+          <div style="margin-top: 10px;" id="step3Card">
+            <span id="step2Badge" style="display: none;"></span>
+            <span id="step3Badge" style="display: none;"></span>
+            <span id="step3Status" style="display: none;"></span>
+            <button type="button" class="btn btn-primary" id="installBtn" disabled style="width: 100%; min-height: 40px; font-size: 12.5px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span id="installBtnText" data-i18n="installBtnText">APK တပ်ဆင်မည် (Install APK)</span>
+            </button>
+            <div class="progress-section mst-progress-thin" id="progressSection" style="display: none;">
+              <div class="progress-label-row">
+                <span class="progress-label" id="progressStatusText">ပေးပို့နေဆဲ...</span>
+                <span class="progress-percent" id="progressPercentText">0%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progressBarFill"></div>
+              </div>
             </div>
           </div>
         </section>
 
-        <!-- STEP 3: Install APK -->
-        <section class="step-card" id="step3Card">
-          <div class="step-header">
-            <div class="step-title-group">
-              <div class="step-badge" id="step3Badge">၃</div>
-              <h3 class="step-heading-text" data-i18n="step3Heading">အဆင့် ၃: ဖုန်းထဲသို့ တပ်ဆင်ခြင်း</h3>
+        <!-- 3B. APP MANAGER (Packages & Bloatware) -->
+        <section class="step-card mst-card" id="adbAppManagerCard">
+          <div class="mst-group-header">
+            <div class="mst-group-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+              </svg>
+              <span data-i18n="adbAppManagerTitle">App Manager (Packages & Bloatware)</span>
             </div>
-            <span class="step-status-tag" id="step3Status" data-i18n="step3StatusNotReady">အဆင်သင့်မဖြစ်သေးပါ</span>
+            <span id="adbAppsCount" style="font-size: 11px; color: var(--text-muted); font-family: monospace;"></span>
           </div>
-          <p class="step-desc" data-i18n="step3Desc">ဖုန်းချိတ်ဆက်ပြီး APK ဖိုင် ရွေးချယ်ပြီးပါက အောက်ပါခလုတ်ကို နှိပ်၍ သွင်းယူနိုင်ပါပြီ။</p>
 
-          <button type="button" class="btn btn-primary" id="installBtn" disabled>
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            <span id="installBtnText" data-i18n="installBtnText">APK တပ်ဆင်မည် (Install APK)</span>
-          </button>
+          <!-- Load Apps Row -->
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button type="button" class="btn btn-outline" id="adbBtnLoadApps" disabled style="font-size: 12px; padding: 7px 14px; border-radius: 8px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              <span data-i18n="adbBtnLoadApps">Load Installed Apps</span>
+            </button>
+          </div>
 
-          <!-- Progress Bar Area -->
-          <div class="progress-section" id="progressSection" style="display: none;">
-            <div class="progress-label-row">
-              <span class="progress-label" id="progressStatusText">ပေးပို့နေဆဲ...</span>
-              <span class="progress-percent" id="progressPercentText">0%</span>
-            </div>
-            <div class="progress-bar-bg">
-              <div class="progress-bar-fill" id="progressBarFill"></div>
+          <!-- Apps List Container -->
+          <div class="adb-apps-list" id="adbAppsList" style="display: none;"></div>
+
+          <!-- Disable bloatware row -->
+          <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+            <label style="display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 5px;" data-i18n="adbDisableBloatTitle">
+              Disable Bloatware (System App):
+            </label>
+            <div class="fb-cmd-row">
+              <input type="text" id="adbDisablePkgInput" class="input-glass" placeholder="e.g. com.google.android.apps.tachyon" data-i18n-placeholder="adbDisablePkgPlaceholder" autocomplete="off" spellcheck="false" style="font-family: monospace; font-size: 12px; padding: 7px 10px;" />
+              <button type="button" class="btn btn-outline" id="adbDisablePkgBtn" style="padding: 7px 14px; font-size: 12px; font-weight: 600; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.35);" disabled>
+                <span data-i18n="adbDisableBtn">Disable</span>
+              </button>
             </div>
           </div>
         </section>
-      </div>
+
+        <!-- 3C. SCREENSHOT CARD -->
+        <section class="step-card mst-card" id="adbScreenshotCard">
+          <div class="mst-group-header">
+            <div class="mst-group-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                <circle cx="12" cy="13" r="4"/>
+              </svg>
+              <span data-i18n="adbScreenshotTitle">Screen Capture (Screenshot)</span>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline" id="adbBtnScreenshot" disabled style="font-size: 12px; padding: 8px 14px; border-radius: 8px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span data-i18n="adbBtnScreenshot">Capture Screenshot</span>
+            </button>
+            <a id="adbScreenshotDownloadLink" class="btn btn-outline" style="display: none; padding: 7px 12px; font-size: 11.5px; border-radius: 8px; text-decoration: none; align-items: center; gap: 5px;" download="mst_screen.png">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span data-i18n="adbScreenshotDownload">Download PNG</span>
+            </a>
+          </div>
+          <div id="adbScreenshotContainer" style="display: none; margin-top: 10px; text-align: center; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px;">
+            <img id="adbScreenshotImg" alt="Screenshot preview" style="max-height: 220px; max-width: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" />
+          </div>
+        </section>
+
+        <!-- 3D. SCREEN RECORD CARD -->
+        <section class="step-card mst-card" id="adbRecordCard">
+          <div class="mst-group-header">
+            <div class="mst-group-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="23 7 16 12 23 17 23 7"/>
+                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+              </svg>
+              <span data-i18n="adbRecordTitle">Screen Recording (30s MP4)</span>
+            </div>
+            <span id="adbRecordStatus" style="font-size: 11px; color: var(--text-muted); font-family: monospace;"></span>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline" id="adbBtnScreenRecord" disabled style="font-size: 12px; padding: 8px 14px; border-radius: 8px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+              <span id="adbRecordBtnText" data-i18n="adbBtnRecord">Start (30s Record)</span>
+            </button>
+            <a id="adbRecordDownloadLink" class="btn btn-outline" style="display: none; padding: 7px 12px; font-size: 11.5px; border-radius: 8px; text-decoration: none; align-items: center; gap: 5px; color: #6EE7B7; border-color: rgba(52, 211, 153, 0.35);" download="mst_rec.mp4">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span data-i18n="adbRecordDownload">Download MP4</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- 3E. LOGCAT CARD -->
+        <section class="step-card mst-card" id="adbLogcatCard">
+          <div class="mst-group-header">
+            <div class="mst-group-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 17 10 11 4 5"/>
+                <line x1="12" y1="19" x2="20" y2="19"/>
+              </svg>
+              <span data-i18n="adbLogcatTitle">Live Device Logcat</span>
+            </div>
+            <button type="button" class="btn-clear-log" id="adbLogcatClearBtn" style="padding: 2px 8px; font-size: 10.5px;" data-i18n="adbLogcatClear">Clear</button>
+          </div>
+          <div class="fb-cmd-row" style="margin-bottom: 6px;">
+            <input type="text" id="adbLogcatTagInput" class="input-glass" placeholder="Filter tag (e.g. ActivityManager)" data-i18n-placeholder="adbLogcatTagPlaceholder" autocomplete="off" spellcheck="false" style="font-family: monospace; font-size: 12px; padding: 7px 10px;" />
+            <button type="button" class="btn btn-outline" id="adbLogcatStartBtn" disabled style="padding: 7px 14px; font-size: 12px; font-weight: 600;">
+              <span data-i18n="adbLogcatStartBtn">Start Log</span>
+            </button>
+            <button type="button" class="btn btn-outline" id="adbLogcatStopBtn" disabled style="padding: 7px 14px; font-size: 12px; font-weight: 600; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.35);">
+              <span data-i18n="adbLogcatStopBtn">Stop Log</span>
+            </button>
+          </div>
+          <pre class="adb-logcat-pre" id="adbLogcatPre"></pre>
+        </section>
+
+        <!-- 3F. INPUT CONTROL CARD -->
+        <section class="step-card mst-card" id="adbInputControlCard">
+          <div class="mst-group-header">
+            <div class="mst-group-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                <line x1="12" y1="18" x2="12.01" y2="18"/>
+              </svg>
+              <span data-i18n="adbInputControlTitle">Device Key Events</span>
+            </div>
+          </div>
+          <div class="adb-input-grid">
+            <button type="button" class="adb-key-btn" data-key="26" disabled>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+              <span data-i18n="adbKeyPower">Power</span>
+            </button>
+            <button type="button" class="adb-key-btn" data-key="24" disabled>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span data-i18n="adbKeyVolUp">Vol +</span>
+            </button>
+            <button type="button" class="adb-key-btn" data-key="25" disabled>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span data-i18n="adbKeyVolDown">Vol -</span>
+            </button>
+            <button type="button" class="adb-key-btn" data-key="3" disabled>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <span data-i18n="adbKeyHome">Home</span>
+            </button>
+            <button type="button" class="adb-key-btn" data-key="4" disabled>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+              <span data-i18n="adbKeyBack">Back</span>
+            </button>
+            <button type="button" class="adb-key-btn" data-key="187" disabled>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>
+              <span data-i18n="adbKeyRecent">Recent</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 3G. FILE TRANSFER (Push / Pull) -->
+        <section class="step-card mst-card" id="adbFileTransferCard">
+          <div class="mst-group-header">
+            <div class="mst-group-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                <line x1="12" y1="11" x2="12" y2="17"/>
+                <polyline points="9 14 12 11 15 14"/>
+              </svg>
+              <span data-i18n="adbFileTransferTitle">File Transfer (Push / Pull)</span>
+            </div>
+          </div>
+          
+          <!-- Push Row -->
+          <div style="margin-bottom: 10px;">
+            <label style="display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px;" data-i18n="adbPushSubtitle">
+              Push file to phone:
+            </label>
+            <div class="fb-cmd-row">
+              <input type="file" id="adbPushFileInput" style="flex: 1; font-size: 11px; color: var(--text-secondary);" />
+              <input type="text" id="adbPushDestInput" value="/sdcard/" placeholder="/sdcard/" data-i18n-placeholder="adbPushDestPlaceholder" class="input-glass" style="max-width: 150px; font-family: monospace; font-size: 12px; padding: 7px 10px;" />
+              <button type="button" class="btn btn-outline" id="adbPushBtn" disabled style="padding: 7px 14px; font-size: 12px; font-weight: 600;">
+                <span data-i18n="adbPushBtn">Push</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Pull Row -->
+          <div style="padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+            <label style="display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px;" data-i18n="adbPullSubtitle">
+              Pull file from phone:
+            </label>
+            <div class="fb-cmd-row">
+              <input type="text" id="adbPullPathInput" placeholder="/sdcard/mst_screen.png" data-i18n-placeholder="adbPullPathPlaceholder" class="input-glass" style="flex: 1; font-family: monospace; font-size: 12px; padding: 7px 10px;" />
+              <button type="button" class="btn btn-outline" id="adbPullBtn" disabled style="padding: 7px 14px; font-size: 12px; font-weight: 600;">
+                <span data-i18n="adbPullBtn">Pull</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3H. REBOOT CONTROLS CARD -->
+        <section class="step-card mst-card" id="deviceControlsCard">
+          <div class="mst-group-header">
+            <div class="mst-group-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"/>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+              </svg>
+              <span data-i18n="adbRebootControlsTitle">Reboot & Power Controls</span>
+            </div>
+          </div>
+
+          <div class="device-controls-grid" id="deviceControlsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px;">
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlRebootBtn" disabled style="font-size: 12px; padding: 10px 12px; border-radius: 10px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                <span data-i18n="ctrlReboot">Reboot</span>
+              </div>
+              <span style="font-size: 10px; opacity: 0.7; font-weight: normal; line-height: 1.3;" data-i18n="ctrlRebootHint">Standard OS reboot</span>
+            </button>
+
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlBootloaderBtn" disabled style="font-size: 12px; padding: 10px 12px; border-radius: 10px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                <span data-i18n="ctrlBootloader">Reboot to Bootloader</span>
+              </div>
+              <span style="font-size: 10px; opacity: 0.7; font-weight: normal; line-height: 1.3;" data-i18n="ctrlBootloaderHint">Traditional FASTBOOT screen</span>
+            </button>
+
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlFastbootBtn" disabled style="font-size: 12px; padding: 10px 12px; border-radius: 10px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span data-i18n="ctrlFastboot">Reboot to Fastbootd</span>
+              </div>
+              <span style="font-size: 10px; opacity: 0.7; font-weight: normal; line-height: 1.3;" data-i18n="ctrlFastbootHint">Dynamic partitions userspace</span>
+            </button>
+
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlRecoveryBtn" disabled style="font-size: 12px; padding: 10px 12px; border-radius: 10px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span data-i18n="ctrlRecovery">Reboot Recovery</span>
+              </div>
+              <span style="font-size: 10px; opacity: 0.7; font-weight: normal; line-height: 1.3;" data-i18n="ctrlRecoveryHint">Recovery mode</span>
+            </button>
+
+            <button type="button" class="btn btn-outline dev-ctrl-btn" id="ctrlPowerOffBtn" disabled style="font-size: 12px; padding: 10px 12px; border-radius: 10px; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.25); display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+                <span data-i18n="ctrlPowerOff">Power Off</span>
+              </div>
+              <span style="font-size: 10px; opacity: 0.7; font-weight: normal; line-height: 1.3;" data-i18n="ctrlPowerOffHint">Shutdown device</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 3I. CUSTOM ADB COMMAND CARD -->
+        <section class="step-card mst-card" id="adbCustomCmdCard">
+          <div class="mst-group-header">
+            <div class="mst-group-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 17 10 11 4 5"/>
+                <line x1="12" y1="19" x2="20" y2="19"/>
+              </svg>
+              <span data-i18n="adbCustomCmdTitle">Custom ADB Shell Command</span>
+            </div>
+            <button type="button" id="adbClearOutputBtn" style="display: none; background: transparent; border: none; font-size: 11px; color: var(--text-muted); cursor: pointer; text-decoration: underline;" data-i18n="adbClearOutput">Clear Output</button>
+          </div>
+
+          <!-- Quick suggestion chips -->
+          <div class="mst-chips-wrap">
+            <span class="mst-chips-label" data-i18n="adbQuickChips">Quick:</span>
+            <button type="button" class="adb-chip-btn" data-cmd="getprop ro.product.model">getprop ro.product.model</button>
+            <button type="button" class="adb-chip-btn" data-cmd="dumpsys battery">dumpsys battery</button>
+            <button type="button" class="adb-chip-btn" data-cmd="pm list packages -3">pm list packages -3</button>
+            <button type="button" class="adb-chip-btn" data-cmd="uname -a">uname -a</button>
+          </div>
+
+          <div class="fb-cmd-row">
+            <input type="text" id="adbCustomCmdInput" class="input-glass" placeholder="e.g. getprop ro.product.model" data-i18n-placeholder="adbCustomCmdPlaceholder" autocomplete="off" spellcheck="false" style="font-family: monospace; font-size: 12.5px; padding: 8px 10px;" />
+            <button type="button" class="btn btn-outline" id="adbCustomCmdRunBtn" style="padding: 8px 16px; font-size: 12px; border-radius: 8px; font-weight: 600;" disabled>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              <span data-i18n="adbRunBtn">Run</span>
+            </button>
+          </div>
+
+          <!-- Scrollable Output Box -->
+          <pre id="adbCmdOutput" style="display: none; margin-top: 8px; background: #0a0a10; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 10px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; color: #6EE7B7; max-height: 180px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;"></pre>
+        </section>
+
       </div> <!-- End of adbModeSection -->
 
       <!-- FASTBOOT MODE SECTION (For Mobile Service Technicians - MST Style) -->
@@ -1854,12 +2136,28 @@
               <span class="mst-mono-val" id="fbValSerial">-</span>
             </div>
             <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="fbLabelVersion">Fastboot Version:</span>
+              <span class="mst-mono-val" id="fbValVersion">-</span>
+            </div>
+            <div class="mst-info-item">
               <span class="mst-info-label" data-i18n="fbLabelBootloader">Bootloader:</span>
               <span class="mst-mono-val" id="fbValBootloader">-</span>
             </div>
             <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="fbLabelBaseband">Baseband:</span>
+              <span class="mst-mono-val" id="fbValBaseband">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="fbLabelMain">Main Version:</span>
+              <span class="mst-mono-val" id="fbValMain">-</span>
+            </div>
+            <div class="mst-info-item">
               <span class="mst-info-label" data-i18n="fbLabelUnlocked">Unlocked:</span>
               <span class="mst-mono-val" id="fbValUnlocked">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="fbLabelUserspace">Userspace (fastbootd):</span>
+              <span class="mst-mono-val" id="fbValUserspace">-</span>
             </div>
             <div class="mst-info-item">
               <span class="mst-info-label" data-i18n="fbLabelSlot">Current Slot:</span>
@@ -1869,9 +2167,25 @@
               <span class="mst-info-label" data-i18n="fbLabelSecure">Secure Boot:</span>
               <span class="mst-mono-val" id="fbValSecure">-</span>
             </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="fbLabelBattVolt">Battery Voltage:</span>
+              <span class="mst-mono-val" id="fbValBattVolt">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="fbLabelBattStatus">Battery Status:</span>
+              <span class="mst-mono-val" id="fbValBattStatus">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="fbLabelMaxDl">Max Download Size:</span>
+              <span class="mst-mono-val" id="fbValMaxDl">-</span>
+            </div>
+            <div class="mst-info-item">
+              <span class="mst-info-label" data-i18n="fbLabelUnlockAbility">Unlock Ability:</span>
+              <span class="mst-mono-val" id="fbValUnlockAbility">-</span>
+            </div>
             <div class="mst-info-item" style="grid-column: 1 / -1;">
-              <span class="mst-info-label" data-i18n="fbLabelBaseband">Baseband:</span>
-              <span class="mst-mono-val" id="fbValBaseband">-</span>
+              <span class="mst-info-label" data-i18n="fbLabelToken">Token:</span>
+              <span class="mst-mono-val" id="fbValToken" style="font-size: 10.5px;">-</span>
             </div>
           </div>
         </section>
@@ -2478,6 +2792,64 @@
           fbCmdHistoryTitle: "အမိန့်ပေးချက် မှတ်တမ်း (ယခင် ၁၀ ခု):",
           clearHistoryBtn: "ရှင်းမည်",
           fbQuickChips: "Quick:",
+          fbLabelVersion: "Fastboot ဗားရှင်း:",
+          fbLabelMain: "Main ဗားရှင်း:",
+          fbLabelUserspace: "Fastbootd (Userspace):",
+          fbLabelBattVolt: "ဘက်ထရီ ဗို့အား:",
+          fbLabelBattStatus: "ဘက်ထရီ အခြေအနေ:",
+          fbLabelMaxDl: "အများဆုံး Download Size:",
+          fbLabelToken: "Device Token:",
+          fbLabelUnlockAbility: "Unlock Ability:",
+          adbStickyTitle: "ADB Service Tool",
+          adbDisconnectBtn: "ချိတ်ဆက်မှုဖြုတ်မည်",
+          adbDeviceDetailsTitle: "စက်ပစ္စည်း ဟာ့ဒ်ဝဲနှင့် စနစ်အချက်အလက်များ",
+          adbLabelModel: "မော်ဒယ်:",
+          adbLabelBrand: "ထုတ်လုပ်သူ:",
+          adbLabelAndroid: "Android ဗားရှင်း:",
+          adbLabelSdk: "SDK ဗားရှင်း:",
+          adbLabelBuild: "Build ID:",
+          adbLabelSecurity: "လုံခြုံရေး Patch:",
+          adbLabelSerial: "Serial နံပါတ်:",
+          adbLabelChipset: "Chipset:",
+          adbLabelCpu: "CPU ABI:",
+          adbLabelBattery: "ဘက်ထရီ:",
+          adbLabelScreen: "မျက်နှာပြင် အရွယ်အစား:",
+          adbLabelDensity: "သိပ်သည်းဆ (DPI):",
+          adbLabelRoot: "Root အခြေအနေ:",
+          adbValYes: "ရှိသည် (Yes)",
+          adbValNo: "မရှိပါ (No)",
+          adbApkInstallTitle: "APK အစုလိုက် တပ်ဆင်ခြင်း (APK Batch Install)",
+          adbAppManagerTitle: "အက်ပ်စီမံခန့်ခွဲမှု (App Manager)",
+          adbBtnLoadApps: "သွင်းထားသော အက်ပ်များ ရှာမည်",
+          adbDisableBloatTitle: "System Bloatware အက်ပ် ပိတ်မည်:",
+          adbDisablePkgPlaceholder: "ဥပမာ - com.google.android.apps.tachyon",
+          adbDisableBtn: "ပိတ်မည်",
+          adbScreenshotTitle: "မျက်နှာပြင် ဓာတ်ပုံရိုက်ကူးခြင်း (Screen Capture)",
+          adbBtnScreenshot: "ဓာတ်ပုံရိုက်မည် (Capture)",
+          adbScreenshotDownload: "PNG ဒေါင်းလုဒ်ဆွဲရန်",
+          adbRecordTitle: "မျက်နှာပြင် ဗီဒီယိုဖမ်းယူခြင်း (Screen Recording)",
+          adbBtnRecord: "ဗီဒီယိုစတင်ဖမ်းမည် (၃၀ စက္ကန့်)",
+          adbRecordDownload: "MP4 ဒေါင်းလုဒ်ဆွဲရန်",
+          adbLogcatTitle: "တိုက်ရိုက် စနစ်မှတ်တမ်း (Device Logcat)",
+          adbLogcatStartBtn: "စတင်ဖတ်မည် (Start)",
+          adbLogcatStopBtn: "ရပ်တန့်မည် (Stop)",
+          adbLogcatTagPlaceholder: "Tag စစ်ထုတ်ရန် (ဥပမာ - ActivityManager)",
+          adbLogcatClear: "မှတ်တမ်းရှင်းမည်",
+          adbInputControlTitle: "ဖုန်းခလုတ်များ ထိန်းချုပ်မှု (Input Key Events)",
+          adbKeyPower: "Power",
+          adbKeyVolUp: "Vol +",
+          adbKeyVolDown: "Vol -",
+          adbKeyHome: "Home",
+          adbKeyBack: "Back",
+          adbKeyRecent: "Recents",
+          adbFileTransferTitle: "ဖိုင် အပြန်အလှန် ပို့/ဆွဲယူခြင်း (Push / Pull)",
+          adbPushSubtitle: "ဖုန်းထဲသို့ ဖိုင်ပို့မည် (Push to Device):",
+          adbPushDestPlaceholder: "သိမ်းဆည်းမည့် လမ်းကြောင်း (ဥပမာ - /sdcard/)",
+          adbPushBtn: "ဖိုင်ပို့မည် (Push)",
+          adbPullSubtitle: "ဖုန်းထဲမှ ဖိုင်ဆွဲယူမည် (Pull from Device):",
+          adbPullPathPlaceholder: "ဖုန်းတွင်းဖိုင် လမ်းကြောင်း (ဥပမာ - /sdcard/sample.txt)",
+          adbPullBtn: "ဖိုင်ဆွဲထုတ်မည် (Pull)",
+          adbRebootControlsTitle: "ဖုန်း ပြန်လည်စတင်ခြင်းနှင့် ပါဝါထိန်းချုပ်မှုများ",
           logTitle: "လုပ်ဆောင်မှု မှတ်တမ်း",
           copyLogBtn: "မှတ်တမ်းကူးမည်",
           clearLogBtn: "မှတ်တမ်းရှင်းမည်",
@@ -2617,6 +2989,64 @@
           fbCmdHistoryTitle: "Command History (Recent 10):",
           clearHistoryBtn: "Clear",
           fbQuickChips: "Quick:",
+          fbLabelVersion: "Fastboot Version:",
+          fbLabelMain: "Main Version:",
+          fbLabelUserspace: "Fastbootd (Userspace):",
+          fbLabelBattVolt: "Battery Voltage:",
+          fbLabelBattStatus: "Battery Status:",
+          fbLabelMaxDl: "Max Download Size:",
+          fbLabelToken: "Device Token:",
+          fbLabelUnlockAbility: "Unlock Ability:",
+          adbStickyTitle: "ADB Service Tool",
+          adbDisconnectBtn: "Disconnect",
+          adbDeviceDetailsTitle: "Device Hardware & System Parameters",
+          adbLabelModel: "Model:",
+          adbLabelBrand: "Brand:",
+          adbLabelAndroid: "Android Version:",
+          adbLabelSdk: "SDK Version:",
+          adbLabelBuild: "Build ID:",
+          adbLabelSecurity: "Security Patch:",
+          adbLabelSerial: "Serial Number:",
+          adbLabelChipset: "Chipset:",
+          adbLabelCpu: "CPU ABI:",
+          adbLabelBattery: "Battery:",
+          adbLabelScreen: "Screen Size:",
+          adbLabelDensity: "Screen Density:",
+          adbLabelRoot: "Root Status:",
+          adbValYes: "Yes",
+          adbValNo: "No",
+          adbApkInstallTitle: "APK Batch Install",
+          adbAppManagerTitle: "App Manager (Packages & Bloatware)",
+          adbBtnLoadApps: "Load Installed Apps",
+          adbDisableBloatTitle: "Disable Bloatware (System App):",
+          adbDisablePkgPlaceholder: "e.g. com.google.android.apps.tachyon",
+          adbDisableBtn: "Disable",
+          adbScreenshotTitle: "Screen Capture (Screenshot)",
+          adbBtnScreenshot: "Capture Screenshot",
+          adbScreenshotDownload: "Download PNG",
+          adbRecordTitle: "Screen Recording (30s MP4)",
+          adbBtnRecord: "Start (30s Record)",
+          adbRecordDownload: "Download MP4",
+          adbLogcatTitle: "Live Device Logcat",
+          adbLogcatStartBtn: "Start Log",
+          adbLogcatStopBtn: "Stop Log",
+          adbLogcatTagPlaceholder: "Filter tag (e.g. ActivityManager)",
+          adbLogcatClear: "Clear Logcat",
+          adbInputControlTitle: "Device Key Events",
+          adbKeyPower: "Power",
+          adbKeyVolUp: "Vol +",
+          adbKeyVolDown: "Vol -",
+          adbKeyHome: "Home",
+          adbKeyBack: "Back",
+          adbKeyRecent: "Recent",
+          adbFileTransferTitle: "File Transfer (Push / Pull)",
+          adbPushSubtitle: "Push file to phone:",
+          adbPushDestPlaceholder: "Destination path (default: /sdcard/)",
+          adbPushBtn: "Push File",
+          adbPullSubtitle: "Pull file from phone:",
+          adbPullPathPlaceholder: "Device path (e.g. /sdcard/example.txt)",
+          adbPullBtn: "Pull File",
+          adbRebootControlsTitle: "Reboot & Power Controls",
           logTitle: "Process Terminal Log",
           copyLogBtn: "Copy Log",
           clearLogBtn: "Clear Log",
@@ -3077,35 +3507,33 @@
           activeDevice = device;
           activeAdb = adb;
 
-          // Fetch device properties
-          appendLog(currentLang === "en" ? "Retrieving device details..." : "ဖုန်း၏ အချက်အလက်များကို ရယူနေပါသည်...", "info");
-          const [model, brand, release, sdk] = await Promise.all([
-            adb.getProp("ro.product.model").catch(() => t.deviceUnknown),
-            adb.getProp("ro.product.manufacturer").catch(() => "Android"),
-            adb.getProp("ro.build.version.release").catch(() => "-"),
-            adb.getProp("ro.build.version.sdk").catch(() => ""),
-          ]);
-
-          activeDeviceModel = model || "Android Device";
-          infoModel.textContent = activeDeviceModel;
-          infoBrand.textContent = brand || "Android";
-          infoAndroid.textContent = release ? `Android ${release} (SDK ${sdk})` : `SDK ${sdk}`;
-          infoSerial.textContent = device.serialNumber || t.deviceUnknown;
-          deviceBox.classList.add("show");
+          // Fetch device properties & detailed parameters
+          appendLog(currentLang === "en" ? "Retrieving hardware and system details..." : "ဖုန်း၏ အချက်အလက်များကို ရယူနေပါသည်...", "info");
+          await fetchAdbDeviceDetails(true);
 
           // Update UI for Step 1 completion
-          step1Badge.textContent = "✓";
-          step1Badge.classList.add("completed");
-          step1Status.textContent = t.step1StatusConnected;
-          step1Card.classList.remove("active");
-          step2Card.classList.add("active");
+          if (step1Badge) {
+            step1Badge.textContent = "✓";
+            step1Badge.classList.add("completed");
+          }
+          if (step1Status) step1Status.textContent = t.step1StatusConnected;
+          if (step1Card) step1Card.classList.remove("active");
+          if (step2Card) step2Card.classList.add("active");
 
-          statusDot.classList.add("connected");
-          statusText.textContent = `${activeDeviceModel} ${t.statusConnectedSuffix}`;
+          const adbStickyDot = document.getElementById("adbStickyDot");
+          const adbStickyDeviceLabel = document.getElementById("adbStickyDeviceLabel");
+          const adbDisconnectBtn = document.getElementById("adbDisconnectBtn");
 
-          connectBtnText.textContent = t.reconnectBtnText;
-          connectBtn.classList.remove("btn-primary");
-          connectBtn.classList.add("btn-outline");
+          if (adbStickyDot) adbStickyDot.classList.add("connected");
+          if (adbStickyDeviceLabel) {
+            const serial = device.serialNumber || "";
+            adbStickyDeviceLabel.textContent = serial ? `${activeDeviceModel} • ${serial}` : activeDeviceModel;
+          }
+          if (adbDisconnectBtn) adbDisconnectBtn.style.display = "inline-flex";
+          if (connectBtn) connectBtn.style.display = "none";
+
+          if (statusDot) statusDot.classList.add("connected");
+          if (statusText) statusText.textContent = `${activeDeviceModel} ${t.statusConnectedSuffix}`;
 
           // Show device controls card
           if (deviceControlsCard) {
@@ -3113,7 +3541,7 @@
           }
           setDeviceControlsDisabled(false);
 
-          appendLog(`${currentLang === "en" ? "Device connected successfully:" : "ဖုန်းချိတ်ဆက်မှု အောင်မြင်ပါသည်:"} ${brand} ${model} (Android ${release})`, "success");
+          appendLog(`${currentLang === "en" ? "Device connected successfully:" : "ဖုန်းချိတ်ဆက်မှု အောင်မြင်ပါသည်:"} ${activeDeviceModel}`, "success");
           updateInstallButtonState();
         } catch (err) {
           if (authTimer) {
@@ -3148,6 +3576,7 @@
           connectBtn.disabled = false;
           if (!activeAdb) {
             connectBtnText.textContent = t.connectBtnText;
+            connectBtn.style.display = "inline-flex";
             connectBtn.classList.add("btn-primary");
             connectBtn.classList.remove("btn-outline");
           }
@@ -3166,6 +3595,32 @@
             btn.style.cursor = disabled ? "not-allowed" : "pointer";
           }
         });
+        const adbRefreshDetailsBtn = document.getElementById("adbRefreshDetailsBtn");
+        if (adbRefreshDetailsBtn) adbRefreshDetailsBtn.disabled = disabled;
+
+        const adbBtnLoadApps = document.getElementById("adbBtnLoadApps");
+        if (adbBtnLoadApps) adbBtnLoadApps.disabled = disabled;
+
+        const adbDisablePkgBtn = document.getElementById("adbDisablePkgBtn");
+        const adbDisablePkgInput = document.getElementById("adbDisablePkgInput");
+        if (adbDisablePkgBtn) adbDisablePkgBtn.disabled = disabled || !adbDisablePkgInput?.value?.trim();
+
+        const adbBtnScreenshot = document.getElementById("adbBtnScreenshot");
+        if (adbBtnScreenshot) adbBtnScreenshot.disabled = disabled;
+
+        const adbBtnScreenRecord = document.getElementById("adbBtnScreenRecord");
+        if (adbBtnScreenRecord) adbBtnScreenRecord.disabled = disabled;
+
+        const adbLogcatStartBtn = document.getElementById("adbLogcatStartBtn");
+        if (adbLogcatStartBtn) adbLogcatStartBtn.disabled = disabled || !!activeLogcatProc;
+
+        document.querySelectorAll(".adb-key-btn").forEach((b) => {
+          b.disabled = disabled;
+        });
+
+        updateAdbPushState();
+        updateAdbPullState();
+
         if (adbCustomCmdRunBtn) {
           adbCustomCmdRunBtn.disabled = disabled || !activeAdb || !adbCustomCmdInput?.value?.trim();
         }
@@ -3177,6 +3632,9 @@
       async function resetToDisconnectedState() {
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
         try {
+          await stopLogcat();
+        } catch (e) {}
+        try {
           if (activeDevice) {
             await activeDevice.close().catch(() => {});
           }
@@ -3185,6 +3643,37 @@
         activeDevice = null;
         activeAdb = null;
         activeDeviceModel = "";
+
+        const adbDeviceBox = document.getElementById("adbDeviceBox");
+        if (adbDeviceBox) adbDeviceBox.style.display = "none";
+
+        const adbAppsList = document.getElementById("adbAppsList");
+        if (adbAppsList) {
+          adbAppsList.innerHTML = "";
+          adbAppsList.style.display = "none";
+        }
+        const adbAppsCount = document.getElementById("adbAppsCount");
+        if (adbAppsCount) adbAppsCount.textContent = "";
+
+        const adbScreenshotContainer = document.getElementById("adbScreenshotContainer");
+        if (adbScreenshotContainer) adbScreenshotContainer.style.display = "none";
+        const adbScreenshotDownloadLink = document.getElementById("adbScreenshotDownloadLink");
+        if (adbScreenshotDownloadLink) adbScreenshotDownloadLink.style.display = "none";
+
+        const adbRecordDownloadLink = document.getElementById("adbRecordDownloadLink");
+        if (adbRecordDownloadLink) adbRecordDownloadLink.style.display = "none";
+        const adbRecordStatus = document.getElementById("adbRecordStatus");
+        if (adbRecordStatus) adbRecordStatus.textContent = "";
+
+        const adbLogcatPre = document.getElementById("adbLogcatPre");
+        if (adbLogcatPre) adbLogcatPre.textContent = "";
+
+        const adbStickyDot = document.getElementById("adbStickyDot");
+        if (adbStickyDot) adbStickyDot.classList.remove("connected");
+        const adbStickyDeviceLabel = document.getElementById("adbStickyDeviceLabel");
+        if (adbStickyDeviceLabel) adbStickyDeviceLabel.textContent = t.statusDisconnected || "Not connected";
+        const adbDisconnectBtn = document.getElementById("adbDisconnectBtn");
+        if (adbDisconnectBtn) adbDisconnectBtn.style.display = "none";
 
         if (deviceControlsCard) {
           deviceControlsCard.style.display = "none";
@@ -3222,6 +3711,7 @@
           connectBtnText.textContent = t.connectBtnText;
         }
         if (connectBtn) {
+          connectBtn.style.display = "inline-flex";
           connectBtn.classList.add("btn-primary");
           connectBtn.classList.remove("btn-outline");
           connectBtn.disabled = false;
@@ -3231,6 +3721,7 @@
         if (statusDot) statusDot.classList.remove("connected");
         if (statusText) statusText.textContent = t.statusDisconnected;
 
+        setDeviceControlsDisabled(true);
         updateInstallButtonState();
       }
 
@@ -3372,6 +3863,614 @@
           adbClearOutputBtn.style.display = "none";
         });
       }
+
+      // ==========================================================================
+      // ADB TECHNICIAN MODULES & TOOLS
+      // ==========================================================================
+
+      // 1. ADB DEVICE HARDWARE & SYSTEM DETAILS
+      const adbRefreshDetailsBtn = document.getElementById("adbRefreshDetailsBtn");
+      const adbDisconnectBtn = document.getElementById("adbDisconnectBtn");
+
+      if (adbDisconnectBtn) {
+        adbDisconnectBtn.addEventListener("click", async () => {
+          appendLog(currentLang === "en" ? "[ADB] Disconnecting device..." : "[ADB] ဖုန်းချိတ်ဆက်မှု ဖြတ်တောက်နေပါသည်...", "info");
+          await resetToDisconnectedState();
+        });
+      }
+
+      async function fetchAdbDeviceDetails(silent = false) {
+        if (!activeAdb) return;
+        try {
+          if (!silent) appendLog(currentLang === "en" ? "[ADB] Retrieving device hardware and system details..." : "[ADB] စက်ပစ္စည်း ဟာ့ဒ်ဝဲနှင့် စနစ်အချက်အလက်များကို ရယူနေပါသည်...", "info");
+
+          const getProp = async (prop) => {
+            try {
+              const out = await activeAdb.subprocess.noneProtocol.spawnWaitText(["getprop", prop]);
+              const cleaned = (out || "").trim();
+              return cleaned.length > 0 ? cleaned : "-";
+            } catch (e) {
+              return "-";
+            }
+          };
+
+          const [model, brand, release, sdk, build, security, serial, chipset, cpu] = await Promise.all([
+            getProp("ro.product.model"),
+            getProp("ro.product.brand"),
+            getProp("ro.build.version.release"),
+            getProp("ro.build.version.sdk"),
+            getProp("ro.build.display.id"),
+            getProp("ro.build.version.security_patch"),
+            getProp("ro.serialno"),
+            getProp("ro.board.platform"),
+            getProp("ro.product.cpu.abi"),
+          ]);
+
+          // Battery %
+          let battery = "-";
+          try {
+            const battOut = await activeAdb.subprocess.noneProtocol.spawnWaitText(["dumpsys", "battery"]);
+            const match = battOut.match(/level:\s*(\d+)/i);
+            if (match) battery = `${match[1]}%`;
+          } catch (e) {}
+
+          // Screen size & Density
+          let screenSize = "-";
+          try {
+            const wmOut = await activeAdb.subprocess.noneProtocol.spawnWaitText(["wm", "size"]);
+            const match = wmOut.match(/(?:Physical size|size):\s*([0-9x]+)/i);
+            if (match) screenSize = match[1];
+          } catch (e) {}
+
+          let screenDensity = "-";
+          try {
+            const denOut = await activeAdb.subprocess.noneProtocol.spawnWaitText(["wm", "density"]);
+            const match = denOut.match(/(?:Physical density|density):\s*(\d+)/i);
+            if (match) screenDensity = `${match[1]} dpi`;
+          } catch (e) {}
+
+          // Root status (which su)
+          let isRooted = false;
+          let rootText = "-";
+          try {
+            const suOut = (await activeAdb.subprocess.noneProtocol.spawnWaitText(["which", "su"])).trim();
+            isRooted = suOut.length > 0 && !suOut.toLowerCase().includes("not found");
+            const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+            rootText = isRooted ? (t.adbValYes || "Yes (Rooted)") : (t.adbValNo || "No");
+          } catch (e) {
+            const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+            rootText = t.adbValNo || "No";
+          }
+
+          // Update active model & serial
+          activeDeviceModel = model !== "-" ? model : (brand !== "-" ? `${brand} Device` : "Android");
+          const activeSerial = serial !== "-" ? serial : (activeDevice?.serialNumber || "");
+
+          const adbValModel = document.getElementById("adbValModel");
+          const adbValBrand = document.getElementById("adbValBrand");
+          const adbValAndroid = document.getElementById("adbValAndroid");
+          const adbValSdk = document.getElementById("adbValSdk");
+          const adbValBuild = document.getElementById("adbValBuild");
+          const adbValSecurity = document.getElementById("adbValSecurity");
+          const adbValSerial = document.getElementById("adbValSerial");
+          const adbValChipset = document.getElementById("adbValChipset");
+          const adbValCpu = document.getElementById("adbValCpu");
+          const adbValBattery = document.getElementById("adbValBattery");
+          const adbValScreen = document.getElementById("adbValScreen");
+          const adbValDensity = document.getElementById("adbValDensity");
+          const adbValRoot = document.getElementById("adbValRoot");
+
+          if (adbValModel) adbValModel.textContent = model;
+          if (adbValBrand) adbValBrand.textContent = brand;
+          if (adbValAndroid) adbValAndroid.textContent = release;
+          if (adbValSdk) adbValSdk.textContent = sdk;
+          if (adbValBuild) adbValBuild.textContent = build;
+          if (adbValSecurity) adbValSecurity.textContent = security;
+          if (adbValSerial) adbValSerial.textContent = activeSerial;
+          if (adbValChipset) adbValChipset.textContent = chipset;
+          if (adbValCpu) adbValCpu.textContent = cpu;
+          if (adbValBattery) adbValBattery.textContent = battery;
+          if (adbValScreen) adbValScreen.textContent = screenSize;
+          if (adbValDensity) adbValDensity.textContent = screenDensity;
+
+          if (adbValRoot) {
+            adbValRoot.textContent = rootText;
+            adbValRoot.className = `mst-mono-val ${isRooted ? "mst-val-yes" : "mst-val-no"}`;
+          }
+
+          // Legacy info elements
+          if (infoModel) infoModel.textContent = activeDeviceModel;
+          if (infoBrand) infoBrand.textContent = brand;
+          if (infoAndroid) infoAndroid.textContent = release ? `Android ${release} (SDK ${sdk})` : `SDK ${sdk}`;
+          if (infoSerial) infoSerial.textContent = activeSerial;
+
+          // Sticky status bar update
+          const adbStickyDot = document.getElementById("adbStickyDot");
+          const adbStickyDeviceLabel = document.getElementById("adbStickyDeviceLabel");
+          if (adbStickyDot) adbStickyDot.classList.add("connected");
+          if (adbStickyDeviceLabel) {
+            adbStickyDeviceLabel.textContent = activeSerial ? `${activeDeviceModel} • ${activeSerial}` : activeDeviceModel;
+          }
+
+          const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+          if (statusDot) statusDot.classList.add("connected");
+          if (statusText) statusText.textContent = `${activeDeviceModel} ${t.statusConnectedSuffix}`;
+
+          const adbDeviceBox = document.getElementById("adbDeviceBox");
+          if (adbDeviceBox) adbDeviceBox.style.display = "block";
+
+          if (!silent) {
+            appendLog(`[ADB] Hardware details updated: ${brand} ${model} (Android ${release}, SDK ${sdk}, Root: ${rootText})`, "success");
+          }
+        } catch (err) {
+          console.error("fetchAdbDeviceDetails error:", err);
+          appendLog(`[ADB] Detail fetch error: ${err?.message || err}`, "warn");
+        }
+      }
+
+      if (adbRefreshDetailsBtn) {
+        adbRefreshDetailsBtn.addEventListener("click", () => {
+          if (activeAdb && !isBusy) fetchAdbDeviceDetails(false);
+        });
+      }
+
+      // 2. APP MANAGER (PACKAGES & BLOATWARE)
+      const adbBtnLoadApps = document.getElementById("adbBtnLoadApps");
+      const adbAppsList = document.getElementById("adbAppsList");
+      const adbAppsCount = document.getElementById("adbAppsCount");
+      const adbDisablePkgInput = document.getElementById("adbDisablePkgInput");
+      const adbDisablePkgBtn = document.getElementById("adbDisablePkgBtn");
+
+      if (adbDisablePkgInput) {
+        adbDisablePkgInput.addEventListener("input", () => {
+          if (adbDisablePkgBtn) {
+            adbDisablePkgBtn.disabled = !activeAdb || isBusy || !adbDisablePkgInput.value.trim();
+          }
+        });
+        adbDisablePkgInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && adbDisablePkgBtn && !adbDisablePkgBtn.disabled) {
+            disableBloatwarePackage();
+          }
+        });
+      }
+
+      if (adbBtnLoadApps) {
+        adbBtnLoadApps.addEventListener("click", loadInstalledApps);
+      }
+
+      if (adbDisablePkgBtn) {
+        adbDisablePkgBtn.addEventListener("click", disableBloatwarePackage);
+      }
+
+      async function loadInstalledApps() {
+        if (!activeAdb || isBusy) return;
+        try {
+          isBusy = true;
+          if (adbBtnLoadApps) adbBtnLoadApps.disabled = true;
+          appendLog(currentLang === "en" ? "[App Manager] Querying installed 3rd-party packages (pm list packages -3)..." : "[App Manager] စက်တွင် သွင်းထားသော 3rd-party အက်ပ်များကို ရှာဖွေနေပါသည်...", "info");
+
+          const out = await activeAdb.subprocess.noneProtocol.spawnWaitText(["pm", "list", "packages", "-3"]);
+          const lines = out.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+          const packages = lines
+            .map((l) => l.replace(/^package:/i, "").trim())
+            .filter((p) => p.length > 0)
+            .sort();
+
+          if (adbAppsCount) {
+            adbAppsCount.textContent = `(${packages.length} apps)`;
+          }
+
+          if (!adbAppsList) return;
+          adbAppsList.innerHTML = "";
+          if (packages.length === 0) {
+            adbAppsList.style.display = "block";
+            adbAppsList.innerHTML = `<div style="padding: 10px; font-size: 11.5px; color: var(--text-muted); text-align: center;">No 3rd-party packages found on device.</div>`;
+            appendLog("[App Manager] No 3rd-party packages found.", "info");
+            return;
+          }
+
+          adbAppsList.style.display = "flex";
+          packages.forEach((pkg) => {
+            const item = document.createElement("div");
+            item.className = "adb-app-item";
+            item.innerHTML = `
+              <span class="adb-app-name" title="${escapeHtml(pkg)}">${escapeHtml(pkg)}</span>
+              <button type="button" class="adb-app-uninstall-btn" data-pkg="${escapeHtml(pkg)}">Uninstall</button>
+            `;
+            const unBtn = item.querySelector(".adb-app-uninstall-btn");
+            if (unBtn) {
+              unBtn.addEventListener("click", () => uninstallApp(pkg, item));
+            }
+            adbAppsList.appendChild(item);
+          });
+
+          appendLog(currentLang === "en" ? `[App Manager] Loaded ${packages.length} installed packages.` : `[App Manager] အက်ပ် ${packages.length} ခု ရှာဖွေတွေ့ရှိပါသည်။`, "success");
+        } catch (err) {
+          console.error("loadInstalledApps error:", err);
+          appendLog(`[App Manager] Failed to load apps: ${err?.message || err}`, "error");
+        } finally {
+          isBusy = false;
+          if (adbBtnLoadApps) adbBtnLoadApps.disabled = !activeAdb;
+        }
+      }
+
+      async function uninstallApp(pkg, element) {
+        if (!activeAdb || isBusy) return;
+        const isEn = currentLang === "en";
+        const confirmMsg = isEn
+          ? `Are you sure you want to uninstall package "${pkg}"?`
+          : `အက်ပ် "${pkg}" အား စက်ပစ္စည်းမှ အပြီးတိုင် ဖျက်ထုတ်ရန် သေချာပါသလား?`;
+        if (!window.confirm(confirmMsg)) return;
+
+        try {
+          isBusy = true;
+          appendLog(`[App Manager] Uninstalling ${pkg}...`, "info");
+          const out = await activeAdb.subprocess.noneProtocol.spawnWaitText(["pm", "uninstall", pkg]);
+          const isSuccess = out.toLowerCase().includes("success");
+          appendLog(`[App Manager] Uninstall result: ${out.trim() || "OK"}`, isSuccess ? "success" : "warn");
+
+          if (isSuccess && element) {
+            element.remove();
+            if (adbAppsList && adbAppsCount) {
+              const remaining = adbAppsList.querySelectorAll(".adb-app-item").length;
+              adbAppsCount.textContent = `(${remaining} apps)`;
+            }
+          }
+        } catch (err) {
+          console.error("uninstallApp error:", err);
+          appendLog(`[App Manager] Uninstall error: ${err?.message || err}`, "error");
+        } finally {
+          isBusy = false;
+        }
+      }
+
+      async function disableBloatwarePackage() {
+        if (!activeAdb || isBusy) return;
+        const pkg = (adbDisablePkgInput?.value || "").trim();
+        if (!pkg) return;
+        const isEn = currentLang === "en";
+        const confirmMsg = isEn
+          ? `Disable system app "${pkg}" for user 0? (Will be disabled without removing data)`
+          : `System App "${pkg}" အား ပိတ်ပင် (Disable) ရန် သေချာပါသလား?`;
+        if (!window.confirm(confirmMsg)) return;
+
+        try {
+          isBusy = true;
+          if (adbDisablePkgBtn) adbDisablePkgBtn.disabled = true;
+          appendLog(`[Bloatware] Disabling "${pkg}" (pm disable-user --user 0)...`, "info");
+          const out = await activeAdb.subprocess.noneProtocol.spawnWaitText(["pm", "disable-user", "--user", "0", pkg]);
+          appendLog(`[Bloatware] Result: ${out.trim() || "Done"}`, "success");
+          if (adbDisablePkgInput) adbDisablePkgInput.value = "";
+        } catch (err) {
+          console.error("disableBloatwarePackage error:", err);
+          appendLog(`[Bloatware] Disable error: ${err?.message || err}`, "error");
+        } finally {
+          isBusy = false;
+          if (adbDisablePkgBtn) {
+            adbDisablePkgBtn.disabled = !activeAdb || !adbDisablePkgInput?.value?.trim();
+          }
+        }
+      }
+
+      // 3. SCREENSHOT (SCREEN CAPTURE)
+      const adbBtnScreenshot = document.getElementById("adbBtnScreenshot");
+      const adbScreenshotDownloadLink = document.getElementById("adbScreenshotDownloadLink");
+      const adbScreenshotContainer = document.getElementById("adbScreenshotContainer");
+      const adbScreenshotImg = document.getElementById("adbScreenshotImg");
+
+      if (adbBtnScreenshot) {
+        adbBtnScreenshot.addEventListener("click", captureDeviceScreenshot);
+      }
+
+      async function captureDeviceScreenshot() {
+        if (!activeAdb || isBusy) return;
+        try {
+          isBusy = true;
+          if (adbBtnScreenshot) adbBtnScreenshot.disabled = true;
+          appendLog(currentLang === "en" ? "[Screenshot] Capturing screen (screencap -p /sdcard/mst_screen.png)..." : "[Screenshot] ဖုန်းမျက်နှာပြင် ဓာတ်ပုံရိုက်ကူးနေပါသည်...", "info");
+
+          await activeAdb.subprocess.noneProtocol.spawnWaitText(["screencap", "-p", "/sdcard/mst_screen.png"]);
+
+          appendLog(currentLang === "en" ? "[Screenshot] Pulling screenshot file from phone..." : "[Screenshot] ဓာတ်ပုံဖိုင်အား ဆွဲယူနေပါသည်...", "info");
+
+          const sync = await activeAdb.sync();
+          let blob;
+          try {
+            const stream = sync.read("/sdcard/mst_screen.png");
+            const reader = stream.getReader();
+            const chunks = [];
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              if (value) chunks.push(value);
+            }
+            blob = new Blob(chunks, { type: "image/png" });
+          } finally {
+            await sync.dispose().catch(() => {});
+          }
+
+          if (blob && blob.size > 0) {
+            const url = URL.createObjectURL(blob);
+            if (adbScreenshotImg) adbScreenshotImg.src = url;
+            if (adbScreenshotContainer) adbScreenshotContainer.style.display = "block";
+            if (adbScreenshotDownloadLink) {
+              adbScreenshotDownloadLink.href = url;
+              adbScreenshotDownloadLink.style.display = "inline-flex";
+            }
+            appendLog(currentLang === "en" ? `[Screenshot] Screen captured successfully (${formatBytes(blob.size)}).` : `[Screenshot] မျက်နှာပြင် ဓာတ်ပုံ အောင်မြင်စွာ ရရှိပါသည် (${formatBytes(blob.size)})။`, "success");
+          } else {
+            appendLog("[Screenshot] Received empty image file.", "error");
+          }
+        } catch (err) {
+          console.error("Screenshot error:", err);
+          appendLog(`[Screenshot] Capture error: ${err?.message || err}`, "error");
+        } finally {
+          isBusy = false;
+          if (adbBtnScreenshot) adbBtnScreenshot.disabled = !activeAdb;
+        }
+      }
+
+      // 4. SCREEN RECORDING (30s MP4)
+      const adbBtnScreenRecord = document.getElementById("adbBtnScreenRecord");
+      const adbRecordStatus = document.getElementById("adbRecordStatus");
+      const adbRecordDownloadLink = document.getElementById("adbRecordDownloadLink");
+
+      if (adbBtnScreenRecord) {
+        adbBtnScreenRecord.addEventListener("click", recordDeviceScreen);
+      }
+
+      async function recordDeviceScreen() {
+        if (!activeAdb || isBusy) return;
+        try {
+          isBusy = true;
+          if (adbBtnScreenRecord) adbBtnScreenRecord.disabled = true;
+          if (adbRecordStatus) adbRecordStatus.textContent = currentLang === "en" ? "Recording (30s)..." : "ဖမ်းယူနေဆဲ (၃၀ စက္ကန့်)...";
+
+          appendLog(currentLang === "en" ? "[Screen Record] Recording screen for 30s (screenrecord --time-limit 30 /sdcard/mst_rec.mp4)..." : "[Screen Record] မျက်နှာပြင် ဗီဒီယို စတင်ဖမ်းယူနေပါသည် (၃၀ စက္ကန့် စောင့်ပါ)...", "warn");
+
+          await activeAdb.subprocess.noneProtocol.spawnWaitText(["screenrecord", "--time-limit", "30", "/sdcard/mst_rec.mp4"]);
+
+          if (adbRecordStatus) adbRecordStatus.textContent = currentLang === "en" ? "Pulling MP4..." : "MP4 ဆွဲယူနေဆဲ...";
+          appendLog(currentLang === "en" ? "[Screen Record] Recording finished. Pulling MP4 file from device..." : "[Screen Record] ဖမ်းယူပြီးပါပြီ။ MP4 ဖိုင်အား ကူးယူနေပါသည်...", "info");
+
+          const sync = await activeAdb.sync();
+          let blob;
+          try {
+            const stream = sync.read("/sdcard/mst_rec.mp4");
+            const reader = stream.getReader();
+            const chunks = [];
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              if (value) chunks.push(value);
+            }
+            blob = new Blob(chunks, { type: "video/mp4" });
+          } finally {
+            await sync.dispose().catch(() => {});
+          }
+
+          if (blob && blob.size > 0) {
+            const url = URL.createObjectURL(blob);
+            if (adbRecordDownloadLink) {
+              adbRecordDownloadLink.href = url;
+              adbRecordDownloadLink.style.display = "inline-flex";
+            }
+            if (adbRecordStatus) adbRecordStatus.textContent = `Completed (${formatBytes(blob.size)})`;
+            appendLog(currentLang === "en" ? `[Screen Record] MP4 saved (${formatBytes(blob.size)}). Click Download MP4 to save.` : `[Screen Record] ဗီဒီယို ဖိုင် အောင်မြင်စွာ ရရှိပါသည် (${formatBytes(blob.size)})။`, "success");
+          } else {
+            if (adbRecordStatus) adbRecordStatus.textContent = "Empty file";
+            appendLog("[Screen Record] Recording file was empty.", "error");
+          }
+        } catch (err) {
+          console.error("Screen record error:", err);
+          if (adbRecordStatus) adbRecordStatus.textContent = "Failed";
+          appendLog(`[Screen Record] Record error: ${err?.message || err}`, "error");
+        } finally {
+          isBusy = false;
+          if (adbBtnScreenRecord) adbBtnScreenRecord.disabled = !activeAdb;
+        }
+      }
+
+      // 5. LIVE DEVICE LOGCAT STREAM
+      let activeLogcatProc = null;
+      let activeLogcatReader = null;
+      const adbLogcatTagInput = document.getElementById("adbLogcatTagInput");
+      const adbLogcatStartBtn = document.getElementById("adbLogcatStartBtn");
+      const adbLogcatStopBtn = document.getElementById("adbLogcatStopBtn");
+      const adbLogcatClearBtn = document.getElementById("adbLogcatClearBtn");
+      const adbLogcatPre = document.getElementById("adbLogcatPre");
+
+      if (adbLogcatStartBtn) adbLogcatStartBtn.addEventListener("click", startLogcat);
+      if (adbLogcatStopBtn) adbLogcatStopBtn.addEventListener("click", stopLogcat);
+      if (adbLogcatClearBtn) {
+        adbLogcatClearBtn.addEventListener("click", () => {
+          if (adbLogcatPre) adbLogcatPre.textContent = "";
+        });
+      }
+
+      async function stopLogcat() {
+        if (activeLogcatReader) {
+          try { await activeLogcatReader.cancel(); } catch (e) {}
+          activeLogcatReader = null;
+        }
+        if (activeLogcatProc) {
+          try { await activeLogcatProc.kill(); } catch (e) {}
+          activeLogcatProc = null;
+        }
+        if (adbLogcatStartBtn) adbLogcatStartBtn.disabled = !activeAdb;
+        if (adbLogcatStopBtn) adbLogcatStopBtn.disabled = true;
+        appendLog("[Logcat] Logcat streaming stopped.", "info");
+      }
+
+      async function startLogcat() {
+        if (!activeAdb) return;
+        await stopLogcat();
+        const tag = (adbLogcatTagInput?.value || "").trim();
+        const argv = tag
+          ? ["logcat", "-v", "threadtime", "-s", tag]
+          : ["logcat", "-v", "threadtime"];
+
+        try {
+          appendLog(`[Logcat] Starting stream (${argv.join(" ")})...`, "info");
+          if (adbLogcatStartBtn) adbLogcatStartBtn.disabled = true;
+          if (adbLogcatStopBtn) adbLogcatStopBtn.disabled = false;
+
+          const proc = await activeAdb.subprocess.noneProtocol.spawn(argv);
+          activeLogcatProc = proc;
+
+          const decoder = new TextDecoder();
+          const reader = proc.output.getReader();
+          activeLogcatReader = reader;
+
+          (async () => {
+            try {
+              while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                if (value && adbLogcatPre) {
+                  const text = decoder.decode(value, { stream: true });
+                  adbLogcatPre.textContent += text;
+                  if (adbLogcatPre.textContent.length > 25000) {
+                    adbLogcatPre.textContent = adbLogcatPre.textContent.slice(-18000);
+                  }
+                  adbLogcatPre.scrollTop = adbLogcatPre.scrollHeight;
+                }
+              }
+            } catch (e) {
+              // stream finished or aborted
+            } finally {
+              if (adbLogcatStartBtn) adbLogcatStartBtn.disabled = !activeAdb;
+              if (adbLogcatStopBtn) adbLogcatStopBtn.disabled = true;
+            }
+          })();
+        } catch (err) {
+          console.error("Logcat start error:", err);
+          appendLog(`[Logcat] Start error: ${err?.message || err}`, "error");
+          if (adbLogcatStartBtn) adbLogcatStartBtn.disabled = !activeAdb;
+          if (adbLogcatStopBtn) adbLogcatStopBtn.disabled = true;
+        }
+      }
+
+      // 6. DEVICE KEY EVENTS (POWER, VOL, HOME, BACK, RECENTS)
+      document.querySelectorAll(".adb-key-btn").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          if (!activeAdb || isBusy) return;
+          const key = btn.getAttribute("data-key");
+          if (!key) return;
+          try {
+            appendLog(`[Input] Sending keyevent ${key}...`, "info");
+            await activeAdb.subprocess.noneProtocol.spawnWaitText(["input", "keyevent", key]);
+          } catch (err) {
+            console.error("Keyevent error:", err);
+            appendLog(`[Input] Keyevent ${key} error: ${err?.message || err}`, "error");
+          }
+        });
+      });
+
+      // 7. FILE TRANSFER (PUSH & PULL)
+      const adbPushFileInput = document.getElementById("adbPushFileInput");
+      const adbPushDestInput = document.getElementById("adbPushDestInput");
+      const adbPushBtn = document.getElementById("adbPushBtn");
+      const adbPullPathInput = document.getElementById("adbPullPathInput");
+      const adbPullBtn = document.getElementById("adbPullBtn");
+
+      function updateAdbPushState() {
+        if (!adbPushBtn) return;
+        const hasFile = !!adbPushFileInput?.files?.length;
+        adbPushBtn.disabled = !activeAdb || isBusy || !hasFile;
+      }
+      if (adbPushFileInput) adbPushFileInput.addEventListener("change", updateAdbPushState);
+
+      function updateAdbPullState() {
+        if (!adbPullBtn) return;
+        const hasPath = !!(adbPullPathInput?.value || "").trim();
+        adbPullBtn.disabled = !activeAdb || isBusy || !hasPath;
+      }
+      if (adbPullPathInput) adbPullPathInput.addEventListener("input", updateAdbPullState);
+
+      async function pushFileToDevice() {
+        if (!activeAdb || isBusy || !adbPushFileInput?.files?.length) return;
+        const file = adbPushFileInput.files[0];
+        let dest = (adbPushDestInput?.value || "/sdcard/").trim();
+        if (dest.endsWith("/")) {
+          dest += file.name;
+        }
+
+        try {
+          isBusy = true;
+          updateAdbPushState();
+          appendLog(currentLang === "en" ? `[File Transfer] Pushing "${file.name}" (${formatBytes(file.size)}) to "${dest}"...` : `[File Transfer] "${file.name}" အား ဖုန်းတွင်း "${dest}" သို့ ပို့ဆောင်နေပါသည်...`, "info");
+
+          const sync = await activeAdb.sync();
+          try {
+            await sync.write({
+              filename: dest,
+              file: file.stream(),
+            });
+          } finally {
+            await sync.dispose().catch(() => {});
+          }
+
+          appendLog(currentLang === "en" ? `[File Transfer] Successfully pushed "${file.name}" to "${dest}"` : `[File Transfer] "${file.name}" အား "${dest}" သို့ အောင်မြင်စွာ ပို့ဆောင်ပြီးပါပြီ။`, "success");
+          if (adbPushFileInput) adbPushFileInput.value = "";
+        } catch (err) {
+          console.error("Push file error:", err);
+          appendLog(`[File Transfer] Push failed: ${err?.message || err}`, "error");
+        } finally {
+          isBusy = false;
+          updateAdbPushState();
+        }
+      }
+
+      async function pullFileFromDevice() {
+        if (!activeAdb || isBusy) return;
+        const remotePath = (adbPullPathInput?.value || "").trim();
+        if (!remotePath) return;
+
+        try {
+          isBusy = true;
+          updateAdbPullState();
+          appendLog(currentLang === "en" ? `[File Transfer] Pulling "${remotePath}" from phone...` : `[File Transfer] ဖုန်းတွင်းမှ "${remotePath}" အား ဆွဲယူနေပါသည်...`, "info");
+
+          const sync = await activeAdb.sync();
+          let blob;
+          try {
+            const stream = sync.read(remotePath);
+            const reader = stream.getReader();
+            const chunks = [];
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              if (value) chunks.push(value);
+            }
+            blob = new Blob(chunks);
+          } finally {
+            await sync.dispose().catch(() => {});
+          }
+
+          if (blob && blob.size > 0) {
+            const filename = remotePath.split("/").filter(Boolean).pop() || "downloaded_file";
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            appendLog(currentLang === "en" ? `[File Transfer] Pulled "${remotePath}" (${formatBytes(blob.size)}). Download triggered.` : `[File Transfer] "${remotePath}" အား အောင်မြင်စွာ ဆွဲထုတ်ပြီး ဒေါင်းလုဒ်စတင်ပါပြီ။`, "success");
+          } else {
+            appendLog(`[File Transfer] File "${remotePath}" was empty or not found on device.`, "error");
+          }
+        } catch (err) {
+          console.error("Pull file error:", err);
+          appendLog(`[File Transfer] Pull failed: ${err?.message || err}`, "error");
+        } finally {
+          isBusy = false;
+          updateAdbPullState();
+        }
+      }
+
+      if (adbPushBtn) adbPushBtn.addEventListener("click", pushFileToDevice);
+      if (adbPullBtn) adbPullBtn.addEventListener("click", pullFileFromDevice);
 
       // ==========================================================================
       // MULTIPLE FILE SELECTION & LIST RENDERING
@@ -3788,11 +4887,19 @@
 
       const fbValProduct = document.getElementById("fbValProduct");
       const fbValSerial = document.getElementById("fbValSerial");
+      const fbValVersion = document.getElementById("fbValVersion");
       const fbValBootloader = document.getElementById("fbValBootloader");
+      const fbValBaseband = document.getElementById("fbValBaseband");
+      const fbValMain = document.getElementById("fbValMain");
       const fbValUnlocked = document.getElementById("fbValUnlocked");
+      const fbValUserspace = document.getElementById("fbValUserspace");
       const fbValSlot = document.getElementById("fbValSlot");
       const fbValSecure = document.getElementById("fbValSecure");
-      const fbValBaseband = document.getElementById("fbValBaseband");
+      const fbValBattVolt = document.getElementById("fbValBattVolt");
+      const fbValBattStatus = document.getElementById("fbValBattStatus");
+      const fbValMaxDl = document.getElementById("fbValMaxDl");
+      const fbValUnlockAbility = document.getElementById("fbValUnlockAbility");
+      const fbValToken = document.getElementById("fbValToken");
 
       const fbBtnRebootSystem = document.getElementById("fbBtnRebootSystem");
       const fbBtnRebootBootloader = document.getElementById("fbBtnRebootBootloader");
@@ -3933,42 +5040,77 @@
       async function fetchFastbootDeviceInfo(silent = false) {
         if (!activeFb) return;
         try {
-          if (!silent) appendLog("[Fastboot] Fetching hardware parameters...", "info");
+          if (!silent) appendLog("[Fastboot] Fetching hardware and firmware parameters...", "info");
           let product = "-";
           let serial = "-";
+          let version = "-";
           let bootloader = "-";
+          let baseband = "-";
+          let main = "-";
           let unlocked = "-";
           let slot = "-";
           let secure = "-";
-          let baseband = "-";
+          let userspace = "-";
+          let battVolt = "-";
+          let battStatus = "-";
+          let maxDl = "-";
+          let token = "-";
+          let unlockAbility = "-";
 
           try { product = (await activeFb.getVariable("product")) || "-"; } catch (e) {}
           try { serial = (await activeFb.getVariable("serialno")) || (activeFb.device?.serialNumber) || "-"; } catch (e) {}
+          try { version = (await activeFb.getVariable("version")) || "-"; } catch (e) {}
           try { bootloader = (await activeFb.getVariable("version-bootloader")) || "-"; } catch (e) {}
+          try { baseband = (await activeFb.getVariable("version-baseband")) || "-"; } catch (e) {}
+          try { main = (await activeFb.getVariable("version-main")) || "-"; } catch (e) {}
           try { unlocked = (await activeFb.getVariable("unlocked")) || "-"; } catch (e) {}
           try { slot = (await activeFb.getVariable("current-slot")) || "-"; } catch (e) {}
           try { secure = (await activeFb.getVariable("secure")) || "-"; } catch (e) {}
-          try { baseband = (await activeFb.getVariable("version-baseband")) || "-"; } catch (e) {}
+          try { userspace = (await activeFb.getVariable("is-userspace")) || "-"; } catch (e) {}
+          try { battVolt = (await activeFb.getVariable("battery-voltage")) || "-"; } catch (e) {}
+          try { battStatus = (await activeFb.getVariable("battery-status")) || "-"; } catch (e) {}
+          try { maxDl = (await activeFb.getVariable("max-download-size")) || "-"; } catch (e) {}
+          try { token = (await activeFb.getVariable("token")) || "-"; } catch (e) {}
+          try { unlockAbility = (await activeFb.getVariable("get_unlock_ability")) || "-"; } catch (e) {}
 
           activeFbProduct = product !== "-" ? product : (activeFb.device?.productName || "Fastboot Device");
           activeFbSerial = serial !== "-" ? serial : "";
 
           if (fbValProduct) fbValProduct.textContent = activeFbProduct;
           if (fbValSerial) fbValSerial.textContent = serial;
+          if (fbValVersion) fbValVersion.textContent = version;
           if (fbValBootloader) fbValBootloader.textContent = bootloader;
+          if (fbValBaseband) fbValBaseband.textContent = baseband;
+          if (fbValMain) fbValMain.textContent = main;
           if (fbValSlot) fbValSlot.textContent = slot;
           if (fbValSecure) fbValSecure.textContent = secure;
-          if (fbValBaseband) fbValBaseband.textContent = baseband;
+          if (fbValBattVolt) fbValBattVolt.textContent = battVolt !== "-" ? (battVolt.includes("mV") || battVolt.includes("V") ? battVolt : `${battVolt} mV`) : "-";
+          if (fbValBattStatus) fbValBattStatus.textContent = battStatus;
+          if (fbValMaxDl) fbValMaxDl.textContent = maxDl;
+          if (fbValToken) fbValToken.textContent = token;
+          if (fbValUnlockAbility) fbValUnlockAbility.textContent = unlockAbility;
 
           if (fbValUnlocked) {
             fbValUnlocked.textContent = unlocked;
             const unl = String(unlocked).toLowerCase();
             if (unl === "yes" || unl === "true" || unl === "1") {
-              fbValUnlocked.className = "mst-mono-val mst-val-unlocked-yes";
+              fbValUnlocked.className = "mst-mono-val mst-val-yes";
             } else if (unl === "no" || unl === "false" || unl === "0") {
-              fbValUnlocked.className = "mst-mono-val mst-val-unlocked-no";
+              fbValUnlocked.className = "mst-mono-val mst-val-no";
             } else {
               fbValUnlocked.className = "mst-mono-val";
+            }
+          }
+
+          if (fbValUserspace) {
+            fbValUserspace.textContent = userspace;
+            const usr = String(userspace).toLowerCase();
+            if (usr === "yes" || usr === "true" || usr === "1") {
+              fbValUserspace.className = "mst-mono-val mst-val-yes";
+            } else if (usr === "no" || usr === "false" || usr === "0") {
+              fbValUserspace.className = "mst-mono-val mst-val-no";
+            } else {
+              fbValUserspace.className = "mst-mono-val";
             }
           }
 
@@ -3984,7 +5126,7 @@
           }
 
           if (!silent) {
-            appendLog(`[Fastboot] Device info refreshed: Product=${activeFbProduct}, Serial=${serial}, Bootloader=${bootloader}, Unlocked=${unlocked}, Slot=${slot}`, "info");
+            appendLog(`[Fastboot] Device info refreshed: Product=${activeFbProduct}, Serial=${serial}, Bootloader=${bootloader}, Unlocked=${unlocked}, Slot=${slot}, Userspace=${userspace}`, "info");
           }
         } catch (err) {
           console.error("Fastboot fetch info error:", err);
