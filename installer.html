@@ -1345,7 +1345,20 @@
         font-weight: 700;
       }
 
-      /* ADB App Manager List */
+      /* ADB App Manager List & Toolbar */
+      .adb-apps-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 8px;
+        padding: 6px 10px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        font-size: 11.5px;
+      }
       .adb-apps-list {
         display: flex;
         flex-direction: column;
@@ -1353,7 +1366,35 @@
         max-height: 230px;
         overflow-y: auto;
         padding-right: 4px;
-        margin-top: 8px;
+        margin-top: 6px;
+      }
+      /* File Transfer Status Pill */
+      .ft-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10.5px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-secondary);
+      }
+      .ft-status-pill.success {
+        background: rgba(52, 211, 153, 0.15) !important;
+        color: #34D399 !important;
+        border-color: rgba(52, 211, 153, 0.4) !important;
+      }
+      .ft-status-pill.error {
+        background: rgba(239, 68, 68, 0.15) !important;
+        color: #F87171 !important;
+        border-color: rgba(239, 68, 68, 0.4) !important;
+      }
+      .ft-status-pill.busy {
+        background: rgba(56, 189, 248, 0.15) !important;
+        color: #38BDF8 !important;
+        border-color: rgba(56, 189, 248, 0.4) !important;
       }
       .adb-app-item {
         display: flex;
@@ -1803,10 +1844,23 @@
           </div>
 
           <!-- Load Apps Row -->
-          <div style="display: flex; gap: 8px; align-items: center;">
+          <div style="display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
             <button type="button" class="btn btn-outline" id="adbBtnLoadApps" disabled style="font-size: 12px; padding: 7px 14px; border-radius: 8px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               <span data-i18n="adbBtnLoadApps">Load Installed Apps</span>
+            </button>
+            <div id="adbBatchUninstallStatus" style="font-size: 11px; color: #FBBF24; font-family: monospace;"></div>
+          </div>
+
+          <!-- Batch Action Toolbar (Select all + Uninstall Selected) -->
+          <div id="adbAppsToolbar" class="adb-apps-toolbar" style="display: none;">
+            <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; font-size: 11.5px; font-weight: 600; color: #E2E8F0;">
+              <input type="checkbox" id="adbAppsSelectAll" style="width: 14px; height: 14px; cursor: pointer; accent-color: #EF4444;" />
+              <span data-i18n="adbAppsSelectAll">Select all</span>
+            </label>
+            <button type="button" class="btn btn-outline" id="adbBtnBatchUninstall" disabled style="font-size: 11.5px; padding: 5px 12px; border-radius: 6px; font-weight: 600; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.4); display: inline-flex; align-items: center; gap: 5px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              <span id="adbBtnBatchUninstallText" data-i18n="adbBtnBatchUninstall">Uninstall Selected (0)</span>
             </button>
           </div>
 
@@ -1951,6 +2005,7 @@
               </svg>
               <span data-i18n="adbFileTransferTitle">File Transfer (Push / Pull)</span>
             </div>
+            <span id="adbFtStatusPill" class="ft-status-pill" style="display: none;">Idle</span>
           </div>
           
           <!-- Push Row -->
@@ -1977,6 +2032,19 @@
               <button type="button" class="btn btn-outline" id="adbPullBtn" disabled style="padding: 7px 14px; font-size: 12px; font-weight: 600;">
                 <span data-i18n="adbPullBtn">Pull</span>
               </button>
+            </div>
+          </div>
+
+          <!-- In-card File Transfer Status & Progress Area -->
+          <div id="adbFtStatusBox" style="display: none; margin-top: 10px; padding: 8px 10px; border-radius: 8px; font-size: 11.5px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 8px;">
+              <span id="adbFtStatusText" style="font-weight: 600; font-size: 11px; color: #E2E8F0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;">Ready</span>
+              <span id="adbFtBytesText" style="font-family: monospace; font-size: 10.5px; color: var(--text-muted); flex-shrink: 0;"></span>
+            </div>
+            <div class="progress-section mst-progress-thin" id="adbFtProgressSection" style="display: none; margin-top: 4px;">
+              <div class="progress-bar-bg" style="height: 4px;">
+                <div class="progress-bar-fill" id="adbFtProgressBarFill" style="width: 0%;"></div>
+              </div>
             </div>
           </div>
         </section>
@@ -2583,19 +2651,29 @@
         };
 
         const tryParsePacket = () => {
-          const header = take(24);
-          if (!header) return null;
-          const v = new DataView(header.buffer, header.byteOffset, 24);
-          const command = v.getUint32(0, true), arg0 = v.getUint32(4, true), arg1 = v.getUint32(8, true);
-          const payloadLength = v.getUint32(12, true), checksum = v.getUint32(16, true), magic = v.getUint32(20, true);
-          if ((magic >>> 0) !== ((command ^ 0xFFFFFFFF) >>> 0)) {
-            appendLog(`[diag] BAD MAGIC: command=${command.toString(16)} magic=${magic.toString(16)} buf=${buf.length}`, "error");
-            throw new Error("ADB packet out of sync (bad magic)");
+          let attempts = 0;
+          while (true) {
+            const header = take(24);
+            if (!header) return null;
+            const v = new DataView(header.buffer, header.byteOffset, 24);
+            const command = v.getUint32(0, true);
+            const arg0 = v.getUint32(4, true);
+            const arg1 = v.getUint32(8, true);
+            const payloadLength = v.getUint32(12, true);
+            const checksum = v.getUint32(16, true);
+            const magic = v.getUint32(20, true);
+            if ((magic >>> 0) !== ((command ^ 0xFFFFFFFF) >>> 0)) {
+              appendLog(`[diag] BAD MAGIC ${command.toString(16)} - discarding 1 byte to resync (buf=${buf.length})`, "warn");
+              buf = concat(header.slice(1), buf);
+              attempts++;
+              if (attempts > 64) throw new Error("ADB packet out of sync (resync failed after 64 bytes)");
+              continue;
+            }
+            const payload = take(payloadLength);
+            if (!payload) { buf = concat(header, buf); return null; }
+            appendLog(`[diag] USB <- packet ${cmdName(command)} arg0=${arg0} arg1=${arg1} len=${payloadLength}`, "info");
+            return { command, arg0, arg1, payloadLength, checksum, magic, payload };
           }
-          const payload = take(payloadLength);
-          if (!payload) { buf = concat(header, buf); return null; }
-          appendLog(`[diag] USB <- packet ${cmdName(command)} arg0=${arg0} arg1=${arg1} len=${payloadLength}`, "info");
-          return { command, arg0, arg1, payloadLength, checksum, magic, payload };
         };
         const readable = new ReadableStream({
           async pull(controller) {
@@ -2821,6 +2899,8 @@
           adbApkInstallTitle: "APK အစုလိုက် တပ်ဆင်ခြင်း (APK Batch Install)",
           adbAppManagerTitle: "အက်ပ်စီမံခန့်ခွဲမှု (App Manager)",
           adbBtnLoadApps: "သွင်းထားသော အက်ပ်များ ရှာမည်",
+          adbAppsSelectAll: "အားလုံးရွေးမည်",
+          adbBtnBatchUninstall: "ရွေးထားသည်များ ဖျက်မည်",
           adbDisableBloatTitle: "System Bloatware အက်ပ် ပိတ်မည်:",
           adbDisablePkgPlaceholder: "ဥပမာ - com.google.android.apps.tachyon",
           adbDisableBtn: "ပိတ်မည်",
@@ -3018,6 +3098,8 @@
           adbApkInstallTitle: "APK Batch Install",
           adbAppManagerTitle: "App Manager (Packages & Bloatware)",
           adbBtnLoadApps: "Load Installed Apps",
+          adbAppsSelectAll: "Select all",
+          adbBtnBatchUninstall: "Uninstall Selected",
           adbDisableBloatTitle: "Disable Bloatware (System App):",
           adbDisablePkgPlaceholder: "e.g. com.google.android.apps.tachyon",
           adbDisableBtn: "Disable",
@@ -3271,6 +3353,10 @@
         // Connect button text
         if (connectBtnText && !isBusy) {
           connectBtnText.textContent = activeAdb ? t.reconnectBtnText : t.connectBtnText;
+        }
+
+        if (typeof updateBatchUninstallBtnState === "function") {
+          updateBatchUninstallBtnState();
         }
 
         updateInstallButtonState();
@@ -3601,6 +3687,14 @@
         const adbBtnLoadApps = document.getElementById("adbBtnLoadApps");
         if (adbBtnLoadApps) adbBtnLoadApps.disabled = disabled;
 
+        const adbAppsSelectAll = document.getElementById("adbAppsSelectAll");
+        if (adbAppsSelectAll) adbAppsSelectAll.disabled = disabled;
+        document.querySelectorAll(".adb-app-cb").forEach((cb) => (cb.disabled = disabled));
+        document.querySelectorAll(".adb-app-uninstall-btn").forEach((b) => (b.disabled = disabled));
+        if (typeof updateBatchUninstallBtnState === "function") {
+          updateBatchUninstallBtnState();
+        }
+
         const adbDisablePkgBtn = document.getElementById("adbDisablePkgBtn");
         const adbDisablePkgInput = document.getElementById("adbDisablePkgInput");
         if (adbDisablePkgBtn) adbDisablePkgBtn.disabled = disabled || !adbDisablePkgInput?.value?.trim();
@@ -3618,8 +3712,8 @@
           b.disabled = disabled;
         });
 
-        updateAdbPushState();
-        updateAdbPullState();
+        if (typeof updateAdbPushState === "function") updateAdbPushState();
+        if (typeof updateAdbPullState === "function") updateAdbPullState();
 
         if (adbCustomCmdRunBtn) {
           adbCustomCmdRunBtn.disabled = disabled || !activeAdb || !adbCustomCmdInput?.value?.trim();
@@ -3654,6 +3748,34 @@
         }
         const adbAppsCount = document.getElementById("adbAppsCount");
         if (adbAppsCount) adbAppsCount.textContent = "";
+
+        const adbAppsToolbar = document.getElementById("adbAppsToolbar");
+        if (adbAppsToolbar) adbAppsToolbar.style.display = "none";
+        const adbAppsSelectAll = document.getElementById("adbAppsSelectAll");
+        if (adbAppsSelectAll) {
+          adbAppsSelectAll.checked = false;
+          adbAppsSelectAll.indeterminate = false;
+        }
+        const adbBatchUninstallStatus = document.getElementById("adbBatchUninstallStatus");
+        if (adbBatchUninstallStatus) adbBatchUninstallStatus.textContent = "";
+
+        const adbFtStatusBox = document.getElementById("adbFtStatusBox");
+        if (adbFtStatusBox) adbFtStatusBox.style.display = "none";
+        const adbFtStatusPill = document.getElementById("adbFtStatusPill");
+        if (adbFtStatusPill) {
+          adbFtStatusPill.style.display = "none";
+          adbFtStatusPill.className = "ft-status-pill";
+          adbFtStatusPill.textContent = "Idle";
+        }
+        const adbFtProgressSection = document.getElementById("adbFtProgressSection");
+        if (adbFtProgressSection) adbFtProgressSection.style.display = "none";
+        const adbFtProgressBarFill = document.getElementById("adbFtProgressBarFill");
+        if (adbFtProgressBarFill) adbFtProgressBarFill.style.width = "0%";
+
+        const adbPushFileInput = document.getElementById("adbPushFileInput");
+        if (adbPushFileInput) adbPushFileInput.value = "";
+        const adbPullPathInput = document.getElementById("adbPullPathInput");
+        if (adbPullPathInput) adbPullPathInput.value = "";
 
         const adbScreenshotContainer = document.getElementById("adbScreenshotContainer");
         if (adbScreenshotContainer) adbScreenshotContainer.style.display = "none";
@@ -4004,7 +4126,7 @@
           }
         } catch (err) {
           console.error("fetchAdbDeviceDetails error:", err);
-          appendLog(`[ADB] Detail fetch error: ${err?.message || err}`, "warn");
+          appendLog(`[ADB] Detail fetch error: ${err?.message || String(err)}`, "warn");
         }
       }
 
@@ -4018,8 +4140,113 @@
       const adbBtnLoadApps = document.getElementById("adbBtnLoadApps");
       const adbAppsList = document.getElementById("adbAppsList");
       const adbAppsCount = document.getElementById("adbAppsCount");
+      const adbAppsToolbar = document.getElementById("adbAppsToolbar");
+      const adbAppsSelectAll = document.getElementById("adbAppsSelectAll");
+      const adbBtnBatchUninstall = document.getElementById("adbBtnBatchUninstall");
+      const adbBtnBatchUninstallText = document.getElementById("adbBtnBatchUninstallText");
+      const adbBatchUninstallStatus = document.getElementById("adbBatchUninstallStatus");
       const adbDisablePkgInput = document.getElementById("adbDisablePkgInput");
       const adbDisablePkgBtn = document.getElementById("adbDisablePkgBtn");
+
+      function updateBatchUninstallBtnState() {
+        const checkedBoxes = Array.from(document.querySelectorAll(".adb-app-cb:checked"));
+        const allBoxes = Array.from(document.querySelectorAll(".adb-app-cb"));
+        const count = checkedBoxes.length;
+
+        if (adbAppsSelectAll) {
+          adbAppsSelectAll.checked = allBoxes.length > 0 && checkedBoxes.length === allBoxes.length;
+          adbAppsSelectAll.indeterminate = checkedBoxes.length > 0 && checkedBoxes.length < allBoxes.length;
+        }
+
+        if (adbBtnBatchUninstall) {
+          adbBtnBatchUninstall.disabled = !activeAdb || isBusy || count === 0;
+        }
+        if (adbBtnBatchUninstallText) {
+          const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+          const baseText = t.adbBtnBatchUninstall || (currentLang === "en" ? "Uninstall Selected" : "ရွေးထားသည်များ ဖျက်မည်");
+          adbBtnBatchUninstallText.textContent = `${baseText} (${count})`;
+        }
+      }
+
+      if (adbAppsSelectAll) {
+        adbAppsSelectAll.addEventListener("change", () => {
+          const isChecked = adbAppsSelectAll.checked;
+          document.querySelectorAll(".adb-app-cb").forEach((cb) => {
+            cb.checked = isChecked;
+          });
+          updateBatchUninstallBtnState();
+        });
+      }
+
+      if (adbBtnBatchUninstall) {
+        adbBtnBatchUninstall.addEventListener("click", batchUninstallSelectedApps);
+      }
+
+      async function batchUninstallSelectedApps() {
+        if (!activeAdb || isBusy) return;
+        const checkedBoxes = Array.from(document.querySelectorAll(".adb-app-cb:checked"));
+        const packages = checkedBoxes.map((cb) => cb.getAttribute("data-pkg")).filter(Boolean);
+        if (packages.length === 0) return;
+
+        const isEn = currentLang === "en";
+        const confirmMsg = isEn
+          ? `Are you sure you want to uninstall ${packages.length} selected app${packages.length > 1 ? "s" : ""}?`
+          : `ရွေးချယ်ထားသော အက်ပ် ${packages.length} ခုအား ဖျက်ထုတ်ရန် သေချာပါသလား?`;
+        if (!window.confirm(confirmMsg)) return;
+
+        try {
+          isBusy = true;
+          if (adbBtnBatchUninstall) adbBtnBatchUninstall.disabled = true;
+          if (adbBtnLoadApps) adbBtnLoadApps.disabled = true;
+          if (adbAppsSelectAll) adbAppsSelectAll.disabled = true;
+          document.querySelectorAll(".adb-app-cb").forEach((cb) => (cb.disabled = true));
+          document.querySelectorAll(".adb-app-uninstall-btn").forEach((b) => (b.disabled = true));
+
+          let successCount = 0;
+          let failCount = 0;
+
+          for (let i = 0; i < packages.length; i++) {
+            const pkg = packages[i];
+            const progressMsg = `Uninstalling ${i + 1} of ${packages.length}: ${pkg}`;
+            appendLog(`[App Manager] ${progressMsg}`, "info");
+            if (adbBatchUninstallStatus) adbBatchUninstallStatus.textContent = progressMsg;
+
+            try {
+              const out = await activeAdb.subprocess.noneProtocol.spawnWaitText(["pm", "uninstall", pkg]);
+              if (out.toLowerCase().includes("success")) {
+                successCount++;
+                appendLog(`[App Manager] ✓ Uninstalled ${pkg}`, "success");
+              } else {
+                failCount++;
+                appendLog(`[App Manager] ✗ Failed ${pkg}: ${out.trim() || "Unknown response"}`, "warn");
+              }
+            } catch (appErr) {
+              failCount++;
+              const errMsg = appErr?.message || String(appErr);
+              console.error(`Error uninstalling ${pkg}:`, appErr);
+              appendLog(`[App Manager] ✗ Error uninstalling ${pkg}: ${errMsg}`, "error");
+            }
+          }
+
+          const summary = `${successCount} uninstalled, ${failCount} failed`;
+          appendLog(`[App Manager] Batch uninstall complete: ${summary}`, failCount > 0 ? "warn" : "success");
+          if (adbBatchUninstallStatus) adbBatchUninstallStatus.textContent = summary;
+
+          if (adbAppsSelectAll) {
+            adbAppsSelectAll.checked = false;
+            adbAppsSelectAll.indeterminate = false;
+          }
+          await loadInstalledApps();
+        } catch (err) {
+          console.error("batchUninstallSelectedApps error:", err);
+          appendLog(`[App Manager] Batch uninstall error: ${err?.message || String(err)}`, "error");
+        } finally {
+          isBusy = false;
+          if (adbBtnLoadApps) adbBtnLoadApps.disabled = !activeAdb;
+          if (adbAppsSelectAll) adbAppsSelectAll.disabled = false;
+          updateBatchUninstallBtnState();
+        }
+      }
 
       if (adbDisablePkgInput) {
         adbDisablePkgInput.addEventListener("input", () => {
@@ -4063,10 +4290,18 @@
           if (!adbAppsList) return;
           adbAppsList.innerHTML = "";
           if (packages.length === 0) {
+            if (adbAppsToolbar) adbAppsToolbar.style.display = "none";
             adbAppsList.style.display = "block";
             adbAppsList.innerHTML = `<div style="padding: 10px; font-size: 11.5px; color: var(--text-muted); text-align: center;">No 3rd-party packages found on device.</div>`;
             appendLog("[App Manager] No 3rd-party packages found.", "info");
+            updateBatchUninstallBtnState();
             return;
+          }
+
+          if (adbAppsToolbar) adbAppsToolbar.style.display = "flex";
+          if (adbAppsSelectAll) {
+            adbAppsSelectAll.checked = false;
+            adbAppsSelectAll.indeterminate = false;
           }
 
           adbAppsList.style.display = "flex";
@@ -4074,9 +4309,16 @@
             const item = document.createElement("div");
             item.className = "adb-app-item";
             item.innerHTML = `
-              <span class="adb-app-name" title="${escapeHtml(pkg)}">${escapeHtml(pkg)}</span>
+              <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;">
+                <input type="checkbox" class="adb-app-cb" data-pkg="${escapeHtml(pkg)}" style="width: 14px; height: 14px; cursor: pointer; accent-color: #EF4444; flex-shrink: 0;" />
+                <span class="adb-app-name" title="${escapeHtml(pkg)}">${escapeHtml(pkg)}</span>
+              </div>
               <button type="button" class="adb-app-uninstall-btn" data-pkg="${escapeHtml(pkg)}">Uninstall</button>
             `;
+            const cb = item.querySelector(".adb-app-cb");
+            if (cb) {
+              cb.addEventListener("change", updateBatchUninstallBtnState);
+            }
             const unBtn = item.querySelector(".adb-app-uninstall-btn");
             if (unBtn) {
               unBtn.addEventListener("click", () => uninstallApp(pkg, item));
@@ -4084,10 +4326,11 @@
             adbAppsList.appendChild(item);
           });
 
+          updateBatchUninstallBtnState();
           appendLog(currentLang === "en" ? `[App Manager] Loaded ${packages.length} installed packages.` : `[App Manager] အက်ပ် ${packages.length} ခု ရှာဖွေတွေ့ရှိပါသည်။`, "success");
         } catch (err) {
           console.error("loadInstalledApps error:", err);
-          appendLog(`[App Manager] Failed to load apps: ${err?.message || err}`, "error");
+          appendLog(`[App Manager] Failed to load apps: ${err?.message || String(err)}`, "error");
         } finally {
           isBusy = false;
           if (adbBtnLoadApps) adbBtnLoadApps.disabled = !activeAdb;
@@ -4115,10 +4358,11 @@
               const remaining = adbAppsList.querySelectorAll(".adb-app-item").length;
               adbAppsCount.textContent = `(${remaining} apps)`;
             }
+            updateBatchUninstallBtnState();
           }
         } catch (err) {
           console.error("uninstallApp error:", err);
-          appendLog(`[App Manager] Uninstall error: ${err?.message || err}`, "error");
+          appendLog(`[App Manager] Uninstall error: ${err?.message || String(err)}`, "error");
         } finally {
           isBusy = false;
         }
@@ -4143,7 +4387,7 @@
           if (adbDisablePkgInput) adbDisablePkgInput.value = "";
         } catch (err) {
           console.error("disableBloatwarePackage error:", err);
-          appendLog(`[Bloatware] Disable error: ${err?.message || err}`, "error");
+          appendLog(`[Bloatware] Disable error: ${err?.message || String(err)}`, "error");
         } finally {
           isBusy = false;
           if (adbDisablePkgBtn) {
@@ -4203,7 +4447,7 @@
           }
         } catch (err) {
           console.error("Screenshot error:", err);
-          appendLog(`[Screenshot] Capture error: ${err?.message || err}`, "error");
+          appendLog(`[Screenshot] Capture error: ${err?.message || String(err)}`, "error");
         } finally {
           isBusy = false;
           if (adbBtnScreenshot) adbBtnScreenshot.disabled = !activeAdb;
@@ -4264,7 +4508,7 @@
         } catch (err) {
           console.error("Screen record error:", err);
           if (adbRecordStatus) adbRecordStatus.textContent = "Failed";
-          appendLog(`[Screen Record] Record error: ${err?.message || err}`, "error");
+          appendLog(`[Screen Record] Record error: ${err?.message || String(err)}`, "error");
         } finally {
           isBusy = false;
           if (adbBtnScreenRecord) adbBtnScreenRecord.disabled = !activeAdb;
@@ -4345,7 +4589,7 @@
           })();
         } catch (err) {
           console.error("Logcat start error:", err);
-          appendLog(`[Logcat] Start error: ${err?.message || err}`, "error");
+          appendLog(`[Logcat] Start error: ${err?.message || String(err)}`, "error");
           if (adbLogcatStartBtn) adbLogcatStartBtn.disabled = !activeAdb;
           if (adbLogcatStopBtn) adbLogcatStopBtn.disabled = true;
         }
@@ -4362,7 +4606,7 @@
             await activeAdb.subprocess.noneProtocol.spawnWaitText(["input", "keyevent", key]);
           } catch (err) {
             console.error("Keyevent error:", err);
-            appendLog(`[Input] Keyevent ${key} error: ${err?.message || err}`, "error");
+            appendLog(`[Input] Keyevent ${key} error: ${err?.message || String(err)}`, "error");
           }
         });
       });
@@ -4373,6 +4617,39 @@
       const adbPushBtn = document.getElementById("adbPushBtn");
       const adbPullPathInput = document.getElementById("adbPullPathInput");
       const adbPullBtn = document.getElementById("adbPullBtn");
+      const adbFtStatusPill = document.getElementById("adbFtStatusPill");
+      const adbFtStatusBox = document.getElementById("adbFtStatusBox");
+      const adbFtStatusText = document.getElementById("adbFtStatusText");
+      const adbFtBytesText = document.getElementById("adbFtBytesText");
+      const adbFtProgressSection = document.getElementById("adbFtProgressSection");
+      const adbFtProgressBarFill = document.getElementById("adbFtProgressBarFill");
+
+      function setFtStatus(type, text, bytesInfo = "") {
+        // type: 'idle' | 'busy' | 'success' | 'error'
+        if (adbFtStatusBox) adbFtStatusBox.style.display = "block";
+        if (adbFtStatusText) {
+          adbFtStatusText.textContent = text;
+          adbFtStatusText.style.color = type === "error" ? "#F87171" : (type === "success" ? "#34D399" : "#E2E8F0");
+        }
+        if (adbFtBytesText) adbFtBytesText.textContent = bytesInfo;
+
+        if (adbFtStatusPill) {
+          adbFtStatusPill.style.display = "inline-flex";
+          adbFtStatusPill.className = "ft-status-pill " + (type === "busy" ? "busy" : (type === "success" ? "success" : (type === "error" ? "error" : "")));
+          adbFtStatusPill.textContent = type === "busy" ? "Transferring" : (type === "success" ? "Success" : (type === "error" ? "Failed" : "Idle"));
+        }
+      }
+
+      function updateFtProgress(percent, bytesInfo) {
+        if (adbFtProgressSection) adbFtProgressSection.style.display = "block";
+        if (adbFtProgressBarFill) adbFtProgressBarFill.style.width = `${Math.min(100, Math.max(0, percent))}%`;
+        if (adbFtBytesText && bytesInfo) adbFtBytesText.textContent = bytesInfo;
+      }
+
+      function resetFtProgress() {
+        if (adbFtProgressSection) adbFtProgressSection.style.display = "none";
+        if (adbFtProgressBarFill) adbFtProgressBarFill.style.width = "0%";
+      }
 
       function updateAdbPushState() {
         if (!adbPushBtn) return;
@@ -4396,26 +4673,48 @@
           dest += file.name;
         }
 
+        const sizeFormatted = formatBytes(file.size);
         try {
           isBusy = true;
           updateAdbPushState();
-          appendLog(currentLang === "en" ? `[File Transfer] Pushing "${file.name}" (${formatBytes(file.size)}) to "${dest}"...` : `[File Transfer] "${file.name}" အား ဖုန်းတွင်း "${dest}" သို့ ပို့ဆောင်နေပါသည်...`, "info");
+          setFtStatus("busy", `Pushing "${file.name}" (${sizeFormatted})...`, "0%");
+          updateFtProgress(0, `0% (0 / ${sizeFormatted})`);
+          appendLog(currentLang === "en" ? `[File Transfer] Pushing "${file.name}" (${sizeFormatted}) to "${dest}"...` : `[File Transfer] "${file.name}" အား ဖုန်းတွင်း "${dest}" သို့ ပို့ဆောင်နေပါသည်...`, "info");
+
+          let sentBytes = 0;
+          const totalBytes = file.size;
+          const progressStream = file.stream().pipeThrough(
+            new TransformStream({
+              transform(chunk, controller) {
+                sentBytes += chunk.byteLength || chunk.length;
+                const pct = totalBytes > 0 ? Math.min(100, Math.round((sentBytes / totalBytes) * 100)) : 0;
+                updateFtProgress(pct, `${formatBytes(sentBytes)} / ${sizeFormatted} (${pct}%)`);
+                controller.enqueue(chunk);
+              }
+            })
+          );
 
           const sync = await activeAdb.sync();
           try {
             await sync.write({
               filename: dest,
-              file: file.stream(),
+              file: progressStream,
             });
           } finally {
             await sync.dispose().catch(() => {});
           }
 
-          appendLog(currentLang === "en" ? `[File Transfer] Successfully pushed "${file.name}" to "${dest}"` : `[File Transfer] "${file.name}" အား "${dest}" သို့ အောင်မြင်စွာ ပို့ဆောင်ပြီးပါပြီ။`, "success");
+          const successMsg = `Push finished: ${dest} (${sizeFormatted})`;
+          setFtStatus("success", successMsg, "100%");
+          updateFtProgress(100, `Done (${sizeFormatted})`);
+          appendLog(`[File Transfer] ${successMsg}`, "success");
           if (adbPushFileInput) adbPushFileInput.value = "";
         } catch (err) {
+          const errMsg = `Push failed: ${err?.message || String(err)}`;
+          setFtStatus("error", errMsg);
+          resetFtProgress();
           console.error("Push file error:", err);
-          appendLog(`[File Transfer] Push failed: ${err?.message || err}`, "error");
+          appendLog(`[File Transfer] ${errMsg}`, "error");
         } finally {
           isBusy = false;
           updateAdbPushState();
@@ -4427,21 +4726,42 @@
         const remotePath = (adbPullPathInput?.value || "").trim();
         if (!remotePath) return;
 
+        const filename = remotePath.split("/").filter(Boolean).pop() || "downloaded_file";
         try {
           isBusy = true;
           updateAdbPullState();
+          setFtStatus("busy", `Pulling "${filename}"...`, "Starting...");
+          updateFtProgress(10, "Starting transfer...");
           appendLog(currentLang === "en" ? `[File Transfer] Pulling "${remotePath}" from phone...` : `[File Transfer] ဖုန်းတွင်းမှ "${remotePath}" အား ဆွဲယူနေပါသည်...`, "info");
 
           const sync = await activeAdb.sync();
           let blob;
+          let receivedBytes = 0;
           try {
+            let totalBytes = 0;
+            try {
+              const statRes = await sync.stat(remotePath);
+              if (statRes && statRes.size) {
+                totalBytes = Number(statRes.size);
+              }
+            } catch (e) {}
+
             const stream = sync.read(remotePath);
             const reader = stream.getReader();
             const chunks = [];
             while (true) {
               const { done, value } = await reader.read();
               if (done) break;
-              if (value) chunks.push(value);
+              if (value) {
+                chunks.push(value);
+                receivedBytes += value.byteLength || value.length;
+                if (totalBytes > 0) {
+                  const pct = Math.min(100, Math.round((receivedBytes / totalBytes) * 100));
+                  updateFtProgress(pct, `${formatBytes(receivedBytes)} / ${formatBytes(totalBytes)} (${pct}%)`);
+                } else {
+                  updateFtProgress(50, `${formatBytes(receivedBytes)} pulled...`);
+                }
+              }
             }
             blob = new Blob(chunks);
           } finally {
@@ -4449,20 +4769,30 @@
           }
 
           if (blob && blob.size > 0) {
-            const filename = remotePath.split("/").filter(Boolean).pop() || "downloaded_file";
+            const sizeFormatted = formatBytes(blob.size);
             const a = document.createElement("a");
             a.href = URL.createObjectURL(blob);
             a.download = filename;
             document.body.appendChild(a);
             a.click();
             a.remove();
-            appendLog(currentLang === "en" ? `[File Transfer] Pulled "${remotePath}" (${formatBytes(blob.size)}). Download triggered.` : `[File Transfer] "${remotePath}" အား အောင်မြင်စွာ ဆွဲထုတ်ပြီး ဒေါင်းလုဒ်စတင်ပါပြီ။`, "success");
+
+            const successMsg = `Pull finished: ${filename} (${sizeFormatted}) - download started`;
+            setFtStatus("success", successMsg, "100%");
+            updateFtProgress(100, `Done (${sizeFormatted})`);
+            appendLog(`[File Transfer] ${successMsg}`, "success");
           } else {
-            appendLog(`[File Transfer] File "${remotePath}" was empty or not found on device.`, "error");
+            const failMsg = `Pull failed: File "${remotePath}" was empty or not found on device`;
+            setFtStatus("error", failMsg);
+            resetFtProgress();
+            appendLog(`[File Transfer] ${failMsg}`, "error");
           }
         } catch (err) {
+          const errMsg = `Pull failed: ${err?.message || String(err)}`;
+          setFtStatus("error", errMsg);
+          resetFtProgress();
           console.error("Pull file error:", err);
-          appendLog(`[File Transfer] Pull failed: ${err?.message || err}`, "error");
+          appendLog(`[File Transfer] ${errMsg}`, "error");
         } finally {
           isBusy = false;
           updateAdbPullState();
