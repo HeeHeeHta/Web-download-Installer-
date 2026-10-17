@@ -1712,6 +1712,7 @@ const firebaseConfig = {
       let rtdbOnValue = null;
       let rtdbOff = null;
       let isFbReady = false;
+      let rtdbReady = false;
       let rtdbAppsCache = {};
       let activeDetailUnsubscribe = null;
       let activeDetailSlug = null;
@@ -1791,18 +1792,25 @@ const firebaseConfig = {
       }
 
       async function fetchBatchedAppsData() {
-        if (!isFbReady || !rtdb || !rtdbRef || !rtdbGet) return;
+        if (!isFbReady || !rtdb || !rtdbRef || !rtdbGet) {
+          rtdbReady = false;
+          return;
+        }
         try {
           const appsRef = rtdbRef(rtdb, "apps");
           const snap = await Promise.race([
             rtdbGet(appsRef),
-            new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 2000))
+            new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 3000))
           ]);
           if (snap && snap.exists()) {
             rtdbAppsCache = snap.val() || {};
+          } else {
+            rtdbAppsCache = {};
           }
+          rtdbReady = true;
         } catch (e) {
           // Silently fallback without logging errors
+          rtdbReady = false;
         }
       }
 
@@ -2108,15 +2116,26 @@ const firebaseConfig = {
           // Batched live values from apps/{slug}
           const slug = getAppRtdbSlug(app);
           const live = rtdbAppsCache[slug];
-          let cardRating = app.rating || "5.0";
-          let cardDl = formatDownloads(app.downloads || "1.0k");
-          if (live) {
-            if (live.ratingCount > 0 && live.ratingSum !== undefined) {
+          let cardRating;
+          let cardDl;
+
+          if (rtdbReady) {
+            // Live Firebase RTDB read succeeded: show live data or em-dash if unrated or no downloads yet (never static fake numbers)
+            if (live && live.ratingCount > 0 && live.ratingSum !== undefined) {
               cardRating = (Number(live.ratingSum) / Number(live.ratingCount)).toFixed(1);
+            } else {
+              cardRating = "—";
             }
-            if (live.downloads !== undefined) {
+
+            if (live && live.downloads !== undefined && live.downloads !== null) {
               cardDl = formatDownloads(live.downloads);
+            } else {
+              cardDl = "—";
             }
+          } else {
+            // If rtdbReady is false (Firebase failed to initialize — offline/error): keep static app.rating/app.downloads as last-resort fallback
+            cardRating = app.rating || "5.0";
+            cardDl = formatDownloads(app.downloads || "1.0k");
           }
 
           const iconSrc = resolveAssetUrl(app.icon);
