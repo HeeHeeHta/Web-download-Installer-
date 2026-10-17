@@ -15,6 +15,14 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script type="importmap">
+      {
+        "imports": {
+          "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+          "firebase/database": "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"
+        }
+      }
+    </script>
     <style>
       :root {
         --bg-color: #0A0A14;
@@ -675,6 +683,69 @@
         margin-top: 3px;
       }
 
+      /* Rate This App Row */
+      .rate-app-row {
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid var(--glass-border-subtle);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .rate-app-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .rate-app-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .rate-app-feedback {
+        font-size: 11.5px;
+        color: var(--text-muted);
+        min-height: 16px;
+        transition: color 0.2s ease;
+      }
+
+      .rate-stars-container {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: opacity 0.2s ease;
+      }
+
+      .star-btn {
+        background: transparent;
+        border: none;
+        padding: 4px;
+        cursor: pointer;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.15s ease;
+      }
+
+      .star-btn:hover {
+        transform: scale(1.18);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .star-btn:active {
+        transform: scale(0.92);
+      }
+
+      .star-btn svg {
+        transition: fill 0.18s ease, stroke 0.18s ease;
+      }
+
       /* Screenshots Carousel */
       .screenshots-scroll {
         display: flex;
@@ -1232,12 +1303,12 @@
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24" stroke="#FBBF24" stroke-width="1">
                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                 </svg>
-                <span id="detailStatRatingText">5.0</span>
+                <span id="detailStatRatingText">—</span>
               </div>
               <div class="stat-label" data-i18n="rating">Rating</div>
             </div>
             <div class="stat-item">
-              <div class="stat-val" id="detailStatDownloads">1.2k</div>
+              <div class="stat-val" id="detailStatDownloads">—</div>
               <div class="stat-label" data-i18n="downloads">Downloads</div>
             </div>
             <div class="stat-item">
@@ -1247,6 +1318,41 @@
             <div class="stat-item">
               <div class="stat-val" id="detailStatUpdated">2026-10</div>
               <div class="stat-label" data-i18n="updated">Updated</div>
+            </div>
+          </div>
+
+          <!-- Rate this app row -->
+          <div class="rate-app-row" id="detailRateRow">
+            <div class="rate-app-info">
+              <span class="rate-app-title" data-i18n="rateApp">Rate this app</span>
+              <span id="rateAppFeedback" class="rate-app-feedback"></span>
+            </div>
+            <div class="rate-stars-container" id="rateAppStars" role="group" aria-label="Rate this app">
+              <button type="button" class="star-btn" data-star="1" onclick="submitAppRating(1)" onmouseenter="previewStarHover(1)" onmouseleave="resetStarHover()" aria-label="1 star">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.75">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              </button>
+              <button type="button" class="star-btn" data-star="2" onclick="submitAppRating(2)" onmouseenter="previewStarHover(2)" onmouseleave="resetStarHover()" aria-label="2 stars">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.75">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              </button>
+              <button type="button" class="star-btn" data-star="3" onclick="submitAppRating(3)" onmouseenter="previewStarHover(3)" onmouseleave="resetStarHover()" aria-label="3 stars">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.75">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              </button>
+              <button type="button" class="star-btn" data-star="4" onclick="submitAppRating(4)" onmouseenter="previewStarHover(4)" onmouseleave="resetStarHover()" aria-label="4 stars">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.75">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              </button>
+              <button type="button" class="star-btn" data-star="5" onclick="submitAppRating(5)" onmouseenter="previewStarHover(5)" onmouseleave="resetStarHover()" aria-label="5 stars">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.75">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              </button>
             </div>
           </div>
         </article>
@@ -1476,19 +1582,9 @@
             <button type="button" class="btn btn-secondary" style="font-size: 11.5px; padding: 9px 12px; white-space: nowrap;" onclick="autoFetchCurrentSize()">Auto-fetch Size</button>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: center;">
-            <div class="admin-input-group">
-              <label class="admin-label">Rating</label>
-              <input type="text" id="formAppRating" class="admin-input" placeholder="5.0" />
-            </div>
-            <div class="admin-input-group">
-              <label class="admin-label">Downloads</label>
-              <input type="text" id="formAppDownloads" class="admin-input" placeholder="1.2k" />
-            </div>
-            <div style="display: flex; align-items: center; gap: 6px; padding-top: 16px;">
-              <input type="checkbox" id="formAppVerified" style="width: 16px; height: 16px;" checked />
-              <label for="formAppVerified" class="admin-label" style="cursor: pointer;">Verified</label>
-            </div>
+          <div style="display: flex; align-items: center; gap: 8px; margin: 4px 0 6px;">
+            <input type="checkbox" id="formAppVerified" style="width: 16px; height: 16px; cursor: pointer;" checked />
+            <label for="formAppVerified" class="admin-label" style="cursor: pointer; margin: 0;">Verified App</label>
           </div>
 
           <!-- Icon upload and save -->
@@ -1570,6 +1666,146 @@
 
     <!-- MAIN TECHNICAL SCRIPT -->
     <script>
+      /* ==========================================================================
+         FIREBASE REALTIME DATABASE SECURITY RULES
+         Paste the following JSON into Firebase Console -> Realtime Database -> Rules tab:
+{
+  "rules": {
+    "apps": { "$slug": {
+      "downloads":   { ".read": true, ".write": true },
+      "ratingSum":   { ".read": true, ".write": true },
+      "ratingCount": { ".read": true, ".write": true } } },
+    "ratings": { "$slug": {
+      "$anonId": { ".read": true, ".write": true,
+        ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5" } } }
+  }
+}
+         ========================================================================== */
+
+      // Firebase Realtime Database Configuration
+      /*
+const firebaseConfig = {
+  apiKey: "AIzaSyC0GeC87lleiXVOH0EHKokRlZB53Lnpxhk",
+  authDomain: "tvy-app-store.firebaseapp.com",
+  projectId: "tvy-app-store",
+  storageBucket: "tvy-app-store.firebasestorage.app",
+  messagingSenderId: "219270533922",
+  appId: "1:219270533922:web:c2fcabf50a338898bacb7b"
+};
+      */
+      const FIREBASE_CONFIG = {
+        apiKey: "AIzaSyC0GeC87lleiXVOH0EHKokRlZB53Lnpxhk",
+        authDomain: "tvy-app-store.firebaseapp.com",
+        projectId: "tvy-app-store",
+        storageBucket: "tvy-app-store.firebasestorage.app",
+        messagingSenderId: "219270533922",
+        appId: "1:219270533922:web:c2fcabf50a338898bacb7b"
+      };
+
+      // Firebase Modular State
+      let fbApp = null;
+      let rtdb = null;
+      let rtdbRef = null;
+      let rtdbGet = null;
+      let rtdbSet = null;
+      let rtdbRunTransaction = null;
+      let rtdbOnValue = null;
+      let rtdbOff = null;
+      let isFbReady = false;
+      let rtdbAppsCache = {};
+      let activeDetailUnsubscribe = null;
+      let activeDetailSlug = null;
+      let userPreviousRating = 0;
+      let isRatingSubmitting = false;
+
+      function isFirebasePlaceholder(cfg) {
+        if (!cfg || typeof cfg !== "object") return true;
+        if (!cfg.apiKey || cfg.apiKey.startsWith("YOUR_") || cfg.apiKey === "PLACEHOLDER") return true;
+        if (!cfg.projectId || cfg.projectId === "YOUR_PROJECT_ID") return true;
+        return false;
+      }
+
+      function getAnonId() {
+        try {
+          let id = localStorage.getItem("tvy_anon_id");
+          if (!id) {
+            id = (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function")
+              ? crypto.randomUUID()
+              : ("anon_" + Math.random().toString(36).substring(2, 12) + Date.now().toString(36));
+            localStorage.setItem("tvy_anon_id", id);
+          }
+          return id;
+        } catch (e) {
+          return "anon_fallback_id";
+        }
+      }
+
+      function getAppRtdbSlug(app) {
+        if (!app) return "app";
+        let raw = (app.packageName || "").trim();
+        if (!raw) {
+          raw = (app.name || "app").trim().toLowerCase().replace(/\s+/g, "-");
+        }
+        // Firebase Realtime Database path keys cannot contain '.', '#', '$', '[', ']', or '/'
+        return raw.toLowerCase().replace(/[\.\s]+/g, "-").replace(/[^a-z0-9_-]/g, "") || "app";
+      }
+
+      function formatDownloads(count) {
+        if (count === null || count === undefined) return "0";
+        if (typeof count === "string") {
+          if (count.includes("k") || count.includes("M") || count.includes("+")) return count;
+          count = Number(count);
+        }
+        const num = Number(count);
+        if (isNaN(num)) return "0";
+        if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+        if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+        return num.toString();
+      }
+
+      async function initFirebase() {
+        if (isFirebasePlaceholder(FIREBASE_CONFIG)) {
+          isFbReady = false;
+          return false;
+        }
+        try {
+          const dynamicImport = (p) => (new Function("s", "return import(s)"))(p);
+          const { initializeApp } = await dynamicImport("firebase/app");
+          const { getDatabase, ref, get, set, runTransaction, onValue, off } = await dynamicImport("firebase/database");
+          fbApp = initializeApp(FIREBASE_CONFIG);
+          const dbUrl = FIREBASE_CONFIG.databaseURL || `https://${FIREBASE_CONFIG.projectId}-default-rtdb.firebaseio.com`;
+          rtdb = getDatabase(fbApp, dbUrl);
+          rtdbRef = ref;
+          rtdbGet = get;
+          rtdbSet = set;
+          rtdbRunTransaction = runTransaction;
+          rtdbOnValue = onValue;
+          rtdbOff = off;
+          isFbReady = true;
+          return true;
+        } catch (e) {
+          // Silent fallback for normal users
+          isFbReady = false;
+          return false;
+        }
+      }
+
+      async function fetchBatchedAppsData() {
+        if (!isFbReady || !rtdb || !rtdbRef || !rtdbGet) return;
+        try {
+          const appsRef = rtdbRef(rtdb, "apps");
+          const snap = await Promise.race([
+            rtdbGet(appsRef),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 2000))
+          ]);
+          if (snap && snap.exists()) {
+            rtdbAppsCache = snap.val() || {};
+          }
+        } catch (e) {
+          // Silently fallback without logging errors
+        }
+      }
+
       /* ==========================================================================
          APPS CONFIGURATION LIST (DEFAULT / BUILT-IN)
          Expanded with rich Play Store-style metadata fields
@@ -1658,7 +1894,10 @@
           copied: "ကူးယူပြီးပါပြီ!",
           adminTitle: "အက်ပ်စီမံခန့်ခွဲမှုစနစ် (Admin Panel)",
           uploadAs: "ဤဖိုင်အမည်ဖြင့် တင်ပါ: ",
-          migrationNote: "ထည့်သွင်းထားသော ပုံများကို ဖိုင်လမ်းကြောင်းများအဖြစ် အလိုအလျောက် ပြောင်းလဲပြီးပါပြီ — ပုံဖိုင်များကို ပြန်လည်ဒေါင်းလုဒ်ဆွဲပြီး repo သို့ တင်ပေးပါ"
+          migrationNote: "ထည့်သွင်းထားသော ပုံများကို ဖိုင်လမ်းကြောင်းများအဖြစ် အလိုအလျောက် ပြောင်းလဲပြီးပါပြီ — ပုံဖိုင်များကို ပြန်လည်ဒေါင်းလုဒ်ဆွဲပြီး repo သို့ တင်ပေးပါ",
+          rateApp: "အက်ပ်ကို အဆင့်သတ်မှတ်ပါ",
+          youRated: "သင် အဆင့်သတ်မှတ်ထားသည်: ",
+          thanksRating: "အဆင့်သတ်မှတ်ပေးသည့်အတွက် ကျေးဇူးတင်ပါသည်!"
         },
         en: {
           pageTitle: "App Download Center | Burmese App Download Center",
@@ -1708,7 +1947,10 @@
           copied: "Copied!",
           adminTitle: "App Management (Admin Panel)",
           uploadAs: "Upload as: ",
-          migrationNote: "Converted embedded images to file paths — re-download and upload the image files to the repo"
+          migrationNote: "Converted embedded images to file paths — re-download and upload the image files to the repo",
+          rateApp: "Rate this app",
+          youRated: "Your rating: ",
+          thanksRating: "Thanks for rating!"
         }
       };
 
@@ -1859,11 +2101,23 @@
           const safeDev = escapeHtml(app.developer || "TVY-Tech");
           const safeVer = escapeHtml(app.version);
           const safeSize = escapeHtml(app.size || "Unknown");
-          const safeRating = escapeHtml(app.rating || "5.0");
-          const safeDl = escapeHtml(app.downloads || "1k+");
           const safeDesc = escapeHtml((currentLang === "en" && app.descEn) ? app.descEn : (app.desc || ""));
           const safeUrl = escapeHtml(app.apkUrl);
           const isVerified = app.verified !== false;
+
+          // Batched live values from apps/{slug}
+          const slug = getAppRtdbSlug(app);
+          const live = rtdbAppsCache[slug];
+          let cardRating = app.rating || "5.0";
+          let cardDl = formatDownloads(app.downloads || "1.0k");
+          if (live) {
+            if (live.ratingCount > 0 && live.ratingSum !== undefined) {
+              cardRating = (Number(live.ratingSum) / Number(live.ratingCount)).toFixed(1);
+            }
+            if (live.downloads !== undefined) {
+              cardDl = formatDownloads(live.downloads);
+            }
+          }
 
           const iconSrc = resolveAssetUrl(app.icon);
           const iconMarkup = iconSrc
@@ -1900,7 +2154,7 @@
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="#FBBF24" stroke="#FBBF24" stroke-width="1">
                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                       </svg>
-                      ${safeRating}
+                      ${escapeHtml(cardRating)}
                     </span>
                     <span>•</span>
                     <span class="app-card-meta-item">
@@ -1909,7 +2163,7 @@
                         <polyline points="7 10 12 15 17 10"/>
                         <line x1="12" y1="15" x2="12" y2="3"/>
                       </svg>
-                      ${safeDl}
+                      ${escapeHtml(cardDl)}
                     </span>
                     <span>•</span>
                     <span class="app-card-meta-item">
@@ -1922,7 +2176,7 @@
                   </div>
 
                   <div class="app-card-actions">
-                    <a href="${safeUrl}" class="btn btn-download" download target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                    <a href="${safeUrl}" class="btn btn-download" download target="_blank" rel="noopener noreferrer" onclick="handleDownloadTap(event, getAppsList()[${index}])">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                         <polyline points="7 10 12 15 17 10"/>
@@ -1957,6 +2211,14 @@
       function openAppDetail(index) {
         const apps = getAppsList();
         if (!apps[index]) return;
+
+        // Detach previous detail listener if active
+        if (activeDetailUnsubscribe) {
+          try { activeDetailUnsubscribe(); } catch (e) {}
+          activeDetailUnsubscribe = null;
+        }
+        activeDetailSlug = null;
+
         currentSelectedAppIndex = index;
         location.hash = `#app-${index}`;
 
@@ -1968,13 +2230,43 @@
       }
 
       function closeAppDetail() {
+        if (activeDetailUnsubscribe) {
+          try { activeDetailUnsubscribe(); } catch (e) {}
+          activeDetailUnsubscribe = null;
+        }
+        activeDetailSlug = null;
         currentSelectedAppIndex = -1;
+
         if (location.hash.startsWith("#app-")) {
           history.pushState("", document.title, window.location.pathname + window.location.search);
         }
         document.getElementById("appDetailView").style.display = "none";
         document.getElementById("appListView").style.display = "block";
         window.scrollTo({ top: 0, behavior: "instant" });
+      }
+
+      function updateDetailStatsDisplay(app, data) {
+        const ratingEl = document.getElementById("detailStatRatingText");
+        const dlEl = document.getElementById("detailStatDownloads");
+        if (!ratingEl || !dlEl) return;
+
+        if (data && (data.ratingCount > 0 || data.ratingSum > 0 || data.downloads !== undefined)) {
+          const count = Number(data.ratingCount) || 0;
+          const sum = Number(data.ratingSum) || 0;
+          const avg = count > 0 ? (sum / count).toFixed(1) : (app.rating || "5.0");
+          ratingEl.textContent = `${avg} (${count})`;
+          dlEl.textContent = formatDownloads(data.downloads !== undefined ? data.downloads : (app.downloads || "0"));
+        } else {
+          // If fallback / no live data
+          if (isFirebasePlaceholder(FIREBASE_CONFIG) || !isFbReady) {
+            ratingEl.textContent = app.rating || "5.0";
+            dlEl.textContent = formatDownloads(app.downloads || "1.0k");
+          } else {
+            const staticRating = app.rating || "5.0";
+            ratingEl.textContent = `${staticRating} (0)`;
+            dlEl.textContent = formatDownloads(app.downloads || "0");
+          }
+        }
       }
 
       function renderAppDetail(index) {
@@ -1990,9 +2282,6 @@
         const safeDate = escapeHtml(app.updated || "-");
         const safePkg = escapeHtml(app.packageName || "com.example.app");
         const safeCategory = escapeHtml(app.category || "Tools & Utilities");
-        const safeRating = escapeHtml(app.rating || "5.0");
-        const safeDl = escapeHtml(app.downloads || "1.2k");
-        const safeUrl = escapeHtml(app.apkUrl);
         const isVerified = app.verified !== false;
 
         // Long Description & Changelog fallback
@@ -2017,19 +2306,87 @@
         document.getElementById("detailAppVer").textContent = safeVer;
         document.getElementById("detailAppVerified").style.display = isVerified ? "inline-flex" : "none";
 
-        // Download CTA
+        // Download CTA - increments download counter first, then triggers download
         const downloadBtn = document.getElementById("detailDownloadBtn");
         downloadBtn.href = app.apkUrl;
+        downloadBtn.onclick = (e) => handleDownloadTap(e, app);
         document.getElementById("detailDownloadText").textContent = `${t.downloadBtn} (${safeSize})`;
 
         const webAdbBtn = document.getElementById("detailWebAdbBtn");
         webAdbBtn.href = `installer.html?name=${encodeURIComponent(app.name)}&ver=${encodeURIComponent(app.version)}&url=${encodeURIComponent(app.apkUrl)}`;
 
-        // Stats Row
-        document.getElementById("detailStatRatingText").textContent = safeRating;
-        document.getElementById("detailStatDownloads").textContent = safeDl;
+        // Stats Row - Show em-dash while loading
+        document.getElementById("detailStatRatingText").textContent = "—";
+        document.getElementById("detailStatDownloads").textContent = "—";
         document.getElementById("detailStatSize").textContent = safeSize;
         document.getElementById("detailStatUpdated").textContent = safeDate;
+
+        // Slug & Anon ID for Realtime sync
+        const slug = getAppRtdbSlug(app);
+        const anonId = getAnonId();
+
+        // Immediate cached display if available
+        if (rtdbAppsCache[slug]) {
+          updateDetailStatsDisplay(app, rtdbAppsCache[slug]);
+        } else if (!isFbReady) {
+          updateDetailStatsDisplay(app, null);
+        }
+
+        // Attach Realtime onValue listener for live updates on this app
+        if (isFbReady && rtdb && rtdbRef && rtdbOnValue) {
+          try {
+            const appStatsRef = rtdbRef(rtdb, `apps/${slug}`);
+            activeDetailSlug = slug;
+            activeDetailUnsubscribe = rtdbOnValue(appStatsRef, (snapshot) => {
+              if (activeDetailSlug !== slug) return;
+              const val = snapshot.val();
+              if (val) {
+                rtdbAppsCache[slug] = val;
+                updateDetailStatsDisplay(app, val);
+              } else {
+                updateDetailStatsDisplay(app, null);
+              }
+            }, () => {
+              updateDetailStatsDisplay(app, null);
+            });
+          } catch (e) {
+            updateDetailStatsDisplay(app, null);
+          }
+        }
+
+        // Rate This App Setup: check stored rating and fetch live rating
+        let cachedRating = 0;
+        try {
+          const stored = localStorage.getItem(`tvy_rating_${slug}`);
+          if (stored) cachedRating = Number(stored);
+        } catch (e) {}
+        userPreviousRating = cachedRating;
+        renderRatingStars(cachedRating);
+        const feedbackEl = document.getElementById("rateAppFeedback");
+        if (feedbackEl) {
+          feedbackEl.textContent = cachedRating > 0 ? `${t.youRated} ${cachedRating} ★` : "";
+          feedbackEl.style.color = "var(--text-muted)";
+        }
+
+        if (isFbReady && rtdb && rtdbRef && rtdbGet) {
+          try {
+            const userRatingRef = rtdbRef(rtdb, `ratings/${slug}/${anonId}`);
+            rtdbGet(userRatingRef).then((snap) => {
+              if (activeDetailSlug !== slug) return;
+              if (snap && snap.exists()) {
+                const val = Number(snap.val());
+                if (val >= 1 && val <= 5) {
+                  userPreviousRating = val;
+                  try { localStorage.setItem(`tvy_rating_${slug}`, val.toString()); } catch (e) {}
+                  renderRatingStars(val);
+                  if (feedbackEl) {
+                    feedbackEl.textContent = `${t.youRated} ${val} ★`;
+                  }
+                }
+              }
+            }).catch(() => {});
+          } catch (e) {}
+        }
 
         // Screenshots carousel
         const shotsCard = document.getElementById("detailScreenshotsCard");
@@ -2073,6 +2430,160 @@
         // Share link
         const shareUrl = `${window.location.origin}${window.location.pathname}#app-${index}`;
         document.getElementById("detailShareInput").value = shareUrl;
+      }
+
+      // Download APK handler: FIRST increment downloads by 1 via transaction, THEN trigger download
+      async function handleDownloadTap(event, app) {
+        if (event) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        if (!app) return;
+        const slug = getAppRtdbSlug(app);
+
+        // counts download taps, not completed installs
+        if (isFbReady && rtdb && rtdbRef && rtdbRunTransaction) {
+          try {
+            const dlRef = rtdbRef(rtdb, `apps/${slug}/downloads`);
+            await Promise.race([
+              rtdbRunTransaction(dlRef, (current) => (Number(current) || 0) + 1),
+              new Promise((resolve) => setTimeout(resolve, 600))
+            ]);
+          } catch (e) {
+            // silent fallback
+          }
+        }
+
+        // Trigger the download exactly as now
+        const a = document.createElement("a");
+        a.href = app.apkUrl;
+        a.download = "";
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
+      // Rating Action Handlers
+      async function submitAppRating(newRating) {
+        if (isRatingSubmitting) return;
+        const apps = getAppsList();
+        const app = apps[currentSelectedAppIndex];
+        if (!app) return;
+
+        const slug = getAppRtdbSlug(app);
+        const anonId = getAnonId();
+        const starsContainer = document.getElementById("rateAppStars");
+        const feedbackEl = document.getElementById("rateAppFeedback");
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+
+        isRatingSubmitting = true;
+        if (starsContainer) {
+          starsContainer.style.pointerEvents = "none";
+          starsContainer.style.opacity = "0.5";
+        }
+        if (feedbackEl) {
+          feedbackEl.textContent = "...";
+          feedbackEl.style.color = "var(--text-muted)";
+        }
+
+        try {
+          let prevRating = userPreviousRating;
+
+          if (isFbReady && rtdb && rtdbRef && rtdbSet && rtdbRunTransaction) {
+            // 1. Read user's previous rating (if any)
+            if (rtdbGet) {
+              try {
+                const userRatingRef = rtdbRef(rtdb, `ratings/${slug}/${anonId}`);
+                const userSnap = await rtdbGet(userRatingRef);
+                if (userSnap && userSnap.exists()) {
+                  const val = Number(userSnap.val());
+                  if (val >= 1 && val <= 5) {
+                    prevRating = val;
+                  }
+                }
+              } catch (e) {}
+            }
+
+            // 2. Write ratings/{slug}/{anonId} = stars
+            const userRatingRef = rtdbRef(rtdb, `ratings/${slug}/${anonId}`);
+            await rtdbSet(userRatingRef, newRating);
+
+            // 3. Transaction-update ratingSum/ratingCount
+            // (if re-rating: sum += new - old, count unchanged; if new: sum += new, count += 1)
+            const appStatsRef = rtdbRef(rtdb, `apps/${slug}`);
+            await rtdbRunTransaction(appStatsRef, (curr) => {
+              if (!curr) {
+                curr = { downloads: 0, ratingSum: 0, ratingCount: 0 };
+              }
+              const oldSum = Number(curr.ratingSum) || 0;
+              const oldCount = Number(curr.ratingCount) || 0;
+              if (prevRating && prevRating >= 1 && prevRating <= 5) {
+                curr.ratingSum = Math.max(0, oldSum + newRating - prevRating);
+              } else {
+                curr.ratingSum = oldSum + newRating;
+                curr.ratingCount = oldCount + 1;
+              }
+              return curr;
+            });
+          }
+
+          userPreviousRating = newRating;
+          try {
+            localStorage.setItem(`tvy_rating_${slug}`, newRating.toString());
+          } catch (e) {}
+
+          renderRatingStars(newRating);
+          if (feedbackEl) {
+            feedbackEl.textContent = `${t.thanksRating} (${newRating} ★)`;
+            feedbackEl.style.color = "#34D399";
+          }
+        } catch (err) {
+          userPreviousRating = newRating;
+          try {
+            localStorage.setItem(`tvy_rating_${slug}`, newRating.toString());
+          } catch (e) {}
+          renderRatingStars(newRating);
+          if (feedbackEl) {
+            feedbackEl.textContent = `${t.thanksRating} (${newRating} ★)`;
+            feedbackEl.style.color = "#34D399";
+          }
+        } finally {
+          isRatingSubmitting = false;
+          if (starsContainer) {
+            starsContainer.style.pointerEvents = "auto";
+            starsContainer.style.opacity = "1";
+          }
+        }
+      }
+
+      function renderRatingStars(rating) {
+        const container = document.getElementById("rateAppStars");
+        if (!container) return;
+        const btns = container.querySelectorAll(".star-btn");
+        btns.forEach((btn) => {
+          const starVal = Number(btn.getAttribute("data-star"));
+          const svg = btn.querySelector("svg");
+          if (!svg) return;
+          if (starVal <= rating) {
+            svg.setAttribute("fill", "#FBBF24");
+            svg.setAttribute("stroke", "#FBBF24");
+          } else {
+            svg.setAttribute("fill", "none");
+            svg.setAttribute("stroke", "rgba(255, 255, 255, 0.3)");
+          }
+        });
+      }
+
+      function previewStarHover(rating) {
+        if (isRatingSubmitting) return;
+        renderRatingStars(rating);
+      }
+
+      function resetStarHover() {
+        if (isRatingSubmitting) return;
+        renderRatingStars(userPreviousRating);
       }
 
       function copyDetailShareLink() {
@@ -2307,6 +2818,21 @@
 
         listDiv.innerHTML = apps.map((app, idx) => {
           const iconSrc = resolveAssetUrl(app.icon);
+          const slug = getAppRtdbSlug(app);
+          const live = rtdbAppsCache[slug];
+          let liveStatsStr = "";
+          if (live && (live.ratingCount > 0 || live.downloads !== undefined)) {
+            const count = Number(live.ratingCount) || 0;
+            const sum = Number(live.ratingSum) || 0;
+            const avg = count > 0 ? (sum / count).toFixed(1) : (app.rating || "5.0");
+            const dl = formatDownloads(live.downloads !== undefined ? live.downloads : (app.downloads || "0"));
+            liveStatsStr = `${avg} (${count}) | ${dl} downloads`;
+          } else {
+            const staticRating = app.rating || "5.0";
+            const staticDl = formatDownloads(app.downloads || "1.2k");
+            liveStatsStr = `${staticRating} (0) | ${staticDl} downloads`;
+          }
+
           return `
           <div class="admin-app-item">
             <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
@@ -2316,6 +2842,7 @@
               <div style="min-width: 0;">
                 <div style="font-size: 13.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(app.name)}</div>
                 <div style="font-size: 11.5px; color: var(--text-muted);">${escapeHtml(app.version)} • ${escapeHtml(app.packageName || "No pkg")}</div>
+                <div style="font-size: 11.5px; color: #38BDF8; margin-top: 2px;">★ ${liveStatsStr}</div>
               </div>
             </div>
             <div style="display: flex; gap: 6px; flex-shrink: 0;">
@@ -2347,8 +2874,6 @@
           document.getElementById("formAppUpdated").value = app.updated || "";
           document.getElementById("formAppApkUrl").value = app.apkUrl || "";
           document.getElementById("formAppSize").value = app.size || "";
-          document.getElementById("formAppRating").value = app.rating || "5.0";
-          document.getElementById("formAppDownloads").value = app.downloads || "1.2k";
           document.getElementById("formAppVerified").checked = app.verified !== false;
           document.getElementById("formAppDesc").value = app.desc || "";
           document.getElementById("formAppDescEn").value = app.descEn || "";
@@ -2364,8 +2889,6 @@
           document.getElementById("adminFormTitle").textContent = "Add New App";
           form.reset();
           document.getElementById("formAppVerified").checked = true;
-          document.getElementById("formAppRating").value = "5.0";
-          document.getElementById("formAppDownloads").value = "1.0k";
           document.getElementById("formAppDev").value = "TVY-Tech";
           document.getElementById("formAppUpdated").value = new Date().toISOString().slice(0, 10);
         }
@@ -2421,8 +2944,8 @@
           updated: document.getElementById("formAppUpdated").value || new Date().toISOString().slice(0, 10),
           apkUrl: document.getElementById("formAppApkUrl").value.trim(),
           size: document.getElementById("formAppSize").value.trim() || "0 MB",
-          rating: document.getElementById("formAppRating").value.trim() || "5.0",
-          downloads: document.getElementById("formAppDownloads").value.trim() || "1.0k",
+          rating: (editingAppIndex >= 0 ? apps[editingAppIndex].rating : "5.0") || "5.0",
+          downloads: (editingAppIndex >= 0 ? apps[editingAppIndex].downloads : "1.0k") || "1.0k",
           verified: document.getElementById("formAppVerified").checked,
           icon: finalIconPath,
           screenshots: finalScreenshots,
@@ -2685,7 +3208,7 @@
       }
 
       // Initialize on DOMContentLoaded
-      document.addEventListener("DOMContentLoaded", () => {
+      document.addEventListener("DOMContentLoaded", async () => {
         setLang(currentLang);
         checkUrlHash();
 
@@ -2696,6 +3219,20 @@
             openAdminModal();
           }
         } catch (e) {}
+
+        // Batched read from Firebase Realtime Database
+        try {
+          const ok = await initFirebase();
+          if (ok) {
+            await fetchBatchedAppsData();
+            renderApps();
+            if (currentSelectedAppIndex >= 0) {
+              renderAppDetail(currentSelectedAppIndex);
+            }
+          }
+        } catch (e) {
+          // Silently fallback without logging errors
+        }
       });
     </script>
     <script>
