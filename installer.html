@@ -888,6 +888,10 @@
         line-height: 1.2;
       }
 
+      .mode-tab-btn * {
+        pointer-events: none;
+      }
+
       .mode-tab-btn:hover {
         color: #FFFFFF;
         background: rgba(255, 255, 255, 0.08);
@@ -1541,14 +1545,14 @@
       <!-- Segmented Mode Switcher (ADB Install | Fastboot Tools) -->
       <div class="mode-switcher-wrap">
         <div class="mode-switcher" role="tablist" aria-label="Tool Mode Switcher">
-          <button type="button" class="mode-tab-btn active" id="tabAdbMode" role="tab" aria-selected="true" onclick="window.switchMode && window.switchMode('adb')">
+          <button type="button" class="mode-tab-btn active" id="tabAdbMode" role="tab" aria-selected="true" onclick="window.switchMode('adb')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
               <line x1="12" y1="18" x2="12.01" y2="18"/>
             </svg>
             <span data-i18n="tabAdbMode">ADB Install</span>
           </button>
-          <button type="button" class="mode-tab-btn" id="tabFastbootMode" role="tab" aria-selected="false" onclick="window.switchMode && window.switchMode('fastboot')">
+          <button type="button" class="mode-tab-btn" id="tabFastbootMode" role="tab" aria-selected="false" onclick="window.switchMode('fastboot')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
             </svg>
@@ -1556,6 +1560,76 @@
           </button>
         </div>
       </div>
+      <script>
+        // Immediate synchronous mode switcher - guaranteed to work instantly before module scripts load
+        window.switchMode = function(mode) {
+          try {
+            window.currentMode = mode;
+            var isFastboot = mode === "fastboot";
+            var tabFb = document.getElementById("tabFastbootMode");
+            var tabAdb = document.getElementById("tabAdbMode");
+            var adbSec = document.getElementById("adbModeSection");
+            var fbSec = document.getElementById("fastbootModeSection");
+
+            if (tabFb) {
+              tabFb.classList.toggle("active", isFastboot);
+              tabFb.setAttribute("aria-selected", isFastboot ? "true" : "false");
+            }
+            if (tabAdb) {
+              tabAdb.classList.toggle("active", !isFastboot);
+              tabAdb.setAttribute("aria-selected", !isFastboot ? "true" : "false");
+            }
+
+            if (adbSec) adbSec.style.display = isFastboot ? "none" : "block";
+            if (fbSec) fbSec.style.display = isFastboot ? "block" : "none";
+
+            window.scrollTo({ top: 0, behavior: "instant" });
+
+            try {
+              var statusDot = document.getElementById("statusDot");
+              var statusText = document.getElementById("statusText");
+              var lang = localStorage.getItem("siteLang") || "en";
+              var isEn = lang === "en";
+              if (statusText) {
+                if (isFastboot) {
+                  if (window._activeFb) {
+                    if (statusDot) statusDot.classList.add("connected");
+                    statusText.textContent = "Fastboot (" + (window._activeFbProduct || "Device") + ") " + (isEn ? "connected" : "ချိတ်ဆက်ပြီး");
+                  } else {
+                    if (statusDot) statusDot.classList.remove("connected");
+                    statusText.textContent = isEn ? "Disconnected" : "ချိတ်ဆက်မထားပါ";
+                  }
+                } else {
+                  if (window._activeAdb) {
+                    if (statusDot) statusDot.classList.add("connected");
+                    statusText.textContent = (window._activeDeviceModel || "Android") + " " + (isEn ? "connected" : "ချိတ်ဆက်ပြီး");
+                  } else {
+                    if (statusDot) statusDot.classList.remove("connected");
+                    statusText.textContent = isEn ? "Disconnected" : "ချိတ်ဆက်မထားပါ";
+                  }
+                }
+              }
+            } catch (statusErr) {
+              console.error("[Mode] status update failed:", statusErr);
+            }
+
+            if (typeof window.appendLog === "function") {
+              window.appendLog(isFastboot ? "[Mode] Switched to Fastboot Tools" : "[Mode] Switched to ADB Install", "info");
+            }
+          } catch (err) {
+            console.error("[Mode] switch failed:", err);
+          }
+        };
+
+        // Auto-check URL parameters or hash on initial DOM parse
+        try {
+          var initParams = new URLSearchParams(window.location.search);
+          var initM = initParams.get("mode") || initParams.get("tab") || (window.location.hash === "#fastboot" ? "fastboot" : "");
+          if (initM === "fastboot") {
+            setTimeout(function() { window.switchMode("fastboot"); }, 0);
+          }
+        } catch (e) {}
+      </script>
 
       <!-- Critical WebUSB Guard Error (shown only if WebUSB is unsupported) -->
       <div id="unsupportedWarning" class="critical-error" role="alert">
@@ -3500,6 +3574,7 @@
         logTerminal.appendChild(entry);
         logTerminal.scrollTop = logTerminal.scrollHeight;
       }
+      window.appendLog = appendLog;
 
       clearLogBtn.addEventListener("click", () => {
         logTerminal.innerHTML = "";

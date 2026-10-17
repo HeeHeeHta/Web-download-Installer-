@@ -28,6 +28,7 @@
         --text-muted: rgba(255, 255, 255, 0.44);
         --accent-emerald: rgba(52, 211, 153, 0.9);
         --accent-emerald-glow: rgba(52, 211, 153, 0.15);
+        --accent-blue: #38BDF8;
       }
 
       * {
@@ -115,15 +116,70 @@
       .container {
         position: relative;
         z-index: 1;
-        max-width: 640px;
+        max-width: 660px;
         margin: 0 auto;
         padding-bottom: 70px;
+      }
+
+      /* Top Navigation & Language Switcher */
+      .top-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .top-nav-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-decoration: none;
+      }
+
+      .lang-switcher {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 16px rgba(0, 0, 0, 0.25);
+        border-radius: 9999px;
+        padding: 3px;
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        gap: 2px;
+      }
+
+      .lang-btn {
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 9999px;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        font-family: inherit;
+        line-height: 1.2;
+      }
+
+      .lang-btn:hover {
+        color: #FFFFFF;
+      }
+
+      .lang-btn.active {
+        background: rgba(255, 255, 255, 0.18);
+        color: #FFFFFF;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 8px rgba(0, 0, 0, 0.25);
       }
 
       /* Header */
       .header {
         text-align: center;
-        padding: 24px 12px 18px;
+        padding: 16px 12px 18px;
       }
 
       .badge-brand {
@@ -140,15 +196,11 @@
         padding: 5px 14px;
         font-size: 12.5px;
         font-weight: 600;
-        margin-bottom: 16px;
-      }
-
-      .badge-brand svg {
-        opacity: 0.75;
+        margin-bottom: 14px;
       }
 
       .header h1 {
-        font-size: 27px;
+        font-size: 26px;
         font-weight: 700;
         color: #FFFFFF;
         line-height: 1.35;
@@ -158,8 +210,8 @@
 
       .header p {
         color: var(--text-secondary);
-        font-size: 14px;
-        max-width: 500px;
+        font-size: 13.5px;
+        max-width: 520px;
         margin: 0 auto;
         line-height: 1.65;
       }
@@ -172,19 +224,19 @@
         -webkit-backdrop-filter: blur(28px) saturate(160%);
         backdrop-filter: blur(28px) saturate(160%);
         border-radius: 24px;
-        padding: 22px;
-        margin: 22px 0 30px;
+        padding: 20px;
+        margin: 20px 0 26px;
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 14px;
         position: relative;
         overflow: hidden;
       }
 
-      /* Specular edge highlight */
       .banner-card::before,
       .app-card::before,
-      .guide-card::before {
+      .guide-card::before,
+      .detail-card::before {
         content: "";
         position: absolute;
         top: 0;
@@ -215,18 +267,11 @@
         flex-shrink: 0;
       }
 
-      .banner-icon svg {
-        opacity: 0.85;
-      }
-
       .banner-title {
-        font-size: 15.5px;
+        font-size: 15px;
         font-weight: 700;
         color: #FFFFFF;
         margin-bottom: 2px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
       }
 
       .banner-desc {
@@ -235,13 +280,13 @@
         line-height: 1.6;
       }
 
-      /* Glass Buttons */
+      /* Buttons */
       .btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        padding: 12px 18px;
+        padding: 11px 18px;
         border-radius: 9999px;
         font-size: 13.5px;
         font-weight: 600;
@@ -255,11 +300,6 @@
         backdrop-filter: blur(20px);
       }
 
-      .btn svg {
-        opacity: 0.8;
-      }
-
-      .banner-btn,
       .btn-download {
         background: rgba(255, 255, 255, 0.18);
         border: 1px solid rgba(255, 255, 255, 0.28);
@@ -267,19 +307,12 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32), 0 8px 24px rgba(0, 0, 0, 0.3);
       }
 
-      .banner-btn:hover,
       .btn-download:hover {
         background: rgba(255, 255, 255, 0.24);
         border-color: rgba(255, 255, 255, 0.38);
         transform: translateY(-1.5px);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 12px 28px rgba(0, 0, 0, 0.4);
         color: #FFFFFF;
-      }
-
-      .banner-btn:active,
-      .btn-download:active {
-        transform: translateY(0);
-        background: rgba(255, 255, 255, 0.15);
       }
 
       .btn-secondary {
@@ -296,9 +329,17 @@
         transform: translateY(-1.5px);
       }
 
-      .btn-secondary:active {
-        transform: translateY(0);
-        background: rgba(255, 255, 255, 0.04);
+      .btn-primary {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.3) 0%, rgba(30, 64, 175, 0.45) 100%);
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        color: #FFFFFF;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.4) 0%, rgba(30, 64, 175, 0.55) 100%);
+        border-color: rgba(56, 189, 248, 0.6);
+        transform: translateY(-1.5px);
       }
 
       /* Section Heading */
@@ -306,22 +347,18 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin: 26px 0 14px;
+        margin: 24px 0 14px;
         padding: 0 4px;
       }
 
       .section-title {
-        font-size: 17px;
+        font-size: 16.5px;
         font-weight: 700;
         color: #FFFFFF;
         display: flex;
         align-items: center;
         gap: 8px;
         letter-spacing: -0.01em;
-      }
-
-      .section-title svg {
-        opacity: 0.7;
       }
 
       .section-subtitle {
@@ -333,7 +370,7 @@
         border: 1px solid rgba(255, 255, 255, 0.08);
       }
 
-      /* App Card */
+      /* App List & Card */
       .apps-list {
         display: flex;
         flex-direction: column;
@@ -347,49 +384,52 @@
         -webkit-backdrop-filter: blur(28px) saturate(160%);
         backdrop-filter: blur(28px) saturate(160%);
         border-radius: 24px;
-        padding: 22px;
+        padding: 20px;
         position: relative;
         overflow: hidden;
+        cursor: pointer;
         transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, background-color 0.25s ease;
       }
 
       .app-card:hover {
         background: var(--glass-bg-hover);
-        border-color: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.22);
         transform: translateY(-2px);
       }
 
-      .app-top {
+      .app-card-layout {
         display: flex;
-        align-items: center;
-        gap: 14px;
-        margin-bottom: 12px;
+        gap: 16px;
+        align-items: flex-start;
       }
 
-      .app-icon {
-        width: 56px;
-        height: 56px;
-        border-radius: 16px;
-        background: linear-gradient(135deg, rgba(44, 186, 248, 0.22) 0%, rgba(59, 130, 246, 0.28) 50%, rgba(99, 102, 241, 0.25) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.22);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px rgba(0, 0, 0, 0.3);
+      .app-card-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 20px rgba(0, 0, 0, 0.3);
         display: flex;
         align-items: center;
         justify-content: center;
         color: #FFFFFF;
         flex-shrink: 0;
+        overflow: hidden;
       }
 
-      .app-icon svg {
-        opacity: 0.95;
+      .app-card-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
 
-      .app-header-info {
+      .app-card-info {
         flex: 1;
         min-width: 0;
       }
 
-      .app-title-group {
+      .app-card-title-row {
         display: flex;
         align-items: center;
         flex-wrap: wrap;
@@ -397,72 +437,345 @@
         margin-bottom: 2px;
       }
 
-      .app-name {
-        font-size: 17.5px;
+      .app-card-name {
+        font-size: 17px;
         font-weight: 700;
-        color: #2cbaf8;
-        font-family: "Times New Roman", Times, serif;
+        color: #FFFFFF;
         letter-spacing: -0.01em;
       }
 
-      .version-badge {
-        background: rgba(255, 255, 255, 0.09);
-        color: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
-        font-size: 11px;
-        font-weight: 600;
-        padding: 2px 9px;
-        border-radius: 9999px;
-        letter-spacing: 0.02em;
+      .app-card-dev {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-bottom: 6px;
       }
 
-      .app-meta {
-        font-size: 12.5px;
-        color: var(--text-muted);
+      .badge-verified {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(52, 211, 153, 0.14);
+        border: 1px solid rgba(52, 211, 153, 0.32);
+        color: #6EE7B7;
+        font-size: 10.5px;
+        font-weight: 600;
+        padding: 1.5px 8px;
+        border-radius: 9999px;
+      }
+
+      .version-pill {
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 9999px;
+      }
+
+      .app-card-desc {
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 12px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .app-card-meta-row {
         display: flex;
         align-items: center;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 12px;
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-bottom: 16px;
       }
 
-      .app-meta .dot {
-        font-size: 8px;
-        opacity: 0.5;
-      }
-
-      .app-meta-tag {
+      .app-card-meta-item {
         display: inline-flex;
         align-items: center;
-        gap: 5px;
+        gap: 4px;
       }
 
-      .app-meta-tag svg {
-        opacity: 0.6;
+      .app-card-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
       }
 
-      .app-desc {
-        font-size: 13.5px;
-        color: var(--text-secondary);
-        line-height: 1.68;
+      .app-card-actions .btn {
+        flex: 1;
+        min-width: 140px;
+        padding: 9px 14px;
+        font-size: 12.5px;
+      }
+
+      /* App Detail View */
+      .app-detail-view {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .detail-back-bar {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+
+      .detail-card {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 20px 48px -12px rgba(0, 0, 0, 0.45);
+        -webkit-backdrop-filter: blur(28px) saturate(160%);
+        backdrop-filter: blur(28px) saturate(160%);
+        border-radius: 24px;
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .detail-header-top {
+        display: flex;
+        gap: 18px;
+        align-items: flex-start;
+        margin-bottom: 20px;
+      }
+
+      .detail-icon {
+        width: 84px;
+        height: 84px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 12px 28px rgba(0, 0, 0, 0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+
+      .detail-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .detail-title-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .detail-app-name {
+        font-size: 22px;
+        font-weight: 700;
+        color: #FFFFFF;
+        line-height: 1.3;
+        margin-bottom: 4px;
+      }
+
+      .detail-app-dev {
+        font-size: 13px;
+        color: var(--accent-blue);
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .detail-badges-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      /* Big Download Action */
+      .detail-cta-block {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
         margin-bottom: 18px;
       }
 
-      .app-actions {
+      .btn-big-download {
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 15px;
+        font-weight: 700;
+        border-radius: 16px;
+      }
+
+      .btn-webadb-secondary {
+        width: 100%;
+        padding: 11px 18px;
+        font-size: 13.5px;
+        border-radius: 14px;
+      }
+
+      .genuine-note {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-size: 12px;
+        color: rgba(52, 211, 153, 0.95);
+        text-align: center;
+      }
+
+      /* 4-Column Stats Row */
+      .stats-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        padding: 14px 10px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        margin-top: 6px;
+      }
+
+      .stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 2px 4px;
+      }
+
+      .stat-item:not(:last-child) {
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .stat-val {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        line-height: 1.3;
+      }
+
+      .stat-label {
+        font-size: 10.5px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        margin-top: 3px;
+      }
+
+      /* Screenshots Carousel */
+      .screenshots-scroll {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding: 6px 2px 14px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .screenshots-scroll::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      .screenshots-scroll::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.16);
+        border-radius: 9999px;
+      }
+
+      .shot-item {
+        flex: 0 0 auto;
+        width: 170px;
+        height: 320px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        scroll-snap-align: start;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .shot-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .detail-body-text {
+        font-size: 13.5px;
+        color: var(--text-secondary);
+        line-height: 1.7;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      /* Tech Details Table */
+      .tech-table {
+        display: flex;
+        flex-direction: column;
         gap: 10px;
       }
 
-      @media (max-width: 440px) {
-        .app-actions {
-          grid-template-columns: 1fr;
-        }
+      .tech-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        font-size: 13px;
+      }
+
+      .tech-label {
+        color: var(--text-muted);
+      }
+
+      .tech-value {
+        color: #FFFFFF;
+        font-weight: 500;
+        text-align: right;
+      }
+
+      .tech-pkg {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 12px;
+        color: #6EE7B7;
+      }
+
+      /* Share Card */
+      .share-row {
+        display: flex;
+        gap: 8px;
+      }
+
+      .share-input {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 12px;
+        padding: 9px 12px;
+        font-size: 12.5px;
+        color: rgba(255, 255, 255, 0.85);
+        font-family: ui-monospace, monospace;
+        outline: none;
       }
 
       /* Guide Section */
       .guide-section {
-        margin-top: 34px;
+        margin-top: 30px;
       }
 
       .guide-card {
@@ -529,49 +842,174 @@
         font-size: 12.5px;
       }
 
-      /* Top Bar & Language Switcher */
-      .top-nav {
+      #footerCopyrightText {
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      /* ==========================================================================
+         ADMIN PANEL & PIN GATE OVERLAYS
+         Client-side obscurity for static hosting, not server security
+         ========================================================================== */
+      .admin-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: rgba(8, 8, 16, 0.85);
+        -webkit-backdrop-filter: blur(28px) saturate(180%);
+        backdrop-filter: blur(28px) saturate(180%);
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         align-items: center;
-        margin-bottom: 8px;
+        padding: 16px;
+        overflow-y: auto;
       }
 
-      .lang-switcher {
-        display: inline-flex;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 16px rgba(0, 0, 0, 0.25);
-        border-radius: 9999px;
-        padding: 3px;
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
-        gap: 2px;
+      .admin-modal {
+        background: rgba(18, 18, 30, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 24px 60px rgba(0, 0, 0, 0.6);
+        border-radius: 24px;
+        width: 100%;
+        max-width: 620px;
+        padding: 24px;
+        position: relative;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        overflow-y: auto;
       }
 
-      .lang-btn {
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .admin-title {
+        font-size: 17px;
+        font-weight: 700;
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-close {
         background: transparent;
         border: none;
-        color: rgba(255, 255, 255, 0.65);
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 6px;
+        border-radius: 8px;
+      }
+
+      .btn-close:hover {
+        color: #FFFFFF;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .admin-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .admin-label {
         font-size: 12px;
         font-weight: 600;
-        padding: 5px 12px;
-        border-radius: 9999px;
-        cursor: pointer;
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      .admin-input,
+      .admin-select,
+      .admin-textarea {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        padding: 9px 12px;
+        color: #FFFFFF;
+        font-size: 13px;
         font-family: inherit;
-        line-height: 1.2;
+        outline: none;
       }
 
-      .lang-btn:hover {
-        color: #FFFFFF;
+      .admin-input:focus,
+      .admin-select:focus,
+      .admin-textarea:focus {
+        border-color: rgba(56, 189, 248, 0.6);
+        box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
       }
 
-      .lang-btn.active {
-        background: rgba(255, 255, 255, 0.18);
-        color: #FFFFFF;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 8px rgba(0, 0, 0, 0.25);
+      .admin-select option {
+        background: #12121e;
+        color: #fff;
+      }
+
+      .admin-textarea {
+        resize: vertical;
+        min-height: 72px;
+      }
+
+      .admin-hint {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      .admin-app-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+      }
+
+      .admin-thumb {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .admin-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .admin-actions-bar {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      /* PIN Gate Box */
+      .pin-box {
+        max-width: 380px;
+        text-align: center;
+      }
+
+      .pin-input {
+        text-align: center;
+        font-size: 26px;
+        letter-spacing: 12px;
+        font-family: monospace;
+        padding: 12px;
       }
     </style>
   </head>
@@ -585,159 +1023,570 @@
 
     <div class="container">
       <!-- Top Navigation with Language Switcher -->
-      <div class="top-nav">
+      <nav class="top-nav">
+        <a href="index.html" class="top-nav-brand">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="3"/>
+            <path d="M12 18h.01"/>
+          </svg>
+          <span data-i18n="badgeBrand">TVY-Tech (Dawei)</span>
+        </a>
+
         <div class="lang-switcher" role="group" aria-label="Language Switcher">
           <button type="button" class="lang-btn active" id="langBtnEn" onclick="setLang('en')">EN</button>
           <button type="button" class="lang-btn" id="langBtnMy" onclick="setLang('my')">မြန်မာ</button>
         </div>
-      </div>
+      </nav>
 
-      <!-- Header -->
-      <header class="header">
-        <div class="badge-brand">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="5" y="2" width="14" height="20" rx="3"/>
-            <path d="M12 18h.01"/>
-          </svg>
-          <span data-i18n="badgeBrand">Android အက်ပ် စင်တာ</span>
-        </div>
-        <h1 data-i18n="headerTitle">အက်ပ် ဒေါင်းလုဒ် စင်တာ</h1>
-        <p data-i18n="headerSubtitle">Android စမတ်ဖုန်းများအတွက် စိတ်ချရသော APK များကို တိုက်ရိုက်ဒေါင်းလုဒ်ရယူပါ သို့မဟုတ် Web ADB ဖြင့် ဖုန်းထဲသို့ တိုက်ရိုက်သွင်းယူပါ။</p>
-      </header>
-
-      <!-- Web ADB Banner Callout (informational banner, button removed per requirement) -->
-      <section class="banner-card" aria-label="Web ADB Direct Install System">
-        <div class="banner-header">
-          <div class="banner-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+      <!-- VIEW 1: PUBLIC APPS LIST VIEW -->
+      <div id="appListView">
+        <!-- Header -->
+        <header class="header">
+          <div class="badge-brand">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="3"/>
+              <path d="M12 18h.01"/>
             </svg>
+            <span data-i18n="badgeBrand">TVY-Tech (Dawei)</span>
           </div>
-          <div>
-            <div class="banner-title" data-i18n="bannerTitle">Web ADB တိုက်ရိုက်တပ်ဆင်ရေး စနစ်</div>
-            <div class="banner-desc" data-i18n="bannerDesc">ဖုန်းထဲသို့ ဖိုင်ကူးစရာမလိုဘဲ Chrome မှတစ်ဆင့် USB ဖြင့် APK တိုက်ရိုက်သွင်းနိုင်ပါသည်။</div>
+          <h1 data-i18n="headerTitle">အက်ပ် ဒေါင်းလုဒ် စင်တာ</h1>
+          <p data-i18n="headerSubtitle">Android စမတ်ဖုန်းများအတွက် စိတ်ချရသော APK များကို တိုက်ရိုက်ဒေါင်းလုဒ်ရယူပါ သို့မဟုတ် Web ADB ဖြင့် ဖုန်းထဲသို့ တိုက်ရိုက်သွင်းယူပါ။</p>
+        </header>
+
+        <!-- Web ADB Banner Callout -->
+        <section class="banner-card" aria-label="Web ADB Direct Install System">
+          <div class="banner-header">
+            <div class="banner-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+              </svg>
+            </div>
+            <div>
+              <div class="banner-title" data-i18n="bannerTitle">Web ADB တိုက်ရိုက်တပ်ဆင်ရေး စနစ်</div>
+              <div class="banner-desc" data-i18n="bannerDesc">ဖုန်းထဲသို့ ဖိုင်ကူးစရာမလိုဘဲ Chrome မှတစ်ဆင့် USB ဖြင့် APK တိုက်ရိုက်သွင်းနိုင်ပါသည်။</div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- App Download Section -->
-      <main>
-        <div class="section-heading">
-          <h2 class="section-title">
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-            <span data-i18n="sectionAppsTitle">ရရှိနိုင်သော အက်ပ်များ</span>
-          </h2>
-          <span class="section-subtitle" id="appsCountLabel">အက်ပ် ၁ ခု</span>
-        </div>
-
-        <!-- Dynamic Apps Container -->
-        <div class="apps-list" id="appsContainer">
-          <!-- Rendered via JavaScript from APPS array -->
-        </div>
-
-        <!-- How To Install Guide -->
-        <section class="guide-section">
+        <!-- App Download Section -->
+        <main>
           <div class="section-heading">
             <h2 class="section-title">
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="16" x2="12" y2="12"/>
-                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
               </svg>
-              <span data-i18n="guideTitle">ဖုန်းထဲတွင် APK တပ်ဆင်နည်း လမ်းညွှန်</span>
+              <span data-i18n="sectionAppsTitle">ရရှိနိုင်သော အက်ပ်များ</span>
             </h2>
+            <span class="section-subtitle" id="appsCountLabel">အက်ပ် ၁ ခု</span>
           </div>
 
-          <div class="guide-card">
-            <div class="guide-steps">
-              <div class="guide-step">
-                <div class="step-num" data-i18n="step1Num">၁</div>
-                <div class="step-content">
-                  <h3 data-i18n="step1Title">APK ဖိုင်ကို ဒေါင်းလုဒ်လုပ်ပါ</h3>
-                  <p data-i18n="step1Desc">အထက်ပါ စာရင်းမှ မိမိလိုချင်သော အက်ပ်၏ Download APK ခလုတ်ကို နှိပ်၍ ဒေါင်းလုဒ်စတင်ပါ။</p>
-                </div>
-              </div>
-
-              <div class="guide-step">
-                <div class="step-num" data-i18n="step2Num">၂</div>
-                <div class="step-content">
-                  <h3 data-i18n="step2Title">ဒေါင်းလုဒ်ရယူထားသော ဖိုင်ကို ဖွင့်ပါ</h3>
-                  <p data-i18n="step2Desc">ဒေါင်းလုဒ်ပြီးဆုံးပါက အသိပေးချက် (Notification) ဘားမှဖြစ်စေ၊ ဖုန်း၏ Downloads ဖိုဒါထဲမှဖြစ်စေ APK ဖိုင်ကို နှိပ်၍ဖွင့်ပါ။</p>
-                </div>
-              </div>
-
-              <div class="guide-step">
-                <div class="step-num" data-i18n="step3Num">၃</div>
-                <div class="step-content">
-                  <h3 data-i18n="step3Title">အမည်မသိ ရင်းမြစ်များ ခွင့်ပြုပါ (Allow Unknown Sources)</h3>
-                  <p data-i18n="step3Desc">လုံခြုံရေးသတိပေးချက် ပေါ်လာပါက Settings သို့သွားပြီး "Allow from this source" (သို့မဟုတ်) "ဤရင်းမြစ်မှ သွင်းယူခွင့်ပြုရန်" ကို ဖွင့်ပေးပါ။</p>
-                </div>
-              </div>
-
-              <div class="guide-step">
-                <div class="step-num" data-i18n="step4Num">၄</div>
-                <div class="step-content">
-                  <h3 data-i18n="step4Title">Install ကို နှိပ်၍ အပြီးသတ်ပါ</h3>
-                  <p data-i18n="step4Desc">ပေါ်လာသော အတည်ပြုချက် မျက်နှာပြင်တွင် "Install" (တပ်ဆင်မည်) ကို နှိပ်ပြီး ခေတ္တစောင့်ဆိုင်းပါက အောင်မြင်စွာ အသုံးပြုနိုင်ပါပြီ။</p>
-                </div>
-              </div>
-            </div>
+          <!-- Dynamic Apps Container -->
+          <div class="apps-list" id="appsContainer">
+            <!-- Rendered via JavaScript -->
           </div>
-        </section>
 
-        <!-- Web ADB Installer Link Card (Single preserved installer link on page) -->
-        <section style="margin-top: 24px;">
-          <div class="guide-card" style="padding: 20px;">
-            <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
-              <div style="width: 38px; height: 38px; border-radius: 12px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.14); color: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.85;">
-                  <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
-                  <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
-                  <line x1="6" y1="6" x2="6.01" y2="6"/>
-                  <line x1="6" y1="18" x2="6.01" y2="18"/>
+          <!-- How To Install Guide -->
+          <section class="guide-section">
+            <div class="section-heading">
+              <h2 class="section-title">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="16" x2="12" y2="12"/>
+                  <line x1="12" y1="8" x2="12.01" y2="8"/>
                 </svg>
-              </div>
-              <div>
-                <h3 style="font-size: 15px; font-weight: 700; color: #FFFFFF;" data-i18n="usbSectionTitle">USB ကြိုးဖြင့် တိုက်ရိုက်သွင်းလိုပါသလား?</h3>
-                <p style="font-size: 13px; color: var(--text-secondary);" data-i18n="usbSectionDesc">Web ADB စနစ်ဖြင့် ဖုန်းထဲသို့ APK တိုက်ရိုက် ထည့်သွင်းနိုင်ပါသည်</p>
+                <span data-i18n="guideTitle">ဖုန်းထဲတွင် APK တပ်ဆင်နည်း လမ်းညွှန်</span>
+              </h2>
+            </div>
+
+            <div class="guide-card">
+              <div class="guide-steps">
+                <div class="guide-step">
+                  <div class="step-num" data-i18n="step1Num">၁</div>
+                  <div class="step-content">
+                    <h3 data-i18n="step1Title">APK ဖိုင်ကို ဒေါင်းလုဒ်လုပ်ပါ</h3>
+                    <p data-i18n="step1Desc">အထက်ပါ စာရင်းမှ မိမိလိုချင်သော အက်ပ်၏ Download APK ခလုတ်ကို နှိပ်၍ ဒေါင်းလုဒ်စတင်ပါ။</p>
+                  </div>
+                </div>
+
+                <div class="guide-step">
+                  <div class="step-num" data-i18n="step2Num">၂</div>
+                  <div class="step-content">
+                    <h3 data-i18n="step2Title">ဒေါင်းလုဒ်ရယူထားသော ဖိုင်ကို ဖွင့်ပါ</h3>
+                    <p data-i18n="step2Desc">ဒေါင်းလုဒ်ပြီးဆုံးပါက အသိပေးချက် (Notification) ဘားမှဖြစ်စေ၊ ဖုန်း၏ Downloads ဖိုဒါထဲမှဖြစ်စေ APK ဖိုင်ကို နှိပ်၍ဖွင့်ပါ။</p>
+                  </div>
+                </div>
+
+                <div class="guide-step">
+                  <div class="step-num" data-i18n="step3Num">၃</div>
+                  <div class="step-content">
+                    <h3 data-i18n="step3Title">အမည်မသိ ရင်းမြစ်များ ခွင့်ပြုပါ (Allow Unknown Sources)</h3>
+                    <p data-i18n="step3Desc">လုံခြုံရေးသတိပေးချက် ပေါ်လာပါက Settings သို့သွားပြီး "Allow from this source" (သို့မဟုတ်) "ဤရင်းမြစ်မှ သွင်းယူခွင့်ပြုရန်" ကို ဖွင့်ပေးပါ။</p>
+                  </div>
+                </div>
+
+                <div class="guide-step">
+                  <div class="step-num" data-i18n="step4Num">၄</div>
+                  <div class="step-content">
+                    <h3 data-i18n="step4Title">Install ကို နှိပ်၍ အပြီးသတ်ပါ</h3>
+                    <p data-i18n="step4Desc">ပေါ်လာသော အတည်ပြုချက် မျက်နှာပြင်တွင် "Install" (တပ်ဆင်မည်) ကို နှိပ်ပြီး ခေတ္တစောင့်ဆိုင်းပါက အောင်မြင်စွာ အသုံးပြုနိုင်ပါပြီ။</p>
+                  </div>
+                </div>
               </div>
             </div>
-            <a href="installer.html" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="width: 100%;">
-              <span data-i18n="openInstallerBtn">Web ADB တပ်ဆင်ရေး စာမျက်နှာ ဖွင့်မည်</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"/>
+          </section>
+
+          <!-- Web ADB Installer Link Card -->
+          <section style="margin-top: 24px;">
+            <div class="guide-card" style="padding: 20px;">
+              <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
+                <div style="width: 38px; height: 38px; border-radius: 12px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.14); color: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.85;">
+                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                    <line x1="6" y1="6" x2="6.01" y2="6"/>
+                    <line x1="6" y1="18" x2="6.01" y2="18"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 style="font-size: 15px; font-weight: 700; color: #FFFFFF;" data-i18n="usbSectionTitle">USB ကြိုးဖြင့် တိုက်ရိုက်သွင်းလိုပါသလား?</h3>
+                  <p style="font-size: 13px; color: var(--text-secondary);" data-i18n="usbSectionDesc">Web ADB စနစ်ဖြင့် ဖုန်းထဲသို့ APK တိုက်ရိုက် ထည့်သွင်းနိုင်ပါသည်</p>
+                </div>
+              </div>
+              <a href="installer.html" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="width: 100%;">
+                <span data-i18n="openInstallerBtn">Web ADB တပ်ဆင်ရေး စာမျက်နှာ ဖွင့်မည်</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </a>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <!-- VIEW 2: PLAY STORE STYLE APP DETAIL VIEW (Initially Hidden) -->
+      <div id="appDetailView" class="app-detail-view" style="display: none;">
+        <div class="detail-back-bar">
+          <button type="button" class="btn btn-secondary" id="detailBackBtn" onclick="closeAppDetail()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+            <span data-i18n="backToApps">အက်ပ်များသို့ ပြန်သွားမည်</span>
+          </button>
+        </div>
+
+        <!-- Detail Header Card -->
+        <article class="detail-card">
+          <div class="detail-header-top">
+            <div class="detail-icon" id="detailIconContainer">
+              <!-- Dynamically populated -->
+            </div>
+            <div class="detail-title-info">
+              <h2 class="detail-app-name" id="detailAppName"></h2>
+              <div class="detail-app-dev" id="detailAppDev"></div>
+              <div class="detail-badges-row">
+                <span class="version-pill" id="detailAppVer"></span>
+                <span class="badge-verified" id="detailAppVerified">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="m9 12 2 2 4-4"/>
+                  </svg>
+                  <span>Verified</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="detail-cta-block">
+            <a href="#" id="detailDownloadBtn" class="btn btn-download btn-big-download" download target="_blank" rel="noopener noreferrer">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
               </svg>
+              <span id="detailDownloadText">Download APK</span>
             </a>
+            <a href="#" id="detailWebAdbBtn" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-webadb-secondary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+              </svg>
+              <span data-i18n="webAdbBtn">Web ADB ဖြင့် သွင်းမည်</span>
+            </a>
+            <div class="genuine-note">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span data-i18n="genuineNote">မူရင်း စစ်မှန်သော APK ဖိုင် ဖြစ်ပါသည်</span>
+            </div>
+          </div>
+
+          <!-- 4-Column Stats Grid -->
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-val" id="detailStatRating">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24" stroke="#FBBF24" stroke-width="1">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                <span id="detailStatRatingText">5.0</span>
+              </div>
+              <div class="stat-label" data-i18n="rating">Rating</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-val" id="detailStatDownloads">1.2k</div>
+              <div class="stat-label" data-i18n="downloads">Downloads</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-val" id="detailStatSize">65.7 MB</div>
+              <div class="stat-label" data-i18n="size">Size</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-val" id="detailStatUpdated">2026-10</div>
+              <div class="stat-label" data-i18n="updated">Updated</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Screenshots Section (Hidden if empty) -->
+        <section class="detail-card" id="detailScreenshotsCard">
+          <h3 class="section-title" style="margin-bottom: 12px;" data-i18n="screenshots">Screenshots</h3>
+          <div class="screenshots-scroll" id="detailScreenshotsList">
+            <!-- Dynamically populated -->
           </div>
         </section>
-      </main>
 
-      <!-- Footer (Footer installer link removed per requirement) -->
+        <!-- About this app -->
+        <section class="detail-card">
+          <h3 class="section-title" style="margin-bottom: 12px;" data-i18n="aboutApp">About this app</h3>
+          <div class="detail-body-text" id="detailLongDesc"></div>
+        </section>
+
+        <!-- What's new (Hidden if empty) -->
+        <section class="detail-card" id="detailChangelogCard">
+          <h3 class="section-title" style="margin-bottom: 12px;" id="detailChangelogTitle">What's new</h3>
+          <div class="detail-body-text" id="detailChangelogText"></div>
+          <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 10px;" id="detailChangelogDate"></div>
+        </section>
+
+        <!-- Technical details -->
+        <section class="detail-card">
+          <h3 class="section-title" style="margin-bottom: 14px;" data-i18n="techDetails">Technical Details</h3>
+          <div class="tech-table">
+            <div class="tech-row">
+              <span class="tech-label" data-i18n="pkgName">Package Name</span>
+              <span class="tech-value tech-pkg" id="detailTechPkg">-</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label" data-i18n="version">Version</span>
+              <span class="tech-value" id="detailTechVer">-</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label" data-i18n="size">Size</span>
+              <span class="tech-value" id="detailTechSize">-</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label" data-i18n="updated">Updated</span>
+              <span class="tech-value" id="detailTechUpdated">-</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label" data-i18n="category">Category</span>
+              <span class="tech-value" id="detailTechCategory">-</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Share link -->
+        <section class="detail-card">
+          <h3 class="section-title" style="margin-bottom: 12px;" data-i18n="shareLink">Share link</h3>
+          <div class="share-row">
+            <input type="text" id="detailShareInput" class="share-input" readonly />
+            <button type="button" class="btn btn-secondary" id="detailCopyLinkBtn" onclick="copyDetailShareLink()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <span id="detailCopyBtnText" data-i18n="copyLink">Copy Link</span>
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <!-- Footer (Contains secret 5-tap trigger on copyright) -->
       <footer class="footer">
-        <p data-i18n="footerText">© 2026 မြန်မာ အက်ပ် ဒေါင်းလုဒ် စင်တာ • လုံခြုံစိတ်ချရသော APK များကိုသာ တင်ဆက်ထားပါသည်</p>
+        <p id="footerCopyrightText" data-i18n="footerText">© 2026 မြန်မာ အက်ပ် ဒေါင်းလုဒ် စင်တာ • လုံခြုံစိတ်ချရသော APK များကိုသာ တင်ဆက်ထားပါသည်</p>
       </footer>
     </div>
 
-    <!-- Script rendering apps list and i18n -->
+    <!-- ==========================================================================
+         ADMIN OVERLAY (HIDDEN BY DEFAULT)
+         Admin PIN Gate: Client-side obscurity for static hosting, not server security
+         ========================================================================== -->
+    <div id="adminOverlay" class="admin-overlay" style="display: none;">
+      <!-- Step A: PIN Gate Box -->
+      <div id="adminPinModal" class="admin-modal pin-box" style="display: none;">
+        <div class="admin-header">
+          <div class="admin-title">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <span id="adminPinModalTitle">Admin Unlock</span>
+          </div>
+          <button type="button" class="btn-close" onclick="closeAdminModal()">✕</button>
+        </div>
+
+        <p id="adminPinInstructions" style="font-size: 13px; color: var(--text-secondary);">Enter your 4-digit PIN</p>
+        
+        <div class="admin-input-group">
+          <input type="password" id="adminPinInput" class="admin-input pin-input" maxlength="4" pattern="[0-9]*" inputmode="numeric" placeholder="••••" autocomplete="off" />
+        </div>
+
+        <div id="adminPinConfirmGroup" class="admin-input-group" style="display: none;">
+          <label class="admin-label">Confirm 4-digit PIN</label>
+          <input type="password" id="adminPinConfirmInput" class="admin-input pin-input" maxlength="4" pattern="[0-9]*" inputmode="numeric" placeholder="••••" autocomplete="off" />
+        </div>
+
+        <div id="adminPinError" style="font-size: 12px; color: #FCA5A5; display: none;"></div>
+
+        <div style="display: flex; gap: 8px; margin-top: 10px;">
+          <button type="button" class="btn btn-secondary" style="flex: 1;" onclick="closeAdminModal()">Cancel</button>
+          <button type="button" class="btn btn-primary" id="adminPinSubmitBtn" style="flex: 1;" onclick="handlePinSubmit()">Unlock</button>
+        </div>
+      </div>
+
+      <!-- Step B: Admin App Manager Panel -->
+      <div id="adminPanelModal" class="admin-modal" style="display: none;">
+        <div class="admin-header">
+          <div class="admin-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+            </svg>
+            <span data-i18n="adminTitle">App Management (Admin Panel)</span>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button type="button" class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="lockAdminSession()">Lock</button>
+            <button type="button" class="btn-close" onclick="closeAdminModal()">✕</button>
+          </div>
+        </div>
+
+        <!-- Section: App List view within Admin -->
+        <div id="adminAppListSection">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <span style="font-size: 13.5px; font-weight: 600; color: #fff;">Configured Apps</span>
+            <button type="button" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px;" onclick="openAppForm(null)">+ Add New App</button>
+          </div>
+
+          <div id="adminAppsList" style="display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto;">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Workflow Export & Backup tools -->
+          <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px;">
+            <div style="font-size: 12.5px; font-weight: 600; color: #fff;">Publishing &amp; Backup Tools</div>
+            
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-primary" style="font-size: 11.5px; padding: 7px 12px;" onclick="showExportCodeModal()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                Export APPS Code
+              </button>
+              <button type="button" class="btn btn-secondary" style="font-size: 11.5px; padding: 7px 12px;" onclick="downloadBackupJson()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download Backup (JSON)
+              </button>
+              <label class="btn btn-secondary" style="font-size: 11.5px; padding: 7px 12px; cursor: pointer; margin: 0;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Import Backup (JSON)
+                <input type="file" accept=".json" style="display: none;" onchange="importBackupJson(event)" />
+              </label>
+              <button type="button" class="btn btn-secondary" style="font-size: 11.5px; padding: 7px 12px; color: #F87171;" onclick="resetToBuiltInList()">
+                Reset to Built-in List
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: App Add / Edit Form -->
+        <form id="adminAppForm" style="display: none; flex-direction: column; gap: 12px;" onsubmit="handleSaveApp(event)">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h4 id="adminFormTitle" style="font-size: 15px; font-weight: 700; color: #fff;">Edit App</h4>
+            <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="cancelAppForm()">Cancel</button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="admin-input-group">
+              <label class="admin-label">App Name *</label>
+              <input type="text" id="formAppName" class="admin-input" required />
+            </div>
+            <div class="admin-input-group">
+              <label class="admin-label">Developer</label>
+              <input type="text" id="formAppDev" class="admin-input" placeholder="e.g. TVY-Tech" />
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="admin-input-group">
+              <label class="admin-label">Version *</label>
+              <input type="text" id="formAppVersion" class="admin-input" required placeholder="v1.0.0" />
+            </div>
+            <div class="admin-input-group">
+              <label class="admin-label">Package Name</label>
+              <input type="text" id="formAppPackage" class="admin-input" placeholder="com.example.app" />
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="admin-input-group">
+              <label class="admin-label">Category</label>
+              <select id="formAppCategory" class="admin-select">
+                <option value="Tools & Utilities">Tools & Utilities</option>
+                <option value="Productivity">Productivity</option>
+                <option value="Communication">Communication</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="System">System</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="admin-input-group">
+              <label class="admin-label">Release / Updated Date</label>
+              <input type="date" id="formAppUpdated" class="admin-input" />
+            </div>
+          </div>
+
+          <div class="admin-input-group">
+            <label class="admin-label">APK Download URL *</label>
+            <input type="url" id="formAppApkUrl" class="admin-input" required placeholder="https://github.com/org/repo/releases/download/v1.0/app.apk" />
+            <span class="admin-hint">Upload APK to GitHub Releases first, then paste the direct asset link here</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: flex-end;">
+            <div class="admin-input-group">
+              <label class="admin-label">File Size</label>
+              <input type="text" id="formAppSize" class="admin-input" placeholder="e.g. 65.7 MB" />
+            </div>
+            <button type="button" class="btn btn-secondary" style="font-size: 11.5px; padding: 9px 12px; white-space: nowrap;" onclick="autoFetchCurrentSize()">Auto-fetch Size</button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: center;">
+            <div class="admin-input-group">
+              <label class="admin-label">Rating</label>
+              <input type="text" id="formAppRating" class="admin-input" placeholder="5.0" />
+            </div>
+            <div class="admin-input-group">
+              <label class="admin-label">Downloads</label>
+              <input type="text" id="formAppDownloads" class="admin-input" placeholder="1.2k" />
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px; padding-top: 16px;">
+              <input type="checkbox" id="formAppVerified" style="width: 16px; height: 16px;" checked />
+              <label for="formAppVerified" class="admin-label" style="cursor: pointer;">Verified</label>
+            </div>
+          </div>
+
+          <!-- Icon upload and save -->
+          <div class="admin-input-group">
+            <label class="admin-label">App Icon (PNG/JPG)</label>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <div class="admin-thumb" id="formIconPreview">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+              <input type="file" id="formIconPicker" accept="image/*" onchange="handleIconPicked(event)" style="flex: 1; font-size: 12px;" />
+              <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 6px 10px;" id="btnDownloadIcon" onclick="downloadIconAsset()" disabled>Download icon file</button>
+            </div>
+          </div>
+
+          <!-- Screenshots picker and list -->
+          <div class="admin-input-group">
+            <label class="admin-label">Screenshots (Multiple)</label>
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 6px;">
+              <input type="file" id="formScreenshotsPicker" accept="image/*" multiple onchange="handleScreenshotsPicked(event)" style="flex: 1; font-size: 12px;" />
+              <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 6px 10px;" id="btnDownloadScreenshots" onclick="downloadAllScreenshots()" disabled>Download all</button>
+            </div>
+            <div id="formScreenshotsThumbs" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+          </div>
+
+          <!-- Descriptions -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="admin-input-group">
+              <label class="admin-label">Short Description (မြန်မာ)</label>
+              <textarea id="formAppDesc" class="admin-textarea" rows="2"></textarea>
+            </div>
+            <div class="admin-input-group">
+              <label class="admin-label">Short Description (English)</label>
+              <textarea id="formAppDescEn" class="admin-textarea" rows="2"></textarea>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="admin-input-group">
+              <label class="admin-label">About / Full Description (မြန်မာ)</label>
+              <textarea id="formAppLongDesc" class="admin-textarea" rows="4"></textarea>
+            </div>
+            <div class="admin-input-group">
+              <label class="admin-label">About / Full Description (English)</label>
+              <textarea id="formAppLongDescEn" class="admin-textarea" rows="4"></textarea>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="admin-input-group">
+              <label class="admin-label">What's New / Changelog (မြန်မာ)</label>
+              <textarea id="formAppChangelog" class="admin-textarea" rows="3"></textarea>
+            </div>
+            <div class="admin-input-group">
+              <label class="admin-label">What's New / Changelog (English)</label>
+              <textarea id="formAppChangelogEn" class="admin-textarea" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px;">
+            <button type="button" class="btn btn-secondary" onclick="cancelAppForm()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save App</button>
+          </div>
+        </form>
+
+        <!-- Code Export Submodal -->
+        <div id="adminExportSection" style="display: none; flex-direction: column; gap: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 14px; font-weight: 700; color: #fff;">JavaScript APPS Array Literal</span>
+            <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="hideExportCodeModal()">Close</button>
+          </div>
+          <p class="admin-hint">Copy this code and paste it to update the APPS configuration in index.html, then push to GitHub:</p>
+          <textarea id="adminExportTextarea" class="admin-textarea" style="height: 180px; font-family: monospace; font-size: 11.5px;" readonly></textarea>
+          <button type="button" class="btn btn-primary" id="btnCopyExportCode" onclick="copyExportCode()">Copy Code</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN TECHNICAL SCRIPT -->
     <script>
       /* ==========================================================================
-         APPS CONFIGURATION LIST
-         အက်ပ်ပိုင်ရှင်အနေဖြင့် အောက်ပါ APPS စာရင်းတွင် မိမိအက်ပ်များကို လွတ်လပ်စွာ ထည့်သွင်း/ပြင်ဆင်နိုင်ပါသည်
-         Fields: name, version, size, updated, desc, descEn, apkUrl
+         APPS CONFIGURATION LIST (DEFAULT / BUILT-IN)
+         Expanded with rich Play Store-style metadata fields
          ========================================================================== */
-      const APPS = [
+      const DEFAULT_APPS = [
         {
           name: "CEIR Status Hub",
+          developer: "TVY-Tech",
           version: "v2.0.1",
           size: "65.7 MB",
           updated: "2026-10-12",
+          packageName: "com.tvytech.ceirstatus",
+          category: "Tools & Utilities",
+          rating: "5.0",
+          downloads: "1.2k",
+          verified: true,
+          icon: "",
+          screenshots: [],
           desc: "ဖုန်းဆိုင်များအတွက် CEIR IMEI စစ်၊ အခွန်ဆောင် app",
           descEn: "CEIR IMEI verification and tax clearance tool for mobile phone shops",
+          longDesc: "CEIR Status Hub သည် မြန်မာနိုင်ငံရှိ မိုဘိုင်းဖုန်းအရောင်းဆိုင်များနှင့် နည်းပညာသမားများအတွက် CEIR (Central Equipment Identity Register) စနစ်တွင် ဖုန်း၏ IMEI စာရင်းဝင်မှု အခြေအနေ၊ အခွန်ဆောင်ပြီး/မပြီး အခြေအနေနှင့် အကောက်ခွန် ကိစ္စရပ်များကို လျင်မြန်စွာ စစ်ဆေးနိုင်ရန် ဖန်တီးထားသော အထောက်အကူပြု App ဖြစ်ပါသည်။\n\n• IMEI နံပါတ် အလိုအလျောက် စကင်ဖတ်နိုင်ခြင်း\n• အခွန်ဆောင်ပြီးမှု အခြေအနေ အချိန်နှင့်တပြေးညီ ကြည့်ရှုနိုင်ခြင်း\n• စာရင်းဇယားများ သိမ်းဆည်းထားနိုင်ခြင်း",
+          longDescEn: "CEIR Status Hub is an essential utility tool tailored for mobile phone retail shops and technicians in Myanmar. It allows seamless verification of phone IMEI registration, customs tax clearance status, and compliance under the CEIR system.\n\n• Fast barcode and IMEI camera scanner\n• Real-time verification of customs and tax status\n• Local verification log and exportable reports",
+          changelog: "• အသစ်ထွက်ရှိထားသော v2.0.1 ဗားရှင်း\n• စနစ်ပိုင်း ပိုမိုမြန်ဆန်လာခြင်း\n• အမှားတချို့ ပြင်ဆင်ပြီးခြင်း",
+          changelogEn: "• Newly released v2.0.1 update\n• Performance improvements and faster verification queries\n• Minor bug fixes and stability enhancements",
           apkUrl: "https://github.com/HeeHeeHta/Web-download-Installer-/releases/download/v2.0.1/CEIR_Status_Hub.apk"
         }
       ];
@@ -752,7 +1601,7 @@
           headerTitle: "အက်ပ် ဒေါင်းလုဒ် စင်တာ",
           headerSubtitle: "Android စမတ်ဖုန်းများအတွက် စိတ်ချရသော APK များကို တိုက်ရိုက်ဒေါင်းလုဒ်ရယူပါ သို့မဟုတ် Web ADB ဖြင့် ဖုန်းထဲသို့ တိုက်ရိုက်သွင်းယူပါ။",
           bannerTitle: "Web ADB တိုက်ရိုက်တပ်ဆင်ရေး စနစ်",
-          bannerDesc: "ဖုန်းထဲသို့ ဖိုင်ကူးစရာမလိုဘဲ  Chrome မှတစ်ဆင့် USB ဖြင့် APK တိုက်ရိုက်သွင်းနိုင်ပါသည်။",
+          bannerDesc: "ဖုန်းထဲသို့ ဖိုင်ကူးစရာမလိုဘဲ Chrome မှတစ်ဆင့် USB ဖြင့် APK တိုက်ရိုက်သွင်းနိုင်ပါသည်။",
           sectionAppsTitle: "ရရှိနိုင်သော အက်ပ်များ",
           appsCount: (n) => `အက်ပ် ${n} ခု`,
           updatedPrefix: "မွမ်းမံရက်: ",
@@ -774,7 +1623,25 @@
           usbSectionTitle: "USB ကြိုးဖြင့် တိုက်ရိုက်သွင်းလိုပါသလား?",
           usbSectionDesc: "Web ADB စနစ်ဖြင့် ဖုန်းထဲသို့ APK တိုက်ရိုက် ထည့်သွင်းနိုင်ပါသည်",
           openInstallerBtn: "Web ADB တပ်ဆင်ရေး စာမျက်နှာ ဖွင့်မည်",
-          footerText: "© 2026 Power By TVY-Tech • လုံခြုံစိတ်ချရသော APK များကိုသာ တင်ဆက်ထားပါသည်"
+          footerText: "© 2026 မြန်မာ အက်ပ် ဒေါင်းလုဒ် စင်တာ • လုံခြုံစိတ်ချရသော APK များကိုသာ တင်ဆက်ထားပါသည်",
+          backToApps: "← အက်ပ်များသို့ ပြန်သွားမည်",
+          details: "အသေးစိတ်",
+          rating: "Rating",
+          downloads: "Downloads",
+          size: "Size",
+          updated: "Updated",
+          genuineNote: "မူရင်း စစ်မှန်သော APK ဖိုင် ဖြစ်ပါသည်",
+          screenshots: "မျက်နှာပြင်ပုံများ (Screenshots)",
+          aboutApp: "ဤအက်ပ်အကြောင်း",
+          whatsNew: "ဗားရှင်းသစ်တွင် ပါဝင်မှုများ",
+          techDetails: "နည်းပညာဆိုင်ရာ အချက်အလက်များ",
+          pkgName: "Package Name",
+          version: "Version",
+          category: "အမျိုးအစား",
+          shareLink: "လင့်ခ် မျှဝေရန်",
+          copyLink: "လင့်ခ်ကူးယူမည်",
+          copied: "ကူးယူပြီးပါပြီ!",
+          adminTitle: "အက်ပ်စီမံခန့်ခွဲမှုစနစ် (Admin Panel)"
         },
         en: {
           pageTitle: "App Download Center | Burmese App Download Center",
@@ -804,31 +1671,77 @@
           usbSectionTitle: "Want to install directly via USB cable?",
           usbSectionDesc: "Install APK directly to your phone using our browser-based Web ADB system",
           openInstallerBtn: "Open Web ADB Installer",
-          footerText: "© 2026 Power By TVY-Tech • Only safe and verified APK packages provided"
+          footerText: "© 2026 Burmese App Download Center • Only safe and verified APK packages provided",
+          backToApps: "← Back to apps",
+          details: "Details",
+          rating: "Rating",
+          downloads: "Downloads",
+          size: "Size",
+          updated: "Updated",
+          genuineNote: "Genuine original APK file",
+          screenshots: "Screenshots",
+          aboutApp: "About this app",
+          whatsNew: "What's new in this version",
+          techDetails: "Technical Details",
+          pkgName: "Package Name",
+          version: "Version",
+          category: "Category",
+          shareLink: "Share link",
+          copyLink: "Copy Link",
+          copied: "Copied!",
+          adminTitle: "App Management (Admin Panel)"
         }
       };
 
-      // Current active language (default: 'en')
+      // Current active language
       let currentLang = localStorage.getItem("siteLang") || "en";
       if (!TRANSLATIONS[currentLang]) currentLang = "en";
 
-      // Set and persist language
+      let currentSelectedAppIndex = -1;
+
+      // Retrieve apps list: reads localStorage (key: tvy_apps_admin) FIRST, falling back to DEFAULT_APPS
+      function getAppsList() {
+        try {
+          const raw = localStorage.getItem("tvy_apps_admin");
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          }
+        } catch (e) {}
+        return DEFAULT_APPS;
+      }
+
+      function saveAppsList(apps) {
+        try {
+          localStorage.setItem("tvy_apps_admin", JSON.stringify(apps));
+        } catch (e) {
+          console.error("Failed to save to localStorage:", e);
+        }
+        renderApps();
+        if (currentSelectedAppIndex >= 0 && currentSelectedAppIndex < apps.length) {
+          renderAppDetail(currentSelectedAppIndex);
+        }
+      }
+
+      // Escape HTML utility
+      function escapeHtml(str) {
+        return String(str || '').replace(/[&<>'"]/g, 
+          tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+      }
+
+      // Language Switcher
       function setLang(lang) {
         if (!TRANSLATIONS[lang]) return;
         currentLang = lang;
         try {
           localStorage.setItem("siteLang", lang);
-        } catch (e) {
-          // localStorage disabled/quota exceeded
-        }
+        } catch (e) {}
 
-        // Update document lang & title
         document.documentElement.lang = lang;
         if (TRANSLATIONS[lang].pageTitle) {
           document.title = TRANSLATIONS[lang].pageTitle;
         }
 
-        // Update toggle button states
         const btnEn = document.getElementById("langBtnEn");
         const btnMy = document.getElementById("langBtnMy");
         if (btnEn && btnMy) {
@@ -836,7 +1749,6 @@
           btnMy.classList.toggle("active", lang === "my");
         }
 
-        // Update all data-i18n elements
         const t = TRANSLATIONS[lang];
         document.querySelectorAll("[data-i18n]").forEach((el) => {
           const key = el.getAttribute("data-i18n");
@@ -845,102 +1757,729 @@
           }
         });
 
-        // Re-render apps cards with updated language
         renderApps();
+        if (currentSelectedAppIndex >= 0) {
+          renderAppDetail(currentSelectedAppIndex);
+        }
       }
 
-      // Render cards
+      // Render Public Apps List
       function renderApps() {
+        const apps = getAppsList();
         const container = document.getElementById("appsContainer");
         const countLabel = document.getElementById("appsCountLabel");
         if (!container) return;
 
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
-
         if (countLabel) {
-          countLabel.textContent = typeof t.appsCount === "function" ? t.appsCount(APPS.length) : `${APPS.length} apps`;
+          countLabel.textContent = typeof t.appsCount === "function" ? t.appsCount(apps.length) : `${apps.length} apps`;
         }
 
-        container.innerHTML = APPS.map((app, index) => {
-          // Escape HTML for safety
-          const escapeHtml = (str) => String(str || '').replace(/[&<>'"]/g, 
-            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
-
+        container.innerHTML = apps.map((app, index) => {
           const safeName = escapeHtml(app.name);
+          const safeDev = escapeHtml(app.developer || "TVY-Tech");
           const safeVer = escapeHtml(app.version);
-          const safeSize = escapeHtml(app.size);
-          const safeDate = escapeHtml(app.updated);
-          // Pick description based on current language
-          const rawDesc = (currentLang === "en" && app.descEn) ? app.descEn : (app.desc || "");
-          const safeDesc = escapeHtml(rawDesc);
+          const safeSize = escapeHtml(app.size || "Unknown");
+          const safeRating = escapeHtml(app.rating || "5.0");
+          const safeDl = escapeHtml(app.downloads || "1k+");
+          const safeDesc = escapeHtml((currentLang === "en" && app.descEn) ? app.descEn : (app.desc || ""));
           const safeUrl = escapeHtml(app.apkUrl);
+          const isVerified = app.verified !== false;
+
+          const iconMarkup = app.icon
+            ? `<img src="${app.icon}" alt="${safeName}" onerror="this.onerror=null;this.parentElement.innerHTML='<svg width=\\'30\\' height=\\'30\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.6\\'><rect x=\\'5\\' y=\\'2\\' width=\\'14\\' height=\\'20\\' rx=\\'3\\'/><path d=\\'M12 18h.01\\'/></svg>';" />`
+            : `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="2" width="14" height="20" rx="3"/>
+                <path d="M12 18h.01"/>
+              </svg>`;
 
           return `
-            <article class="app-card" data-index="${index}">
-              <div class="app-top">
-                <div class="app-icon" aria-hidden="true">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="5" y="2" width="14" height="20" rx="3"/>
-                    <path d="M12 18h.01"/>
-                    <path d="m9 9 3 3 3-3"/>
-                    <path d="M12 6v6"/>
-                  </svg>
+            <article class="app-card" onclick="handleCardClick(event, ${index})">
+              <div class="app-card-layout">
+                <div class="app-card-icon" aria-hidden="true">
+                  ${iconMarkup}
                 </div>
-                <div class="app-header-info">
-                  <div class="app-title-group">
-                    <h3 class="app-name">${safeName}</h3>
-                    <span class="version-badge">${safeVer}</span>
+                <div class="app-card-info">
+                  <div class="app-card-title-row">
+                    <h3 class="app-card-name">${safeName}</h3>
+                    <span class="version-pill">${safeVer}</span>
+                    ${isVerified ? `
+                      <span class="badge-verified">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                          <path d="m9 12 2 2 4-4"/>
+                        </svg>
+                        <span>Verified</span>
+                      </span>` : ''}
                   </div>
-                  <div class="app-meta">
-                    <span class="app-meta-tag">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <div class="app-card-dev">${safeDev}</div>
+                  <p class="app-card-desc">${safeDesc}</p>
+                  
+                  <div class="app-card-meta-row">
+                    <span class="app-card-meta-item">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#FBBF24" stroke="#FBBF24" stroke-width="1">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                      </svg>
+                      ${safeRating}
+                    </span>
+                    <span>•</span>
+                    <span class="app-card-meta-item">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                      </svg>
+                      ${safeDl}
+                    </span>
+                    <span>•</span>
+                    <span class="app-card-meta-item">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
                         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                         <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                        <line x1="12" y1="22.08" x2="12" y2="12"/>
                       </svg>
                       ${safeSize}
                     </span>
-                    <span class="dot">•</span>
-                    <span class="app-meta-tag">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                        <line x1="16" y1="2" x2="16" y2="6"/>
-                        <line x1="8" y1="2" x2="8" y2="6"/>
-                        <line x1="3" y1="10" x2="21" y2="10"/>
+                  </div>
+
+                  <div class="app-card-actions">
+                    <a href="${safeUrl}" class="btn btn-download" download target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
                       </svg>
-                      ${t.updatedPrefix}${safeDate}
-                    </span>
+                      ${t.downloadBtn}
+                    </a>
+                    <a href="installer.html?name=${encodeURIComponent(app.name)}&ver=${encodeURIComponent(app.version)}&url=${encodeURIComponent(app.apkUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" onclick="event.stopPropagation()">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                      </svg>
+                      ${t.webAdbBtn}
+                    </a>
                   </div>
                 </div>
-              </div>
-
-              <p class="app-desc">${safeDesc}</p>
-
-              <div class="app-actions">
-                <a href="${safeUrl}" class="btn btn-download" download target="_blank" rel="noopener noreferrer">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="7 10 12 15 17 10"/>
-                    <line x1="12" y1="15" x2="12" y2="3"/>
-                  </svg>
-                  ${t.downloadBtn}
-                </a>
-                <a href="installer.html?name=${encodeURIComponent(app.name)}&ver=${encodeURIComponent(app.version)}&url=${encodeURIComponent(app.apkUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-                  </svg>
-                  ${t.webAdbBtn}
-                </a>
               </div>
             </article>
           `;
         }).join("");
       }
 
-      // Initialize on DOMContentLoaded with persisted or default language
+      function handleCardClick(event, index) {
+        // If clicked on an anchor or button inside card, don't trigger detail view
+        if (event.target.closest("a") || event.target.closest("button")) {
+          return;
+        }
+        openAppDetail(index);
+      }
+
+      // App Detail View Controller
+      function openAppDetail(index) {
+        const apps = getAppsList();
+        if (!apps[index]) return;
+        currentSelectedAppIndex = index;
+        location.hash = `#app-${index}`;
+
+        document.getElementById("appListView").style.display = "none";
+        document.getElementById("appDetailView").style.display = "flex";
+        window.scrollTo({ top: 0, behavior: "instant" });
+
+        renderAppDetail(index);
+      }
+
+      function closeAppDetail() {
+        currentSelectedAppIndex = -1;
+        if (location.hash.startsWith("#app-")) {
+          history.pushState("", document.title, window.location.pathname + window.location.search);
+        }
+        document.getElementById("appDetailView").style.display = "none";
+        document.getElementById("appListView").style.display = "block";
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+
+      function renderAppDetail(index) {
+        const apps = getAppsList();
+        const app = apps[index];
+        if (!app) return;
+
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+        const safeName = escapeHtml(app.name);
+        const safeDev = escapeHtml(app.developer || "TVY-Tech");
+        const safeVer = escapeHtml(app.version);
+        const safeSize = escapeHtml(app.size || "Unknown");
+        const safeDate = escapeHtml(app.updated || "-");
+        const safePkg = escapeHtml(app.packageName || "com.example.app");
+        const safeCategory = escapeHtml(app.category || "Tools & Utilities");
+        const safeRating = escapeHtml(app.rating || "5.0");
+        const safeDl = escapeHtml(app.downloads || "1.2k");
+        const safeUrl = escapeHtml(app.apkUrl);
+        const isVerified = app.verified !== false;
+
+        // Long Description & Changelog fallback
+        const rawLongDesc = (currentLang === "en" && app.longDescEn) ? app.longDescEn : (app.longDesc || (currentLang === "en" ? app.descEn : app.desc) || "");
+        const rawChangelog = (currentLang === "en" && app.changelogEn) ? app.changelogEn : (app.changelog || "");
+
+        // Detail Header
+        const iconContainer = document.getElementById("detailIconContainer");
+        if (app.icon) {
+          iconContainer.innerHTML = `<img src="${app.icon}" alt="${safeName}" onerror="this.onerror=null;this.parentElement.innerHTML='<svg width=\\'42\\' height=\\'42\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.6\\'><rect x=\\'5\\' y=\\'2\\' width=\\'14\\' height=\\'20\\' rx=\\'3\\'/><path d=\\'M12 18h.01\\'/></svg>';" />`;
+        } else {
+          iconContainer.innerHTML = `
+            <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="3"/>
+              <path d="M12 18h.01"/>
+            </svg>`;
+        }
+
+        document.getElementById("detailAppName").textContent = app.name;
+        document.getElementById("detailAppDev").textContent = safeDev;
+        document.getElementById("detailAppVer").textContent = safeVer;
+        document.getElementById("detailAppVerified").style.display = isVerified ? "inline-flex" : "none";
+
+        // Download CTA
+        const downloadBtn = document.getElementById("detailDownloadBtn");
+        downloadBtn.href = app.apkUrl;
+        document.getElementById("detailDownloadText").textContent = `${t.downloadBtn} (${safeSize})`;
+
+        const webAdbBtn = document.getElementById("detailWebAdbBtn");
+        webAdbBtn.href = `installer.html?name=${encodeURIComponent(app.name)}&ver=${encodeURIComponent(app.version)}&url=${encodeURIComponent(app.apkUrl)}`;
+
+        // Stats Row
+        document.getElementById("detailStatRatingText").textContent = safeRating;
+        document.getElementById("detailStatDownloads").textContent = safeDl;
+        document.getElementById("detailStatSize").textContent = safeSize;
+        document.getElementById("detailStatUpdated").textContent = safeDate;
+
+        // Screenshots carousel
+        const shotsCard = document.getElementById("detailScreenshotsCard");
+        const shotsList = document.getElementById("detailScreenshotsList");
+        if (Array.isArray(app.screenshots) && app.screenshots.length > 0) {
+          shotsCard.style.display = "block";
+          shotsList.innerHTML = app.screenshots.map((s, sIdx) => `
+            <div class="shot-item">
+              <img src="${s}" alt="Screenshot ${sIdx + 1}" onerror="this.onerror=null;this.parentElement.style.background='rgba(255,255,255,0.04)';this.parentElement.innerHTML='<span style=\\'font-size:12px;color:rgba(255,255,255,0.3)\\'>Preview</span>';" />
+            </div>
+          `).join("");
+        } else {
+          shotsCard.style.display = "none";
+        }
+
+        // About app
+        document.getElementById("detailLongDesc").textContent = rawLongDesc;
+
+        // What's new
+        const changelogCard = document.getElementById("detailChangelogCard");
+        if (rawChangelog.trim()) {
+          changelogCard.style.display = "block";
+          document.getElementById("detailChangelogTitle").textContent = `${t.whatsNew} ${safeVer}`;
+          document.getElementById("detailChangelogText").textContent = rawChangelog;
+          document.getElementById("detailChangelogDate").textContent = `${t.updatedPrefix} ${safeDate}`;
+        } else {
+          changelogCard.style.display = "none";
+        }
+
+        // Technical details
+        document.getElementById("detailTechPkg").textContent = safePkg;
+        document.getElementById("detailTechVer").textContent = safeVer;
+        document.getElementById("detailTechSize").textContent = safeSize;
+        document.getElementById("detailTechUpdated").textContent = safeDate;
+        document.getElementById("detailTechCategory").textContent = safeCategory;
+
+        // Share link
+        const shareUrl = `${window.location.origin}${window.location.pathname}#app-${index}`;
+        document.getElementById("detailShareInput").value = shareUrl;
+      }
+
+      function copyDetailShareLink() {
+        const input = document.getElementById("detailShareInput");
+        const btnText = document.getElementById("detailCopyBtnText");
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+        if (!input) return;
+
+        navigator.clipboard.writeText(input.value).then(() => {
+          btnText.textContent = t.copied || "Copied!";
+          setTimeout(() => {
+            btnText.textContent = t.copyLink || "Copy Link";
+          }, 2000);
+        }).catch(() => {
+          input.select();
+          document.execCommand("copy");
+          btnText.textContent = t.copied || "Copied!";
+          setTimeout(() => {
+            btnText.textContent = t.copyLink || "Copy Link";
+          }, 2000);
+        });
+      }
+
+      // Deep Linking Hash Listener
+      function checkUrlHash() {
+        const hash = window.location.hash;
+        if (hash && hash.startsWith("#app-")) {
+          const index = parseInt(hash.replace("#app-", ""), 10);
+          if (!isNaN(index)) {
+            openAppDetail(index);
+            return;
+          }
+        }
+        if (currentSelectedAppIndex !== -1) {
+          closeAppDetail();
+        }
+      }
+
+      window.addEventListener("hashchange", checkUrlHash);
+
+      /* ==========================================================================
+         ADMIN PANEL & PIN GATE IMPLEMENTATION
+         ========================================================================== */
+      let adminFailedAttempts = 0;
+      let adminLockoutUntil = 0;
+      let editingAppIndex = -1;
+      let stagedIconData = "";
+      let stagedScreenshots = [];
+
+      async function hashPin(pin) {
+        const msgBuffer = new TextEncoder().encode(pin);
+        const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+      }
+
+      function openAdminModal() {
+        const overlay = document.getElementById("adminOverlay");
+        const pinModal = document.getElementById("adminPinModal");
+        const panelModal = document.getElementById("adminPanelModal");
+        overlay.style.display = "flex";
+
+        // Check if admin is currently authenticated in session
+        if (sessionStorage.getItem("tvy_admin_auth") === "1") {
+          pinModal.style.display = "none";
+          panelModal.style.display = "flex";
+          renderAdminAppsList();
+          return;
+        }
+
+        panelModal.style.display = "none";
+        pinModal.style.display = "flex";
+        setupPinModalMode();
+      }
+
+      function closeAdminModal() {
+        document.getElementById("adminOverlay").style.display = "none";
+      }
+
+      function lockAdminSession() {
+        sessionStorage.removeItem("tvy_admin_auth");
+        openAdminModal();
+      }
+
+      function setupPinModalMode() {
+        const pinInput = document.getElementById("adminPinInput");
+        const confirmGroup = document.getElementById("adminPinConfirmGroup");
+        const instructions = document.getElementById("adminPinInstructions");
+        const submitBtn = document.getElementById("adminPinSubmitBtn");
+        const errDiv = document.getElementById("adminPinError");
+
+        pinInput.value = "";
+        document.getElementById("adminPinConfirmInput").value = "";
+        errDiv.style.display = "none";
+
+        const storedHash = localStorage.getItem("tvy_admin_pin");
+        if (!storedHash) {
+          // First-time setup
+          instructions.textContent = "First time setup: Set your 4-digit Admin PIN";
+          confirmGroup.style.display = "flex";
+          submitBtn.textContent = "Set PIN";
+        } else {
+          // Regular unlock
+          instructions.textContent = "Enter your 4-digit Admin PIN to unlock";
+          confirmGroup.style.display = "none";
+          submitBtn.textContent = "Unlock";
+        }
+
+        // Check Lockout
+        const now = Date.now();
+        if (adminLockoutUntil > now) {
+          const remaining = Math.ceil((adminLockoutUntil - now) / 1000);
+          showPinError(`Locked for ${remaining}s due to 5 wrong attempts.`);
+          submitBtn.disabled = true;
+          setTimeout(setupPinModalMode, 1000);
+          return;
+        } else {
+          submitBtn.disabled = false;
+        }
+      }
+
+      function showPinError(msg) {
+        const errDiv = document.getElementById("adminPinError");
+        errDiv.textContent = msg;
+        errDiv.style.display = "block";
+      }
+
+      async function handlePinSubmit() {
+        const now = Date.now();
+        if (adminLockoutUntil > now) return;
+
+        const pinInput = document.getElementById("adminPinInput");
+        const pinVal = pinInput.value.trim();
+        const storedHash = localStorage.getItem("tvy_admin_pin");
+
+        if (!/^\d{4}$/.test(pinVal)) {
+          showPinError("Please enter a valid 4-digit numeric PIN.");
+          return;
+        }
+
+        if (!storedHash) {
+          // Setting new PIN
+          const confirmVal = document.getElementById("adminPinConfirmInput").value.trim();
+          if (pinVal !== confirmVal) {
+            showPinError("PINs do not match. Please try again.");
+            return;
+          }
+          const hash = await hashPin(pinVal);
+          localStorage.setItem("tvy_admin_pin", hash);
+          sessionStorage.setItem("tvy_admin_auth", "1");
+          openAdminModal();
+        } else {
+          // Verifying existing PIN
+          const hash = await hashPin(pinVal);
+          if (hash === storedHash) {
+            adminFailedAttempts = 0;
+            sessionStorage.setItem("tvy_admin_auth", "1");
+            openAdminModal();
+          } else {
+            adminFailedAttempts++;
+            if (adminFailedAttempts >= 5) {
+              adminLockoutUntil = Date.now() + 30000;
+              adminFailedAttempts = 0;
+              setupPinModalMode();
+            } else {
+              showPinError(`Incorrect PIN (${adminFailedAttempts}/5 attempts).`);
+            }
+          }
+        }
+      }
+
+      // Admin App List Renderer
+      function renderAdminAppsList() {
+        const apps = getAppsList();
+        const listDiv = document.getElementById("adminAppsList");
+        if (!listDiv) return;
+
+        listDiv.innerHTML = apps.map((app, idx) => `
+          <div class="admin-app-item">
+            <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+              <div class="admin-thumb">
+                ${app.icon ? `<img src="${app.icon}" alt="" />` : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="5" y="2" width="14" height="20" rx="3"/></svg>`}
+              </div>
+              <div style="min-width: 0;">
+                <div style="font-size: 13.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(app.name)}</div>
+                <div style="font-size: 11.5px; color: var(--text-muted);">${escapeHtml(app.version)} • ${escapeHtml(app.packageName || "No pkg")}</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 6px; flex-shrink: 0;">
+              <button type="button" class="btn btn-secondary" style="padding: 5px 10px; font-size: 11px;" onclick="openAppForm(${idx})">Edit</button>
+              <button type="button" class="btn btn-secondary" style="padding: 5px 10px; font-size: 11px; color: #F87171;" onclick="deleteApp(${idx})">Delete</button>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      function openAppForm(index) {
+        editingAppIndex = index === null ? -1 : index;
+        document.getElementById("adminAppListSection").style.display = "none";
+        const form = document.getElementById("adminAppForm");
+        form.style.display = "flex";
+
+        stagedIconData = "";
+        stagedScreenshots = [];
+
+        if (editingAppIndex >= 0) {
+          const apps = getAppsList();
+          const app = apps[editingAppIndex];
+          document.getElementById("adminFormTitle").textContent = `Edit App: ${app.name}`;
+          document.getElementById("formAppName").value = app.name || "";
+          document.getElementById("formAppDev").value = app.developer || "";
+          document.getElementById("formAppVersion").value = app.version || "";
+          document.getElementById("formAppPackage").value = app.packageName || "";
+          document.getElementById("formAppCategory").value = app.category || "Tools & Utilities";
+          document.getElementById("formAppUpdated").value = app.updated || "";
+          document.getElementById("formAppApkUrl").value = app.apkUrl || "";
+          document.getElementById("formAppSize").value = app.size || "";
+          document.getElementById("formAppRating").value = app.rating || "5.0";
+          document.getElementById("formAppDownloads").value = app.downloads || "1.2k";
+          document.getElementById("formAppVerified").checked = app.verified !== false;
+          document.getElementById("formAppDesc").value = app.desc || "";
+          document.getElementById("formAppDescEn").value = app.descEn || "";
+          document.getElementById("formAppLongDesc").value = app.longDesc || "";
+          document.getElementById("formAppLongDescEn").value = app.longDescEn || "";
+          document.getElementById("formAppChangelog").value = app.changelog || "";
+          document.getElementById("formAppChangelogEn").value = app.changelogEn || "";
+
+          stagedIconData = app.icon || "";
+          stagedScreenshots = Array.isArray(app.screenshots) ? [...app.screenshots] : [];
+        } else {
+          document.getElementById("adminFormTitle").textContent = "Add New App";
+          form.reset();
+          document.getElementById("formAppVerified").checked = true;
+          document.getElementById("formAppRating").value = "5.0";
+          document.getElementById("formAppDownloads").value = "1.0k";
+          document.getElementById("formAppDev").value = "TVY-Tech";
+          document.getElementById("formAppUpdated").value = new Date().toISOString().slice(0, 10);
+        }
+
+        updateFormIconPreview();
+        renderFormScreenshotsThumbs();
+      }
+
+      function cancelAppForm() {
+        document.getElementById("adminAppForm").style.display = "none";
+        document.getElementById("adminAppListSection").style.display = "block";
+      }
+
+      function handleSaveApp(event) {
+        event.preventDefault();
+        const apps = getAppsList();
+        const newApp = {
+          name: document.getElementById("formAppName").value.trim(),
+          developer: document.getElementById("formAppDev").value.trim() || "TVY-Tech",
+          version: document.getElementById("formAppVersion").value.trim(),
+          packageName: document.getElementById("formAppPackage").value.trim(),
+          category: document.getElementById("formAppCategory").value,
+          updated: document.getElementById("formAppUpdated").value || new Date().toISOString().slice(0, 10),
+          apkUrl: document.getElementById("formAppApkUrl").value.trim(),
+          size: document.getElementById("formAppSize").value.trim() || "0 MB",
+          rating: document.getElementById("formAppRating").value.trim() || "5.0",
+          downloads: document.getElementById("formAppDownloads").value.trim() || "1.0k",
+          verified: document.getElementById("formAppVerified").checked,
+          icon: stagedIconData,
+          screenshots: stagedScreenshots,
+          desc: document.getElementById("formAppDesc").value.trim(),
+          descEn: document.getElementById("formAppDescEn").value.trim(),
+          longDesc: document.getElementById("formAppLongDesc").value.trim(),
+          longDescEn: document.getElementById("formAppLongDescEn").value.trim(),
+          changelog: document.getElementById("formAppChangelog").value.trim(),
+          changelogEn: document.getElementById("formAppChangelogEn").value.trim()
+        };
+
+        if (editingAppIndex >= 0) {
+          apps[editingAppIndex] = newApp;
+        } else {
+          apps.push(newApp);
+        }
+
+        saveAppsList(apps);
+        cancelAppForm();
+        renderAdminAppsList();
+      }
+
+      function deleteApp(idx) {
+        const apps = getAppsList();
+        if (!confirm(`Are you sure you want to delete "${apps[idx]?.name}"?`)) return;
+        apps.splice(idx, 1);
+        saveAppsList(apps);
+        renderAdminAppsList();
+      }
+
+      // Auto Fetch Size via HEAD request
+      async function autoFetchCurrentSize() {
+        const url = document.getElementById("formAppApkUrl").value.trim();
+        const sizeInput = document.getElementById("formAppSize");
+        if (!url) {
+          alert("Please enter APK Download URL first.");
+          return;
+        }
+        try {
+          const res = await fetch(url, { method: "HEAD" });
+          const len = res.headers.get("content-length");
+          if (len) {
+            const mb = (parseInt(len, 10) / (1024 * 1024)).toFixed(1);
+            sizeInput.value = `${mb} MB`;
+          } else {
+            alert("Could not determine Content-Length header. Please enter size manually.");
+          }
+        } catch (e) {
+          alert("HEAD request blocked by CORS or network. Please enter size manually (e.g. 65.7 MB).");
+        }
+      }
+
+      // Icon & Screenshots File Pickers
+      function handleIconPicked(e) {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          stagedIconData = evt.target.result;
+          updateFormIconPreview();
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function updateFormIconPreview() {
+        const preview = document.getElementById("formIconPreview");
+        const downloadBtn = document.getElementById("btnDownloadIcon");
+        if (stagedIconData) {
+          preview.innerHTML = `<img src="${stagedIconData}" alt="" />`;
+          downloadBtn.disabled = false;
+        } else {
+          preview.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`;
+          downloadBtn.disabled = true;
+        }
+      }
+
+      function downloadIconAsset() {
+        if (!stagedIconData) return;
+        const pkg = document.getElementById("formAppPackage").value.trim() || document.getElementById("formAppName").value.trim().toLowerCase().replace(/\s+/g, '-');
+        const a = document.createElement("a");
+        a.href = stagedIconData;
+        a.download = `${pkg}-icon.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
+      function handleScreenshotsPicked(e) {
+        const files = Array.from(e.target.files || []);
+        if (!files.length) return;
+        let readCount = 0;
+        files.forEach((file) => {
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            stagedScreenshots.push(evt.target.result);
+            readCount++;
+            if (readCount === files.length) {
+              renderFormScreenshotsThumbs();
+            }
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function renderFormScreenshotsThumbs() {
+        const container = document.getElementById("formScreenshotsThumbs");
+        const downloadBtn = document.getElementById("btnDownloadScreenshots");
+        container.innerHTML = stagedScreenshots.map((shot, idx) => `
+          <div style="position: relative; width: 48px; height: 72px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2);">
+            <img src="${shot}" style="width: 100%; height: 100%; object-fit: cover;" />
+            <button type="button" onclick="removeScreenshot(${idx})" style="position: absolute; top: 1px; right: 1px; background: rgba(0,0,0,0.7); border: none; color: #fff; font-size: 9px; border-radius: 50%; width: 14px; height: 14px; cursor: pointer;">✕</button>
+          </div>
+        `).join("");
+        downloadBtn.disabled = stagedScreenshots.length === 0;
+      }
+
+      function removeScreenshot(idx) {
+        stagedScreenshots.splice(idx, 1);
+        renderFormScreenshotsThumbs();
+      }
+
+      function downloadAllScreenshots() {
+        const pkg = document.getElementById("formAppPackage").value.trim() || "app";
+        stagedScreenshots.forEach((shot, i) => {
+          const a = document.createElement("a");
+          a.href = shot;
+          a.download = `${pkg}-shot-${i + 1}.png`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        });
+      }
+
+      // Workflow: Export Code
+      function showExportCodeModal() {
+        const apps = getAppsList();
+        const exportSection = document.getElementById("adminExportSection");
+        const textarea = document.getElementById("adminExportTextarea");
+        document.getElementById("adminAppListSection").style.display = "none";
+        exportSection.style.display = "flex";
+
+        const codeStr = `const APPS = ${JSON.stringify(apps, null, 2)};`;
+        textarea.value = codeStr;
+      }
+
+      function hideExportCodeModal() {
+        document.getElementById("adminExportSection").style.display = "none";
+        document.getElementById("adminAppListSection").style.display = "block";
+      }
+
+      function copyExportCode() {
+        const textarea = document.getElementById("adminExportTextarea");
+        const btn = document.getElementById("btnCopyExportCode");
+        navigator.clipboard.writeText(textarea.value).then(() => {
+          btn.textContent = "Copied to Clipboard!";
+          setTimeout(() => { btn.textContent = "Copy Code"; }, 2000);
+        });
+      }
+
+      function downloadBackupJson() {
+        const apps = getAppsList();
+        const blob = new Blob([JSON.stringify(apps, null, 2)], { type: "application/json" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `tvy_apps_backup_${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
+      function importBackupJson(event) {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          try {
+            const data = JSON.parse(evt.target.result);
+            if (Array.isArray(data)) {
+              saveAppsList(data);
+              renderAdminAppsList();
+              alert(`Successfully imported ${data.length} apps.`);
+            } else {
+              alert("Invalid JSON format. Expected an array of apps.");
+            }
+          } catch (err) {
+            alert("Error parsing backup JSON: " + err.message);
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      function resetToBuiltInList() {
+        if (!confirm("Are you sure you want to reset to the built-in app list? Any custom edits stored in this browser will be cleared.")) return;
+        localStorage.removeItem("tvy_apps_admin");
+        renderApps();
+        renderAdminAppsList();
+      }
+
+      // Secret Access: Footer 5 taps within 3 seconds & ?admin=1 query parameter
+      let footerTapCount = 0;
+      let footerTapTimer = null;
+      const footerCopyright = document.getElementById("footerCopyrightText");
+      if (footerCopyright) {
+        footerCopyright.addEventListener("click", () => {
+          footerTapCount++;
+          if (footerTapCount === 1) {
+            footerTapTimer = setTimeout(() => {
+              footerTapCount = 0;
+            }, 3000);
+          }
+          if (footerTapCount >= 5) {
+            clearTimeout(footerTapTimer);
+            footerTapCount = 0;
+            openAdminModal();
+          }
+        });
+      }
+
+      // Initialize on DOMContentLoaded
       document.addEventListener("DOMContentLoaded", () => {
         setLang(currentLang);
+        checkUrlHash();
+
+        // Check ?admin=1
+        try {
+          const params = new URLSearchParams(window.location.search);
+          if (params.get("admin") === "1") {
+            openAdminModal();
+          }
+        } catch (e) {}
       });
     </script>
     <script>
