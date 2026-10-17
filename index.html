@@ -1574,29 +1574,37 @@
          APPS CONFIGURATION LIST (DEFAULT / BUILT-IN)
          Expanded with rich Play Store-style metadata fields
          ========================================================================== */
-      const DEFAULT_APPS = [
+      // Upload icon/screenshot files to icons/ and shots/ in the repo before pushing
+      const APPS = [
         {
           name: "CEIR Status Hub",
           developer: "TVY-Tech",
           version: "v2.0.1",
-          size: "65.7 MB",
-          updated: "2026-10-12",
-          packageName: "com.tvytech.ceirstatus",
+          packageName: "com.tvytech.ceirchecker.komun",
           category: "Tools & Utilities",
+          updated: "2026-10-12",
+          apkUrl: "https://github.com/HeeHeeHta/Web-download-Installer-/releases/download/v2.0.1/CEIR_Status_Hub.apk",
+          size: "65.7 MB",
           rating: "5.0",
           downloads: "1.2k",
           verified: true,
-          icon: "",
-          screenshots: [],
+          icon: "icons/com.tvytech.ceirchecker.komun-icon.png",
+          screenshots: [
+            "shots/com.tvytech.ceirchecker.komun-1.png",
+            "shots/com.tvytech.ceirchecker.komun-2.png",
+            "shots/com.tvytech.ceirchecker.komun-3.png",
+            "shots/com.tvytech.ceirchecker.komun-4.png",
+            "shots/com.tvytech.ceirchecker.komun-5.png"
+          ],
           desc: "ဖုန်းဆိုင်များအတွက် CEIR IMEI စစ်၊ အခွန်ဆောင် app",
           descEn: "CEIR IMEI verification and tax clearance tool for mobile phone shops",
           longDesc: "CEIR Status Hub သည် မြန်မာနိုင်ငံရှိ မိုဘိုင်းဖုန်းအရောင်းဆိုင်များနှင့် နည်းပညာသမားများအတွက် CEIR (Central Equipment Identity Register) စနစ်တွင် ဖုန်း၏ IMEI စာရင်းဝင်မှု အခြေအနေ၊ အခွန်ဆောင်ပြီး/မပြီး အခြေအနေနှင့် အကောက်ခွန် ကိစ္စရပ်များကို လျင်မြန်စွာ စစ်ဆေးနိုင်ရန် ဖန်တီးထားသော အထောက်အကူပြု App ဖြစ်ပါသည်။\n\n• IMEI နံပါတ် အလိုအလျောက် စကင်ဖတ်နိုင်ခြင်း\n• အခွန်ဆောင်ပြီးမှု အခြေအနေ အချိန်နှင့်တပြေးညီ ကြည့်ရှုနိုင်ခြင်း\n• စာရင်းဇယားများ သိမ်းဆည်းထားနိုင်ခြင်း",
           longDescEn: "CEIR Status Hub is an essential utility tool tailored for mobile phone retail shops and technicians in Myanmar. It allows seamless verification of phone IMEI registration, customs tax clearance status, and compliance under the CEIR system.\n\n• Fast barcode and IMEI camera scanner\n• Real-time verification of customs and tax status\n• Local verification log and exportable reports",
           changelog: "• အသစ်ထွက်ရှိထားသော v2.0.1 ဗားရှင်း\n• စနစ်ပိုင်း ပိုမိုမြန်ဆန်လာခြင်း\n• အမှားတချို့ ပြင်ဆင်ပြီးခြင်း",
-          changelogEn: "• Newly released v2.0.1 update\n• Performance improvements and faster verification queries\n• Minor bug fixes and stability enhancements",
-          apkUrl: "https://github.com/HeeHeeHta/Web-download-Installer-/releases/download/v2.0.1/CEIR_Status_Hub.apk"
+          changelogEn: "• Newly released v2.0.1 update\n• Performance improvements and faster verification queries\n• Minor bug fixes and stability enhancements"
         }
       ];
+      const DEFAULT_APPS = APPS;
 
       /* ==========================================================================
          TRANSLATIONS DICTIONARY
@@ -1716,7 +1724,13 @@
           const raw = localStorage.getItem("tvy_apps_admin");
           if (raw) {
             const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              if (parsed.length === 1 && parsed[0].name === DEFAULT_APPS[0].name && (!parsed[0].icon || parsed[0].packageName === "com.tvytech.ceirstatus")) {
+                parsed[0] = { ...DEFAULT_APPS[0], ...parsed[0], icon: DEFAULT_APPS[0].icon, screenshots: DEFAULT_APPS[0].screenshots, packageName: DEFAULT_APPS[0].packageName };
+                localStorage.setItem("tvy_apps_admin", JSON.stringify(parsed));
+              }
+              return parsed;
+            }
           }
         } catch (e) {}
         return DEFAULT_APPS;
