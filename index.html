@@ -1376,6 +1376,11 @@
 
         <!-- Section: App List view within Admin -->
         <div id="adminAppListSection">
+          <!-- Migration Notice Banner -->
+          <div id="adminMigrationBanner" style="display: none; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; font-size: 12px; color: #BAE6FD; line-height: 1.5;">
+            <span id="adminMigrationBannerText" data-i18n="migrationNote">Converted embedded images to file paths — re-download and upload the image files to the repo</span>
+          </div>
+
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <span style="font-size: 13.5px; font-weight: 600; color: #fff;">Configured Apps</span>
             <button type="button" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px;" onclick="openAppForm(null)">+ Add New App</button>
@@ -1420,7 +1425,7 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div class="admin-input-group">
               <label class="admin-label">App Name *</label>
-              <input type="text" id="formAppName" class="admin-input" required />
+              <input type="text" id="formAppName" class="admin-input" required oninput="updateFormRepoPaths()" />
             </div>
             <div class="admin-input-group">
               <label class="admin-label">Developer</label>
@@ -1435,7 +1440,7 @@
             </div>
             <div class="admin-input-group">
               <label class="admin-label">Package Name</label>
-              <input type="text" id="formAppPackage" class="admin-input" placeholder="com.example.app" />
+              <input type="text" id="formAppPackage" class="admin-input" placeholder="com.example.app" oninput="updateFormRepoPaths()" />
             </div>
           </div>
 
@@ -1496,6 +1501,7 @@
               <input type="file" id="formIconPicker" accept="image/*" onchange="handleIconPicked(event)" style="flex: 1; font-size: 12px;" />
               <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 6px 10px;" id="btnDownloadIcon" onclick="downloadIconAsset()" disabled>Download icon file</button>
             </div>
+            <div id="formIconRepoPathText" class="admin-hint" style="font-family: ui-monospace, SFMono-Regular, monospace; color: #6EE7B7; margin-top: 4px;">Upload as: icons/app-icon.png</div>
           </div>
 
           <!-- Screenshots picker and list -->
@@ -1506,6 +1512,7 @@
               <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 6px 10px;" id="btnDownloadScreenshots" onclick="downloadAllScreenshots()" disabled>Download all</button>
             </div>
             <div id="formScreenshotsThumbs" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+            <div id="formScreenshotsRepoPathText" class="admin-hint" style="font-family: ui-monospace, SFMono-Regular, monospace; color: #6EE7B7; margin-top: 4px;">Upload as: shots/app-1.png</div>
           </div>
 
           <!-- Descriptions -->
@@ -1641,7 +1648,9 @@
           shareLink: "လင့်ခ် မျှဝေရန်",
           copyLink: "လင့်ခ်ကူးယူမည်",
           copied: "ကူးယူပြီးပါပြီ!",
-          adminTitle: "အက်ပ်စီမံခန့်ခွဲမှုစနစ် (Admin Panel)"
+          adminTitle: "အက်ပ်စီမံခန့်ခွဲမှုစနစ် (Admin Panel)",
+          uploadAs: "ဤဖိုင်အမည်ဖြင့် တင်ပါ: ",
+          migrationNote: "ထည့်သွင်းထားသော ပုံများကို ဖိုင်လမ်းကြောင်းများအဖြစ် အလိုအလျောက် ပြောင်းလဲပြီးပါပြီ — ပုံဖိုင်များကို ပြန်လည်ဒေါင်းလုဒ်ဆွဲပြီး repo သို့ တင်ပေးပါ"
         },
         en: {
           pageTitle: "App Download Center | Burmese App Download Center",
@@ -1689,7 +1698,9 @@
           shareLink: "Share link",
           copyLink: "Copy Link",
           copied: "Copied!",
-          adminTitle: "App Management (Admin Panel)"
+          adminTitle: "App Management (Admin Panel)",
+          uploadAs: "Upload as: ",
+          migrationNote: "Converted embedded images to file paths — re-download and upload the image files to the repo"
         }
       };
 
@@ -1727,6 +1738,60 @@
       function escapeHtml(str) {
         return String(str || '').replace(/[&<>'"]/g, 
           tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+      }
+
+      // Slug & Asset Path utilities
+      function computeAppSlug(pkg, name) {
+        let p = (pkg || "").trim();
+        if (p) {
+          return p.toLowerCase().replace(/[^a-z0-9._-]/g, "");
+        }
+        let n = (name || "app").trim().toLowerCase().replace(/\s+/g, "-");
+        return n.replace(/[^a-z0-9-]/g, "") || "app";
+      }
+
+      function getIconRepoPath(pkg, name) {
+        const slug = computeAppSlug(pkg, name);
+        return `icons/${slug}-icon.png`;
+      }
+
+      function getScreenshotRepoPath(pkg, name, index) {
+        const slug = computeAppSlug(pkg, name);
+        return `shots/${slug}-${index + 1}.png`;
+      }
+
+      function resolveAssetUrl(path) {
+        if (!path) return "";
+        if (typeof path !== "string") return "";
+        if (path.startsWith("data:") || path.startsWith("http://") || path.startsWith("https://")) {
+          return path;
+        }
+        try {
+          const cached = localStorage.getItem("tvy_asset_" + path);
+          if (cached) return cached;
+        } catch (e) {}
+        return path;
+      }
+
+      function updateFormRepoPaths() {
+        const pkg = document.getElementById("formAppPackage")?.value || "";
+        const name = document.getElementById("formAppName")?.value || "";
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+        const prefix = t.uploadAs || "Upload as: ";
+
+        const iconRepo = getIconRepoPath(pkg, name);
+        const iconPathEl = document.getElementById("formIconRepoPathText");
+        if (iconPathEl) {
+          iconPathEl.textContent = prefix + iconRepo;
+        }
+
+        const shotsPathEl = document.getElementById("formScreenshotsRepoPathText");
+        if (shotsPathEl) {
+          const count = stagedScreenshots.length || 1;
+          const samplePaths = Array.from({ length: Math.min(count, 3) }, (_, i) => getScreenshotRepoPath(pkg, name, i));
+          if (count > 3) samplePaths.push(`shots/${computeAppSlug(pkg, name)}-...png`);
+          shotsPathEl.textContent = prefix + samplePaths.join(", ");
+        }
       }
 
       // Language Switcher
@@ -1786,8 +1851,9 @@
           const safeUrl = escapeHtml(app.apkUrl);
           const isVerified = app.verified !== false;
 
-          const iconMarkup = app.icon
-            ? `<img src="${app.icon}" alt="${safeName}" onerror="this.onerror=null;this.parentElement.innerHTML='<svg width=\\'30\\' height=\\'30\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.6\\'><rect x=\\'5\\' y=\\'2\\' width=\\'14\\' height=\\'20\\' rx=\\'3\\'/><path d=\\'M12 18h.01\\'/></svg>';" />`
+          const iconSrc = resolveAssetUrl(app.icon);
+          const iconMarkup = iconSrc
+            ? `<img src="${iconSrc}" alt="${safeName}" onerror="this.onerror=null;this.parentElement.innerHTML='<svg width=\\'30\\' height=\\'30\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.6\\'><rect x=\\'5\\' y=\\'2\\' width=\\'14\\' height=\\'20\\' rx=\\'3\\'/><path d=\\'M12 18h.01\\'/></svg>';" />`
             : `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="5" y="2" width="14" height="20" rx="3"/>
                 <path d="M12 18h.01"/>
@@ -1921,8 +1987,9 @@
 
         // Detail Header
         const iconContainer = document.getElementById("detailIconContainer");
-        if (app.icon) {
-          iconContainer.innerHTML = `<img src="${app.icon}" alt="${safeName}" onerror="this.onerror=null;this.parentElement.innerHTML='<svg width=\\'42\\' height=\\'42\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.6\\'><rect x=\\'5\\' y=\\'2\\' width=\\'14\\' height=\\'20\\' rx=\\'3\\'/><path d=\\'M12 18h.01\\'/></svg>';" />`;
+        const iconSrc = resolveAssetUrl(app.icon);
+        if (iconSrc) {
+          iconContainer.innerHTML = `<img src="${iconSrc}" alt="${safeName}" onerror="this.onerror=null;this.parentElement.innerHTML='<svg width=\\'42\\' height=\\'42\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.6\\'><rect x=\\'5\\' y=\\'2\\' width=\\'14\\' height=\\'20\\' rx=\\'3\\'/><path d=\\'M12 18h.01\\'/></svg>';" />`;
         } else {
           iconContainer.innerHTML = `
             <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -1955,11 +2022,15 @@
         const shotsList = document.getElementById("detailScreenshotsList");
         if (Array.isArray(app.screenshots) && app.screenshots.length > 0) {
           shotsCard.style.display = "block";
-          shotsList.innerHTML = app.screenshots.map((s, sIdx) => `
-            <div class="shot-item">
-              <img src="${s}" alt="Screenshot ${sIdx + 1}" onerror="this.onerror=null;this.parentElement.style.background='rgba(255,255,255,0.04)';this.parentElement.innerHTML='<span style=\\'font-size:12px;color:rgba(255,255,255,0.3)\\'>Preview</span>';" />
-            </div>
-          `).join("");
+          shotsList.innerHTML = app.screenshots.map((s, sIdx) => {
+            const shotPath = typeof s === "object" ? (s.path || "") : s;
+            const shotSrc = resolveAssetUrl(shotPath);
+            return `
+              <div class="shot-item">
+                <img src="${shotSrc}" alt="Screenshot ${sIdx + 1}" onerror="this.onerror=null;this.parentElement.style.background='rgba(255,255,255,0.04)';this.parentElement.innerHTML='<span style=\\'font-size:12px;color:rgba(255,255,255,0.3)\\'>Preview</span>';" />
+              </div>
+            `;
+          }).join("");
         } else {
           shotsCard.style.display = "none";
         }
@@ -2044,6 +2115,53 @@
         return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
       }
 
+      function checkAndMigrateApps() {
+        try {
+          const raw = localStorage.getItem("tvy_apps_admin");
+          if (!raw) return;
+          const apps = JSON.parse(raw);
+          if (!Array.isArray(apps)) return;
+
+          let migrated = false;
+          apps.forEach((app) => {
+            const pkg = app.packageName || "";
+            const name = app.name || "";
+            if (app.icon && typeof app.icon === "string" && app.icon.startsWith("data:image/")) {
+              const iconPath = getIconRepoPath(pkg, name);
+              try {
+                localStorage.setItem("tvy_asset_" + iconPath, app.icon);
+              } catch (e) {}
+              app.icon = iconPath;
+              migrated = true;
+            }
+            if (Array.isArray(app.screenshots)) {
+              app.screenshots = app.screenshots.map((shot, idx) => {
+                if (typeof shot === "string" && shot.startsWith("data:image/")) {
+                  const shotPath = getScreenshotRepoPath(pkg, name, idx);
+                  try {
+                    localStorage.setItem("tvy_asset_" + shotPath, shot);
+                  } catch (e) {}
+                  migrated = true;
+                  return shotPath;
+                }
+                return shot;
+              });
+            }
+          });
+
+          const banner = document.getElementById("adminMigrationBanner");
+          if (migrated) {
+            localStorage.setItem("tvy_apps_admin", JSON.stringify(apps));
+            renderApps();
+            if (banner) banner.style.display = "block";
+          } else {
+            if (banner) banner.style.display = "none";
+          }
+        } catch (e) {
+          console.error("Migration error:", e);
+        }
+      }
+
       function openAdminModal() {
         const overlay = document.getElementById("adminOverlay");
         const pinModal = document.getElementById("adminPinModal");
@@ -2054,7 +2172,15 @@
         if (sessionStorage.getItem("tvy_admin_auth") === "1") {
           pinModal.style.display = "none";
           panelModal.style.display = "flex";
+          checkAndMigrateApps();
           renderAdminAppsList();
+          try {
+            const url = new URL(window.location.href);
+            if (url.searchParams.has("admin")) {
+              url.searchParams.delete("admin");
+              window.history.replaceState({}, document.title, url.pathname + (url.search ? url.search : "") + url.hash);
+            }
+          } catch (e) {}
           return;
         }
 
@@ -2165,11 +2291,13 @@
         const listDiv = document.getElementById("adminAppsList");
         if (!listDiv) return;
 
-        listDiv.innerHTML = apps.map((app, idx) => `
+        listDiv.innerHTML = apps.map((app, idx) => {
+          const iconSrc = resolveAssetUrl(app.icon);
+          return `
           <div class="admin-app-item">
             <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
               <div class="admin-thumb">
-                ${app.icon ? `<img src="${app.icon}" alt="" />` : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="5" y="2" width="14" height="20" rx="3"/></svg>`}
+                ${iconSrc ? `<img src="${iconSrc}" alt="" />` : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="5" y="2" width="14" height="20" rx="3"/></svg>`}
               </div>
               <div style="min-width: 0;">
                 <div style="font-size: 13.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(app.name)}</div>
@@ -2181,7 +2309,7 @@
               <button type="button" class="btn btn-secondary" style="padding: 5px 10px; font-size: 11px; color: #F87171;" onclick="deleteApp(${idx})">Delete</button>
             </div>
           </div>
-        `).join("");
+        `;}).join("");
       }
 
       function openAppForm(index) {
@@ -2215,8 +2343,9 @@
           document.getElementById("formAppChangelog").value = app.changelog || "";
           document.getElementById("formAppChangelogEn").value = app.changelogEn || "";
 
-          stagedIconData = app.icon || "";
-          stagedScreenshots = Array.isArray(app.screenshots) ? [...app.screenshots] : [];
+          // Resolve live preview from localStorage asset cache or fallback to app path
+          stagedIconData = resolveAssetUrl(app.icon) || app.icon || "";
+          stagedScreenshots = Array.isArray(app.screenshots) ? app.screenshots.map(s => resolveAssetUrl(s) || s) : [];
         } else {
           document.getElementById("adminFormTitle").textContent = "Add New App";
           form.reset();
@@ -2229,6 +2358,7 @@
 
         updateFormIconPreview();
         renderFormScreenshotsThumbs();
+        updateFormRepoPaths();
       }
 
       function cancelAppForm() {
@@ -2239,11 +2369,40 @@
       function handleSaveApp(event) {
         event.preventDefault();
         const apps = getAppsList();
+        const pkg = document.getElementById("formAppPackage").value.trim();
+        const name = document.getElementById("formAppName").value.trim();
+
+        // 1. Compute repo path for icon and store base64 in localStorage preview cache
+        const iconRepoPath = getIconRepoPath(pkg, name);
+        let finalIconPath = "";
+        if (stagedIconData) {
+          if (stagedIconData.startsWith("data:image/")) {
+            finalIconPath = iconRepoPath;
+            try {
+              localStorage.setItem("tvy_asset_" + iconRepoPath, stagedIconData);
+            } catch (e) {}
+          } else {
+            finalIconPath = stagedIconData;
+          }
+        }
+
+        // 2. Compute repo path for screenshots and store base64 in localStorage preview cache
+        const finalScreenshots = stagedScreenshots.map((shot, idx) => {
+          const shotRepoPath = getScreenshotRepoPath(pkg, name, idx);
+          if (typeof shot === "string" && shot.startsWith("data:image/")) {
+            try {
+              localStorage.setItem("tvy_asset_" + shotRepoPath, shot);
+            } catch (e) {}
+            return shotRepoPath;
+          }
+          return shot;
+        });
+
         const newApp = {
-          name: document.getElementById("formAppName").value.trim(),
+          name: name,
           developer: document.getElementById("formAppDev").value.trim() || "TVY-Tech",
           version: document.getElementById("formAppVersion").value.trim(),
-          packageName: document.getElementById("formAppPackage").value.trim(),
+          packageName: pkg,
           category: document.getElementById("formAppCategory").value,
           updated: document.getElementById("formAppUpdated").value || new Date().toISOString().slice(0, 10),
           apkUrl: document.getElementById("formAppApkUrl").value.trim(),
@@ -2251,8 +2410,8 @@
           rating: document.getElementById("formAppRating").value.trim() || "5.0",
           downloads: document.getElementById("formAppDownloads").value.trim() || "1.0k",
           verified: document.getElementById("formAppVerified").checked,
-          icon: stagedIconData,
-          screenshots: stagedScreenshots,
+          icon: finalIconPath,
+          screenshots: finalScreenshots,
           desc: document.getElementById("formAppDesc").value.trim(),
           descEn: document.getElementById("formAppDescEn").value.trim(),
           longDesc: document.getElementById("formAppLongDesc").value.trim(),
@@ -2309,7 +2468,14 @@
         const reader = new FileReader();
         reader.onload = (evt) => {
           stagedIconData = evt.target.result;
+          const pkg = document.getElementById("formAppPackage")?.value || "";
+          const name = document.getElementById("formAppName")?.value || "";
+          const iconPath = getIconRepoPath(pkg, name);
+          try {
+            localStorage.setItem("tvy_asset_" + iconPath, stagedIconData);
+          } catch (err) {}
           updateFormIconPreview();
+          updateFormRepoPaths();
         };
         reader.readAsDataURL(file);
       }
@@ -2328,10 +2494,12 @@
 
       function downloadIconAsset() {
         if (!stagedIconData) return;
-        const pkg = document.getElementById("formAppPackage").value.trim() || document.getElementById("formAppName").value.trim().toLowerCase().replace(/\s+/g, '-');
+        const pkg = document.getElementById("formAppPackage").value.trim();
+        const name = document.getElementById("formAppName").value.trim();
+        const slug = computeAppSlug(pkg, name);
         const a = document.createElement("a");
         a.href = stagedIconData;
-        a.download = `${pkg}-icon.png`;
+        a.download = `${slug}-icon.png`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -2341,13 +2509,23 @@
         const files = Array.from(e.target.files || []);
         if (!files.length) return;
         let readCount = 0;
-        files.forEach((file) => {
+        const startIndex = stagedScreenshots.length;
+        const pkg = document.getElementById("formAppPackage")?.value || "";
+        const name = document.getElementById("formAppName")?.value || "";
+
+        files.forEach((file, idx) => {
           const reader = new FileReader();
           reader.onload = (evt) => {
-            stagedScreenshots.push(evt.target.result);
+            const base64 = evt.target.result;
+            stagedScreenshots.push(base64);
+            const shotPath = getScreenshotRepoPath(pkg, name, startIndex + idx);
+            try {
+              localStorage.setItem("tvy_asset_" + shotPath, base64);
+            } catch (err) {}
             readCount++;
             if (readCount === files.length) {
               renderFormScreenshotsThumbs();
+              updateFormRepoPaths();
             }
           };
           reader.readAsDataURL(file);
@@ -2369,29 +2547,53 @@
       function removeScreenshot(idx) {
         stagedScreenshots.splice(idx, 1);
         renderFormScreenshotsThumbs();
+        updateFormRepoPaths();
       }
 
       function downloadAllScreenshots() {
-        const pkg = document.getElementById("formAppPackage").value.trim() || "app";
+        const pkg = document.getElementById("formAppPackage").value.trim();
+        const name = document.getElementById("formAppName").value.trim();
+        const slug = computeAppSlug(pkg, name);
         stagedScreenshots.forEach((shot, i) => {
           const a = document.createElement("a");
           a.href = shot;
-          a.download = `${pkg}-shot-${i + 1}.png`;
+          a.download = `${slug}-${i + 1}.png`;
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
         });
       }
 
+      function sanitizeAppsForExport(apps) {
+        return apps.map((app) => {
+          const clean = { ...app };
+          const pkg = clean.packageName || "";
+          const name = clean.name || "";
+          if (clean.icon && typeof clean.icon === "string" && clean.icon.startsWith("data:image/")) {
+            clean.icon = getIconRepoPath(pkg, name);
+          }
+          if (Array.isArray(clean.screenshots)) {
+            clean.screenshots = clean.screenshots.map((shot, idx) => {
+              if (typeof shot === "string" && shot.startsWith("data:image/")) {
+                return getScreenshotRepoPath(pkg, name, idx);
+              }
+              return shot;
+            });
+          }
+          return clean;
+        });
+      }
+
       // Workflow: Export Code
       function showExportCodeModal() {
-        const apps = getAppsList();
+        const rawApps = getAppsList();
+        const apps = sanitizeAppsForExport(rawApps);
         const exportSection = document.getElementById("adminExportSection");
         const textarea = document.getElementById("adminExportTextarea");
         document.getElementById("adminAppListSection").style.display = "none";
         exportSection.style.display = "flex";
 
-        const codeStr = `const APPS = ${JSON.stringify(apps, null, 2)};`;
+        const codeStr = `// Upload icon/screenshot files to icons/ and shots/ in the repo before pushing\nconst APPS = ${JSON.stringify(apps, null, 2)};`;
         textarea.value = codeStr;
       }
 
