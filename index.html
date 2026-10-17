@@ -1578,7 +1578,7 @@
       const APPS = [
         {
           name: "CEIR Status Hub",
-          developer: "TVY-Tech",
+          developer: "TVY-Tech (Dawei)",
           version: "v2.0.1",
           packageName: "com.tvytech.ceirchecker.komun",
           category: "Tools & Utilities",
@@ -1596,7 +1596,7 @@
             "shots/com.tvytech.ceirchecker.komun-4.png",
             "shots/com.tvytech.ceirchecker.komun-5.png"
           ],
-          desc: "ဖုန်းဆိုင်များအတွက် CEIR IMEI စစ်၊ အခွန်ဆောင် app",
+          desc: "ဖုန်းဆိုင်များအတွက် CEIR နှင့်ပါတ်သက်ပြီး IMEI Check, Application ID Check, Approval Form, Tax Payment စသဖြင့် ပြုလုပ်နိုင်သော ဆော့ဝဲလ်",
           descEn: "CEIR IMEI verification and tax clearance tool for mobile phone shops",
           longDesc: "CEIR Status Hub သည် မြန်မာနိုင်ငံရှိ မိုဘိုင်းဖုန်းအရောင်းဆိုင်များနှင့် နည်းပညာသမားများအတွက် CEIR (Central Equipment Identity Register) စနစ်တွင် ဖုန်း၏ IMEI စာရင်းဝင်မှု အခြေအနေ၊ အခွန်ဆောင်ပြီး/မပြီး အခြေအနေနှင့် အကောက်ခွန် ကိစ္စရပ်များကို လျင်မြန်စွာ စစ်ဆေးနိုင်ရန် ဖန်တီးထားသော အထောက်အကူပြု App ဖြစ်ပါသည်။\n\n• IMEI နံပါတ် အလိုအလျောက် စကင်ဖတ်နိုင်ခြင်း\n• အခွန်ဆောင်ပြီးမှု အခြေအနေ အချိန်နှင့်တပြေးညီ ကြည့်ရှုနိုင်ခြင်း\n• စာရင်းဇယားများ သိမ်းဆည်းထားနိုင်ခြင်း",
           longDescEn: "CEIR Status Hub is an essential utility tool tailored for mobile phone retail shops and technicians in Myanmar. It allows seamless verification of phone IMEI registration, customs tax clearance status, and compliance under the CEIR system.\n\n• Fast barcode and IMEI camera scanner\n• Real-time verification of customs and tax status\n• Local verification log and exportable reports",
@@ -1725,8 +1725,8 @@
           if (raw) {
             const parsed = JSON.parse(raw);
             if (Array.isArray(parsed) && parsed.length > 0) {
-              if (parsed.length === 1 && parsed[0].name === DEFAULT_APPS[0].name && (!parsed[0].icon || parsed[0].packageName === "com.tvytech.ceirstatus")) {
-                parsed[0] = { ...DEFAULT_APPS[0], ...parsed[0], icon: DEFAULT_APPS[0].icon, screenshots: DEFAULT_APPS[0].screenshots, packageName: DEFAULT_APPS[0].packageName };
+              if (parsed.length === 1 && parsed[0].name === DEFAULT_APPS[0].name && (!parsed[0].icon || parsed[0].packageName === "com.tvytech.ceirstatus" || parsed[0].developer === "TVY-Tech")) {
+                parsed[0] = { ...DEFAULT_APPS[0], ...parsed[0], developer: DEFAULT_APPS[0].developer, desc: DEFAULT_APPS[0].desc, icon: DEFAULT_APPS[0].icon, screenshots: DEFAULT_APPS[0].screenshots, packageName: DEFAULT_APPS[0].packageName };
                 localStorage.setItem("tvy_apps_admin", JSON.stringify(parsed));
               }
               return parsed;
