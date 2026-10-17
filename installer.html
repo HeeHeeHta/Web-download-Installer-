@@ -849,6 +849,8 @@
         display: flex;
         justify-content: center;
         margin: 20px 0 28px;
+        position: relative;
+        z-index: 30;
       }
 
       .mode-switcher {
@@ -862,6 +864,8 @@
         -webkit-backdrop-filter: blur(24px);
         backdrop-filter: blur(24px);
         gap: 4px;
+        position: relative;
+        z-index: 31;
       }
 
       .mode-tab-btn {
@@ -876,6 +880,9 @@
         padding: 8px 18px;
         border-radius: 9999px;
         cursor: pointer;
+        pointer-events: auto;
+        user-select: none;
+        -webkit-user-select: none;
         transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
         font-family: inherit;
         line-height: 1.2;
@@ -1534,14 +1541,14 @@
       <!-- Segmented Mode Switcher (ADB Install | Fastboot Tools) -->
       <div class="mode-switcher-wrap">
         <div class="mode-switcher" role="tablist" aria-label="Tool Mode Switcher">
-          <button type="button" class="mode-tab-btn active" id="tabAdbMode" role="tab" aria-selected="true">
+          <button type="button" class="mode-tab-btn active" id="tabAdbMode" role="tab" aria-selected="true" onclick="window.switchMode && window.switchMode('adb')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
               <line x1="12" y1="18" x2="12.01" y2="18"/>
             </svg>
             <span data-i18n="tabAdbMode">ADB Install</span>
           </button>
-          <button type="button" class="mode-tab-btn" id="tabFastbootMode" role="tab" aria-selected="false">
+          <button type="button" class="mode-tab-btn" id="tabFastbootMode" role="tab" aria-selected="false" onclick="window.switchMode && window.switchMode('fastboot')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
             </svg>
@@ -3268,6 +3275,69 @@
       const resetKeysBtn = document.getElementById("resetKeysBtn");
       const troubleshootAccordion = document.getElementById("troubleshootAccordion");
 
+      // Mode Switcher Elements
+      const tabAdbMode = document.getElementById("tabAdbMode");
+      const tabFastbootMode = document.getElementById("tabFastbootMode");
+      const adbModeSection = document.getElementById("adbModeSection");
+      const fastbootModeSection = document.getElementById("fastbootModeSection");
+
+      // App Manager Elements
+      const adbBtnLoadApps = document.getElementById("adbBtnLoadApps");
+      const adbAppsList = document.getElementById("adbAppsList");
+      const adbAppsCount = document.getElementById("adbAppsCount");
+      const adbAppsToolbar = document.getElementById("adbAppsToolbar");
+      const adbAppsSelectAll = document.getElementById("adbAppsSelectAll");
+      const adbBtnBatchUninstall = document.getElementById("adbBtnBatchUninstall");
+      const adbBtnBatchUninstallText = document.getElementById("adbBtnBatchUninstallText");
+      const adbBatchUninstallStatus = document.getElementById("adbBatchUninstallStatus");
+      const adbDisablePkgInput = document.getElementById("adbDisablePkgInput");
+      const adbDisablePkgBtn = document.getElementById("adbDisablePkgBtn");
+
+      // File Transfer Elements
+      const adbPushFileInput = document.getElementById("adbPushFileInput");
+      const adbPushDestInput = document.getElementById("adbPushDestInput");
+      const adbPushBtn = document.getElementById("adbPushBtn");
+      const adbPullPathInput = document.getElementById("adbPullPathInput");
+      const adbPullBtn = document.getElementById("adbPullBtn");
+      const adbFtStatusPill = document.getElementById("adbFtStatusPill");
+      const adbFtStatusBox = document.getElementById("adbFtStatusBox");
+      const adbFtStatusText = document.getElementById("adbFtStatusText");
+      const adbFtBytesText = document.getElementById("adbFtBytesText");
+      const adbFtProgressSection = document.getElementById("adbFtProgressSection");
+      const adbFtProgressBarFill = document.getElementById("adbFtProgressBarFill");
+
+      function updateBatchUninstallBtnState() {
+        const checkedBoxes = Array.from(document.querySelectorAll(".adb-app-cb:checked"));
+        const allBoxes = Array.from(document.querySelectorAll(".adb-app-cb"));
+        const count = checkedBoxes.length;
+
+        if (adbAppsSelectAll) {
+          adbAppsSelectAll.checked = allBoxes.length > 0 && checkedBoxes.length === allBoxes.length;
+          adbAppsSelectAll.indeterminate = checkedBoxes.length > 0 && checkedBoxes.length < allBoxes.length;
+        }
+
+        if (adbBtnBatchUninstall) {
+          adbBtnBatchUninstall.disabled = !activeAdb || isBusy || count === 0;
+        }
+        if (adbBtnBatchUninstallText) {
+          const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+          const baseText = t.adbBtnBatchUninstall || (currentLang === "en" ? "Uninstall Selected" : "ရွေးထားသည်များ ဖျက်မည်");
+          adbBtnBatchUninstallText.textContent = `${baseText} (${count})`;
+        }
+      }
+
+      function updateAdbPushState() {
+        if (!adbPushBtn) return;
+        const hasFile = !!adbPushFileInput?.files?.length;
+        adbPushBtn.disabled = !activeAdb || isBusy || !hasFile;
+      }
+
+      function updateAdbPullState() {
+        if (!adbPullBtn) return;
+        const hasPath = !!(adbPullPathInput?.value || "").trim();
+        adbPullBtn.disabled = !activeAdb || isBusy || !hasPath;
+      }
+
       // Language Switcher function
       function setLang(lang) {
         if (!TRANSLATIONS[lang]) return;
@@ -4137,37 +4207,6 @@
       }
 
       // 2. APP MANAGER (PACKAGES & BLOATWARE)
-      const adbBtnLoadApps = document.getElementById("adbBtnLoadApps");
-      const adbAppsList = document.getElementById("adbAppsList");
-      const adbAppsCount = document.getElementById("adbAppsCount");
-      const adbAppsToolbar = document.getElementById("adbAppsToolbar");
-      const adbAppsSelectAll = document.getElementById("adbAppsSelectAll");
-      const adbBtnBatchUninstall = document.getElementById("adbBtnBatchUninstall");
-      const adbBtnBatchUninstallText = document.getElementById("adbBtnBatchUninstallText");
-      const adbBatchUninstallStatus = document.getElementById("adbBatchUninstallStatus");
-      const adbDisablePkgInput = document.getElementById("adbDisablePkgInput");
-      const adbDisablePkgBtn = document.getElementById("adbDisablePkgBtn");
-
-      function updateBatchUninstallBtnState() {
-        const checkedBoxes = Array.from(document.querySelectorAll(".adb-app-cb:checked"));
-        const allBoxes = Array.from(document.querySelectorAll(".adb-app-cb"));
-        const count = checkedBoxes.length;
-
-        if (adbAppsSelectAll) {
-          adbAppsSelectAll.checked = allBoxes.length > 0 && checkedBoxes.length === allBoxes.length;
-          adbAppsSelectAll.indeterminate = checkedBoxes.length > 0 && checkedBoxes.length < allBoxes.length;
-        }
-
-        if (adbBtnBatchUninstall) {
-          adbBtnBatchUninstall.disabled = !activeAdb || isBusy || count === 0;
-        }
-        if (adbBtnBatchUninstallText) {
-          const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
-          const baseText = t.adbBtnBatchUninstall || (currentLang === "en" ? "Uninstall Selected" : "ရွေးထားသည်များ ဖျက်မည်");
-          adbBtnBatchUninstallText.textContent = `${baseText} (${count})`;
-        }
-      }
-
       if (adbAppsSelectAll) {
         adbAppsSelectAll.addEventListener("change", () => {
           const isChecked = adbAppsSelectAll.checked;
@@ -4612,18 +4651,6 @@
       });
 
       // 7. FILE TRANSFER (PUSH & PULL)
-      const adbPushFileInput = document.getElementById("adbPushFileInput");
-      const adbPushDestInput = document.getElementById("adbPushDestInput");
-      const adbPushBtn = document.getElementById("adbPushBtn");
-      const adbPullPathInput = document.getElementById("adbPullPathInput");
-      const adbPullBtn = document.getElementById("adbPullBtn");
-      const adbFtStatusPill = document.getElementById("adbFtStatusPill");
-      const adbFtStatusBox = document.getElementById("adbFtStatusBox");
-      const adbFtStatusText = document.getElementById("adbFtStatusText");
-      const adbFtBytesText = document.getElementById("adbFtBytesText");
-      const adbFtProgressSection = document.getElementById("adbFtProgressSection");
-      const adbFtProgressBarFill = document.getElementById("adbFtProgressBarFill");
-
       function setFtStatus(type, text, bytesInfo = "") {
         // type: 'idle' | 'busy' | 'success' | 'error'
         if (adbFtStatusBox) adbFtStatusBox.style.display = "block";
@@ -4651,18 +4678,7 @@
         if (adbFtProgressBarFill) adbFtProgressBarFill.style.width = "0%";
       }
 
-      function updateAdbPushState() {
-        if (!adbPushBtn) return;
-        const hasFile = !!adbPushFileInput?.files?.length;
-        adbPushBtn.disabled = !activeAdb || isBusy || !hasFile;
-      }
       if (adbPushFileInput) adbPushFileInput.addEventListener("change", updateAdbPushState);
-
-      function updateAdbPullState() {
-        if (!adbPullBtn) return;
-        const hasPath = !!(adbPullPathInput?.value || "").trim();
-        adbPullBtn.disabled = !activeAdb || isBusy || !hasPath;
-      }
       if (adbPullPathInput) adbPullPathInput.addEventListener("input", updateAdbPullState);
 
       async function pushFileToDevice() {
@@ -5138,63 +5154,78 @@
       // ==========================================================================
       // MODE SWITCHER (ADB Install vs Fastboot Tools)
       // ==========================================================================
-      const tabAdbMode = document.getElementById("tabAdbMode");
-      const tabFastbootMode = document.getElementById("tabFastbootMode");
-      const adbModeSection = document.getElementById("adbModeSection");
-      const fastbootModeSection = document.getElementById("fastbootModeSection");
-
       function switchMode(mode) {
-        currentMode = mode;
-        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
-        if (mode === "fastboot") {
+        try {
+          // a. currentMode = mode
+          currentMode = mode;
+          const isFastboot = mode === "fastboot";
+
+          // b. toggle tab button active classes
           if (tabFastbootMode) {
-            tabFastbootMode.classList.add("active");
-            tabFastbootMode.setAttribute("aria-selected", "true");
+            tabFastbootMode.classList.toggle("active", isFastboot);
+            tabFastbootMode.setAttribute("aria-selected", isFastboot ? "true" : "false");
           }
           if (tabAdbMode) {
-            tabAdbMode.classList.remove("active");
-            tabAdbMode.setAttribute("aria-selected", "false");
+            tabAdbMode.classList.toggle("active", !isFastboot);
+            tabAdbMode.setAttribute("aria-selected", !isFastboot ? "true" : "false");
           }
-          if (adbModeSection) adbModeSection.style.display = "none";
-          if (fastbootModeSection) fastbootModeSection.style.display = "block";
 
-          if (statusText) {
-            if (activeFb) {
-              statusDot.classList.add("connected");
-              statusText.textContent = `Fastboot (${activeFbProduct || "Device"}) ${t.statusConnectedSuffix}`;
-            } else {
-              statusDot.classList.remove("connected");
-              statusText.textContent = t.statusDisconnected;
-            }
-          }
-          appendLog(currentLang === "en" ? "[Mode] Switched to Fastboot Tools" : "[Mode] Fastboot Tools စနစ်သို့ ပြောင်းလဲလိုက်ပါသည်", "info");
-        } else {
-          if (tabAdbMode) {
-            tabAdbMode.classList.add("active");
-            tabAdbMode.setAttribute("aria-selected", "true");
-          }
-          if (tabFastbootMode) {
-            tabFastbootMode.classList.remove("active");
-            tabFastbootMode.setAttribute("aria-selected", "false");
-          }
-          if (fastbootModeSection) fastbootModeSection.style.display = "none";
-          if (adbModeSection) adbModeSection.style.display = "block";
+          // c. toggle adbModeSection / fastbootModeSection display
+          if (adbModeSection) adbModeSection.style.display = isFastboot ? "none" : "block";
+          if (fastbootModeSection) fastbootModeSection.style.display = isFastboot ? "block" : "none";
 
-          if (statusText) {
-            if (activeAdb) {
-              statusDot.classList.add("connected");
-              statusText.textContent = `${activeDeviceModel || "Android"} ${t.statusConnectedSuffix}`;
+          // d. window.scrollTo top
+          window.scrollTo({ top: 0, behavior: "instant" });
+
+          // e. update statusText/statusDot (guarded, in try/catch)
+          try {
+            const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+            if (isFastboot) {
+              if (statusText) {
+                if (activeFb) {
+                  if (statusDot) statusDot.classList.add("connected");
+                  statusText.textContent = `Fastboot (${activeFbProduct || "Device"}) ${t.statusConnectedSuffix}`;
+                } else {
+                  if (statusDot) statusDot.classList.remove("connected");
+                  statusText.textContent = t.statusDisconnected;
+                }
+              }
             } else {
-              statusDot.classList.remove("connected");
-              statusText.textContent = t.statusDisconnected;
+              if (statusText) {
+                if (activeAdb) {
+                  if (statusDot) statusDot.classList.add("connected");
+                  statusText.textContent = `${activeDeviceModel || "Android"} ${t.statusConnectedSuffix}`;
+                } else {
+                  if (statusDot) statusDot.classList.remove("connected");
+                  statusText.textContent = t.statusDisconnected;
+                }
+              }
             }
+          } catch (statusErr) {
+            console.error("[Mode] status update failed:", statusErr);
           }
-          appendLog(currentLang === "en" ? "[Mode] Switched to ADB Install" : "[Mode] ADB Install စနစ်သို့ ပြောင်းလဲလိုက်ပါသည်", "info");
+
+          // f. appendLog the switch
+          if (isFastboot) {
+            appendLog(currentLang === "en" ? "[Mode] Switched to Fastboot Tools" : "[Mode] Fastboot Tools စနစ်သို့ ပြောင်းလဲလိုက်ပါသည်", "info");
+          } else {
+            appendLog(currentLang === "en" ? "[Mode] Switched to ADB Install" : "[Mode] ADB Install စနစ်သို့ ပြောင်းလဲလိုက်ပါသည်", "info");
+          }
+        } catch (err) {
+          console.error("[Mode] switch failed:", err);
+          appendLog("Mode switch error: " + (err?.message || err), "error");
         }
       }
 
+      window.switchMode = switchMode;
       if (tabAdbMode) tabAdbMode.addEventListener("click", () => switchMode("adb"));
       if (tabFastbootMode) tabFastbootMode.addEventListener("click", () => switchMode("fastboot"));
+
+      // Check URL query parameters or hash to support initial fastboot mode
+      const initialMode = urlParams.get("mode") || urlParams.get("tab") || (window.location.hash === "#fastboot" ? "fastboot" : "");
+      if (initialMode === "fastboot") {
+        switchMode("fastboot");
+      }
 
       // ==========================================================================
       // FASTBOOT TOOLS CONTROLLER
