@@ -1696,6 +1696,7 @@ const firebaseConfig = {
       const FIREBASE_CONFIG = {
         apiKey: "AIzaSyC0GeC87lleiXVOH0EHKokRlZB53Lnpxhk",
         authDomain: "tvy-app-store.firebaseapp.com",
+        databaseURL: "https://tvy-app-store-default-rtdb.asia-southeast1.firebasedatabase.app",
         projectId: "tvy-app-store",
         storageBucket: "tvy-app-store.firebasestorage.app",
         messagingSenderId: "219270533922",
@@ -1714,10 +1715,22 @@ const firebaseConfig = {
       let isFbReady = false;
       let rtdbReady = false;
       let rtdbAppsCache = {};
-      let activeDetailUnsubscribe = null;
+      let activeDetailUnsubscribes = [];
       let activeDetailSlug = null;
       let userPreviousRating = 0;
       let isRatingSubmitting = false;
+
+      function detachDetailListeners() {
+        if (Array.isArray(activeDetailUnsubscribes)) {
+          activeDetailUnsubscribes.forEach((fn) => {
+            try {
+              if (typeof fn === "function") fn();
+            } catch (e) {}
+          });
+        }
+        activeDetailUnsubscribes = [];
+        activeDetailSlug = null;
+      }
 
       function isFirebasePlaceholder(cfg) {
         if (!cfg || typeof cfg !== "object") return true;
@@ -1774,7 +1787,7 @@ const firebaseConfig = {
           const { initializeApp } = await dynamicImport("firebase/app");
           const { getDatabase, ref, get, set, runTransaction, onValue, off } = await dynamicImport("firebase/database");
           fbApp = initializeApp(FIREBASE_CONFIG);
-          const dbUrl = FIREBASE_CONFIG.databaseURL || `https://${FIREBASE_CONFIG.projectId}-default-rtdb.firebaseio.com`;
+          const dbUrl = FIREBASE_CONFIG.databaseURL || `https://${FIREBASE_CONFIG.projectId}-default-rtdb.asia-southeast1.firebasedatabase.app`;
           rtdb = getDatabase(fbApp, dbUrl);
           rtdbRef = ref;
           rtdbGet = get;
@@ -1800,7 +1813,7 @@ const firebaseConfig = {
           const appsRef = rtdbRef(rtdb, "apps");
           const snap = await Promise.race([
             rtdbGet(appsRef),
-            new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 3000))
+            new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 2000))
           ]);
           if (snap && snap.exists()) {
             rtdbAppsCache = snap.val() || {};
@@ -1809,8 +1822,32 @@ const firebaseConfig = {
           }
           rtdbReady = true;
         } catch (e) {
-          // Silently fallback without logging errors
-          rtdbReady = false;
+          // If /apps has scoped rules (e.g. only $slug children have .read), fetch stats for configured apps in parallel
+          try {
+            const appsList = getAppsList();
+            const fetches = appsList.map(async (app) => {
+              const slug = getAppRtdbSlug(app);
+              try {
+                const [dlSnap, sumSnap, countSnap] = await Promise.all([
+                  rtdbGet(rtdbRef(rtdb, `apps/${slug}/downloads`)),
+                  rtdbGet(rtdbRef(rtdb, `apps/${slug}/ratingSum`)),
+                  rtdbGet(rtdbRef(rtdb, `apps/${slug}/ratingCount`))
+                ]);
+                rtdbAppsCache[slug] = {
+                  downloads: (dlSnap && dlSnap.exists()) ? dlSnap.val() : undefined,
+                  ratingSum: (sumSnap && sumSnap.exists()) ? sumSnap.val() : undefined,
+                  ratingCount: (countSnap && countSnap.exists()) ? countSnap.val() : 0
+                };
+              } catch (err) {}
+            });
+            await Promise.race([
+              Promise.all(fetches),
+              new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 2500))
+            ]);
+            rtdbReady = true;
+          } catch (err) {
+            rtdbReady = false;
+          }
         }
       }
 
@@ -2133,9 +2170,15 @@ const firebaseConfig = {
               cardDl = "—";
             }
           } else {
-            // If rtdbReady is false (Firebase failed to initialize — offline/error): keep static app.rating/app.downloads as last-resort fallback
-            cardRating = app.rating || "5.0";
-            cardDl = formatDownloads(app.downloads || "1.0k");
+            // If Firebase is configured with real credentials (not placeholder), show "—" while loading/offline so fake numbers never show
+            if (!isFirebasePlaceholder(FIREBASE_CONFIG)) {
+              cardRating = "—";
+              cardDl = "—";
+            } else {
+              // Last-resort fallback only when Firebase is unconfigured placeholder
+              cardRating = app.rating || "5.0";
+              cardDl = formatDownloads(app.downloads || "1.0k");
+            }
           }
 
           const iconSrc = resolveAssetUrl(app.icon);
@@ -2231,12 +2274,8 @@ const firebaseConfig = {
         const apps = getAppsList();
         if (!apps[index]) return;
 
-        // Detach previous detail listener if active
-        if (activeDetailUnsubscribe) {
-          try { activeDetailUnsubscribe(); } catch (e) {}
-          activeDetailUnsubscribe = null;
-        }
-        activeDetailSlug = null;
+        // Detach previous detail listeners if active
+        detachDetailListeners();
 
         currentSelectedAppIndex = index;
         location.hash = `#app-${index}`;
@@ -2249,11 +2288,8 @@ const firebaseConfig = {
       }
 
       function closeAppDetail() {
-        if (activeDetailUnsubscribe) {
-          try { activeDetailUnsubscribe(); } catch (e) {}
-          activeDetailUnsubscribe = null;
-        }
-        activeDetailSlug = null;
+        // Detach detail listeners
+        detachDetailListeners();
         currentSelectedAppIndex = -1;
 
         if (location.hash.startsWith("#app-")) {
@@ -2272,18 +2308,25 @@ const firebaseConfig = {
         if (data && (data.ratingCount > 0 || data.ratingSum > 0 || data.downloads !== undefined)) {
           const count = Number(data.ratingCount) || 0;
           const sum = Number(data.ratingSum) || 0;
-          const avg = count > 0 ? (sum / count).toFixed(1) : (app.rating || "5.0");
-          ratingEl.textContent = `${avg} (${count})`;
-          dlEl.textContent = formatDownloads(data.downloads !== undefined ? data.downloads : (app.downloads || "0"));
+          if (count > 0 && data.ratingSum !== undefined) {
+            const avg = (sum / count).toFixed(1);
+            ratingEl.textContent = `${avg} (${count})`;
+          } else {
+            ratingEl.textContent = "—";
+          }
+          if (data.downloads !== undefined && data.downloads !== null) {
+            dlEl.textContent = formatDownloads(data.downloads);
+          } else {
+            dlEl.textContent = "—";
+          }
         } else {
           // If fallback / no live data
-          if (isFirebasePlaceholder(FIREBASE_CONFIG) || !isFbReady) {
+          if (isFirebasePlaceholder(FIREBASE_CONFIG)) {
             ratingEl.textContent = app.rating || "5.0";
             dlEl.textContent = formatDownloads(app.downloads || "1.0k");
           } else {
-            const staticRating = app.rating || "5.0";
-            ratingEl.textContent = `${staticRating} (0)`;
-            dlEl.textContent = formatDownloads(app.downloads || "0");
+            ratingEl.textContent = "—";
+            dlEl.textContent = "—";
           }
         }
       }
@@ -2347,27 +2390,34 @@ const firebaseConfig = {
         // Immediate cached display if available
         if (rtdbAppsCache[slug]) {
           updateDetailStatsDisplay(app, rtdbAppsCache[slug]);
-        } else if (!isFbReady) {
+        } else {
           updateDetailStatsDisplay(app, null);
         }
 
-        // Attach Realtime onValue listener for live updates on this app
+        // Attach Realtime onValue listeners for child paths (works with both root and scoped security rules)
         if (isFbReady && rtdb && rtdbRef && rtdbOnValue) {
           try {
-            const appStatsRef = rtdbRef(rtdb, `apps/${slug}`);
+            detachDetailListeners();
             activeDetailSlug = slug;
-            activeDetailUnsubscribe = rtdbOnValue(appStatsRef, (snapshot) => {
+            const dlSub = rtdbOnValue(rtdbRef(rtdb, `apps/${slug}/downloads`), (snap) => {
               if (activeDetailSlug !== slug) return;
-              const val = snapshot.val();
-              if (val) {
-                rtdbAppsCache[slug] = val;
-                updateDetailStatsDisplay(app, val);
-              } else {
-                updateDetailStatsDisplay(app, null);
-              }
-            }, () => {
-              updateDetailStatsDisplay(app, null);
-            });
+              if (!rtdbAppsCache[slug]) rtdbAppsCache[slug] = {};
+              rtdbAppsCache[slug].downloads = snap.val();
+              updateDetailStatsDisplay(app, rtdbAppsCache[slug]);
+            }, () => {});
+            const sumSub = rtdbOnValue(rtdbRef(rtdb, `apps/${slug}/ratingSum`), (snap) => {
+              if (activeDetailSlug !== slug) return;
+              if (!rtdbAppsCache[slug]) rtdbAppsCache[slug] = {};
+              rtdbAppsCache[slug].ratingSum = snap.val();
+              updateDetailStatsDisplay(app, rtdbAppsCache[slug]);
+            }, () => {});
+            const countSub = rtdbOnValue(rtdbRef(rtdb, `apps/${slug}/ratingCount`), (snap) => {
+              if (activeDetailSlug !== slug) return;
+              if (!rtdbAppsCache[slug]) rtdbAppsCache[slug] = {};
+              rtdbAppsCache[slug].ratingCount = snap.val();
+              updateDetailStatsDisplay(app, rtdbAppsCache[slug]);
+            }, () => {});
+            activeDetailUnsubscribes = [dlSub, sumSub, countSub];
           } catch (e) {
             updateDetailStatsDisplay(app, null);
           }
@@ -2500,7 +2550,7 @@ const firebaseConfig = {
         isRatingSubmitting = true;
         if (starsContainer) {
           starsContainer.style.pointerEvents = "none";
-          starsContainer.style.opacity = "0.5";
+          starsContainer.style.opacity = "0.7";
         }
         if (feedbackEl) {
           feedbackEl.textContent = "...";
@@ -2515,7 +2565,10 @@ const firebaseConfig = {
             if (rtdbGet) {
               try {
                 const userRatingRef = rtdbRef(rtdb, `ratings/${slug}/${anonId}`);
-                const userSnap = await rtdbGet(userRatingRef);
+                const userSnap = await Promise.race([
+                  rtdbGet(userRatingRef),
+                  new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 2000))
+                ]);
                 if (userSnap && userSnap.exists()) {
                   const val = Number(userSnap.val());
                   if (val >= 1 && val <= 5) {
@@ -2527,25 +2580,29 @@ const firebaseConfig = {
 
             // 2. Write ratings/{slug}/{anonId} = stars
             const userRatingRef = rtdbRef(rtdb, `ratings/${slug}/${anonId}`);
-            await rtdbSet(userRatingRef, newRating);
+            await Promise.race([
+              rtdbSet(userRatingRef, newRating),
+              new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 2500))
+            ]);
 
-            // 3. Transaction-update ratingSum/ratingCount
-            // (if re-rating: sum += new - old, count unchanged; if new: sum += new, count += 1)
-            const appStatsRef = rtdbRef(rtdb, `apps/${slug}`);
-            await rtdbRunTransaction(appStatsRef, (curr) => {
-              if (!curr) {
-                curr = { downloads: 0, ratingSum: 0, ratingCount: 0 };
-              }
-              const oldSum = Number(curr.ratingSum) || 0;
-              const oldCount = Number(curr.ratingCount) || 0;
-              if (prevRating && prevRating >= 1 && prevRating <= 5) {
-                curr.ratingSum = Math.max(0, oldSum + newRating - prevRating);
-              } else {
-                curr.ratingSum = oldSum + newRating;
-                curr.ratingCount = oldCount + 1;
-              }
-              return curr;
-            });
+            // 3. Update ratingSum and ratingCount via transaction on leaf paths (compatible with scoped rules)
+            const sumRef = rtdbRef(rtdb, `apps/${slug}/ratingSum`);
+            const countRef = rtdbRef(rtdb, `apps/${slug}/ratingCount`);
+            await Promise.race([
+              Promise.all([
+                rtdbRunTransaction(sumRef, (currSum) => {
+                  const oldSum = Number(currSum) || 0;
+                  if (prevRating && prevRating >= 1 && prevRating <= 5) {
+                    return Math.max(0, oldSum + newRating - prevRating);
+                  }
+                  return oldSum + newRating;
+                }),
+                (!prevRating || prevRating < 1 || prevRating > 5)
+                  ? rtdbRunTransaction(countRef, (currCount) => (Number(currCount) || 0) + 1)
+                  : Promise.resolve()
+              ]),
+              new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 2500))
+            ]);
           }
 
           userPreviousRating = newRating;
@@ -2555,7 +2612,7 @@ const firebaseConfig = {
 
           renderRatingStars(newRating);
           if (feedbackEl) {
-            feedbackEl.textContent = `${t.thanksRating} (${newRating} ★)`;
+            feedbackEl.textContent = `${t.thanksRating || "Thanks for rating!"} (${newRating} ★)`;
             feedbackEl.style.color = "#34D399";
           }
         } catch (err) {
@@ -2565,7 +2622,7 @@ const firebaseConfig = {
           } catch (e) {}
           renderRatingStars(newRating);
           if (feedbackEl) {
-            feedbackEl.textContent = `${t.thanksRating} (${newRating} ★)`;
+            feedbackEl.textContent = `${t.thanksRating || "Thanks for rating!"} (${newRating} ★)`;
             feedbackEl.style.color = "#34D399";
           }
         } finally {
