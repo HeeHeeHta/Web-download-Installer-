@@ -471,6 +471,32 @@
         border-radius: 9999px;
       }
 
+      .badge-paid {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(245, 158, 11, 0.15);
+        border: 1px solid rgba(245, 158, 11, 0.36);
+        color: #FBBF24;
+        font-size: 10.5px;
+        font-weight: 600;
+        padding: 1.5px 8px;
+        border-radius: 9999px;
+      }
+
+      .badge-free {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(148, 163, 184, 0.12);
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        color: #94A3B8;
+        font-size: 10.5px;
+        font-weight: 600;
+        padding: 1.5px 8px;
+        border-radius: 9999px;
+      }
+
       .version-pill {
         background: rgba(255, 255, 255, 0.08);
         color: rgba(255, 255, 255, 0.9);
@@ -1267,6 +1293,7 @@
                   </svg>
                   <span>Verified</span>
                 </span>
+                <span id="detailAppPricingBadge"></span>
               </div>
             </div>
           </div>
@@ -1401,6 +1428,10 @@
             <div class="tech-row">
               <span class="tech-label" data-i18n="category">Category</span>
               <span class="tech-value" id="detailTechCategory">-</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label" data-i18n="price">Price</span>
+              <span class="tech-value" id="detailTechPrice">-</span>
             </div>
           </div>
         </section>
@@ -1563,9 +1594,17 @@
               </select>
             </div>
             <div class="admin-input-group">
-              <label class="admin-label">Release / Updated Date</label>
-              <input type="date" id="formAppUpdated" class="admin-input" />
+              <label class="admin-label">Pricing</label>
+              <select id="formAppPricing" class="admin-select">
+                <option value="free">Free</option>
+                <option value="paid">Paid</option>
+              </select>
             </div>
+          </div>
+
+          <div class="admin-input-group">
+            <label class="admin-label">Release / Updated Date</label>
+            <input type="date" id="formAppUpdated" class="admin-input" />
           </div>
 
           <div class="admin-input-group">
@@ -1719,6 +1758,8 @@ const firebaseConfig = {
       let activeDetailSlug = null;
       let userPreviousRating = 0;
       let isRatingSubmitting = false;
+      let ratingDebounceTimer = null;
+      let pendingRatingValue = 0;
 
       function detachDetailListeners() {
         if (Array.isArray(activeDetailUnsubscribes)) {
@@ -1863,6 +1904,7 @@ const firebaseConfig = {
           version: "v2.0.1",
           packageName: "com.tvytech.ceirchecker.komun",
           category: "Tools & Utilities",
+          paid: true,
           updated: "2026-10-12",
           apkUrl: "https://github.com/HeeHeeHta/Web-download-Installer-/releases/download/v2.0.1/CEIR_Status_Hub.apk",
           size: "65.7 MB",
@@ -1890,6 +1932,7 @@ const firebaseConfig = {
           version: "v1.0.0",
           packageName: "com.tvytech.medicalnote.komun",
           category: "Other",
+          paid: false,
           updated: "2026-10-18",
           apkUrl: "https://u.pcloud.link/publink/show?code=XZucLa5ZCggRCA2PnG8H5EVO7BMwvRyN0NP7",
           size: "20.7 MB",
@@ -1917,6 +1960,7 @@ const firebaseConfig = {
           version: "v1.0",
           packageName: "com.aistudio.koenawin.chntr",
           category: "Tools & Utilities",
+          paid: false,
           updated: "2026-10-18",
           apkUrl: "https://u.pcloud.link/publink/show?code=XZ4LSA5ZPrvOQLz4RfLEohJxhEfnOXQjGRr7",
           size: "17.9 MB",
@@ -1987,6 +2031,9 @@ const firebaseConfig = {
           pkgName: "Package Name",
           version: "Version",
           category: "အမျိုးအစား",
+          price: "စျေးနှုန်း",
+          paid: "အခပေး",
+          free: "အခမဲ့",
           shareLink: "လင့်ခ် မျှဝေရန်",
           copyLink: "လင့်ခ်ကူးယူမည်",
           copied: "ကူးယူပြီးပါပြီ!",
@@ -2040,6 +2087,9 @@ const firebaseConfig = {
           pkgName: "Package Name",
           version: "Version",
           category: "Category",
+          price: "Price",
+          paid: "Paid",
+          free: "Free",
           shareLink: "Share link",
           copyLink: "Copy Link",
           copied: "Copied!",
@@ -2075,10 +2125,13 @@ const firebaseConfig = {
                 if (existingIdx === -1) {
                   parsed.push({ ...defApp });
                   modified = true;
+                } else if (defApp.paid !== undefined && parsed[existingIdx].paid === undefined) {
+                  parsed[existingIdx].paid = defApp.paid;
+                  modified = true;
                 }
               });
               if (parsed.length >= 1 && parsed[0].name === DEFAULT_APPS[0].name && (!parsed[0].icon || parsed[0].packageName === "com.tvytech.ceirstatus" || parsed[0].developer === "TVY-Tech")) {
-                parsed[0] = { ...DEFAULT_APPS[0], ...parsed[0], developer: DEFAULT_APPS[0].developer, desc: DEFAULT_APPS[0].desc, icon: DEFAULT_APPS[0].icon, screenshots: DEFAULT_APPS[0].screenshots, packageName: DEFAULT_APPS[0].packageName };
+                parsed[0] = { ...DEFAULT_APPS[0], ...parsed[0], developer: DEFAULT_APPS[0].developer, desc: DEFAULT_APPS[0].desc, icon: DEFAULT_APPS[0].icon, screenshots: DEFAULT_APPS[0].screenshots, packageName: DEFAULT_APPS[0].packageName, paid: DEFAULT_APPS[0].paid };
                 modified = true;
               }
               if (modified) {
@@ -2257,6 +2310,18 @@ const firebaseConfig = {
                 <path d="M12 18h.01"/>
               </svg>`;
 
+          const isPaid = !!app.paid;
+          const pricingText = isPaid ? t.paid : t.free;
+          const pricingBadgeClass = isPaid ? "badge-paid" : "badge-free";
+          const pricingBadgeMarkup = `
+            <span class="${pricingBadgeClass}">
+              <svg width="10.5" height="10.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                <line x1="7" y1="7" x2="7.01" y2="7"/>
+              </svg>
+              <span>${escapeHtml(pricingText)}</span>
+            </span>`;
+
           return `
             <article class="app-card" onclick="handleCardClick(event, ${index})">
               <div class="app-card-layout">
@@ -2275,6 +2340,7 @@ const firebaseConfig = {
                         </svg>
                         <span>Verified</span>
                       </span>` : ''}
+                    ${pricingBadgeMarkup}
                   </div>
                   <div class="app-card-dev">${safeDev}</div>
                   <p class="app-card-desc">${safeDesc}</p>
@@ -2436,6 +2502,20 @@ const firebaseConfig = {
         document.getElementById("detailAppVer").textContent = appVer;
         document.getElementById("detailAppVerified").style.display = isVerified ? "inline-flex" : "none";
 
+        const pricingBadgeEl = document.getElementById("detailAppPricingBadge");
+        if (pricingBadgeEl) {
+          const isPaid = !!app.paid;
+          const pricingText = isPaid ? t.paid : t.free;
+          pricingBadgeEl.className = isPaid ? "badge-paid" : "badge-free";
+          pricingBadgeEl.innerHTML = `
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+              <line x1="7" y1="7" x2="7.01" y2="7"/>
+            </svg>
+            <span>${escapeHtml(pricingText)}</span>
+          `;
+        }
+
         // Download CTA - increments download counter first, then triggers download
         const downloadBtn = document.getElementById("detailDownloadBtn");
         downloadBtn.href = app.apkUrl;
@@ -2563,6 +2643,8 @@ const firebaseConfig = {
         document.getElementById("detailTechSize").textContent = appSize;
         document.getElementById("detailTechUpdated").textContent = appDate;
         document.getElementById("detailTechCategory").textContent = appCategory;
+        const priceEl = document.getElementById("detailTechPrice");
+        if (priceEl) priceEl.textContent = app.paid ? t.paid : t.free;
 
         // Share link
         const shareUrl = `${window.location.origin}${window.location.pathname}#app-${index}`;
@@ -2603,57 +2685,87 @@ const firebaseConfig = {
       }
 
       // Rating Action Handlers
-      async function submitAppRating(newRating) {
-        if (isRatingSubmitting) return;
+      function submitAppRating(newRating) {
+        const apps = getAppsList();
+        const app = apps[currentSelectedAppIndex];
+        if (!app) return;
+
+        // Immediately show optimistic rating and update hover baseline
+        renderRatingStars(newRating);
+        userPreviousRating = newRating;
+
+        // Subtle non-blocking saving status
+        const feedbackEl = document.getElementById("rateAppFeedback");
+        if (feedbackEl) {
+          feedbackEl.textContent = currentLang === "my" ? "သိမ်းဆည်းနေသည်…" : "Saving…";
+          feedbackEl.style.color = "var(--text-muted)";
+        }
+
+        // Debounce: collapse rapid taps into a single Firebase write
+        pendingRatingValue = newRating;
+        clearTimeout(ratingDebounceTimer);
+        ratingDebounceTimer = setTimeout(flushPendingRating, 600);
+      }
+
+      async function flushPendingRating() {
+        const ratingToSend = pendingRatingValue;
+        pendingRatingValue = 0;
+        if (!ratingToSend) return;
+
+        if (isRatingSubmitting) {
+          // Re-queue if a write is currently in-flight
+          pendingRatingValue = ratingToSend;
+          ratingDebounceTimer = setTimeout(flushPendingRating, 800);
+          return;
+        }
+
         const apps = getAppsList();
         const app = apps[currentSelectedAppIndex];
         if (!app) return;
 
         const slug = getAppRtdbSlug(app);
         const anonId = getAnonId();
-        const starsContainer = document.getElementById("rateAppStars");
         const feedbackEl = document.getElementById("rateAppFeedback");
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
 
         isRatingSubmitting = true;
-        if (starsContainer) {
-          starsContainer.style.pointerEvents = "none";
-          starsContainer.style.opacity = "0.7";
-        }
-        if (feedbackEl) {
-          feedbackEl.textContent = "...";
-          feedbackEl.style.color = "var(--text-muted)";
-        }
 
         try {
-          let prevRating = userPreviousRating;
+          // Determine prevRating from COMMITTED value (Firebase first, falling back to localStorage cache)
+          let prevRating = 0;
+          try {
+            const stored = localStorage.getItem(`tvy_rating_${slug}`);
+            if (stored) {
+              const num = Number(stored);
+              if (num >= 1 && num <= 5) prevRating = num;
+            }
+          } catch (e) {}
+
+          if (isFbReady && rtdb && rtdbRef && rtdbGet) {
+            try {
+              const userRatingRef = rtdbRef(rtdb, `ratings/${slug}/${anonId}`);
+              const userSnap = await Promise.race([
+                rtdbGet(userRatingRef),
+                new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 2000))
+              ]);
+              if (userSnap && userSnap.exists()) {
+                const val = Number(userSnap.val());
+                if (val >= 1 && val <= 5) {
+                  prevRating = val;
+                }
+              }
+            } catch (e) {}
+          }
 
           if (isFbReady && rtdb && rtdbRef && rtdbSet && rtdbRunTransaction) {
-            // 1. Read user's previous rating (if any)
-            if (rtdbGet) {
-              try {
-                const userRatingRef = rtdbRef(rtdb, `ratings/${slug}/${anonId}`);
-                const userSnap = await Promise.race([
-                  rtdbGet(userRatingRef),
-                  new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 2000))
-                ]);
-                if (userSnap && userSnap.exists()) {
-                  const val = Number(userSnap.val());
-                  if (val >= 1 && val <= 5) {
-                    prevRating = val;
-                  }
-                }
-              } catch (e) {}
-            }
-
-            // 2. Write ratings/{slug}/{anonId} = stars
+            // 1. Write ratings/{slug}/{anonId} = ratingToSend
             const userRatingRef = rtdbRef(rtdb, `ratings/${slug}/${anonId}`);
             await Promise.race([
-              rtdbSet(userRatingRef, newRating),
+              rtdbSet(userRatingRef, ratingToSend),
               new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 2500))
             ]);
 
-            // 3. Update ratingSum and ratingCount via transaction on leaf paths (compatible with scoped rules)
+            // 2. Update ratingSum and ratingCount via transaction on leaf paths (compatible with scoped rules)
             const sumRef = rtdbRef(rtdb, `apps/${slug}/ratingSum`);
             const countRef = rtdbRef(rtdb, `apps/${slug}/ratingCount`);
             await Promise.race([
@@ -2661,9 +2773,9 @@ const firebaseConfig = {
                 rtdbRunTransaction(sumRef, (currSum) => {
                   const oldSum = Number(currSum) || 0;
                   if (prevRating && prevRating >= 1 && prevRating <= 5) {
-                    return Math.max(0, oldSum + newRating - prevRating);
+                    return Math.max(0, oldSum + ratingToSend - prevRating);
                   }
-                  return oldSum + newRating;
+                  return oldSum + ratingToSend;
                 }),
                 (!prevRating || prevRating < 1 || prevRating > 5)
                   ? rtdbRunTransaction(countRef, (currCount) => (Number(currCount) || 0) + 1)
@@ -2673,32 +2785,30 @@ const firebaseConfig = {
             ]);
           }
 
-          userPreviousRating = newRating;
+          // On success: update localStorage cache and show green success feedback
           try {
-            localStorage.setItem(`tvy_rating_${slug}`, newRating.toString());
+            localStorage.setItem(`tvy_rating_${slug}`, ratingToSend.toString());
           } catch (e) {}
 
-          renderRatingStars(newRating);
           if (feedbackEl) {
-            feedbackEl.textContent = `${t.thanksRating || "Thanks for rating!"} (${newRating} ★)`;
+            feedbackEl.textContent = `${t.thanksRating || "Thanks for rating!"} (${ratingToSend} ★)`;
             feedbackEl.style.color = "#34D399";
           }
         } catch (err) {
-          userPreviousRating = newRating;
-          try {
-            localStorage.setItem(`tvy_rating_${slug}`, newRating.toString());
-          } catch (e) {}
-          renderRatingStars(newRating);
+          // On failure: keep optimistic stars as-is, show muted retry message and re-queue once after 3s
           if (feedbackEl) {
-            feedbackEl.textContent = `${t.thanksRating || "Thanks for rating!"} (${newRating} ★)`;
-            feedbackEl.style.color = "#34D399";
+            feedbackEl.textContent = currentLang === "my"
+              ? "သိမ်းဆည်းမရပါ၊ ခေတ္တအကြာတွင် ပြန်လည်ကြိုးစားပါမည်…"
+              : "Couldn't save, will retry…";
+            feedbackEl.style.color = "var(--text-muted)";
+          }
+          if (!pendingRatingValue) {
+            pendingRatingValue = ratingToSend;
+            clearTimeout(ratingDebounceTimer);
+            ratingDebounceTimer = setTimeout(flushPendingRating, 3000);
           }
         } finally {
           isRatingSubmitting = false;
-          if (starsContainer) {
-            starsContainer.style.pointerEvents = "auto";
-            starsContainer.style.opacity = "1";
-          }
         }
       }
 
@@ -2721,12 +2831,10 @@ const firebaseConfig = {
       }
 
       function previewStarHover(rating) {
-        if (isRatingSubmitting) return;
         renderRatingStars(rating);
       }
 
       function resetStarHover() {
-        if (isRatingSubmitting) return;
         renderRatingStars(userPreviousRating);
       }
 
@@ -2985,7 +3093,7 @@ const firebaseConfig = {
               </div>
               <div style="min-width: 0;">
                 <div style="font-size: 13.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(app.name)}</div>
-                <div style="font-size: 11.5px; color: var(--text-muted);">${escapeHtml(app.version)} • ${escapeHtml(app.packageName || "No pkg")}</div>
+                <div style="font-size: 11.5px; color: var(--text-muted);">${escapeHtml(app.version)} • ${escapeHtml(app.packageName || "No pkg")} • <span style="color: ${app.paid ? '#FBBF24' : '#94A3B8'}; font-weight: 600;">${app.paid ? 'Paid' : 'Free'}</span></div>
                 <div style="font-size: 11.5px; color: #38BDF8; margin-top: 2px;">★ ${liveStatsStr}</div>
               </div>
             </div>
@@ -3015,6 +3123,7 @@ const firebaseConfig = {
           document.getElementById("formAppVersion").value = app.version || "";
           document.getElementById("formAppPackage").value = app.packageName || "";
           document.getElementById("formAppCategory").value = app.category || "Tools & Utilities";
+          document.getElementById("formAppPricing").value = app.paid ? "paid" : "free";
           document.getElementById("formAppUpdated").value = app.updated || "";
           document.getElementById("formAppApkUrl").value = app.apkUrl || "";
           document.getElementById("formAppSize").value = app.size || "";
@@ -3034,6 +3143,7 @@ const firebaseConfig = {
           form.reset();
           document.getElementById("formAppVerified").checked = true;
           document.getElementById("formAppDev").value = "TVY-Tech";
+          document.getElementById("formAppPricing").value = "free";
           document.getElementById("formAppUpdated").value = new Date().toISOString().slice(0, 10);
         }
 
@@ -3085,6 +3195,7 @@ const firebaseConfig = {
           version: document.getElementById("formAppVersion").value.trim(),
           packageName: pkg,
           category: document.getElementById("formAppCategory").value,
+          paid: document.getElementById("formAppPricing").value === "paid",
           updated: document.getElementById("formAppUpdated").value || new Date().toISOString().slice(0, 10),
           apkUrl: document.getElementById("formAppApkUrl").value.trim(),
           size: document.getElementById("formAppSize").value.trim() || "0 MB",
@@ -3248,6 +3359,7 @@ const firebaseConfig = {
       function sanitizeAppsForExport(apps) {
         return apps.map((app) => {
           const clean = { ...app };
+          clean.paid = !!clean.paid;
           const pkg = clean.packageName || "";
           const name = clean.name || "";
           if (clean.icon && typeof clean.icon === "string" && clean.icon.startsWith("data:image/")) {
