@@ -1647,7 +1647,7 @@
               <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 6px 10px;" id="btnDownloadScreenshots" onclick="downloadAllScreenshots()" disabled>Download all</button>
             </div>
             <div id="formScreenshotsThumbs" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
-            <div id="formScreenshotsRepoPathText" class="admin-hint" style="font-family: ui-monospace, SFMono-Regular, monospace; color: #6EE7B7; margin-top: 4px;">Upload as: shots/app-1.png</div>
+            <div id="formScreenshotsRepoPathText" class="admin-hint" style="font-family: ui-monospace, SFMono-Regular, monospace; color: #6EE7B7; margin-top: 4px;">Upload as: shots/app-1.jpg</div>
           </div>
 
           <!-- Descriptions -->
@@ -1913,11 +1913,11 @@ const firebaseConfig = {
           verified: true,
           icon: "icons/com.tvytech.ceirchecker.komun-icon.png",
           screenshots: [
-            "shots/com.tvytech.ceirchecker.komun-1.png",
-            "shots/com.tvytech.ceirchecker.komun-2.png",
-            "shots/com.tvytech.ceirchecker.komun-3.png",
-            "shots/com.tvytech.ceirchecker.komun-4.png",
-            "shots/com.tvytech.ceirchecker.komun-5.png"
+            "shots/com.tvytech.ceirchecker.komun-1.jpg",
+            "shots/com.tvytech.ceirchecker.komun-2.jpg",
+            "shots/com.tvytech.ceirchecker.komun-3.jpg",
+            "shots/com.tvytech.ceirchecker.komun-4.jpg",
+            "shots/com.tvytech.ceirchecker.komun-5.jpg"
           ],
           desc: "ဖုန်းဆိုင်များအတွက် CEIR နှင့်ပါတ်သက်ပြီး IMEI Check, Application ID Check, Approval Form, Tax Payment စသဖြင့် ပြုလုပ်နိုင်သော ဆော့ဝဲလ်",
           descEn: "CEIR IMEI verification and tax clearance tool for mobile phone shops",
@@ -1941,11 +1941,11 @@ const firebaseConfig = {
           verified: true,
           icon: "icons/com.tvytech.medicalnote.komun-icon.png",
           screenshots: [
-            "shots/com.tvytech.medicalnote.komun-1.png",
-            "shots/com.tvytech.medicalnote.komun-2.png",
-            "shots/com.tvytech.medicalnote.komun-3.png",
-            "shots/com.tvytech.medicalnote.komun-4.png",
-            "shots/com.tvytech.medicalnote.komun-5.png"
+            "shots/com.tvytech.medicalnote.komun-1.jpg",
+            "shots/com.tvytech.medicalnote.komun-2.jpg",
+            "shots/com.tvytech.medicalnote.komun-3.jpg",
+            "shots/com.tvytech.medicalnote.komun-4.jpg",
+            "shots/com.tvytech.medicalnote.komun-5.jpg"
           ],
           desc: "မိသားစုကျန်းမာရေးမှတ်တမ်း၊ ဆေးခန်းပြမှတ်တမ်းနဲ့ ဆေးဝါးမှတ်တမ်းတွေကို ဖုန်းထဲမှာပဲ လုံခြုံစွာသိမ်းထားနိုင်တဲ့ အက်ပ်။",
           descEn: "Keep your family's clinic visits and medication records organized and private — all stored securely on your phone.",
@@ -1969,10 +1969,10 @@ const firebaseConfig = {
           verified: true,
           icon: "icons/com.aistudio.koenawin.chntr-icon.png",
           screenshots: [
-            "shots/com.aistudio.koenawin.chntr-1.png",
-            "shots/com.aistudio.koenawin.chntr-2.png",
-            "shots/com.aistudio.koenawin.chntr-3.png",
-            "shots/com.aistudio.koenawin.chntr-4.png"
+            "shots/com.aistudio.koenawin.chntr-1.jpg",
+            "shots/com.aistudio.koenawin.chntr-2.jpg",
+            "shots/com.aistudio.koenawin.chntr-3.jpg",
+            "shots/com.aistudio.koenawin.chntr-4.jpg"
           ],
           desc: "နေ့စဉ်ပုတီးစိပ်အရေအတွက်မှတ်တမ်းတင်ပြီး ၈၁ ရက်ခရီးကို ခြေရာခံလိုက်ပါ။",
           descEn: "Log daily prayer beads and track your 81-day journey, all on your phone.",
@@ -2125,9 +2125,15 @@ const firebaseConfig = {
                 if (existingIdx === -1) {
                   parsed.push({ ...defApp });
                   modified = true;
-                } else if (defApp.paid !== undefined && parsed[existingIdx].paid === undefined) {
-                  parsed[existingIdx].paid = defApp.paid;
-                  modified = true;
+                } else {
+                  if (defApp.paid !== undefined && parsed[existingIdx].paid === undefined) {
+                    parsed[existingIdx].paid = defApp.paid;
+                    modified = true;
+                  }
+                  if (Array.isArray(parsed[existingIdx].screenshots) && parsed[existingIdx].screenshots.some((s) => typeof s === "string" && s.endsWith(".png"))) {
+                    parsed[existingIdx].screenshots = defApp.screenshots;
+                    modified = true;
+                  }
                 }
               });
               if (parsed.length >= 1 && parsed[0].name === DEFAULT_APPS[0].name && (!parsed[0].icon || parsed[0].packageName === "com.tvytech.ceirstatus" || parsed[0].developer === "TVY-Tech")) {
@@ -2179,7 +2185,7 @@ const firebaseConfig = {
 
       function getScreenshotRepoPath(pkg, name, index) {
         const slug = computeAppSlug(pkg, name);
-        return `shots/${slug}-${index + 1}.png`;
+        return `shots/${slug}-${index + 1}.jpg`;
       }
 
       function resolveAssetUrl(path) {
@@ -2211,7 +2217,7 @@ const firebaseConfig = {
         if (shotsPathEl) {
           const count = stagedScreenshots.length || 1;
           const samplePaths = Array.from({ length: Math.min(count, 3) }, (_, i) => getScreenshotRepoPath(pkg, name, i));
-          if (count > 3) samplePaths.push(`shots/${computeAppSlug(pkg, name)}-...png`);
+          if (count > 3) samplePaths.push(`shots/${computeAppSlug(pkg, name)}-...jpg`);
           shotsPathEl.textContent = prefix + samplePaths.join(", ");
         }
       }
@@ -2615,7 +2621,7 @@ const firebaseConfig = {
             const shotSrc = resolveAssetUrl(shotPath);
             return `
               <div class="shot-item">
-                <img src="${shotSrc}" alt="Screenshot ${sIdx + 1}" onerror="this.onerror=null;this.parentElement.style.background='rgba(255,255,255,0.04)';this.parentElement.innerHTML='<span style=\\'font-size:12px;color:rgba(255,255,255,0.3)\\'>Preview</span>';" />
+                <img src="${shotSrc}" alt="Screenshot ${sIdx + 1}" loading="lazy" decoding="async" onerror="this.onerror=null;this.parentElement.style.background='rgba(255,255,255,0.04)';this.parentElement.innerHTML='<span style=\\'font-size:12px;color:rgba(255,255,255,0.3)\\'>Preview</span>';" />
               </div>
             `;
           }).join("");
@@ -3349,7 +3355,7 @@ const firebaseConfig = {
         stagedScreenshots.forEach((shot, i) => {
           const a = document.createElement("a");
           a.href = shot;
-          a.download = `${slug}-${i + 1}.png`;
+          a.download = `${slug}-${i + 1}.jpg`;
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
