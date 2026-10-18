@@ -643,6 +643,11 @@
         margin-bottom: 14px;
       }
 
+      .preset-highlight {
+        border: 1.5px solid #38bdf8 !important;
+        box-shadow: 0 0 0 3px rgba(56,189,248,.22), 0 0 16px rgba(56,189,248,.30);
+      }
+
       /* File Picker Dropzone */
       .file-dropzone {
         border: 1px dashed rgba(255, 255, 255, 0.2);
@@ -2877,6 +2882,7 @@
           presetAppLabel: "ရွေးချယ်ထားသော အက်ပ်:",
           presetDownloadBtn: "ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်",
           presetAutoFetchBtn: "ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်",
+          presetInvalidApk: (kb) => `ဒေါင်းလုဒ်ရရှိသော ဖိုင်သည် APK ဖိုင် အစစ်အမှန် မဟုတ်ပါ (${kb} KB ရရှိပြီး ZIP/APK ဖိုင်မဟုတ်ပါ)။ လင့်ခ်သည် preview စာမျက်နှာ ဖြစ်နိုင်ပါသည်။ ကျေးဇူးပြု၍ အပေါ်ရှိ 'ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်' ခလုတ်ဖြင့် ဒေါင်းလုဒ်လုပ်ပြီး အောက်ပါ ဖိုင်ရွေးချယ်မှုတွင် ရွေးပေးပါ။`,
           dropzoneTitle: "APK ဖိုင်(များ) ရွေးရန် ဤနေရာကို နှိပ်ပါ",
           dropzoneSubtitle: ".apk ဖိုင်များကိုသာ လက်ခံပါသည် (ဖိုင်တစ်ခုထက်ပို၍ ရွေးချယ်နိုင်သည်)",
           addMoreFilesBtn: "ဖိုင်ထပ်ထည့်မည်",
@@ -3076,6 +3082,7 @@
           presetAppLabel: "Preset Application:",
           presetDownloadBtn: "Direct Download",
           presetAutoFetchBtn: "Auto-fetch & Select this APK",
+          presetInvalidApk: (kb) => `Downloaded file is not a valid APK (got ${kb} KB, not a ZIP/APK file). The link may be a preview page. Please use the Direct Download button above, then pick the file below.`,
           dropzoneTitle: "Click or drag & drop APK files here",
           dropzoneSubtitle: "Only .apk files are accepted (multiple files allowed)",
           addMoreFilesBtn: "Add More APKs",
@@ -5082,6 +5089,10 @@
         presetAppTitle.textContent = `${paramName} (${paramVer})`;
         directDownloadPresetLink.href = paramUrl;
         preselectedAppBox.style.display = "block";
+        preselectedAppBox.classList.add("preset-highlight");
+        try {
+          preselectedAppBox.scrollIntoView({ behavior: "smooth", block: "center" });
+        } catch (e) {}
       } else if (preselectedAppBox) {
         preselectedAppBox.style.display = "none";
       }
@@ -5094,10 +5105,44 @@
             autoFetchPresetBtn.innerHTML = `<span class="spinner"></span> ${currentLang === "en" ? "Downloading APK..." : "APK ဒေါင်းလုဒ်ရယူနေပါသည်..."}`;
             appendLog(currentLang === "en" ? `Fetching APK online: ${paramName}...` : `အွန်လိုင်းမှ APK ကို ရယူနေပါသည်: ${paramName}...`, "info");
 
-            const response = await fetch(paramUrl);
+            let targetUrl = paramUrl;
+            const pcloudMatch = targetUrl.match(/u\.pcloud\.link\/publink\/show\?code=([A-Za-z0-9]+)/);
+            if (pcloudMatch) {
+              try {
+                const code = pcloudMatch[1];
+                const apiRes = await fetch(`https://api.pcloud.com/getpublinkdownload?code=${code}`);
+                const apiJson = await apiRes.json();
+                if (apiJson.result === 0 && apiJson.hosts && apiJson.hosts.length && apiJson.path) {
+                  targetUrl = `https://${apiJson.hosts[0]}${apiJson.path}`;
+                }
+              } catch (e) {
+                // If API call fails, continue with original URL
+              }
+            }
+
+            const response = await fetch(targetUrl);
             if (!response.ok) throw new Error(`HTTP error ${response.status}`);
             const blob = await response.blob();
-            const fileName = paramUrl.split("/").pop()?.split("?")[0] || `${paramName}.apk`;
+
+            // APK validation after fetch (applies to ALL urls)
+            const head = new Uint8Array(await blob.slice(0, 4).arrayBuffer());
+            const isZipMagic = head.length >= 4 && head[0] === 0x50 && head[1] === 0x4B && head[2] === 0x03 && head[3] === 0x04;
+            const isValidApk = blob.size > 100 * 1024 && isZipMagic;
+
+            if (!isValidApk) {
+              const sizeKb = Math.round(blob.size / 1024);
+              const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+              const errMsg = typeof t.presetInvalidApk === "function"
+                ? t.presetInvalidApk(sizeKb)
+                : (currentLang === "en"
+                  ? `Downloaded file is not a valid APK (got ${sizeKb} KB, not a ZIP/APK file). The link may be a preview page. Please use the Direct Download button above, then pick the file below.`
+                  : `ဒေါင်းလုဒ်ရရှိသော ဖိုင်သည် APK ဖိုင် အစစ်အမှန် မဟုတ်ပါ (${sizeKb} KB ရရှိပြီး ZIP/APK ဖိုင်မဟုတ်ပါ)။ လင့်ခ်သည် preview စာမျက်နှာ ဖြစ်နိုင်ပါသည်။ ကျေးဇူးပြု၍ အပေါ်ရှိ 'ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်' ခလုတ်ဖြင့် ဒေါင်းလုဒ်လုပ်ပြီး အောက်ပါ ဖိုင်ရွေးချယ်မှုတွင် ရွေးပေးပါ။`);
+              appendLog(errMsg, "error");
+              if (directDownloadPresetLink) directDownloadPresetLink.click();
+              return;
+            }
+
+            const fileName = targetUrl.split("/").pop()?.split("?")[0] || `${paramName}.apk`;
             const file = new File([blob], fileName.endsWith(".apk") ? fileName : `${fileName}.apk`, { type: "application/vnd.android.package-archive" });
             
             // Auto-fetch preset appends to selectedFiles instead of replacing
