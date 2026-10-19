@@ -132,19 +132,9 @@
       /* Top Navigation & Language Switcher */
       .top-nav {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         align-items: center;
         margin-bottom: 12px;
-      }
-
-      .top-nav-brand {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--text-secondary);
-        text-decoration: none;
       }
 
       .lang-switcher {
@@ -1121,14 +1111,6 @@
     <div class="container">
       <!-- Top Navigation with Language Switcher -->
       <nav class="top-nav">
-        <a href="index.html" class="top-nav-brand">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="5" y="2" width="14" height="20" rx="3"/>
-            <path d="M12 18h.01"/>
-          </svg>
-          <span data-i18n="badgeBrand">TVY-Tech (Dawei)</span>
-        </a>
-
         <div class="lang-switcher" role="group" aria-label="Language Switcher">
           <button type="button" class="lang-btn active" id="langBtnEn" onclick="setLang('en')">EN</button>
           <button type="button" class="lang-btn" id="langBtnMy" onclick="setLang('my')">မြန်မာ</button>
@@ -1147,7 +1129,7 @@
             <span data-i18n="badgeBrand">TVY-Tech (Dawei)</span>
           </div>
           <h1 data-i18n="headerTitle">အက်ပ် ဒေါင်းလုဒ် စင်တာ</h1>
-          <p data-i18n="headerSubtitle">Android စမတ်ဖုန်းများအတွက် စိတ်ချရသော APK များကို တိုက်ရိုက်ဒေါင်းလုဒ်ရယူပါ သို့မဟုတ် Web ADB ဖြင့် ဖုန်းထဲသို့ တိုက်ရိုက်သွင်းယူပါ။</p>
+          <p data-i18n="headerSubtitle">Android စမတ်ဖုန်းများအတွက် စိတ်ချရသော APK များကို တိုက်ရိုက်ဒေါင်းလုဒ်ရယူပါ သို့မဟုတ် Web ADB ဖြင့် တခြားဖုန်းထဲသို့ တိုက်ရိုက်သွင်းယူပါ။</p>
         </header>
 
         <!-- Web ADB Banner Callout -->
@@ -1161,7 +1143,7 @@
             </div>
             <div>
               <div class="banner-title" data-i18n="bannerTitle">Web ADB တိုက်ရိုက်တပ်ဆင်ရေး စနစ်</div>
-              <div class="banner-desc" data-i18n="bannerDesc">ဖုန်းထဲသို့ ဖိုင်ကူးစရာမလိုဘဲ Chrome မှတစ်ဆင့် USB ဖြင့် APK တိုက်ရိုက်သွင်းနိုင်ပါသည်။</div>
+              <div class="banner-desc" data-i18n="bannerDesc">တခြားဖုန်းထဲသို့ ဖိုင်ကူးစရာမလိုဘဲ Chrome မှတစ်ဆင့် USB ဖြင့် APK တိုက်ရိုက်သွင်းနိုင်ပါသည်။</div>
             </div>
           </div>
         </section>
@@ -1249,7 +1231,7 @@
                 </div>
                 <div>
                   <h3 style="font-size: 15px; font-weight: 700; color: #FFFFFF;" data-i18n="usbSectionTitle">USB ကြိုးဖြင့် တိုက်ရိုက်သွင်းလိုပါသလား?</h3>
-                  <p style="font-size: 13px; color: var(--text-secondary);" data-i18n="usbSectionDesc">Web ADB စနစ်ဖြင့် ဖုန်းထဲသို့ APK တိုက်ရိုက် ထည့်သွင်းနိုင်ပါသည်</p>
+                  <p style="font-size: 13px; color: var(--text-secondary);" data-i18n="usbSectionDesc">Web ADB စနစ်ဖြင့် တခြားဖုန်းထဲသို့ APK တိုက်ရိုက် ထည့်သွင်းနိုင်ပါသည်</p>
                 </div>
               </div>
               <a href="installer.html" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="width: 100%;">
@@ -1992,9 +1974,9 @@ const firebaseConfig = {
           pageTitle: "အက်ပ် ဒေါင်းလုဒ် စင်တာ | Burmese App Download Center",
           badgeBrand: "TVY - STORE",
           headerTitle: "အက်ပ် ဒေါင်းလုဒ် စင်တာ",
-          headerSubtitle: "Android စမတ်ဖုန်းများအတွက် စိတ်ချရသော APK များကို တိုက်ရိုက်ဒေါင်းလုဒ်ရယူပါ သို့မဟုတ် Web ADB ဖြင့် ဖုန်းထဲသို့ တိုက်ရိုက်သွင်းယူပါ။",
+          headerSubtitle: "Android စမတ်ဖုန်းများအတွက် စိတ်ချရသော APK များကို တိုက်ရိုက်ဒေါင်းလုဒ်ရယူပါ သို့မဟုတ် Web ADB ဖြင့် တခြားဖုန်းထဲသို့ တိုက်ရိုက်သွင်းယူပါ။",
           bannerTitle: "Web ADB တိုက်ရိုက်တပ်ဆင်ရေး စနစ်",
-          bannerDesc: "ဖုန်းထဲသို့ ဖိုင်ကူးစရာမလိုဘဲ Chrome မှတစ်ဆင့် USB ဖြင့် APK တိုက်ရိုက်သွင်းနိုင်ပါသည်။",
+          bannerDesc: "တခြားဖုန်းထဲသို့ ဖိုင်ကူးစရာမလိုဘဲ Chrome မှတစ်ဆင့် USB ဖြင့် APK တိုက်ရိုက်သွင်းနိုင်ပါသည်။",
           sectionAppsTitle: "ရရှိနိုင်သော အက်ပ်များ",
           appsCount: (n) => `အက်ပ် ${n} ခု`,
           updatedPrefix: "မွမ်းမံရက်: ",
@@ -2014,7 +1996,7 @@ const firebaseConfig = {
           step4Title: "Install ကို နှိပ်၍ အပြီးသတ်ပါ",
           step4Desc: 'ပေါ်လာသော အတည်ပြုချက် မျက်နှာပြင်တွင် "Install" (တပ်ဆင်မည်) ကို နှိပ်ပြီး ခေတ္တစောင့်ဆိုင်းပါက အောင်မြင်စွာ အသုံးပြုနိုင်ပါပြီ။',
           usbSectionTitle: "USB ကြိုးဖြင့် တိုက်ရိုက်သွင်းလိုပါသလား?",
-          usbSectionDesc: "Web ADB စနစ်ဖြင့် ဖုန်းထဲသို့ APK တိုက်ရိုက် ထည့်သွင်းနိုင်ပါသည်",
+          usbSectionDesc: "Web ADB စနစ်ဖြင့် တခြားဖုန်းထဲသို့ APK တိုက်ရိုက် ထည့်သွင်းနိုင်ပါသည်",
           openInstallerBtn: "Web ADB တပ်ဆင်ရေး စာမျက်နှာ ဖွင့်မည်",
           footerText: "© 2026 မြန်မာ အက်ပ် ဒေါင်းလုဒ် စင်တာ • လုံခြုံစိတ်ချရသော APK များကိုသာ တင်ဆက်ထားပါသည်",
           backToApps: "အက်ပ်များသို့ ပြန်သွားမည်",
@@ -2072,7 +2054,7 @@ const firebaseConfig = {
           usbSectionTitle: "Want to install directly via USB cable?",
           usbSectionDesc: "Install APK directly to your phone using our browser-based Web ADB system",
           openInstallerBtn: "Open Web ADB Installer",
-          footerText: "© 2026 Burmese App Download Center • Only safe and verified APK packages provided",
+          footerText: "© 2026 Power By TVY-Tech (Dawei) • Only safe and verified APK packages provided",
           backToApps: " Back to apps",
           details: "Details",
           rating: "Rating",
