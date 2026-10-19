@@ -1846,24 +1846,6 @@
             <span class="step-status-tag" id="step2Status" data-i18n="step2StatusWaiting" style="font-size: 11px;">မရွေးချယ်ရသေးပါ</span>
           </div>
 
-          <!-- Preselected app quick bar -->
-          <div class="preselected-app-box" id="preselectedAppBox" style="display: none; margin-bottom: 8px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px;">
-              <div>
-                <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 600;" data-i18n="presetAppLabel">ရွေးချယ်ထားသော အက်ပ်:</div>
-                <div style="font-size: 13.5px; font-weight: 700; color: #FFFFFF;" id="presetAppTitle">-</div>
-              </div>
-              <a href="#" id="directDownloadPresetLink" class="btn-outline" style="font-size: 11px; padding: 4px 10px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" target="_blank" download>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                <span data-i18n="presetDownloadBtn">ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်</span>
-              </a>
-            </div>
-            <button type="button" id="autoFetchPresetBtn" class="btn btn-outline" style="font-size: 11.5px; padding: 7px 12px; width: 100%;">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span id="autoFetchPresetBtnText" data-i18n="presetAutoFetchBtn">ဤ APK အား အလိုအလျောက် ရယူပြီး ရွေးချယ်မည်</span>
-            </button>
-          </div>
-
           <input type="file" id="apkFileInput" class="file-input-hidden" accept=".apk" multiple />
           
           <div class="file-dropzone mst-file-dropzone" id="fileDropzone" style="padding: 12px !important;">
@@ -5066,97 +5048,6 @@
         apkFileInput.addEventListener("change", (e) => {
           if (e.target.files && e.target.files.length > 0) {
             addFiles(e.target.files);
-          }
-        });
-      }
-
-      // ==========================================================================
-      // URL QUERY PARAMS PRESET APP HANDLING
-      // ==========================================================================
-      const urlParams = new URLSearchParams(window.location.search);
-      const paramName = urlParams.get("name")?.trim();
-      const paramVer = urlParams.get("ver")?.trim();
-      const paramUrl = urlParams.get("url")?.trim();
-
-      const hasPreset = Boolean(paramName && paramVer && paramUrl);
-
-      const preselectedAppBox = document.getElementById("preselectedAppBox");
-      const presetAppTitle = document.getElementById("presetAppTitle");
-      const directDownloadPresetLink = document.getElementById("directDownloadPresetLink");
-      const autoFetchPresetBtn = document.getElementById("autoFetchPresetBtn");
-
-      if (hasPreset && preselectedAppBox && presetAppTitle && directDownloadPresetLink) {
-        presetAppTitle.textContent = `${paramName} (${paramVer})`;
-        directDownloadPresetLink.href = paramUrl;
-        preselectedAppBox.style.display = "block";
-        preselectedAppBox.classList.add("preset-highlight");
-        try {
-          preselectedAppBox.scrollIntoView({ behavior: "smooth", block: "center" });
-        } catch (e) {}
-      } else if (preselectedAppBox) {
-        preselectedAppBox.style.display = "none";
-      }
-
-      if (autoFetchPresetBtn && hasPreset) {
-        autoFetchPresetBtn.addEventListener("click", async () => {
-          if (isBusy) return;
-          try {
-            autoFetchPresetBtn.disabled = true;
-            autoFetchPresetBtn.innerHTML = `<span class="spinner"></span> ${currentLang === "en" ? "Downloading APK..." : "APK ဒေါင်းလုဒ်ရယူနေပါသည်..."}`;
-            appendLog(currentLang === "en" ? `Fetching APK online: ${paramName}...` : `အွန်လိုင်းမှ APK ကို ရယူနေပါသည်: ${paramName}...`, "info");
-
-            let targetUrl = paramUrl;
-            const pcloudMatch = targetUrl.match(/u\.pcloud\.link\/publink\/show\?code=([A-Za-z0-9]+)/);
-            if (pcloudMatch) {
-              try {
-                const code = pcloudMatch[1];
-                const apiRes = await fetch(`https://api.pcloud.com/getpublinkdownload?code=${code}`);
-                const apiJson = await apiRes.json();
-                if (apiJson.result === 0 && apiJson.hosts && apiJson.hosts.length && apiJson.path) {
-                  targetUrl = `https://${apiJson.hosts[0]}${apiJson.path}`;
-                }
-              } catch (e) {
-                // If API call fails, continue with original URL
-              }
-            }
-
-            const response = await fetch(targetUrl);
-            if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-            const blob = await response.blob();
-
-            // APK validation after fetch (applies to ALL urls)
-            const head = new Uint8Array(await blob.slice(0, 4).arrayBuffer());
-            const isZipMagic = head.length >= 4 && head[0] === 0x50 && head[1] === 0x4B && head[2] === 0x03 && head[3] === 0x04;
-            const isValidApk = blob.size > 100 * 1024 && isZipMagic;
-
-            if (!isValidApk) {
-              const sizeKb = Math.round(blob.size / 1024);
-              const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
-              const errMsg = typeof t.presetInvalidApk === "function"
-                ? t.presetInvalidApk(sizeKb)
-                : (currentLang === "en"
-                  ? `Downloaded file is not a valid APK (got ${sizeKb} KB, not a ZIP/APK file). The link may be a preview page. Please use the Direct Download button above, then pick the file below.`
-                  : `ဒေါင်းလုဒ်ရရှိသော ဖိုင်သည် APK ဖိုင် အစစ်အမှန် မဟုတ်ပါ (${sizeKb} KB ရရှိပြီး ZIP/APK ဖိုင်မဟုတ်ပါ)။ လင့်ခ်သည် preview စာမျက်နှာ ဖြစ်နိုင်ပါသည်။ ကျေးဇူးပြု၍ အပေါ်ရှိ 'ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်' ခလုတ်ဖြင့် ဒေါင်းလုဒ်လုပ်ပြီး အောက်ပါ ဖိုင်ရွေးချယ်မှုတွင် ရွေးပေးပါ။`);
-              appendLog(errMsg, "error");
-              if (directDownloadPresetLink) directDownloadPresetLink.click();
-              return;
-            }
-
-            const fileName = targetUrl.split("/").pop()?.split("?")[0] || `${paramName}.apk`;
-            const file = new File([blob], fileName.endsWith(".apk") ? fileName : `${fileName}.apk`, { type: "application/vnd.android.package-archive" });
-            
-            // Auto-fetch preset appends to selectedFiles instead of replacing
-            addFiles([file]);
-            appendLog(currentLang === "en" ? `APK fetched successfully: ${file.name} (${formatBytes(file.size)})` : `APK အား အောင်မြင်စွာ ရယူပြီးပါပြီ: ${file.name} (${formatBytes(file.size)})`, "success");
-          } catch (fetchErr) {
-            console.warn("Direct fetch error:", fetchErr);
-            appendLog(currentLang === "en" ? "Notice: Could not fetch APK directly (likely CORS policy). Please use direct download above and select file below." : "သတိပေးချက်: အင်တာနက်မှ တိုက်ရိုက်ဆွဲယူ၍ မရနိုင်ပါ (CORS ကန့်သတ်ချက်ကြောင့် ဖြစ်နိုင်သည်)။", "warn");
-            appendLog(currentLang === "en" ? "Please click 'Direct Download' and choose the downloaded file." : "ကျေးဇူးပြု၍ အပေါ်ရှိ 'ဖိုင်ဒေါင်းလုဒ်ဆွဲရန်' ခလုတ်ဖြင့် ဒေါင်းလုဒ်လုပ်ပြီး အောက်ပါ ဖိုင်ရွေးချယ်မှုတွင် ရွေးပေးပါ။", "info");
-            if (directDownloadPresetLink) directDownloadPresetLink.click();
-          } finally {
-            const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
-            autoFetchPresetBtn.disabled = false;
-            autoFetchPresetBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.85"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> <span id="autoFetchPresetBtnText">${t.presetAutoFetchBtn}</span>`;
           }
         });
       }
