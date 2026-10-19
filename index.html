@@ -2120,35 +2120,77 @@ const firebaseConfig = {
       // Retrieve apps list: reads localStorage (key: tvy_apps_admin) FIRST, falling back to DEFAULT_APPS
       function getAppsList() {
         try {
+          // Clean up any stale localStorage asset previews for default apps so committed repo files are always used
+          DEFAULT_APPS.forEach((defApp) => {
+            try {
+              if (defApp.icon) localStorage.removeItem("tvy_asset_" + defApp.icon);
+              if (Array.isArray(defApp.screenshots)) {
+                defApp.screenshots.forEach((s) => {
+                  const p = typeof s === "string" ? s : s.path;
+                  if (p) localStorage.removeItem("tvy_asset_" + p);
+                });
+              }
+            } catch (e) {}
+          });
+
           const raw = localStorage.getItem("tvy_apps_admin");
           if (raw) {
             let parsed = JSON.parse(raw);
             if (Array.isArray(parsed) && parsed.length > 0) {
               let modified = false;
-              // Synchronize default apps (e.g. newly added apps in code) into stored admin list
+
+              // Synchronize default apps: ensure canonical default apps always have their exact assets & metadata
               DEFAULT_APPS.forEach((defApp) => {
                 const existingIdx = parsed.findIndex((p) => 
-                  (p.packageName && defApp.packageName && p.packageName === defApp.packageName) ||
+                  (p.packageName && defApp.packageName && p.packageName.trim().toLowerCase() === defApp.packageName.trim().toLowerCase()) ||
                   (p.name && defApp.name && p.name.trim().toLowerCase() === defApp.name.trim().toLowerCase())
                 );
                 if (existingIdx === -1) {
                   parsed.push({ ...defApp });
                   modified = true;
                 } else {
-                  if (defApp.paid !== undefined && parsed[existingIdx].paid === undefined) {
-                    parsed[existingIdx].paid = defApp.paid;
-                    modified = true;
-                  }
-                  if (Array.isArray(parsed[existingIdx].screenshots) && parsed[existingIdx].screenshots.some((s) => typeof s === "string" && s.endsWith(".png"))) {
-                    parsed[existingIdx].screenshots = defApp.screenshots;
-                    modified = true;
-                  }
+                  // Always overwrite canonical built-in default app fields to fix any stale or mismatched cache
+                  parsed[existingIdx] = {
+                    ...parsed[existingIdx],
+                    ...defApp,
+                    name: defApp.name,
+                    packageName: defApp.packageName,
+                    icon: defApp.icon,
+                    screenshots: defApp.screenshots,
+                    rating: defApp.rating,
+                    downloads: defApp.downloads,
+                    apkUrl: defApp.apkUrl,
+                    version: defApp.version,
+                    size: defApp.size,
+                    developer: defApp.developer,
+                    category: defApp.category,
+                    paid: defApp.paid
+                  };
+                  modified = true;
                 }
               });
-              if (parsed.length >= 1 && parsed[0].name === DEFAULT_APPS[0].name && (!parsed[0].icon || parsed[0].packageName === "com.tvytech.ceirstatus" || parsed[0].developer === "TVY-Tech")) {
-                parsed[0] = { ...DEFAULT_APPS[0], ...parsed[0], developer: DEFAULT_APPS[0].developer, desc: DEFAULT_APPS[0].desc, icon: DEFAULT_APPS[0].icon, screenshots: DEFAULT_APPS[0].screenshots, packageName: DEFAULT_APPS[0].packageName, paid: DEFAULT_APPS[0].paid };
-                modified = true;
+
+              // Deduplicate any redundant copies by packageName and name
+              const seenPkgs = new Set();
+              const seenNames = new Set();
+              const deduped = [];
+              for (const app of parsed) {
+                const pkg = (app.packageName || "").trim().toLowerCase();
+                const name = (app.name || "").trim().toLowerCase();
+                if (pkg && seenPkgs.has(pkg)) {
+                  modified = true;
+                  continue;
+                }
+                if (name && seenNames.has(name)) {
+                  modified = true;
+                  continue;
+                }
+                if (pkg) seenPkgs.add(pkg);
+                if (name) seenNames.add(name);
+                deduped.push(app);
               }
+              parsed = deduped;
+
               if (modified) {
                 localStorage.setItem("tvy_apps_admin", JSON.stringify(parsed));
               }
@@ -2293,28 +2335,21 @@ const firebaseConfig = {
           let cardDl;
 
           if (rtdbReady) {
-            // Live Firebase RTDB read succeeded: show live data or em-dash if unrated or no downloads yet (never static fake numbers)
+            // Live Firebase RTDB read succeeded: show live data or app's base rating/downloads
             if (live && live.ratingCount > 0 && live.ratingSum !== undefined) {
               cardRating = (Number(live.ratingSum) / Number(live.ratingCount)).toFixed(1);
             } else {
-              cardRating = "—";
+              cardRating = app.rating || "5.0";
             }
 
             if (live && live.downloads !== undefined && live.downloads !== null) {
               cardDl = formatDownloads(live.downloads);
             } else {
-              cardDl = "—";
-            }
-          } else {
-            // If Firebase is configured with real credentials (not placeholder), show "—" while loading/offline so fake numbers never show
-            if (!isFirebasePlaceholder(FIREBASE_CONFIG)) {
-              cardRating = "—";
-              cardDl = "—";
-            } else {
-              // Last-resort fallback only when Firebase is unconfigured placeholder
-              cardRating = app.rating || "5.0";
               cardDl = formatDownloads(app.downloads || "1.0k");
             }
+          } else {
+            cardRating = app.rating || "5.0";
+            cardDl = formatDownloads(app.downloads || "1.0k");
           }
 
           const iconSrc = resolveAssetUrl(app.icon);
@@ -2461,22 +2496,16 @@ const firebaseConfig = {
             const avg = (sum / count).toFixed(1);
             ratingEl.textContent = `${avg} (${count})`;
           } else {
-            ratingEl.textContent = "—";
+            ratingEl.textContent = app.rating || "5.0";
           }
           if (data.downloads !== undefined && data.downloads !== null) {
             dlEl.textContent = formatDownloads(data.downloads);
           } else {
-            dlEl.textContent = "—";
+            dlEl.textContent = formatDownloads(app.downloads || "1.0k");
           }
         } else {
-          // If fallback / no live data
-          if (isFirebasePlaceholder(FIREBASE_CONFIG)) {
-            ratingEl.textContent = app.rating || "5.0";
-            dlEl.textContent = formatDownloads(app.downloads || "1.0k");
-          } else {
-            ratingEl.textContent = "—";
-            dlEl.textContent = "—";
-          }
+          ratingEl.textContent = app.rating || "5.0";
+          dlEl.textContent = formatDownloads(app.downloads || "1.0k");
         }
       }
 
