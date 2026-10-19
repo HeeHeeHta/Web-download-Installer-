@@ -1952,7 +1952,7 @@
 
           <!-- Icon upload and save -->
           <div class="admin-input-group">
-            <label class="admin-label">App Icon (PNG/JPG)</label>
+            <label class="admin-label">App Icon <span style="font-size: 11px; color: #38BDF8; font-weight: 500; margin-left: 6px;">⚡ Auto-Resized 512×512 PNG</span></label>
             <div style="display: flex; gap: 10px; align-items: center;">
               <div class="admin-thumb" id="formIconPreview">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -1965,7 +1965,7 @@
 
           <!-- Screenshots picker and list -->
           <div class="admin-input-group">
-            <label class="admin-label">Screenshots (Multiple)</label>
+            <label class="admin-label">Screenshots (Multiple) <span style="font-size: 11px; color: #38BDF8; font-weight: 500; margin-left: 6px;">⚡ Auto-Resized &amp; Compressed</span></label>
             <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 6px;">
               <input type="file" id="formScreenshotsPicker" accept="image/*" multiple onchange="handleScreenshotsPicked(event)" style="flex: 1; font-size: 12px;" />
               <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 6px 10px;" id="btnDownloadScreenshots" onclick="downloadAllScreenshots()" disabled>Download all</button>
@@ -2077,13 +2077,50 @@ const firebaseConfig = {
       let rtdbOff = null;
       let isFbReady = false;
       let rtdbReady = false;
+
+      // Synchronous instant initialization from persistent local cache so users never see prefix defaults
       let rtdbAppsCache = {};
+      try {
+        const storedCache = localStorage.getItem("tvy_rtdb_cache") || sessionStorage.getItem("tvy_rtdb_cache");
+        if (storedCache) {
+          const parsed = JSON.parse(storedCache);
+          if (parsed && parsed.data && typeof parsed.data === "object") {
+            rtdbAppsCache = parsed.data;
+            rtdbReady = true;
+          }
+        }
+      } catch (e) {}
+
       let activeDetailUnsubscribes = [];
       let activeDetailSlug = null;
+      let appStatsUnsubscribes = [];
       let userPreviousRating = 0;
       let isRatingSubmitting = false;
       let ratingDebounceTimer = null;
       let pendingRatingValue = 0;
+
+      function persistRtdbCache() {
+        try {
+          const serialized = JSON.stringify({ time: Date.now(), data: rtdbAppsCache });
+          localStorage.setItem("tvy_rtdb_cache", serialized);
+          sessionStorage.setItem("tvy_rtdb_cache", serialized);
+        } catch (e) {}
+      }
+
+      function updateLiveUIForApp(targetSlug) {
+        renderApps();
+        if (currentSelectedAppIndex >= 0) {
+          const apps = getAppsList();
+          const curr = apps[currentSelectedAppIndex];
+          if (curr && getAppRtdbSlug(curr) === targetSlug) {
+            updateDetailStatsDisplay(curr, rtdbAppsCache[targetSlug]);
+          }
+        }
+        const adminModal = document.getElementById("adminOverlay");
+        if (adminModal && adminModal.style.display !== "none") {
+          renderAdminAppsList();
+        }
+      }
 
       function detachDetailListeners() {
         if (Array.isArray(activeDetailUnsubscribes)) {
@@ -2095,6 +2132,56 @@ const firebaseConfig = {
         }
         activeDetailUnsubscribes = [];
         activeDetailSlug = null;
+      }
+
+      function detachAllAppListeners() {
+        if (Array.isArray(appStatsUnsubscribes)) {
+          appStatsUnsubscribes.forEach((fn) => {
+            try {
+              if (typeof fn === "function") fn();
+            } catch (e) {}
+          });
+        }
+        appStatsUnsubscribes = [];
+      }
+
+      function attachAllAppsListeners() {
+        if (!isFbReady || !rtdb || !rtdbRef || !rtdbOnValue) return;
+        detachAllAppListeners();
+        const appsList = getAppsList();
+
+        appsList.forEach((app) => {
+          const slug = getAppRtdbSlug(app);
+          if (!rtdbAppsCache[slug]) rtdbAppsCache[slug] = {};
+
+          try {
+            // Live Realtime listener for downloads
+            const unSubDl = rtdbOnValue(rtdbRef(rtdb, `apps/${slug}/downloads`), (snap) => {
+              if (!rtdbAppsCache[slug]) rtdbAppsCache[slug] = {};
+              rtdbAppsCache[slug].downloads = snap.val();
+              persistRtdbCache();
+              updateLiveUIForApp(slug);
+            }, () => {});
+
+            // Live Realtime listener for ratingSum
+            const unSubSum = rtdbOnValue(rtdbRef(rtdb, `apps/${slug}/ratingSum`), (snap) => {
+              if (!rtdbAppsCache[slug]) rtdbAppsCache[slug] = {};
+              rtdbAppsCache[slug].ratingSum = snap.val();
+              persistRtdbCache();
+              updateLiveUIForApp(slug);
+            }, () => {});
+
+            // Live Realtime listener for ratingCount
+            const unSubCount = rtdbOnValue(rtdbRef(rtdb, `apps/${slug}/ratingCount`), (snap) => {
+              if (!rtdbAppsCache[slug]) rtdbAppsCache[slug] = {};
+              rtdbAppsCache[slug].ratingCount = snap.val();
+              persistRtdbCache();
+              updateLiveUIForApp(slug);
+            }, () => {});
+
+            appStatsUnsubscribes.push(unSubDl, unSubSum, unSubCount);
+          } catch (e) {}
+        });
       }
 
       function isFirebasePlaceholder(cfg) {
@@ -2170,69 +2257,27 @@ const firebaseConfig = {
       }
 
       async function fetchBatchedAppsData() {
-        // Fast read from sessionStorage cache if available (< 3 mins old)
+        if (!isFbReady || !rtdb || !rtdbRef || !rtdbGet) return;
         try {
-          const cached = sessionStorage.getItem("tvy_rtdb_cache");
-          if (cached) {
-            const parsed = JSON.parse(cached);
-            if (parsed && (Date.now() - parsed.time < 180000) && parsed.data) {
-              rtdbAppsCache = parsed.data;
-              rtdbReady = true;
-              return;
-            }
-          }
-        } catch (e) {}
-
-        if (!isFbReady || !rtdb || !rtdbRef || !rtdbGet) {
-          rtdbReady = false;
-          return;
-        }
-        try {
-          const appsRef = rtdbRef(rtdb, "apps");
-          const snap = await Promise.race([
-            rtdbGet(appsRef),
-            new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 1000))
-          ]);
-          if (snap && snap.exists()) {
-            rtdbAppsCache = snap.val() || {};
-          } else {
-            rtdbAppsCache = {};
-          }
-          rtdbReady = true;
-          try {
-            sessionStorage.setItem("tvy_rtdb_cache", JSON.stringify({ time: Date.now(), data: rtdbAppsCache }));
-          } catch (e) {}
-        } catch (e) {
-          // If /apps has scoped rules (e.g. only $slug children have .read), fetch stats for configured apps in parallel
-          try {
-            const appsList = getAppsList();
-            const fetches = appsList.map(async (app) => {
-              const slug = getAppRtdbSlug(app);
-              try {
-                const [dlSnap, sumSnap, countSnap] = await Promise.all([
-                  rtdbGet(rtdbRef(rtdb, `apps/${slug}/downloads`)),
-                  rtdbGet(rtdbRef(rtdb, `apps/${slug}/ratingSum`)),
-                  rtdbGet(rtdbRef(rtdb, `apps/${slug}/ratingCount`))
-                ]);
-                rtdbAppsCache[slug] = {
-                  downloads: (dlSnap && dlSnap.exists()) ? dlSnap.val() : undefined,
-                  ratingSum: (sumSnap && sumSnap.exists()) ? sumSnap.val() : undefined,
-                  ratingCount: (countSnap && countSnap.exists()) ? countSnap.val() : 0
-                };
-              } catch (err) {}
-            });
-            await Promise.race([
-              Promise.all(fetches),
-              new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 1200))
-            ]);
-            rtdbReady = true;
+          const appsList = getAppsList();
+          const fetches = appsList.map(async (app) => {
+            const slug = getAppRtdbSlug(app);
             try {
-              sessionStorage.setItem("tvy_rtdb_cache", JSON.stringify({ time: Date.now(), data: rtdbAppsCache }));
-            } catch (e) {}
-          } catch (err) {
-            rtdbReady = false;
-          }
-        }
+              const [dlSnap, sumSnap, countSnap] = await Promise.all([
+                rtdbGet(rtdbRef(rtdb, `apps/${slug}/downloads`)),
+                rtdbGet(rtdbRef(rtdb, `apps/${slug}/ratingSum`)),
+                rtdbGet(rtdbRef(rtdb, `apps/${slug}/ratingCount`))
+              ]);
+              if (!rtdbAppsCache[slug]) rtdbAppsCache[slug] = {};
+              if (dlSnap && dlSnap.exists()) rtdbAppsCache[slug].downloads = dlSnap.val();
+              if (sumSnap && sumSnap.exists()) rtdbAppsCache[slug].ratingSum = sumSnap.val();
+              if (countSnap && countSnap.exists()) rtdbAppsCache[slug].ratingCount = countSnap.val();
+            } catch (err) {}
+          });
+          await Promise.allSettled(fetches);
+          rtdbReady = true;
+          persistRtdbCache();
+        } catch (e) {}
       }
 
       /* ==========================================================================
@@ -2518,8 +2563,8 @@ const firebaseConfig = {
                     packageName: defApp.packageName,
                     icon: defApp.icon,
                     screenshots: defApp.screenshots,
-                    rating: defApp.rating,
-                    downloads: defApp.downloads,
+                    rating: (parsed[existingIdx] && parsed[existingIdx].rating) || defApp.rating,
+                    downloads: (parsed[existingIdx] && parsed[existingIdx].downloads) || defApp.downloads,
                     apkUrl: defApp.apkUrl,
                     version: defApp.version,
                     size: defApp.size,
@@ -2695,22 +2740,16 @@ const firebaseConfig = {
           let cardRating;
           let cardDl;
 
-          if (rtdbReady) {
-            // Live Firebase RTDB read succeeded: show live data or app's base rating/downloads
-            if (live && live.ratingCount > 0 && live.ratingSum !== undefined) {
-              cardRating = (Number(live.ratingSum) / Number(live.ratingCount)).toFixed(1);
-            } else {
-              cardRating = app.rating || "5.0";
-            }
-
-            if (live && live.downloads !== undefined && live.downloads !== null) {
-              cardDl = formatDownloads(live.downloads);
-            } else {
-              cardDl = formatDownloads(app.downloads || "1.0k");
-            }
+          if (live && live.ratingCount > 0 && live.ratingSum !== undefined) {
+            cardRating = (Number(live.ratingSum) / Number(live.ratingCount)).toFixed(1);
           } else {
             cardRating = app.rating || "5.0";
-            cardDl = formatDownloads(app.downloads || "1.0k");
+          }
+
+          if (live && live.downloads !== undefined && live.downloads !== null) {
+            cardDl = formatDownloads(live.downloads);
+          } else {
+            cardDl = formatDownloads(app.downloads || "0");
           }
 
           const iconSrc = resolveAssetUrl(app.icon);
@@ -2855,11 +2894,11 @@ const firebaseConfig = {
           if (data.downloads !== undefined && data.downloads !== null) {
             dlEl.textContent = formatDownloads(data.downloads);
           } else {
-            dlEl.textContent = formatDownloads(app.downloads || "1.0k");
+            dlEl.textContent = formatDownloads(app.downloads || "0");
           }
         } else {
           ratingEl.textContent = app.rating || "5.0";
-          dlEl.textContent = formatDownloads(app.downloads || "1.0k");
+          dlEl.textContent = formatDownloads(app.downloads || "0");
         }
       }
 
@@ -3247,13 +3286,20 @@ const firebaseConfig = {
         if (!app) return;
         const slug = getAppRtdbSlug(app);
 
+        // Optimistically increment download count locally and update UI instantly
+        if (!rtdbAppsCache[slug]) rtdbAppsCache[slug] = {};
+        const currentDl = Number(rtdbAppsCache[slug].downloads) || (Number(app.downloads) || 0);
+        rtdbAppsCache[slug].downloads = currentDl + 1;
+        persistRtdbCache();
+        updateLiveUIForApp(slug);
+
         // counts download taps, not completed installs
         if (isFbReady && rtdb && rtdbRef && rtdbRunTransaction) {
           try {
             const dlRef = rtdbRef(rtdb, `apps/${slug}/downloads`);
             await Promise.race([
               rtdbRunTransaction(dlRef, (current) => (Number(current) || 0) + 1),
-              new Promise((resolve) => setTimeout(resolve, 600))
+              new Promise((resolve) => setTimeout(resolve, 800))
             ]);
           } catch (e) {
             // silent fallback
@@ -3376,6 +3422,19 @@ const firebaseConfig = {
           try {
             localStorage.setItem(`tvy_rating_${slug}`, ratingToSend.toString());
           } catch (e) {}
+
+          // Update rtdbAppsCache[slug] with latest calculation and update UI immediately
+          if (!rtdbAppsCache[slug]) rtdbAppsCache[slug] = {};
+          const oldSum = Number(rtdbAppsCache[slug].ratingSum) || 0;
+          const oldCount = Number(rtdbAppsCache[slug].ratingCount) || 0;
+          if (prevRating && prevRating >= 1 && prevRating <= 5) {
+            rtdbAppsCache[slug].ratingSum = Math.max(0, oldSum + ratingToSend - prevRating);
+          } else {
+            rtdbAppsCache[slug].ratingSum = oldSum + ratingToSend;
+            rtdbAppsCache[slug].ratingCount = oldCount + 1;
+          }
+          persistRtdbCache();
+          updateLiveUIForApp(slug);
 
           if (feedbackEl) {
             feedbackEl.textContent = `${t.thanksRating || "Thanks for rating!"} (${ratingToSend} ★)`;
@@ -3668,7 +3727,7 @@ const firebaseConfig = {
             liveStatsStr = `${avg} (${count}) | ${dl} downloads`;
           } else {
             const staticRating = app.rating || "5.0";
-            const staticDl = formatDownloads(app.downloads || "1.2k");
+            const staticDl = formatDownloads(app.downloads || "0");
             liveStatsStr = `${staticRating} (0) | ${staticDl} downloads`;
           }
 
@@ -3776,18 +3835,31 @@ const firebaseConfig = {
           return shot;
         });
 
-        const newApp = {
-          name: name,
-          developer: document.getElementById("formAppDev").value.trim() || "TVY-Tech",
-          version: document.getElementById("formAppVersion").value.trim(),
-          packageName: pkg,
-          category: document.getElementById("formAppCategory").value,
-          paid: document.getElementById("formAppPricing").value === "paid",
-          updated: document.getElementById("formAppUpdated").value || new Date().toISOString().slice(0, 10),
-          apkUrl: document.getElementById("formAppApkUrl").value.trim(),
-          size: document.getElementById("formAppSize").value.trim() || "0 MB",
-          rating: (editingAppIndex >= 0 ? apps[editingAppIndex].rating : "5.0") || "5.0",
-          downloads: (editingAppIndex >= 0 ? apps[editingAppIndex].downloads : "1.0k") || "1.0k",
+          const existingApp = editingAppIndex >= 0 ? apps[editingAppIndex] : null;
+          const liveData = rtdbAppsCache[getAppRtdbSlug({ packageName: pkg, name: name })];
+          let savedRating = existingApp?.rating || "5.0";
+          let savedDownloads = existingApp?.downloads || "0";
+          if (liveData) {
+            if (liveData.ratingCount > 0 && liveData.ratingSum !== undefined) {
+              savedRating = (Number(liveData.ratingSum) / Number(liveData.ratingCount)).toFixed(1);
+            }
+            if (liveData.downloads !== undefined && liveData.downloads !== null) {
+              savedDownloads = formatDownloads(liveData.downloads);
+            }
+          }
+
+          const newApp = {
+            name: name,
+            developer: document.getElementById("formAppDev").value.trim() || "TVY-Tech",
+            version: document.getElementById("formAppVersion").value.trim(),
+            packageName: pkg,
+            category: document.getElementById("formAppCategory").value,
+            paid: document.getElementById("formAppPricing").value === "paid",
+            updated: document.getElementById("formAppUpdated").value || new Date().toISOString().slice(0, 10),
+            apkUrl: document.getElementById("formAppApkUrl").value.trim(),
+            size: document.getElementById("formAppSize").value.trim() || "0 MB",
+            rating: savedRating,
+            downloads: savedDownloads,
           verified: document.getElementById("formAppVerified").checked,
           icon: finalIconPath,
           screenshots: finalScreenshots,
@@ -3840,23 +3912,65 @@ const firebaseConfig = {
         }
       }
 
-      // Icon & Screenshots File Pickers
-      function handleIconPicked(e) {
+      // Image Auto-Resize Utility for Icons & Screenshots
+      function resizeImageFile(file, maxWidth, maxHeight, quality = 0.85, format = "image/jpeg") {
+        return new Promise((resolve, reject) => {
+          if (!file || !file.type.startsWith("image/")) {
+            return reject(new Error("File is not an image"));
+          }
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+              let width = img.naturalWidth || img.width;
+              let height = img.naturalHeight || img.height;
+
+              if (width > maxWidth || height > maxHeight) {
+                const ratio = Math.min(maxWidth / width, maxHeight / height);
+                width = Math.round(width * ratio);
+                height = Math.round(height * ratio);
+              }
+
+              const canvas = document.createElement("canvas");
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext("2d");
+              ctx.imageSmoothingEnabled = true;
+              ctx.imageSmoothingQuality = "high";
+              ctx.drawImage(img, 0, 0, width, height);
+
+              const outFormat = format === "image/png" ? "image/png" : "image/jpeg";
+              const dataUrl = canvas.toDataURL(outFormat, quality);
+              resolve(dataUrl);
+            };
+            img.onerror = () => reject(new Error("Failed to decode image"));
+            img.src = e.target.result;
+          };
+          reader.onerror = () => reject(new Error("Failed to read file"));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      // Icon & Screenshots File Pickers with Auto-Resize
+      async function handleIconPicked(e) {
         const file = e.target.files?.[0];
         if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-          stagedIconData = evt.target.result;
-          const pkg = document.getElementById("formAppPackage")?.value || "";
-          const name = document.getElementById("formAppName")?.value || "";
+        const pkg = document.getElementById("formAppPackage")?.value || "";
+        const name = document.getElementById("formAppName")?.value || "";
+        try {
+          // Auto resize icon to clean 512x512 PNG (standard Play Store specification)
+          const resized = await resizeImageFile(file, 512, 512, 0.9, "image/png");
+          stagedIconData = resized;
           const iconPath = getIconRepoPath(pkg, name);
           try {
             localStorage.setItem("tvy_asset_" + iconPath, stagedIconData);
           } catch (err) {}
           updateFormIconPreview();
           updateFormRepoPaths();
-        };
-        reader.readAsDataURL(file);
+        } catch (err) {
+          console.error("Icon auto-resize error:", err);
+        }
+        e.target.value = "";
       }
 
       function updateFormIconPreview() {
@@ -3884,40 +3998,42 @@ const firebaseConfig = {
         document.body.removeChild(a);
       }
 
-      function handleScreenshotsPicked(e) {
+      async function handleScreenshotsPicked(e) {
         const files = Array.from(e.target.files || []);
         if (!files.length) return;
-        let readCount = 0;
         const startIndex = stagedScreenshots.length;
         const pkg = document.getElementById("formAppPackage")?.value || "";
         const name = document.getElementById("formAppName")?.value || "";
 
-        files.forEach((file, idx) => {
-          const reader = new FileReader();
-          reader.onload = (evt) => {
-            const base64 = evt.target.result;
-            stagedScreenshots.push(base64);
-            const shotPath = getScreenshotRepoPath(pkg, name, startIndex + idx);
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          try {
+            // Auto resize screenshot to max 1080x1920 with high-quality JPEG compression
+            // Reduces huge megabyte files to lightweight ~80-120KB while preserving pristine sharpness
+            const resized = await resizeImageFile(file, 1080, 1920, 0.85, "image/jpeg");
+            stagedScreenshots.push(resized);
+            const shotPath = getScreenshotRepoPath(pkg, name, startIndex + i);
             try {
-              localStorage.setItem("tvy_asset_" + shotPath, base64);
+              localStorage.setItem("tvy_asset_" + shotPath, resized);
             } catch (err) {}
-            readCount++;
-            if (readCount === files.length) {
-              renderFormScreenshotsThumbs();
-              updateFormRepoPaths();
-            }
-          };
-          reader.readAsDataURL(file);
-        });
+          } catch (err) {
+            console.error("Screenshot auto-resize error:", err);
+          }
+        }
+
+        renderFormScreenshotsThumbs();
+        updateFormRepoPaths();
+        e.target.value = "";
       }
 
       function renderFormScreenshotsThumbs() {
         const container = document.getElementById("formScreenshotsThumbs");
         const downloadBtn = document.getElementById("btnDownloadScreenshots");
         container.innerHTML = stagedScreenshots.map((shot, idx) => `
-          <div style="position: relative; width: 48px; height: 72px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2);">
-            <img src="${shot}" style="width: 100%; height: 100%; object-fit: cover;" />
-            <button type="button" onclick="removeScreenshot(${idx})" style="position: absolute; top: 1px; right: 1px; background: rgba(0,0,0,0.7); border: none; color: #fff; font-size: 9px; border-radius: 50%; width: 14px; height: 14px; cursor: pointer;">✕</button>
+          <div style="position: relative; width: 56px; height: 84px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
+            <img src="${shot}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+            <button type="button" onclick="removeScreenshot(${idx})" title="Remove" style="position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.75); border: none; color: #fff; font-size: 10px; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer;">✕</button>
+            <span style="position: absolute; bottom: 2px; left: 2px; font-size: 8.5px; background: rgba(0,0,0,0.6); color: #38BDF8; padding: 0 3px; border-radius: 3px;">#${idx + 1}</span>
           </div>
         `).join("");
         downloadBtn.disabled = stagedScreenshots.length === 0;
@@ -4063,25 +4179,30 @@ const firebaseConfig = {
           }
         } catch (e) {}
 
-        // Non-blocking background sync for Firebase RTDB after instant initial paint
+        // Fast background sync and realtime subscription for Firebase RTDB
         const syncFirebase = async () => {
           try {
             const ok = await initFirebase();
             if (ok) {
+              // 1. Immediately attach realtime live listeners for all apps
+              attachAllAppsListeners();
+              // 2. Fetch latest data batch in parallel
               await fetchBatchedAppsData();
+              // 3. Refresh views with confirmed server values
               renderApps();
               if (currentSelectedAppIndex >= 0) {
                 renderAppDetail(currentSelectedAppIndex);
+              }
+              const adminModal = document.getElementById("adminOverlay");
+              if (adminModal && adminModal.style.display !== "none") {
+                renderAdminAppsList();
               }
             }
           } catch (e) {}
         };
 
-        if (typeof window.requestIdleCallback === "function") {
-          window.requestIdleCallback(syncFirebase, { timeout: 1500 });
-        } else {
-          setTimeout(syncFirebase, 50);
-        }
+        // Start Firebase sync immediately
+        setTimeout(syncFirebase, 0);
       });
     </script>
     <script>
