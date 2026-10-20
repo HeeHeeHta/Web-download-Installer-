@@ -1378,6 +1378,194 @@
       }
 
       /* ==========================================================================
+         USER COMMENTS CARD (PLAY STORE STYLE)
+         ========================================================================== */
+      .detail-comments-card {
+        margin-top: 0;
+      }
+
+      .comments-header {
+        margin-bottom: 16px;
+      }
+
+      .comment-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        padding: 16px;
+      }
+
+      .comment-input-row {
+        width: 100%;
+      }
+
+      .comment-input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 12px;
+        padding: 10px 14px;
+        color: #FFFFFF;
+        font-size: 13.5px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        box-sizing: border-box;
+      }
+
+      .comment-input:focus {
+        border-color: rgba(56, 189, 248, 0.6);
+        box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
+      }
+
+      .comment-textarea-wrap {
+        position: relative;
+        width: 100%;
+      }
+
+      .comment-textarea {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 12px;
+        padding: 12px 14px;
+        color: #FFFFFF;
+        font-size: 13.5px;
+        font-family: inherit;
+        outline: none;
+        resize: vertical;
+        min-height: 80px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        box-sizing: border-box;
+      }
+
+      .comment-textarea:focus {
+        border-color: rgba(56, 189, 248, 0.6);
+        box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
+      }
+
+      .comment-textarea-footer {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 4px;
+      }
+
+      .comment-char-counter {
+        font-size: 11px;
+        color: var(--text-muted);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .comment-form-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .comment-submit-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        font-size: 13px;
+        font-weight: 600;
+        border-radius: 9999px;
+        cursor: pointer;
+      }
+
+      .comment-feedback {
+        font-size: 12.5px;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+
+      .comments-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        border-top: 1px solid var(--glass-border-subtle);
+        padding-top: 18px;
+      }
+
+      .comment-item {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .comment-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04));
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+        color: #FFFFFF;
+        font-weight: 700;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        user-select: none;
+      }
+
+      .comment-content {
+        flex: 1;
+        min-width: 0;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        padding: 10px 14px;
+      }
+
+      .comment-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 4px;
+      }
+
+      .comment-author {
+        font-size: 13px;
+        font-weight: 700;
+        color: #FFFFFF;
+        word-break: break-word;
+      }
+
+      .comment-time {
+        font-size: 11px;
+        color: var(--text-muted);
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+
+      .comment-body {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.5;
+        word-break: break-word;
+        white-space: pre-wrap;
+      }
+
+      .comments-empty-state {
+        text-align: center;
+        padding: 28px 16px;
+        color: var(--text-muted);
+        font-size: 13px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* ==========================================================================
          ADMIN PANEL & PIN GATE OVERLAYS
          Client-side obscurity for static hosting, not server security
          ========================================================================== */
@@ -1908,6 +2096,64 @@
             </button>
           </div>
         </section>
+
+        <!-- User Comments Card -->
+        <section class="detail-card detail-comments-card" id="detailCommentsCard" style="display: none;">
+          <div class="comments-header">
+            <h3 class="section-title" style="margin-bottom: 0;">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              <span id="detailCommentsTitle" data-i18n="commentsTitle">Comments</span>
+            </h3>
+          </div>
+
+          <!-- Comment Form -->
+          <form class="comment-form" id="commentForm" onsubmit="handleCommentSubmit(event)">
+            <div class="comment-input-row">
+              <input
+                type="text"
+                id="commentNameInput"
+                class="comment-input"
+                placeholder="Your name"
+                data-i18n-placeholder="commentNamePlaceholder"
+                maxlength="50"
+                autocomplete="name"
+                required
+              />
+            </div>
+            <div class="comment-textarea-wrap">
+              <textarea
+                id="commentTextInput"
+                class="comment-textarea"
+                placeholder="Write a comment..."
+                data-i18n-placeholder="commentTextPlaceholder"
+                maxlength="500"
+                rows="3"
+                oninput="handleCommentCharCount(this)"
+                required
+              ></textarea>
+              <div class="comment-textarea-footer">
+                <span class="comment-char-counter" id="commentCharCount">0/500</span>
+              </div>
+            </div>
+            <div class="comment-form-actions">
+              <button type="submit" class="btn btn-primary comment-submit-btn" id="commentSubmitBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"/>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+                <span data-i18n="commentSubmitBtn">Post Comment</span>
+              </button>
+              <div id="commentFeedback" class="comment-feedback" role="status" aria-live="polite"></div>
+            </div>
+          </form>
+
+          <!-- Comment List -->
+          <div class="comments-list" id="commentsList">
+            <!-- Populated dynamically via Firebase RTDB listener -->
+          </div>
+        </section>
       </div>
 
       <!-- Footer (Contains secret 5-tap trigger on copyright) -->
@@ -2329,6 +2575,9 @@ const firebaseConfig = {
       let rtdbRunTransaction = null;
       let rtdbOnValue = null;
       let rtdbOff = null;
+      let rtdbPush = null;
+      let rtdbQuery = null;
+      let rtdbLimitToLast = null;
       let isFbReady = false;
       let rtdbReady = false;
 
@@ -2491,7 +2740,7 @@ const firebaseConfig = {
         try {
           const dynamicImport = (p) => (new Function("s", "return import(s)"))(p);
           const { initializeApp } = await dynamicImport("firebase/app");
-          const { getDatabase, ref, get, set, runTransaction, onValue, off } = await dynamicImport("firebase/database");
+          const { getDatabase, ref, get, set, runTransaction, onValue, off, push, query, limitToLast } = await dynamicImport("firebase/database");
           fbApp = initializeApp(FIREBASE_CONFIG);
           const dbUrl = FIREBASE_CONFIG.databaseURL || `https://${FIREBASE_CONFIG.projectId}-default-rtdb.asia-southeast1.firebasedatabase.app`;
           rtdb = getDatabase(fbApp, dbUrl);
@@ -2501,6 +2750,9 @@ const firebaseConfig = {
           rtdbRunTransaction = runTransaction;
           rtdbOnValue = onValue;
           rtdbOff = off;
+          rtdbPush = push;
+          rtdbQuery = query;
+          rtdbLimitToLast = limitToLast;
           isFbReady = true;
           return true;
         } catch (e) {
@@ -2722,7 +2974,15 @@ const firebaseConfig = {
           contactCallUs: "ဖုန်းခေါ်ဆိုရန်",
           contactEmail: "Email",
           contactUs: "ဆက်သွယ်ရန်",
-          contactShopLocation: "ဆိုင်တည်နေရာ"
+          contactShopLocation: "ဆိုင်တည်နေရာ",
+          commentsTitle: "မှတ်ချက်များ",
+          commentNamePlaceholder: "သင့်နာမည်",
+          commentTextPlaceholder: "မှတ်ချက်ရေးရန်...",
+          commentSubmitBtn: "မှတ်ချက်တင်မည်",
+          commentEmptyState: "မှတ်ချက် မရှိသေးပါ။ ပထမဆုံး မှတ်ချက်ပေးသူ ဖြစ်လိုက်ပါ။",
+          commentPosted: "မှတ်ချက် တင်ပြီးပါပြီ",
+          commentNoLinks: "မှတ်ချက်တွင် link ထည့်ခွင့်မပြုပါ",
+          commentRateLimit: "ခဏစောင့်ပြီး ထပ်ရေးပါ"
         },
         en: {
           pageTitle: "App Download Center | Burmese App Download Center",
@@ -2789,7 +3049,15 @@ const firebaseConfig = {
           contactCallUs: "Call Us",
           contactEmail: "Email",
           contactUs: "Contact Us",
-          contactShopLocation: "Shop Location"
+          contactShopLocation: "Shop Location",
+          commentsTitle: "Comments",
+          commentNamePlaceholder: "Your name",
+          commentTextPlaceholder: "Write a comment...",
+          commentSubmitBtn: "Post Comment",
+          commentEmptyState: "No comments yet. Be the first to comment.",
+          commentPosted: "Comment posted",
+          commentNoLinks: "Links are not allowed in comments",
+          commentRateLimit: "Please wait a moment before commenting again"
         }
       };
 
@@ -2980,6 +3248,13 @@ const firebaseConfig = {
           const key = el.getAttribute("data-i18n");
           if (t[key] !== undefined && typeof t[key] === "string") {
             el.textContent = t[key];
+          }
+        });
+
+        document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+          const key = el.getAttribute("data-i18n-placeholder");
+          if (t[key] !== undefined && typeof t[key] === "string") {
+            el.placeholder = t[key];
           }
         });
 
@@ -3271,6 +3546,37 @@ const firebaseConfig = {
           updateDetailStatsDisplay(app, null);
         }
 
+        // Comments card display and form pre-fill
+        const commentsCard = document.getElementById("detailCommentsCard");
+        const isFirebaseAvailable = Boolean(isFbReady && rtdb && rtdbRef && rtdbOnValue && rtdbPush && rtdbQuery && rtdbLimitToLast);
+        if (commentsCard) {
+          commentsCard.style.display = isFirebaseAvailable ? "" : "none";
+        }
+        const commentNameInput = document.getElementById("commentNameInput");
+        if (commentNameInput) {
+          try {
+            const savedName = localStorage.getItem("tvy_comment_name") || "";
+            if (savedName) commentNameInput.value = savedName;
+          } catch (e) {}
+        }
+        const commentTextInput = document.getElementById("commentTextInput");
+        if (commentTextInput) {
+          commentTextInput.value = "";
+          handleCommentCharCount(commentTextInput);
+        }
+        const commentFeedbackEl = document.getElementById("commentFeedback");
+        if (commentFeedbackEl) {
+          commentFeedbackEl.textContent = "";
+        }
+        const commentsListEl = document.getElementById("commentsList");
+        if (commentsListEl) {
+          commentsListEl.innerHTML = "";
+        }
+        const commentsTitleEl = document.getElementById("detailCommentsTitle");
+        if (commentsTitleEl) {
+          commentsTitleEl.textContent = t.commentsTitle;
+        }
+
         // Attach Realtime onValue listeners for child paths (works with both root and scoped security rules)
         if (isFbReady && rtdb && rtdbRef && rtdbOnValue) {
           try {
@@ -3294,7 +3600,20 @@ const firebaseConfig = {
               rtdbAppsCache[slug].ratingCount = snap.val();
               updateDetailStatsDisplay(app, rtdbAppsCache[slug]);
             }, () => {});
+
+            let commentsSub = null;
+            if (rtdbQuery && rtdbLimitToLast) {
+              const commentsQuery = rtdbQuery(rtdbRef(rtdb, `comments/${slug}`), rtdbLimitToLast(50));
+              commentsSub = rtdbOnValue(commentsQuery, (snap) => {
+                if (activeDetailSlug !== slug) return;
+                renderComments(snap.val());
+              }, () => {});
+            }
+
             activeDetailUnsubscribes = [dlSub, sumSub, countSub];
+            if (typeof commentsSub === "function") {
+              activeDetailUnsubscribes.push(commentsSub);
+            }
           } catch (e) {
             updateDetailStatsDisplay(app, null);
           }
@@ -3798,6 +4117,217 @@ const firebaseConfig = {
             btnText.textContent = t.copyLink || "Copy Link";
           }, 2000);
         });
+      }
+
+      /* ==========================================================================
+         USER COMMENTS SYSTEM (REALTIME DATABASE BACKED)
+         ========================================================================== */
+      function timeAgo(ts, lang = currentLang) {
+        if (!ts) return "";
+        const diffSec = Math.max(0, Math.floor((Date.now() - Number(ts)) / 1000));
+        const isMy = lang === "my";
+
+        if (diffSec < 60) {
+          return isMy ? "အခုလေးတင်" : "just now";
+        }
+        const mins = Math.floor(diffSec / 60);
+        if (mins < 60) {
+          return isMy ? `လွန်ခဲ့သော ${mins} မိနစ်` : `${mins} min ago`;
+        }
+        const hrs = Math.floor(diffSec / 3600);
+        if (hrs < 24) {
+          return isMy ? `လွန်ခဲ့သော ${hrs} နာရီ` : `${hrs} hr ago`;
+        }
+        const days = Math.floor(diffSec / 86400);
+        if (days <= 7) {
+          return isMy ? `လွန်ခဲ့သော ${days} ရက်` : `${days} days ago`;
+        }
+        const d = new Date(Number(ts));
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, "0");
+        const dd = String(d.getDate()).padStart(2, "0");
+        return `${yyyy}-${mm}-${dd}`;
+      }
+
+      function handleCommentCharCount(textarea) {
+        const counter = document.getElementById("commentCharCount");
+        if (!counter || !textarea) return;
+        const len = (textarea.value || "").length;
+        counter.textContent = `${len}/500`;
+        if (len >= 500) {
+          counter.style.color = "#F87171";
+        } else {
+          counter.style.color = "var(--text-muted)";
+        }
+      }
+
+      function renderComments(rawComments) {
+        const titleEl = document.getElementById("detailCommentsTitle");
+        const listEl = document.getElementById("commentsList");
+        if (!listEl) return;
+
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+        let commentsArray = [];
+        if (rawComments && typeof rawComments === "object") {
+          commentsArray = Object.entries(rawComments).map(([id, val]) => ({
+            id,
+            name: (val && typeof val.name === "string") ? val.name : "Anonymous",
+            text: (val && typeof val.text === "string") ? val.text : "",
+            ts: Number(val && val.ts) || 0,
+            uid: (val && val.uid) || ""
+          }));
+        }
+
+        // Newest first
+        commentsArray.sort((a, b) => (b.ts || 0) - (a.ts || 0));
+
+        const count = commentsArray.length;
+        if (titleEl) {
+          titleEl.textContent = count > 0 ? `${t.commentsTitle} (${count})` : t.commentsTitle;
+        }
+
+        if (commentsArray.length === 0) {
+          listEl.innerHTML = "";
+          const emptyDiv = document.createElement("div");
+          emptyDiv.className = "comments-empty-state";
+          emptyDiv.id = "commentsEmptyState";
+
+          const emptyText = document.createElement("p");
+          emptyText.textContent = t.commentEmptyState;
+          emptyDiv.appendChild(emptyText);
+
+          listEl.appendChild(emptyDiv);
+          return;
+        }
+
+        listEl.innerHTML = "";
+        commentsArray.forEach((item) => {
+          const itemDiv = document.createElement("div");
+          itemDiv.className = "comment-item";
+
+          const avatarDiv = document.createElement("div");
+          avatarDiv.className = "comment-avatar";
+          const firstChar = (item.name.trim().charAt(0) || "U").toUpperCase();
+          avatarDiv.textContent = firstChar;
+
+          const contentDiv = document.createElement("div");
+          contentDiv.className = "comment-content";
+
+          const metaDiv = document.createElement("div");
+          metaDiv.className = "comment-meta";
+
+          const authorSpan = document.createElement("span");
+          authorSpan.className = "comment-author";
+          authorSpan.textContent = item.name;
+
+          const timeSpan = document.createElement("span");
+          timeSpan.className = "comment-time";
+          timeSpan.textContent = timeAgo(item.ts, currentLang);
+
+          metaDiv.appendChild(authorSpan);
+          metaDiv.appendChild(timeSpan);
+
+          const bodyDiv = document.createElement("div");
+          bodyDiv.className = "comment-body";
+          bodyDiv.textContent = item.text;
+
+          contentDiv.appendChild(metaDiv);
+          contentDiv.appendChild(bodyDiv);
+
+          itemDiv.appendChild(avatarDiv);
+          itemDiv.appendChild(contentDiv);
+
+          listEl.appendChild(itemDiv);
+        });
+      }
+
+      async function handleCommentSubmit(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.my;
+        const feedbackEl = document.getElementById("commentFeedback");
+        const submitBtn = document.getElementById("commentSubmitBtn");
+        const nameInput = document.getElementById("commentNameInput");
+        const textInput = document.getElementById("commentTextInput");
+
+        if (!nameInput || !textInput) return;
+        const name = (nameInput.value || "").trim();
+        const text = (textInput.value || "").trim();
+
+        if (!name || !text) return;
+
+        // Anti-spam link check: reject if text contains "http://", "https://" or "www."
+        const lower = text.toLowerCase();
+        if (lower.includes("http://") || lower.includes("https://") || lower.includes("www.")) {
+          if (feedbackEl) {
+            feedbackEl.textContent = t.commentNoLinks;
+            feedbackEl.style.color = "#F87171";
+          }
+          return;
+        }
+
+        const apps = getAppsList();
+        const app = apps[currentSelectedAppIndex];
+        if (!app) return;
+        const slug = getAppRtdbSlug(app);
+
+        // Rate limit: one comment per 120 seconds per app per browser
+        const rateLimitKey = `tvy_comment_last_${slug}`;
+        let lastTime = 0;
+        try {
+          lastTime = Number(localStorage.getItem(rateLimitKey) || 0);
+        } catch (err) {}
+
+        const now = Date.now();
+        if (now - lastTime < 120000) {
+          if (feedbackEl) {
+            feedbackEl.textContent = t.commentRateLimit;
+            feedbackEl.style.color = "#F87171";
+          }
+          return;
+        }
+
+        if (!isFbReady || !rtdb || !rtdbRef || !rtdbPush) {
+          return;
+        }
+
+        try {
+          if (submitBtn) submitBtn.disabled = true;
+          const anonId = getAnonId();
+          const commentsRef = rtdbRef(rtdb, `comments/${slug}`);
+
+          await rtdbPush(commentsRef, {
+            name: name,
+            text: text,
+            ts: Date.now(),
+            uid: anonId
+          });
+
+          // Remember the name
+          try {
+            localStorage.setItem("tvy_comment_name", name);
+            localStorage.setItem(rateLimitKey, String(Date.now()));
+          } catch (err) {}
+
+          textInput.value = "";
+          handleCommentCharCount(textInput);
+
+          if (feedbackEl) {
+            feedbackEl.textContent = t.commentPosted;
+            feedbackEl.style.color = "#34D399";
+            setTimeout(() => {
+              if (feedbackEl && feedbackEl.textContent === t.commentPosted) {
+                feedbackEl.textContent = "";
+              }
+            }, 3500);
+          }
+        } catch (error) {
+          if (feedbackEl) {
+            feedbackEl.textContent = "Error posting comment";
+            feedbackEl.style.color = "#F87171";
+          }
+        } finally {
+          if (submitBtn) submitBtn.disabled = false;
+        }
       }
 
       // Deep Linking Hash Listener
