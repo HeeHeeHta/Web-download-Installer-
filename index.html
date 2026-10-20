@@ -1228,6 +1228,155 @@
         -webkit-user-select: none;
       }
 
+      /* Detail Contact & Support Card */
+      .detail-contact-card {
+        margin-top: 0;
+      }
+
+      .detail-contact-subtitle {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin: -4px 0 16px;
+        line-height: 1.5;
+      }
+
+      .detail-contact-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .contact-main-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 12px;
+        border-radius: 9999px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        color: #FFFFFF;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 14px rgba(0, 0, 0, 0.25);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        cursor: pointer;
+      }
+
+      .contact-main-btn:hover {
+        background: rgba(255, 255, 255, 0.14);
+        border-color: rgba(255, 255, 255, 0.28);
+        color: #FFFFFF;
+        transform: translateY(-1.5px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 20px rgba(0, 0, 0, 0.35);
+      }
+
+      .contact-main-btn svg {
+        flex-shrink: 0;
+        opacity: 0.9;
+      }
+
+      .detail-contact-sublinks {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px 12px;
+        font-size: 12px;
+        color: var(--text-muted);
+        padding-top: 4px;
+      }
+
+      .detail-contact-sublinks a {
+        color: rgba(255, 255, 255, 0.75);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .detail-contact-sublinks a:hover {
+        color: #FFFFFF;
+        text-decoration: underline;
+      }
+
+      .detail-contact-divider {
+        color: rgba(255, 255, 255, 0.25);
+        user-select: none;
+      }
+
+      /* Footer Contact Section */
+      .footer-contact-section {
+        margin-bottom: 24px;
+        text-align: center;
+      }
+
+      .footer-contact-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin-bottom: 14px;
+        letter-spacing: -0.01em;
+      }
+
+      .footer-contact-pills {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 8px 10px;
+        max-width: 840px;
+        margin: 0 auto;
+      }
+
+      .footer-pill-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 14px;
+        border-radius: 9999px;
+        font-size: 12.5px;
+        font-weight: 500;
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.85);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .footer-pill-btn:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.24);
+        color: #FFFFFF;
+        transform: translateY(-1px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 6px 16px rgba(0, 0, 0, 0.25);
+      }
+
+      .footer-pill-btn svg {
+        flex-shrink: 0;
+        opacity: 0.85;
+      }
+
+      .footer-pill-btn:hover svg {
+        opacity: 1;
+      }
+
+      @media (max-width: 480px) {
+        .detail-contact-grid {
+          gap: 6px;
+        }
+        .contact-main-btn {
+          padding: 10px 6px;
+          font-size: 12px;
+          gap: 6px;
+        }
+      }
+
       /* ==========================================================================
          ADMIN PANEL & PIN GATE OVERLAYS
          Client-side obscurity for static hosting, not server security
@@ -1652,6 +1801,47 @@
           </div>
         </article>
 
+        <!-- Detail Contact & Support Card -->
+        <section class="detail-card detail-contact-card" id="detailContactCard">
+          <h3 class="section-title" style="margin-bottom: 6px;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span data-i18n="contactSupport">Contact & Support</span>
+          </h3>
+          <p class="detail-contact-subtitle" id="detailContactSubtitle">Questions or feedback about this app</p>
+          
+          <div class="detail-contact-grid">
+            <a href="https://t.me/ceir_status_hub" target="_blank" rel="noopener noreferrer" class="contact-main-btn" id="detailContactTelegram">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+              <span data-i18n="contactTelegram">Telegram</span>
+            </a>
+            <a href="https://m.me/komun24" target="_blank" rel="noopener noreferrer" class="contact-main-btn" id="detailContactMessenger">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+              </svg>
+              <span data-i18n="contactMessenger">Messenger</span>
+            </a>
+            <a href="https://viber.me/959422202319" target="_blank" rel="noopener noreferrer" class="contact-main-btn" id="detailContactViber">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <span data-i18n="contactViber">Viber</span>
+            </a>
+          </div>
+
+          <div class="detail-contact-sublinks">
+            <a href="https://m.me/cm/Abbi-e5hHXC4MD9N/?send_source=cm%3Acopy_invite_link" target="_blank" rel="noopener noreferrer" id="detailContactCommunity" data-i18n="contactCommunity">Messenger Community</a>
+            <span class="detail-contact-divider">·</span>
+            <a href="tel:+959422202319" id="detailContactPhone" data-i18n="contactCallUs">Call Us</a>
+            <span class="detail-contact-divider">·</span>
+            <a href="mailto:haymunaung24@gmail.com" id="detailContactEmail" data-i18n="contactEmail">Email</a>
+          </div>
+        </section>
+
         <!-- Screenshots Section (Hidden if empty) -->
         <section class="detail-card" id="detailScreenshotsCard">
           <h3 class="section-title" style="margin-bottom: 12px;" data-i18n="screenshots">Screenshots</h3>
@@ -1722,6 +1912,59 @@
 
       <!-- Footer (Contains secret 5-tap trigger on copyright) -->
       <footer class="footer">
+        <div class="footer-contact-section">
+          <h3 class="footer-contact-title" data-i18n="contactUs">Contact Us</h3>
+          <div class="footer-contact-pills">
+            <a href="https://t.me/ceir_status_hub" target="_blank" rel="noopener noreferrer" class="footer-pill-btn" id="footerContactTelegram">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+              <span data-i18n="contactTelegram">Telegram</span>
+            </a>
+            <a href="https://m.me/komun24" target="_blank" rel="noopener noreferrer" class="footer-pill-btn" id="footerContactMessenger">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+              </svg>
+              <span data-i18n="contactMessenger">Messenger</span>
+            </a>
+            <a href="https://m.me/cm/Abbi-e5hHXC4MD9N/?send_source=cm%3Acopy_invite_link" target="_blank" rel="noopener noreferrer" class="footer-pill-btn" id="footerContactCommunity">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              <span data-i18n="contactCommunity">Messenger Community</span>
+            </a>
+            <a href="https://viber.me/959422202319" target="_blank" rel="noopener noreferrer" class="footer-pill-btn" id="footerContactViber">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <span data-i18n="contactViber">Viber</span>
+            </a>
+            <a href="tel:+959422202319" class="footer-pill-btn" id="footerContactPhone">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <span id="footerPhoneDisplay">+95 942 220 2319</span>
+            </a>
+            <a href="mailto:haymunaung24@gmail.com" class="footer-pill-btn" id="footerContactEmail">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <span id="footerEmailDisplay">haymunaung24@gmail.com</span>
+            </a>
+            <a href="https://maps.app.goo.gl/TQqppZmEg5Q2FHMz5" target="_blank" rel="noopener noreferrer" class="footer-pill-btn" id="footerContactMaps">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span data-i18n="contactShopLocation">Shop Location</span>
+            </a>
+          </div>
+        </div>
         <p id="footerCopyrightText" data-i18n="footerText">© 2026 မြန်မာ အက်ပ် ဒေါင်းလုဒ် စင်တာ • လုံခြုံစိတ်ချရသော APK များကိုသာ တင်ဆက်ထားပါသည်</p>
       </footer>
     </div>
@@ -2029,6 +2272,17 @@
 
     <!-- MAIN TECHNICAL SCRIPT -->
     <script>
+      const CONTACT = {
+        telegram: "https://t.me/ceir_status_hub",
+        messenger: "https://m.me/komun24",
+        messengerCommunity: "https://m.me/cm/Abbi-e5hHXC4MD9N/?send_source=cm%3Acopy_invite_link",
+        viber: "https://viber.me/959422202319",
+        phoneDisplay: "+95 942 220 2319",
+        phoneLink: "tel:+959422202319",
+        email: "haymunaung24@gmail.com",
+        maps: "https://maps.app.goo.gl/TQqppZmEg5Q2FHMz5"
+      };
+
       /* ==========================================================================
          FIREBASE REALTIME DATABASE SECURITY RULES
          Paste the following JSON into Firebase Console -> Realtime Database -> Rules tab:
@@ -2457,7 +2711,18 @@ const firebaseConfig = {
           migrationNote: "ထည့်သွင်းထားသော ပုံများကို ဖိုင်လမ်းကြောင်းများအဖြစ် အလိုအလျောက် ပြောင်းလဲပြီးပါပြီ — ပုံဖိုင်များကို ပြန်လည်ဒေါင်းလုဒ်ဆွဲပြီး repo သို့ တင်ပေးပါ",
           rateApp: "အက်ပ်ကို အဆင့်သတ်မှတ်ပါ",
           youRated: "သင် အဆင့်သတ်မှတ်ထားသည်: ",
-          thanksRating: "အဆင့်သတ်မှတ်ပေးသည့်အတွက် ကျေးဇူးတင်ပါသည်!"
+          thanksRating: "အဆင့်သတ်မှတ်ပေးသည့်အတွက် ကျေးဇူးတင်ပါသည်!",
+          contactSupport: "ဆက်သွယ်ရန် နှင့် အကူအညီ",
+          contactSubtitlePaid: "License ဝယ်ယူရန် သို့မဟုတ် ဒီ app အကြောင်း မေးမြန်းရန်",
+          contactSubtitleFree: "ဒီ app နှင့်ပတ်သက်၍ မေးမြန်းလိုပါက",
+          contactTelegram: "Telegram",
+          contactMessenger: "Messenger",
+          contactViber: "Viber",
+          contactCommunity: "Messenger Community",
+          contactCallUs: "ဖုန်းခေါ်ဆိုရန်",
+          contactEmail: "Email",
+          contactUs: "ဆက်သွယ်ရန်",
+          contactShopLocation: "ဆိုင်တည်နေရာ"
         },
         en: {
           pageTitle: "App Download Center | Burmese App Download Center",
@@ -2513,7 +2778,18 @@ const firebaseConfig = {
           migrationNote: "Converted embedded images to file paths — re-download and upload the image files to the repo",
           rateApp: "Rate this app",
           youRated: "Your rating: ",
-          thanksRating: "Thanks for rating!"
+          thanksRating: "Thanks for rating!",
+          contactSupport: "Contact & Support",
+          contactSubtitlePaid: "Buy a license or ask about this app",
+          contactSubtitleFree: "Questions or feedback about this app",
+          contactTelegram: "Telegram",
+          contactMessenger: "Messenger",
+          contactViber: "Viber",
+          contactCommunity: "Messenger Community",
+          contactCallUs: "Call Us",
+          contactEmail: "Email",
+          contactUs: "Contact Us",
+          contactShopLocation: "Shop Location"
         }
       };
 
@@ -2952,6 +3228,25 @@ const firebaseConfig = {
             <span>${escapeHtml(pricingText)}</span>
           `;
         }
+
+        // Contact & Support Card subtitle and links
+        const isPaid = !!app.paid;
+        const contactSubEl = document.getElementById("detailContactSubtitle");
+        if (contactSubEl) {
+          contactSubEl.textContent = isPaid ? t.contactSubtitlePaid : t.contactSubtitleFree;
+        }
+        const linkTelegram = document.getElementById("detailContactTelegram");
+        if (linkTelegram) linkTelegram.href = CONTACT.telegram;
+        const linkMessenger = document.getElementById("detailContactMessenger");
+        if (linkMessenger) linkMessenger.href = CONTACT.messenger;
+        const linkViber = document.getElementById("detailContactViber");
+        if (linkViber) linkViber.href = CONTACT.viber;
+        const linkCommunity = document.getElementById("detailContactCommunity");
+        if (linkCommunity) linkCommunity.href = CONTACT.messengerCommunity;
+        const linkPhone = document.getElementById("detailContactPhone");
+        if (linkPhone) linkPhone.href = CONTACT.phoneLink;
+        const linkEmail = document.getElementById("detailContactEmail");
+        if (linkEmail) linkEmail.href = `mailto:${CONTACT.email}`;
 
         // Download CTA - increments download counter first, then triggers download
         const downloadBtn = document.getElementById("detailDownloadBtn");
@@ -4166,8 +4461,31 @@ const firebaseConfig = {
         });
       }
 
+      // Initialize contact links across the site
+      function initContactLinks() {
+        const ftTelegram = document.getElementById("footerContactTelegram");
+        if (ftTelegram) ftTelegram.href = CONTACT.telegram;
+        const ftMessenger = document.getElementById("footerContactMessenger");
+        if (ftMessenger) ftMessenger.href = CONTACT.messenger;
+        const ftCommunity = document.getElementById("footerContactCommunity");
+        if (ftCommunity) ftCommunity.href = CONTACT.messengerCommunity;
+        const ftViber = document.getElementById("footerContactViber");
+        if (ftViber) ftViber.href = CONTACT.viber;
+        const ftPhone = document.getElementById("footerContactPhone");
+        if (ftPhone) ftPhone.href = CONTACT.phoneLink;
+        const ftPhoneText = document.getElementById("footerPhoneDisplay");
+        if (ftPhoneText) ftPhoneText.textContent = CONTACT.phoneDisplay;
+        const ftEmail = document.getElementById("footerContactEmail");
+        if (ftEmail) ftEmail.href = `mailto:${CONTACT.email}`;
+        const ftEmailText = document.getElementById("footerEmailDisplay");
+        if (ftEmailText) ftEmailText.textContent = CONTACT.email;
+        const ftMaps = document.getElementById("footerContactMaps");
+        if (ftMaps) ftMaps.href = CONTACT.maps;
+      }
+
       // Initialize on DOMContentLoaded
       document.addEventListener("DOMContentLoaded", () => {
+        initContactLinks();
         setLang(currentLang);
         checkUrlHash();
 
