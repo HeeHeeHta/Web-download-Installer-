@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Web ADB တပ်ဆင်ရေး | Web ADB & Fastbot Tool </title>
+    <title>Web ADB တပ်ဆင်ရေး | Web ADB & Fastboot Tool</title>
     <meta name="description" content=" Chrome မှတစ်ဆင့် Android ဖုန်းထဲသို့ USB ဖြင့် APK တိုက်ရိုက်သွင်းယူနိုင်သော Web ADB စနစ်။" />
     <meta property="og:title" content="Web ADB တပ်ဆင်ရေး | Web ADB & Fastboot Installer" />
     <meta property="og:description" content=" Chrome မှတစ်ဆင့် Android ဖုန်းထဲသို့ USB ဖြင့် APK တိုက်ရိုက်သွင်းယူနိုင်သော Web ADB စနစ်။" />
@@ -2739,7 +2739,6 @@
             }
             const payload = take(payloadLength);
             if (!payload) { buf = concat(header, buf); return null; }
-            appendLog(`[diag] USB <- packet ${cmdName(command)} arg0=${arg0} arg1=${arg1} len=${payloadLength}`, "info");
             return { command, arg0, arg1, payloadLength, checksum, magic, payload };
           }
         };
@@ -2752,12 +2751,10 @@
               try {
                 res = await usbDevice.transferIn(inEndpoint.endpointNumber, 16384);
               } catch (e) {
-                appendLog(`[diag] transferIn failed, trying clearHalt: ${e.message}`, "warn");
                 await usbDevice.clearHalt("in", inEndpoint.endpointNumber);
                 res = await usbDevice.transferIn(inEndpoint.endpointNumber, 16384);
               }
               const bytes = new Uint8Array(res.data.buffer, res.data.byteOffset, res.data.byteLength);
-              appendLog(`[diag] USB <- ${bytes.length} bytes`, "info");
               if (bytes.length === 0) continue;
               buf = concat(buf, bytes);
             }
@@ -2781,7 +2778,6 @@
             v.setUint32(16, (packet.checksum >>> 0) || 0, true);
             const magic = packet.magic !== undefined ? packet.magic : (packet.command ^ 0xFFFFFFFF);
             v.setUint32(20, magic >>> 0, true);
-            appendLog(`[diag] USB -> packet ${cmdName(packet.command)} arg0=${packet.arg0} arg1=${packet.arg1} len=${payload.length}`, "info");
             await usbDevice.transferOut(outEndpoint.endpointNumber, header);
             if (payload.length > 0) await usbDevice.transferOut(outEndpoint.endpointNumber, payload);
             const packetSize = outEndpoint.packetSize || 512;
