@@ -1820,6 +1820,10 @@
       }
 
       /* Thadingyut Festival of Lights Seasonal Theme */
+      html.thadingyut {
+        background-color: #0a0f2e;
+      }
+
       body:not(.thadingyut) .thadingyut-layer {
         display: none !important;
       }
@@ -1830,6 +1834,7 @@
           radial-gradient(circle 350px at 50% 98%, rgba(251, 146, 60, 0.22), transparent 60%),
           linear-gradient(180deg, #0a0f2e 0%, #131a47 48%, #1e1545 100%) !important;
         background-attachment: fixed !important;
+        overscroll-behavior-y: none;
       }
 
       body.thadingyut .aurora-bg {
@@ -1975,165 +1980,444 @@
     <div class="thadingyut-layer" aria-hidden="true">
       <!-- Hanging Paper Lanterns Row -->
       <div class="thadingyut-hanging-wrap">
-        <!-- 1. Warm Red (Short) -->
+        <!-- 1. Blue-Cyan-Green (Short) -->
         <div class="thadingyut-hanging thadingyut-sway-1">
-          <div class="thadingyut-lantern-glow" style="top: 37px; background: rgba(239, 68, 68, 0.5);"></div>
-          <svg width="32" height="80" viewBox="0 0 32 80" fill="none">
-            <line x1="16" y1="0" x2="16" y2="16" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.7"/>
-            <rect x="10" y="16" width="12" height="3" rx="1.5" fill="#d97706"/>
-            <ellipse cx="16" cy="37" rx="11" ry="18" fill="rgba(239, 68, 68, 0.72)"/>
-            <line x1="16" y1="19" x2="16" y2="55" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
-            <path d="M 16 19 C 9 26 9 48 16 55" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <path d="M 16 19 C 23 26 23 48 16 55" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <rect x="11" y="55" width="10" height="2.5" rx="1" fill="#d97706"/>
-            <line x1="16" y1="57.5" x2="16" y2="69" stroke="#fbbf24" stroke-width="1.2"/>
-            <circle cx="16" cy="60" r="1.5" fill="#f59e0b"/>
-            <line x1="14" y1="62" x2="14" y2="68" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
-            <line x1="18" y1="62" x2="18" y2="68" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
+          <div class="thadingyut-lantern-glow" style="top: 27px; background: rgba(56, 189, 248, 0.45);"></div>
+          <svg width="45" height="72" viewBox="0 0 100 160" fill="none">
+            <defs>
+              <linearGradient id="ml-grad-1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1e40af"/>
+                <stop offset="25%" stop-color="#0284c7"/>
+                <stop offset="55%" stop-color="#38bdf8"/>
+                <stop offset="80%" stop-color="#34d399"/>
+                <stop offset="100%" stop-color="#10b981"/>
+              </linearGradient>
+              <radialGradient id="ml-lit-1" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+                <stop offset="50%" stop-color="#fef08a" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="ml-halo-1" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="59" r="38" fill="url(#ml-halo-1)"/>
+            <circle cx="50" cy="2" r="2" fill="none" stroke="#eab308" stroke-width="1.2"/>
+            <line x1="50" y1="3" x2="23" y2="22" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <line x1="50" y1="3" x2="77" y2="22" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <path d="M 23 22 C 19 44, 19 74, 23 96 L 77 96 C 81 74, 81 44, 77 22 Z" fill="url(#ml-grad-1)"/>
+            <ellipse cx="50" cy="59" rx="21" ry="26" fill="url(#ml-lit-1)"/>
+            <path d="M 21.5 32.5 Q 50 37 78.5 32.5" fill="none" stroke="#0369a1" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 43 Q 50 47.5 79.5 43" fill="none" stroke="#0369a1" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 53.5 Q 50 58 80 53.5" fill="none" stroke="#0369a1" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 64 Q 50 68.5 80 64" fill="none" stroke="#047857" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 74.5 Q 50 79 79.5 74.5" fill="none" stroke="#047857" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 21.5 85 Q 50 89.5 78.5 85" fill="none" stroke="#047857" stroke-width="1.2" stroke-opacity="0.45"/>
+            <ellipse cx="50" cy="22" rx="27" ry="4" fill="#a16207" stroke="#eab308" stroke-width="1"/>
+            <ellipse cx="50" cy="22" rx="22" ry="2.5" fill="#78350f" opacity="0.6"/>
+            <circle cx="23" cy="22" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <circle cx="77" cy="22" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <ellipse cx="50" cy="102" rx="16" ry="5" fill="#f59e0b" opacity="0.32"/>
+            <ellipse cx="50" cy="102" rx="9" ry="2.8" fill="#fef08a" opacity="0.45"/>
+            <ellipse cx="50" cy="96" rx="18" ry="4.5" fill="#a16207" stroke="#eab308" stroke-width="1.2"/>
+            <ellipse cx="50" cy="96" rx="14" ry="3.2" fill="#1c1006"/>
+            <line x1="50" y1="95" x2="50" y2="93" stroke="#78350f" stroke-width="1.5"/>
+            <ellipse cx="50" cy="91" rx="5" ry="6" fill="#f97316" opacity="0.7"/>
+            <path d="M 50 85 C 48.5 88, 47.5 91, 48.5 93 C 49.2 94.5, 50.8 94.5, 51.5 93 C 52.5 91, 51.5 88, 50 85 Z" fill="#fffbeb"/>
+            <path d="M 50 87 C 49 89, 48.5 91, 49 92.5 C 49.4 93.5, 50.6 93.5, 51 92.5 C 51.5 91, 51 89, 50 87 Z" fill="#ffffff"/>
           </svg>
         </div>
 
-        <!-- 2. Gold (Medium-Long) -->
+        <!-- 2. Orange-Amber-Gold (Medium-Long) -->
         <div class="thadingyut-hanging thadingyut-sway-2">
-          <div class="thadingyut-lantern-glow" style="top: 57px; background: rgba(245, 158, 11, 0.55);"></div>
-          <svg width="32" height="100" viewBox="0 0 32 100" fill="none">
-            <line x1="16" y1="0" x2="16" y2="36" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.7"/>
-            <rect x="10" y="36" width="12" height="3" rx="1.5" fill="#d97706"/>
-            <ellipse cx="16" cy="57" rx="11" ry="18" fill="rgba(245, 158, 11, 0.75)"/>
-            <line x1="16" y1="39" x2="16" y2="75" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
-            <path d="M 16 39 C 9 46 9 68 16 75" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <path d="M 16 39 C 23 46 23 68 16 75" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <rect x="11" y="75" width="10" height="2.5" rx="1" fill="#d97706"/>
-            <line x1="16" y1="77.5" x2="16" y2="89" stroke="#fbbf24" stroke-width="1.2"/>
-            <circle cx="16" cy="80" r="1.5" fill="#f59e0b"/>
-            <line x1="14" y1="82" x2="14" y2="88" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
-            <line x1="18" y1="82" x2="18" y2="88" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
+          <div class="thadingyut-lantern-glow" style="top: 39px; background: rgba(249, 115, 22, 0.5);"></div>
+          <svg width="45" height="72" viewBox="0 0 100 160" fill="none">
+            <defs>
+              <linearGradient id="ml-grad-2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#c2410c"/>
+                <stop offset="25%" stop-color="#ea580c"/>
+                <stop offset="55%" stop-color="#f97316"/>
+                <stop offset="80%" stop-color="#fbbf24"/>
+                <stop offset="100%" stop-color="#f59e0b"/>
+              </linearGradient>
+              <radialGradient id="ml-lit-2" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+                <stop offset="50%" stop-color="#fef08a" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="ml-halo-2" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#f97316" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="87" r="38" fill="url(#ml-halo-2)"/>
+            <circle cx="50" cy="2" r="2" fill="none" stroke="#eab308" stroke-width="1.2"/>
+            <line x1="50" y1="3" x2="23" y2="50" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <line x1="50" y1="3" x2="77" y2="50" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <path d="M 23 50 C 19 72, 19 102, 23 124 L 77 124 C 81 102, 81 72, 77 50 Z" fill="url(#ml-grad-2)"/>
+            <ellipse cx="50" cy="87" rx="21" ry="26" fill="url(#ml-lit-2)"/>
+            <path d="M 21.5 60.5 Q 50 65 78.5 60.5" fill="none" stroke="#9a3412" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 71 Q 50 75.5 79.5 71" fill="none" stroke="#9a3412" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 81.5 Q 50 86 80 81.5" fill="none" stroke="#9a3412" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 92 Q 50 96.5 80 92" fill="none" stroke="#b45309" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 102.5 Q 50 107 79.5 102.5" fill="none" stroke="#b45309" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 21.5 113 Q 50 117.5 78.5 113" fill="none" stroke="#b45309" stroke-width="1.2" stroke-opacity="0.45"/>
+            <ellipse cx="50" cy="50" rx="27" ry="4" fill="#a16207" stroke="#eab308" stroke-width="1"/>
+            <ellipse cx="50" cy="50" rx="22" ry="2.5" fill="#78350f" opacity="0.6"/>
+            <circle cx="23" cy="50" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <circle cx="77" cy="50" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <ellipse cx="50" cy="130" rx="16" ry="5" fill="#f59e0b" opacity="0.32"/>
+            <ellipse cx="50" cy="130" rx="9" ry="2.8" fill="#fef08a" opacity="0.45"/>
+            <ellipse cx="50" cy="124" rx="18" ry="4.5" fill="#a16207" stroke="#eab308" stroke-width="1.2"/>
+            <ellipse cx="50" cy="124" rx="14" ry="3.2" fill="#1c1006"/>
+            <line x1="50" y1="123" x2="50" y2="121" stroke="#78350f" stroke-width="1.5"/>
+            <ellipse cx="50" cy="119" rx="5" ry="6" fill="#f97316" opacity="0.7"/>
+            <path d="M 50 113 C 48.5 116, 47.5 119, 48.5 121 C 49.2 122.5, 50.8 122.5, 51.5 121 C 52.5 119, 51.5 116, 50 113 Z" fill="#fffbeb"/>
+            <path d="M 50 115 C 49 117, 48.5 119, 49 120.5 C 49.4 121.5, 50.6 121.5, 51 120.5 C 51.5 119, 51 117, 50 115 Z" fill="#ffffff"/>
           </svg>
         </div>
 
-        <!-- 3. Violet (Medium-Short) -->
+        <!-- 3. Violet-Pink (Medium-Short) -->
         <div class="thadingyut-hanging thadingyut-sway-3">
-          <div class="thadingyut-lantern-glow" style="top: 43px; background: rgba(168, 85, 247, 0.5);"></div>
-          <svg width="32" height="86" viewBox="0 0 32 86" fill="none">
-            <line x1="16" y1="0" x2="16" y2="22" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.7"/>
-            <rect x="10" y="22" width="12" height="3" rx="1.5" fill="#d97706"/>
-            <ellipse cx="16" cy="43" rx="11" ry="18" fill="rgba(168, 85, 247, 0.72)"/>
-            <line x1="16" y1="25" x2="16" y2="61" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
-            <path d="M 16 25 C 9 32 9 54 16 61" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <path d="M 16 25 C 23 32 23 54 16 61" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <rect x="11" y="61" width="10" height="2.5" rx="1" fill="#d97706"/>
-            <line x1="16" y1="63.5" x2="16" y2="75" stroke="#fbbf24" stroke-width="1.2"/>
-            <circle cx="16" cy="66" r="1.5" fill="#f59e0b"/>
-            <line x1="14" y1="68" x2="14" y2="74" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
-            <line x1="18" y1="68" x2="18" y2="74" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
+          <div class="thadingyut-lantern-glow" style="top: 31px; background: rgba(192, 132, 252, 0.45);"></div>
+          <svg width="45" height="72" viewBox="0 0 100 160" fill="none">
+            <defs>
+              <linearGradient id="ml-grad-3" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#6b21a8"/>
+                <stop offset="25%" stop-color="#8b5cf6"/>
+                <stop offset="55%" stop-color="#c084fc"/>
+                <stop offset="80%" stop-color="#ec4899"/>
+                <stop offset="100%" stop-color="#db2777"/>
+              </linearGradient>
+              <radialGradient id="ml-lit-3" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+                <stop offset="50%" stop-color="#fef08a" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="ml-halo-3" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#c084fc" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#c084fc" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="69" r="38" fill="url(#ml-halo-3)"/>
+            <circle cx="50" cy="2" r="2" fill="none" stroke="#eab308" stroke-width="1.2"/>
+            <line x1="50" y1="3" x2="23" y2="32" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <line x1="50" y1="3" x2="77" y2="32" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <path d="M 23 32 C 19 54, 19 84, 23 106 L 77 106 C 81 84, 81 54, 77 32 Z" fill="url(#ml-grad-3)"/>
+            <ellipse cx="50" cy="69" rx="21" ry="26" fill="url(#ml-lit-3)"/>
+            <path d="M 21.5 42.5 Q 50 47 78.5 42.5" fill="none" stroke="#581c87" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 53 Q 50 57.5 79.5 53" fill="none" stroke="#581c87" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 63.5 Q 50 68 80 63.5" fill="none" stroke="#581c87" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 74 Q 50 78.5 80 74" fill="none" stroke="#831843" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 84.5 Q 50 89 79.5 84.5" fill="none" stroke="#831843" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 21.5 95 Q 50 99.5 78.5 95" fill="none" stroke="#831843" stroke-width="1.2" stroke-opacity="0.45"/>
+            <ellipse cx="50" cy="32" rx="27" ry="4" fill="#a16207" stroke="#eab308" stroke-width="1"/>
+            <ellipse cx="50" cy="32" rx="22" ry="2.5" fill="#78350f" opacity="0.6"/>
+            <circle cx="23" cy="32" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <circle cx="77" cy="32" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <ellipse cx="50" cy="112" rx="16" ry="5" fill="#f59e0b" opacity="0.32"/>
+            <ellipse cx="50" cy="112" rx="9" ry="2.8" fill="#fef08a" opacity="0.45"/>
+            <ellipse cx="50" cy="106" rx="18" ry="4.5" fill="#a16207" stroke="#eab308" stroke-width="1.2"/>
+            <ellipse cx="50" cy="106" rx="14" ry="3.2" fill="#1c1006"/>
+            <line x1="50" y1="105" x2="50" y2="103" stroke="#78350f" stroke-width="1.5"/>
+            <ellipse cx="50" cy="101" rx="5" ry="6" fill="#f97316" opacity="0.7"/>
+            <path d="M 50 95 C 48.5 98, 47.5 101, 48.5 103 C 49.2 104.5, 50.8 104.5, 51.5 103 C 52.5 101, 51.5 98, 50 95 Z" fill="#fffbeb"/>
+            <path d="M 50 97 C 49 99, 48.5 101, 49 102.5 C 49.4 103.5, 50.6 103.5, 51 102.5 C 51.5 101, 51 99, 50 97 Z" fill="#ffffff"/>
           </svg>
         </div>
 
-        <!-- 4. Teal (Long) -->
+        <!-- 4. Gold-Warm-Amber (Long) -->
         <div class="thadingyut-hanging thadingyut-sway-4">
-          <div class="thadingyut-lantern-glow" style="top: 67px; background: rgba(20, 184, 166, 0.5);"></div>
-          <svg width="32" height="110" viewBox="0 0 32 110" fill="none">
-            <line x1="16" y1="0" x2="16" y2="46" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.7"/>
-            <rect x="10" y="46" width="12" height="3" rx="1.5" fill="#d97706"/>
-            <ellipse cx="16" cy="67" rx="11" ry="18" fill="rgba(20, 184, 166, 0.72)"/>
-            <line x1="16" y1="49" x2="16" y2="85" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
-            <path d="M 16 49 C 9 56 9 78 16 85" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <path d="M 16 49 C 23 56 23 78 16 85" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <rect x="11" y="85" width="10" height="2.5" rx="1" fill="#d97706"/>
-            <line x1="16" y1="87.5" x2="16" y2="99" stroke="#fbbf24" stroke-width="1.2"/>
-            <circle cx="16" cy="90" r="1.5" fill="#f59e0b"/>
-            <line x1="14" y1="92" x2="14" y2="98" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
-            <line x1="18" y1="92" x2="18" y2="98" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
+          <div class="thadingyut-lantern-glow" style="top: 45px; background: rgba(245, 158, 11, 0.5);"></div>
+          <svg width="45" height="72" viewBox="0 0 100 160" fill="none">
+            <defs>
+              <linearGradient id="ml-grad-4" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#b45309"/>
+                <stop offset="25%" stop-color="#d97706"/>
+                <stop offset="55%" stop-color="#fde047"/>
+                <stop offset="80%" stop-color="#f59e0b"/>
+                <stop offset="100%" stop-color="#d97706"/>
+              </linearGradient>
+              <radialGradient id="ml-lit-4" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5"/>
+                <stop offset="50%" stop-color="#fef08a" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="ml-halo-4" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.45"/>
+                <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="99" r="38" fill="url(#ml-halo-4)"/>
+            <circle cx="50" cy="2" r="2" fill="none" stroke="#eab308" stroke-width="1.2"/>
+            <line x1="50" y1="3" x2="23" y2="62" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <line x1="50" y1="3" x2="77" y2="62" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <path d="M 23 62 C 19 84, 19 114, 23 136 L 77 136 C 81 114, 81 84, 77 62 Z" fill="url(#ml-grad-4)"/>
+            <ellipse cx="50" cy="99" rx="21" ry="26" fill="url(#ml-lit-4)"/>
+            <path d="M 21.5 72.5 Q 50 77 78.5 72.5" fill="none" stroke="#78350f" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 83 Q 50 87.5 79.5 83" fill="none" stroke="#78350f" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 93.5 Q 50 98 80 93.5" fill="none" stroke="#78350f" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 104 Q 50 108.5 80 104" fill="none" stroke="#78350f" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 114.5 Q 50 119 79.5 114.5" fill="none" stroke="#78350f" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 21.5 125 Q 50 129.5 78.5 125" fill="none" stroke="#78350f" stroke-width="1.2" stroke-opacity="0.45"/>
+            <ellipse cx="50" cy="62" rx="27" ry="4" fill="#a16207" stroke="#eab308" stroke-width="1"/>
+            <ellipse cx="50" cy="62" rx="22" ry="2.5" fill="#78350f" opacity="0.6"/>
+            <circle cx="23" cy="62" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <circle cx="77" cy="62" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <ellipse cx="50" cy="142" rx="16" ry="5" fill="#f59e0b" opacity="0.32"/>
+            <ellipse cx="50" cy="142" rx="9" ry="2.8" fill="#fef08a" opacity="0.45"/>
+            <ellipse cx="50" cy="136" rx="18" ry="4.5" fill="#a16207" stroke="#eab308" stroke-width="1.2"/>
+            <ellipse cx="50" cy="136" rx="14" ry="3.2" fill="#1c1006"/>
+            <line x1="50" y1="135" x2="50" y2="133" stroke="#78350f" stroke-width="1.5"/>
+            <ellipse cx="50" cy="131" rx="5" ry="6" fill="#f97316" opacity="0.7"/>
+            <path d="M 50 125 C 48.5 128, 47.5 131, 48.5 133 C 49.2 134.5, 50.8 134.5, 51.5 133 C 52.5 131, 51.5 128, 50 125 Z" fill="#fffbeb"/>
+            <path d="M 50 127 C 49 129, 48.5 131, 49 132.5 C 49.4 133.5, 50.6 133.5, 51 132.5 C 51.5 131, 51 129, 50 127 Z" fill="#ffffff"/>
           </svg>
         </div>
 
-        <!-- 5. Warm Coral (Short) -->
+        <!-- 5. Warm Red-Orange (Short) -->
         <div class="thadingyut-hanging thadingyut-sway-5">
-          <div class="thadingyut-lantern-glow" style="top: 39px; background: rgba(244, 63, 94, 0.5);"></div>
-          <svg width="32" height="82" viewBox="0 0 32 82" fill="none">
-            <line x1="16" y1="0" x2="16" y2="18" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.7"/>
-            <rect x="10" y="18" width="12" height="3" rx="1.5" fill="#d97706"/>
-            <ellipse cx="16" cy="39" rx="11" ry="18" fill="rgba(244, 63, 94, 0.72)"/>
-            <line x1="16" y1="21" x2="16" y2="57" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
-            <path d="M 16 21 C 9 28 9 50 16 57" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <path d="M 16 21 C 23 28 23 50 16 57" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <rect x="11" y="57" width="10" height="2.5" rx="1" fill="#d97706"/>
-            <line x1="16" y1="59.5" x2="16" y2="71" stroke="#fbbf24" stroke-width="1.2"/>
-            <circle cx="16" cy="62" r="1.5" fill="#f59e0b"/>
-            <line x1="14" y1="64" x2="14" y2="70" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
-            <line x1="18" y1="64" x2="18" y2="70" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
+          <div class="thadingyut-lantern-glow" style="top: 28px; background: rgba(239, 68, 68, 0.45);"></div>
+          <svg width="45" height="72" viewBox="0 0 100 160" fill="none">
+            <defs>
+              <linearGradient id="ml-grad-5" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#991b1b"/>
+                <stop offset="25%" stop-color="#dc2626"/>
+                <stop offset="55%" stop-color="#ef4444"/>
+                <stop offset="80%" stop-color="#f97316"/>
+                <stop offset="100%" stop-color="#ea580c"/>
+              </linearGradient>
+              <radialGradient id="ml-lit-5" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+                <stop offset="50%" stop-color="#fef08a" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="ml-halo-5" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ef4444" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="61" r="38" fill="url(#ml-halo-5)"/>
+            <circle cx="50" cy="2" r="2" fill="none" stroke="#eab308" stroke-width="1.2"/>
+            <line x1="50" y1="3" x2="23" y2="24" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <line x1="50" y1="3" x2="77" y2="24" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <path d="M 23 24 C 19 46, 19 76, 23 98 L 77 98 C 81 76, 81 46, 77 24 Z" fill="url(#ml-grad-5)"/>
+            <ellipse cx="50" cy="61" rx="21" ry="26" fill="url(#ml-lit-5)"/>
+            <path d="M 21.5 34.5 Q 50 39 78.5 34.5" fill="none" stroke="#7f1d1d" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 45 Q 50 49.5 79.5 45" fill="none" stroke="#7f1d1d" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 55.5 Q 50 60 80 55.5" fill="none" stroke="#7f1d1d" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 66 Q 50 70.5 80 66" fill="none" stroke="#9a3412" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 76.5 Q 50 81 79.5 76.5" fill="none" stroke="#9a3412" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 21.5 87 Q 50 91.5 78.5 87" fill="none" stroke="#9a3412" stroke-width="1.2" stroke-opacity="0.45"/>
+            <ellipse cx="50" cy="24" rx="27" ry="4" fill="#a16207" stroke="#eab308" stroke-width="1"/>
+            <ellipse cx="50" cy="24" rx="22" ry="2.5" fill="#78350f" opacity="0.6"/>
+            <circle cx="23" cy="24" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <circle cx="77" cy="24" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <ellipse cx="50" cy="104" rx="16" ry="5" fill="#f59e0b" opacity="0.32"/>
+            <ellipse cx="50" cy="104" rx="9" ry="2.8" fill="#fef08a" opacity="0.45"/>
+            <ellipse cx="50" cy="98" rx="18" ry="4.5" fill="#a16207" stroke="#eab308" stroke-width="1.2"/>
+            <ellipse cx="50" cy="98" rx="14" ry="3.2" fill="#1c1006"/>
+            <line x1="50" y1="97" x2="50" y2="95" stroke="#78350f" stroke-width="1.5"/>
+            <ellipse cx="50" cy="93" rx="5" ry="6" fill="#f97316" opacity="0.7"/>
+            <path d="M 50 87 C 48.5 90, 47.5 93, 48.5 95 C 49.2 96.5, 50.8 96.5, 51.5 95 C 52.5 93, 51.5 90, 50 87 Z" fill="#fffbeb"/>
+            <path d="M 50 89 C 49 91, 48.5 93, 49 94.5 C 49.4 95.5, 50.6 95.5, 51 94.5 C 51.5 93, 51 91, 50 89 Z" fill="#ffffff"/>
           </svg>
         </div>
 
-        <!-- 6. Orange (Medium-Long) -->
+        <!-- 6. Pink-Magenta (Medium-Long) -->
         <div class="thadingyut-hanging thadingyut-sway-6">
-          <div class="thadingyut-lantern-glow" style="top: 63px; background: rgba(249, 115, 22, 0.5);"></div>
-          <svg width="32" height="106" viewBox="0 0 32 106" fill="none">
-            <line x1="16" y1="0" x2="16" y2="42" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.7"/>
-            <rect x="10" y="42" width="12" height="3" rx="1.5" fill="#d97706"/>
-            <ellipse cx="16" cy="63" rx="11" ry="18" fill="rgba(249, 115, 22, 0.72)"/>
-            <line x1="16" y1="45" x2="16" y2="81" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
-            <path d="M 16 45 C 9 52 9 74 16 81" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <path d="M 16 45 C 23 52 23 74 16 81" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <rect x="11" y="81" width="10" height="2.5" rx="1" fill="#d97706"/>
-            <line x1="16" y1="83.5" x2="16" y2="95" stroke="#fbbf24" stroke-width="1.2"/>
-            <circle cx="16" cy="86" r="1.5" fill="#f59e0b"/>
-            <line x1="14" y1="88" x2="14" y2="94" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
-            <line x1="18" y1="88" x2="18" y2="94" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
+          <div class="thadingyut-lantern-glow" style="top: 40px; background: rgba(236, 72, 153, 0.5);"></div>
+          <svg width="45" height="72" viewBox="0 0 100 160" fill="none">
+            <defs>
+              <linearGradient id="ml-grad-6" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#9d174d"/>
+                <stop offset="25%" stop-color="#be185d"/>
+                <stop offset="55%" stop-color="#f472b6"/>
+                <stop offset="80%" stop-color="#ec4899"/>
+                <stop offset="100%" stop-color="#db2777"/>
+              </linearGradient>
+              <radialGradient id="ml-lit-6" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+                <stop offset="50%" stop-color="#fef08a" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="ml-halo-6" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ec4899" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#ec4899" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="89" r="38" fill="url(#ml-halo-6)"/>
+            <circle cx="50" cy="2" r="2" fill="none" stroke="#eab308" stroke-width="1.2"/>
+            <line x1="50" y1="3" x2="23" y2="52" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <line x1="50" y1="3" x2="77" y2="52" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <path d="M 23 52 C 19 74, 19 104, 23 126 L 77 126 C 81 104, 81 74, 77 52 Z" fill="url(#ml-grad-6)"/>
+            <ellipse cx="50" cy="89" rx="21" ry="26" fill="url(#ml-lit-6)"/>
+            <path d="M 21.5 62.5 Q 50 67 78.5 62.5" fill="none" stroke="#831843" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 73 Q 50 77.5 79.5 73" fill="none" stroke="#831843" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 83.5 Q 50 88 80 83.5" fill="none" stroke="#831843" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 94 Q 50 98.5 80 94" fill="none" stroke="#9d174d" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 104.5 Q 50 109 79.5 104.5" fill="none" stroke="#9d174d" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 21.5 115 Q 50 119.5 78.5 115" fill="none" stroke="#9d174d" stroke-width="1.2" stroke-opacity="0.45"/>
+            <ellipse cx="50" cy="52" rx="27" ry="4" fill="#a16207" stroke="#eab308" stroke-width="1"/>
+            <ellipse cx="50" cy="52" rx="22" ry="2.5" fill="#78350f" opacity="0.6"/>
+            <circle cx="23" cy="52" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <circle cx="77" cy="52" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <ellipse cx="50" cy="132" rx="16" ry="5" fill="#f59e0b" opacity="0.32"/>
+            <ellipse cx="50" cy="132" rx="9" ry="2.8" fill="#fef08a" opacity="0.45"/>
+            <ellipse cx="50" cy="126" rx="18" ry="4.5" fill="#a16207" stroke="#eab308" stroke-width="1.2"/>
+            <ellipse cx="50" cy="126" rx="14" ry="3.2" fill="#1c1006"/>
+            <line x1="50" y1="125" x2="50" y2="123" stroke="#78350f" stroke-width="1.5"/>
+            <ellipse cx="50" cy="121" rx="5" ry="6" fill="#f97316" opacity="0.7"/>
+            <path d="M 50 115 C 48.5 118, 47.5 121, 48.5 123 C 49.2 124.5, 50.8 124.5, 51.5 123 C 52.5 121, 51.5 118, 50 115 Z" fill="#fffbeb"/>
+            <path d="M 50 117 C 49 119, 48.5 121, 49 122.5 C 49.4 123.5, 50.6 123.5, 51 122.5 C 51.5 121, 51 119, 50 117 Z" fill="#ffffff"/>
           </svg>
         </div>
 
-        <!-- 7. Pink (Medium) -->
+        <!-- 7. Teal-Mint-Emerald (Medium) -->
         <div class="thadingyut-hanging thadingyut-sway-7">
-          <div class="thadingyut-lantern-glow" style="top: 47px; background: rgba(236, 72, 153, 0.5);"></div>
-          <svg width="32" height="90" viewBox="0 0 32 90" fill="none">
-            <line x1="16" y1="0" x2="16" y2="26" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.7"/>
-            <rect x="10" y="26" width="12" height="3" rx="1.5" fill="#d97706"/>
-            <ellipse cx="16" cy="47" rx="11" ry="18" fill="rgba(236, 72, 153, 0.72)"/>
-            <line x1="16" y1="29" x2="16" y2="65" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
-            <path d="M 16 29 C 9 36 9 58 16 65" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <path d="M 16 29 C 23 36 23 58 16 65" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <rect x="11" y="65" width="10" height="2.5" rx="1" fill="#d97706"/>
-            <line x1="16" y1="67.5" x2="16" y2="79" stroke="#fbbf24" stroke-width="1.2"/>
-            <circle cx="16" cy="70" r="1.5" fill="#f59e0b"/>
-            <line x1="14" y1="72" x2="14" y2="78" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
-            <line x1="18" y1="72" x2="18" y2="78" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
+          <div class="thadingyut-lantern-glow" style="top: 34px; background: rgba(20, 184, 166, 0.45);"></div>
+          <svg width="45" height="72" viewBox="0 0 100 160" fill="none">
+            <defs>
+              <linearGradient id="ml-grad-7" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0f766e"/>
+                <stop offset="25%" stop-color="#0d9488"/>
+                <stop offset="55%" stop-color="#2dd4bf"/>
+                <stop offset="80%" stop-color="#34d399"/>
+                <stop offset="100%" stop-color="#10b981"/>
+              </linearGradient>
+              <radialGradient id="ml-lit-7" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+                <stop offset="50%" stop-color="#fef08a" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="ml-halo-7" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#14b8a6" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#14b8a6" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="75" r="38" fill="url(#ml-halo-7)"/>
+            <circle cx="50" cy="2" r="2" fill="none" stroke="#eab308" stroke-width="1.2"/>
+            <line x1="50" y1="3" x2="23" y2="38" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <line x1="50" y1="3" x2="77" y2="38" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <path d="M 23 38 C 19 60, 19 90, 23 112 L 77 112 C 81 90, 81 60, 77 38 Z" fill="url(#ml-grad-7)"/>
+            <ellipse cx="50" cy="75" rx="21" ry="26" fill="url(#ml-lit-7)"/>
+            <path d="M 21.5 48.5 Q 50 53 78.5 48.5" fill="none" stroke="#115e59" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 59 Q 50 63.5 79.5 59" fill="none" stroke="#115e59" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 69.5 Q 50 74 80 69.5" fill="none" stroke="#115e59" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 80 Q 50 84.5 80 80" fill="none" stroke="#047857" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 90.5 Q 50 95 79.5 90.5" fill="none" stroke="#047857" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 21.5 101 Q 50 105.5 78.5 101" fill="none" stroke="#047857" stroke-width="1.2" stroke-opacity="0.45"/>
+            <ellipse cx="50" cy="38" rx="27" ry="4" fill="#a16207" stroke="#eab308" stroke-width="1"/>
+            <ellipse cx="50" cy="38" rx="22" ry="2.5" fill="#78350f" opacity="0.6"/>
+            <circle cx="23" cy="38" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <circle cx="77" cy="38" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <ellipse cx="50" cy="118" rx="16" ry="5" fill="#f59e0b" opacity="0.32"/>
+            <ellipse cx="50" cy="118" rx="9" ry="2.8" fill="#fef08a" opacity="0.45"/>
+            <ellipse cx="50" cy="112" rx="18" ry="4.5" fill="#a16207" stroke="#eab308" stroke-width="1.2"/>
+            <ellipse cx="50" cy="112" rx="14" ry="3.2" fill="#1c1006"/>
+            <line x1="50" y1="111" x2="50" y2="109" stroke="#78350f" stroke-width="1.5"/>
+            <ellipse cx="50" cy="107" rx="5" ry="6" fill="#f97316" opacity="0.7"/>
+            <path d="M 50 101 C 48.5 104, 47.5 107, 48.5 109 C 49.2 110.5, 50.8 110.5, 51.5 109 C 52.5 107, 51.5 104, 50 101 Z" fill="#fffbeb"/>
+            <path d="M 50 103 C 49 105, 48.5 107, 49 108.5 C 49.4 109.5, 50.6 109.5, 51 108.5 C 51.5 107, 51 105, 50 103 Z" fill="#ffffff"/>
           </svg>
         </div>
 
-        <!-- 8. Amber / Gold (Medium-Long) -->
+        <!-- 8. Deep Orange-Amber (Medium-Long) -->
         <div class="thadingyut-hanging thadingyut-sway-8">
-          <div class="thadingyut-lantern-glow" style="top: 59px; background: rgba(234, 179, 8, 0.55);"></div>
-          <svg width="32" height="102" viewBox="0 0 32 102" fill="none">
-            <line x1="16" y1="0" x2="16" y2="38" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.7"/>
-            <rect x="10" y="38" width="12" height="3" rx="1.5" fill="#d97706"/>
-            <ellipse cx="16" cy="59" rx="11" ry="18" fill="rgba(234, 179, 8, 0.75)"/>
-            <line x1="16" y1="41" x2="16" y2="77" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
-            <path d="M 16 41 C 9 48 9 70 16 77" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <path d="M 16 41 C 23 48 23 70 16 77" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <rect x="11" y="77" width="10" height="2.5" rx="1" fill="#d97706"/>
-            <line x1="16" y1="79.5" x2="16" y2="91" stroke="#fbbf24" stroke-width="1.2"/>
-            <circle cx="16" cy="82" r="1.5" fill="#f59e0b"/>
-            <line x1="14" y1="84" x2="14" y2="90" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
-            <line x1="18" y1="84" x2="18" y2="90" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
+          <div class="thadingyut-lantern-glow" style="top: 38px; background: rgba(245, 158, 11, 0.5);"></div>
+          <svg width="45" height="72" viewBox="0 0 100 160" fill="none">
+            <defs>
+              <linearGradient id="ml-grad-8" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#c2410c"/>
+                <stop offset="25%" stop-color="#ea580c"/>
+                <stop offset="55%" stop-color="#fbbf24"/>
+                <stop offset="80%" stop-color="#fcd34d"/>
+                <stop offset="100%" stop-color="#f59e0b"/>
+              </linearGradient>
+              <radialGradient id="ml-lit-8" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+                <stop offset="50%" stop-color="#fef08a" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="ml-halo-8" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="85" r="38" fill="url(#ml-halo-8)"/>
+            <circle cx="50" cy="2" r="2" fill="none" stroke="#eab308" stroke-width="1.2"/>
+            <line x1="50" y1="3" x2="23" y2="48" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <line x1="50" y1="3" x2="77" y2="48" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <path d="M 23 48 C 19 70, 19 100, 23 122 L 77 122 C 81 100, 81 70, 77 48 Z" fill="url(#ml-grad-8)"/>
+            <ellipse cx="50" cy="85" rx="21" ry="26" fill="url(#ml-lit-8)"/>
+            <path d="M 21.5 58.5 Q 50 63 78.5 58.5" fill="none" stroke="#9a3412" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 69 Q 50 73.5 79.5 69" fill="none" stroke="#9a3412" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 79.5 Q 50 84 80 79.5" fill="none" stroke="#9a3412" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 90 Q 50 94.5 80 90" fill="none" stroke="#b45309" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 100.5 Q 50 105 79.5 100.5" fill="none" stroke="#b45309" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 21.5 111 Q 50 115.5 78.5 111" fill="none" stroke="#b45309" stroke-width="1.2" stroke-opacity="0.45"/>
+            <ellipse cx="50" cy="48" rx="27" ry="4" fill="#a16207" stroke="#eab308" stroke-width="1"/>
+            <ellipse cx="50" cy="48" rx="22" ry="2.5" fill="#78350f" opacity="0.6"/>
+            <circle cx="23" cy="48" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <circle cx="77" cy="48" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <ellipse cx="50" cy="128" rx="16" ry="5" fill="#f59e0b" opacity="0.32"/>
+            <ellipse cx="50" cy="128" rx="9" ry="2.8" fill="#fef08a" opacity="0.45"/>
+            <ellipse cx="50" cy="122" rx="18" ry="4.5" fill="#a16207" stroke="#eab308" stroke-width="1.2"/>
+            <ellipse cx="50" cy="122" rx="14" ry="3.2" fill="#1c1006"/>
+            <line x1="50" y1="121" x2="50" y2="119" stroke="#78350f" stroke-width="1.5"/>
+            <ellipse cx="50" cy="117" rx="5" ry="6" fill="#f97316" opacity="0.7"/>
+            <path d="M 50 111 C 48.5 114, 47.5 117, 48.5 119 C 49.2 120.5, 50.8 120.5, 51.5 119 C 52.5 117, 51.5 114, 50 111 Z" fill="#fffbeb"/>
+            <path d="M 50 113 C 49 115, 48.5 117, 49 118.5 C 49.4 119.5, 50.6 119.5, 51 118.5 C 51.5 117, 51 115, 50 113 Z" fill="#ffffff"/>
           </svg>
         </div>
 
-        <!-- 9. Violet (Short) -->
+        <!-- 9. Violet-Lavender-Pink (Short) -->
         <div class="thadingyut-hanging thadingyut-sway-9">
-          <div class="thadingyut-lantern-glow" style="top: 37px; background: rgba(139, 92, 246, 0.5);"></div>
-          <svg width="32" height="80" viewBox="0 0 32 80" fill="none">
-            <line x1="16" y1="0" x2="16" y2="16" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.7"/>
-            <rect x="10" y="16" width="12" height="3" rx="1.5" fill="#d97706"/>
-            <ellipse cx="16" cy="37" rx="11" ry="18" fill="rgba(139, 92, 246, 0.72)"/>
-            <line x1="16" y1="19" x2="16" y2="55" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
-            <path d="M 16 19 C 9 26 9 48 16 55" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <path d="M 16 19 C 23 26 23 48 16 55" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
-            <rect x="11" y="55" width="10" height="2.5" rx="1" fill="#d97706"/>
-            <line x1="16" y1="57.5" x2="16" y2="69" stroke="#fbbf24" stroke-width="1.2"/>
-            <circle cx="16" cy="60" r="1.5" fill="#f59e0b"/>
-            <line x1="14" y1="62" x2="14" y2="68" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
-            <line x1="18" y1="62" x2="18" y2="68" stroke="#fbbf24" stroke-width="0.8" stroke-opacity="0.8"/>
+          <div class="thadingyut-lantern-glow" style="top: 27px; background: rgba(167, 139, 250, 0.45);"></div>
+          <svg width="45" height="72" viewBox="0 0 100 160" fill="none">
+            <defs>
+              <linearGradient id="ml-grad-9" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#5b21b6"/>
+                <stop offset="25%" stop-color="#7c3aed"/>
+                <stop offset="55%" stop-color="#a78bfa"/>
+                <stop offset="80%" stop-color="#f472b6"/>
+                <stop offset="100%" stop-color="#ec4899"/>
+              </linearGradient>
+              <radialGradient id="ml-lit-9" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+                <stop offset="50%" stop-color="#fef08a" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="ml-halo-9" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="59" r="38" fill="url(#ml-halo-9)"/>
+            <circle cx="50" cy="2" r="2" fill="none" stroke="#eab308" stroke-width="1.2"/>
+            <line x1="50" y1="3" x2="23" y2="22" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <line x1="50" y1="3" x2="77" y2="22" stroke="#eab308" stroke-width="1.2" stroke-opacity="0.9"/>
+            <path d="M 23 22 C 19 44, 19 74, 23 96 L 77 96 C 81 74, 81 44, 77 22 Z" fill="url(#ml-grad-9)"/>
+            <ellipse cx="50" cy="59" rx="21" ry="26" fill="url(#ml-lit-9)"/>
+            <path d="M 21.5 32.5 Q 50 37 78.5 32.5" fill="none" stroke="#4c1d95" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 43 Q 50 47.5 79.5 43" fill="none" stroke="#4c1d95" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 53.5 Q 50 58 80 53.5" fill="none" stroke="#4c1d95" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 64 Q 50 68.5 80 64" fill="none" stroke="#831843" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20.5 74.5 Q 50 79 79.5 74.5" fill="none" stroke="#831843" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 21.5 85 Q 50 89.5 78.5 85" fill="none" stroke="#831843" stroke-width="1.2" stroke-opacity="0.45"/>
+            <ellipse cx="50" cy="22" rx="27" ry="4" fill="#a16207" stroke="#eab308" stroke-width="1"/>
+            <ellipse cx="50" cy="22" rx="22" ry="2.5" fill="#78350f" opacity="0.6"/>
+            <circle cx="23" cy="22" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <circle cx="77" cy="22" r="2" fill="#fde047" stroke="#78350f" stroke-width="0.8"/>
+            <ellipse cx="50" cy="102" rx="16" ry="5" fill="#f59e0b" opacity="0.32"/>
+            <ellipse cx="50" cy="102" rx="9" ry="2.8" fill="#fef08a" opacity="0.45"/>
+            <ellipse cx="50" cy="96" rx="18" ry="4.5" fill="#a16207" stroke="#eab308" stroke-width="1.2"/>
+            <ellipse cx="50" cy="96" rx="14" ry="3.2" fill="#1c1006"/>
+            <line x1="50" y1="95" x2="50" y2="93" stroke="#78350f" stroke-width="1.5"/>
+            <ellipse cx="50" cy="91" rx="5" ry="6" fill="#f97316" opacity="0.7"/>
+            <path d="M 50 85 C 48.5 88, 47.5 91, 48.5 93 C 49.2 94.5, 50.8 94.5, 51.5 93 C 52.5 91, 51.5 88, 50 85 Z" fill="#fffbeb"/>
+            <path d="M 50 87 C 49 89, 48.5 91, 49 92.5 C 49.4 93.5, 50.6 93.5, 51 92.5 C 51.5 91, 51 89, 50 87 Z" fill="#ffffff"/>
           </svg>
         </div>
       </div>
@@ -2215,7 +2499,7 @@
       <div class="thadingyut-sparkle thadingyut-twinkle-3" style="left: 3%; top: 48%;"></div>
       <div class="thadingyut-sparkle thadingyut-twinkle-4" style="left: 96%; top: 68%;"></div>
     </div>
-    <script>if (new Date() <= new Date("2026-11-30T23:59:59+06:30")) document.body.classList.add("thadingyut");</script>
+    <script>if (new Date() <= new Date("2026-11-30T23:59:59+06:30")) { document.body.classList.add("thadingyut"); document.documentElement.classList.add("thadingyut"); }</script>
 
     <!-- Liquid Glass Aurora Mesh Background Layer -->
     <div class="aurora-bg" aria-hidden="true">
