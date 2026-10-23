@@ -202,6 +202,36 @@
         transform: translateY(-1px);
       }
 
+      .fullscreen-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--glass-border);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.85);
+        cursor: pointer;
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        flex-shrink: 0;
+      }
+
+      .fullscreen-btn:hover {
+        color: #FFFFFF;
+        background: rgba(255, 255, 255, 0.14);
+        border-color: rgba(255, 255, 255, 0.25);
+        transform: translateY(-1px);
+      }
+
+      .fullscreen-btn:active {
+        transform: translateY(0);
+      }
+
       .status-pill {
         display: inline-flex;
         align-items: center;
@@ -2209,6 +2239,12 @@
         </a>
 
         <div class="top-nav-right">
+          <button type="button" class="fullscreen-btn" id="fullscreenToggleBtn" title="Fullscreen" aria-label="Fullscreen" data-i18n-title="fullscreenTitle">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+            </svg>
+          </button>
+
           <div class="lang-switcher" role="group" aria-label="Language Switcher">
             <button type="button" class="lang-btn active" id="langBtnEn">EN</button>
             <button type="button" class="lang-btn" id="langBtnMy">မြန်မာ</button>
@@ -3481,6 +3517,8 @@
       // Translation dictionary
       const TRANSLATIONS = {
         my: {
+          fullscreenTitle: "မျက်နှာပြင်အပြည့်",
+          exitFullscreenTitle: "မျက်နှာပြင်အပြည့်မှ ထွက်မည်",
           pageTitle: "Web ADB တပ်ဆင်ရေး | Web ADB & Fastboot Tool",
           backLink: "ပင်မမျက်နှာသို့",
           statusDisconnected: "ချိတ်ဆက်မထားပါ",
@@ -3681,6 +3719,8 @@
           footerText: "WebUSB ADB Installer • Android 5.0+ နှင့်အထက် စက်ပစ္စည်းများကို ထောက်ပံ့ပါသည်"
         },
         en: {
+          fullscreenTitle: "Fullscreen",
+          exitFullscreenTitle: "Exit Fullscreen",
           pageTitle: "Web ADB & Fastboot Tool | Direct USB Installation",
           backLink: "Home",
           statusDisconnected: "Disconnected",
@@ -3956,6 +3996,7 @@
       // DOM Elements
       const langBtnEn = document.getElementById("langBtnEn");
       const langBtnMy = document.getElementById("langBtnMy");
+      const fullscreenToggleBtn = document.getElementById("fullscreenToggleBtn");
       const troubleshootBody = document.getElementById("troubleshootBody");
       const unsupportedWarning = document.getElementById("unsupportedWarning");
       const permissionPolicyWarning = document.getElementById("permissionPolicyWarning");
@@ -4077,6 +4118,59 @@
         adbPullBtn.disabled = !activeAdb || isBusy || !hasPath;
       }
 
+      // Fullscreen helper functions
+      function isFullscreenActive() {
+        return !!(
+          document.fullscreenElement ||
+          document.webkitFullscreenElement ||
+          document.mozFullScreenElement ||
+          document.msFullscreenElement
+        );
+      }
+
+      function updateFullscreenUI() {
+        if (!fullscreenToggleBtn) return;
+        const isFs = isFullscreenActive();
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+        const title = isFs ? (t.exitFullscreenTitle || "Exit Fullscreen") : (t.fullscreenTitle || "Fullscreen");
+        fullscreenToggleBtn.setAttribute("title", title);
+        fullscreenToggleBtn.setAttribute("aria-label", title);
+        fullscreenToggleBtn.innerHTML = isFs
+          ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>`
+          : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>`;
+      }
+
+      function toggleFullscreen() {
+        try {
+          if (!isFullscreenActive()) {
+            const root = document.documentElement;
+            if (root.requestFullscreen) {
+              const p = root.requestFullscreen();
+              if (p && typeof p.catch === "function") p.catch(() => {});
+            } else if (root.webkitRequestFullscreen) {
+              root.webkitRequestFullscreen();
+            } else if (root.mozRequestFullScreen) {
+              root.mozRequestFullScreen();
+            } else if (root.msRequestFullscreen) {
+              root.msRequestFullscreen();
+            }
+          } else {
+            if (document.exitFullscreen) {
+              const p = document.exitFullscreen();
+              if (p && typeof p.catch === "function") p.catch(() => {});
+            } else if (document.webkitExitFullscreen) {
+              document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+              document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+              document.msExitFullscreen();
+            }
+          }
+        } catch (err) {
+          // Fail silently without errors
+        }
+      }
+
       // Language Switcher function
       function setLang(lang) {
         if (!TRANSLATIONS[lang]) return;
@@ -4111,6 +4205,17 @@
             el.setAttribute("placeholder", t[key]);
           }
         });
+
+        // Update elements with data-i18n-title attribute
+        document.querySelectorAll("[data-i18n-title]").forEach((el) => {
+          const key = el.getAttribute("data-i18n-title");
+          if (t[key] !== undefined && typeof t[key] === "string") {
+            el.setAttribute("title", t[key]);
+            el.setAttribute("aria-label", t[key]);
+          }
+        });
+
+        updateFullscreenUI();
 
         // Update troubleshooting accordion body
         if (troubleshootBody && TROUBLESHOOT_HTML[lang]) {
@@ -4181,6 +4286,15 @@
           setLang(e.newValue);
         }
       });
+
+      // Fullscreen toggle button listener & change handlers
+      if (fullscreenToggleBtn) {
+        fullscreenToggleBtn.addEventListener("click", toggleFullscreen);
+      }
+      document.addEventListener("fullscreenchange", updateFullscreenUI);
+      document.addEventListener("webkitfullscreenchange", updateFullscreenUI);
+      document.addEventListener("mozfullscreenchange", updateFullscreenUI);
+      document.addEventListener("MSFullscreenChange", updateFullscreenUI);
 
       // Reset Keys button listener to clear stale keys from IndexedDB
       if (resetKeysBtn) {
