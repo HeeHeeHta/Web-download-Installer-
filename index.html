@@ -2648,7 +2648,7 @@
       <!-- VIEW 2: PLAY STORE STYLE APP DETAIL VIEW (Initially Hidden) -->
       <div id="appDetailView" class="app-detail-view" style="display: none;">
         <div class="detail-back-bar">
-          <button type="button" class="btn btn-secondary" id="detailBackBtn" onclick="closeAppDetail()">
+          <button type="button" class="btn btn-secondary" id="detailBackBtn" onclick="closeAppDetail(true)">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"/>
               <polyline points="12 19 5 12 12 5"/>
@@ -4209,42 +4209,73 @@ const firebaseConfig = {
         }).join("");
       }
 
+      let navigatedFromListView = false;
+
       function handleCardClick(event, index) {
         // If clicked on an anchor or button inside card, don't trigger detail view
         if (event.target.closest("a") || event.target.closest("button")) {
           return;
         }
-        openAppDetail(index);
+        navigatedFromListView = true;
+        openAppDetail(index, true);
       }
 
       // App Detail View Controller
-      function openAppDetail(index) {
+      function openAppDetail(index, updateHash = true) {
         const apps = getAppsList();
-        if (!apps[index]) return;
+        if (!apps[index]) {
+          // Non-existent app index: fallback cleanly to list view without leaving invalid hash
+          if (location.hash.startsWith("#app-")) {
+            history.replaceState("", document.title, window.location.pathname + window.location.search);
+          }
+          closeAppDetail(false);
+          return;
+        }
+
+        const detailEl = document.getElementById("appDetailView");
+        const listEl = document.getElementById("appListView");
+
+        // Guard against duplicate execution if this app is already open
+        if (currentSelectedAppIndex === index && detailEl && detailEl.style.display === "flex") {
+          return;
+        }
 
         // Detach previous detail listeners if active
         detachDetailListeners();
 
         currentSelectedAppIndex = index;
-        location.hash = `#app-${index}`;
+        if (updateHash && location.hash !== `#app-${index}`) {
+          location.hash = `#app-${index}`;
+        }
 
-        document.getElementById("appListView").style.display = "none";
-        document.getElementById("appDetailView").style.display = "flex";
+        if (listEl) listEl.style.display = "none";
+        if (detailEl) detailEl.style.display = "flex";
         window.scrollTo({ top: 0, behavior: "instant" });
 
         renderAppDetail(index);
       }
 
-      function closeAppDetail() {
+      function closeAppDetail(isUserAction = false) {
+        // If user explicitly clicked the in-page "Back to apps" button:
+        if (isUserAction) {
+          if (navigatedFromListView && location.hash.startsWith("#app-") && window.history.length > 1) {
+            navigatedFromListView = false;
+            window.history.back();
+            return;
+          }
+          if (location.hash.startsWith("#app-")) {
+            history.replaceState("", document.title, window.location.pathname + window.location.search);
+          }
+        }
+
         // Detach detail listeners
         detachDetailListeners();
         currentSelectedAppIndex = -1;
 
-        if (location.hash.startsWith("#app-")) {
-          history.pushState("", document.title, window.location.pathname + window.location.search);
-        }
-        document.getElementById("appDetailView").style.display = "none";
-        document.getElementById("appListView").style.display = "block";
+        const detailEl = document.getElementById("appDetailView");
+        const listEl = document.getElementById("appListView");
+        if (detailEl) detailEl.style.display = "none";
+        if (listEl) listEl.style.display = "block";
         window.scrollTo({ top: 0, behavior: "instant" });
       }
 
@@ -5228,22 +5259,23 @@ const firebaseConfig = {
         }
       }
 
-      // Deep Linking Hash Listener
+      // Deep Linking Hash & History Navigation Listener
       function checkUrlHash() {
         const hash = window.location.hash;
         if (hash && hash.startsWith("#app-")) {
           const index = parseInt(hash.replace("#app-", ""), 10);
           if (!isNaN(index)) {
-            openAppDetail(index);
+            openAppDetail(index, false);
             return;
           }
         }
-        if (currentSelectedAppIndex !== -1) {
-          closeAppDetail();
+        if (currentSelectedAppIndex !== -1 || (document.getElementById("appDetailView") && document.getElementById("appDetailView").style.display !== "none")) {
+          closeAppDetail(false);
         }
       }
 
       window.addEventListener("hashchange", checkUrlHash);
+      window.addEventListener("popstate", checkUrlHash);
 
       /* ==========================================================================
          ADMIN PANEL & PIN GATE IMPLEMENTATION
