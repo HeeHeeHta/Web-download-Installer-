@@ -5971,6 +5971,7 @@ const firebaseConfig = {
               </div>
             </div>
             <div style="display: flex; gap: 6px; flex-shrink: 0;">
+              <button type="button" class="btn btn-secondary" style="padding: 5px 10px; font-size: 11px;" onclick="copySingleAppCode(event, ${idx})">Copy</button>
               <button type="button" class="btn btn-secondary" style="padding: 5px 10px; font-size: 11px;" onclick="openAppForm(${idx})">Edit</button>
               <button type="button" class="btn btn-secondary" style="padding: 5px 10px; font-size: 11px; color: #F87171;" onclick="deleteApp(${idx})">Delete</button>
             </div>
@@ -6332,6 +6333,45 @@ const firebaseConfig = {
           btn.textContent = "Copied to Clipboard!";
           setTimeout(() => { btn.textContent = "Copy Code"; }, 2000);
         });
+      }
+
+      function copySingleAppCode(event, idx) {
+        const btn = event.currentTarget || event.target;
+        const apps = getAppsList();
+        const rawApp = apps[idx];
+        if (!rawApp) return;
+        const app = sanitizeAppsForExport([rawApp])[0];
+        const comment = "// Upload icon/screenshot files to icons/ and shots/ in the repo before pushing\n";
+        const codeStr = comment + JSON.stringify(app, null, 2);
+
+        const showFeedback = () => {
+          btn.textContent = "Copied!";
+          setTimeout(() => {
+            btn.textContent = "Copy";
+          }, 2000);
+        };
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(codeStr).then(showFeedback).catch(() => {
+            const ta = document.createElement("textarea");
+            ta.value = codeStr;
+            ta.style.position = "fixed";
+            ta.style.opacity = "0";
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand("copy"); showFeedback(); } catch (e) {}
+            document.body.removeChild(ta);
+          });
+        } else {
+          const ta = document.createElement("textarea");
+          ta.value = codeStr;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand("copy"); showFeedback(); } catch (e) {}
+          document.body.removeChild(ta);
+        }
       }
 
       function downloadBackupJson() {
