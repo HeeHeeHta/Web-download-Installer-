@@ -3867,8 +3867,6 @@ const firebaseConfig = {
           updated: getRecentDateStr(4),
           apkUrl: "https://github.com/HeeHeeHta/Web-download-Installer-/releases/download/v2.0.1/CEIR_Status_Hub.apk",
           size: "65.7 MB",
-          rating: "5.0",
-          downloads: "1.2k",
           verified: true,
           icon: "icons/com.tvytech.ceirchecker.komun-icon.png",
           screenshots: [
@@ -3895,8 +3893,6 @@ const firebaseConfig = {
           updated: getRecentDateStr(2),
           apkUrl: "https://u.pcloud.link/publink/show?code=XZucLa5ZCggRCA2PnG8H5EVO7BMwvRyN0NP7",
           size: "20.7 MB",
-          rating: "5.0",
-          downloads: "1.0k",
           verified: true,
           icon: "icons/com.tvytech.medicalnote.komun-icon.png",
           screenshots: [
@@ -3923,8 +3919,6 @@ const firebaseConfig = {
           updated: getRecentDateStr(2),
           apkUrl: "https://u.pcloud.link/publink/show?code=XZ4LSA5ZPrvOQLz4RfLEohJxhEfnOXQjGRr7",
           size: "17.9 MB",
-          rating: "5.0",
-          downloads: "1.0k",
           verified: true,
           icon: "icons/com.aistudio.koenawin.chntr-icon.png",
           screenshots: [
@@ -3950,8 +3944,6 @@ const firebaseConfig = {
           updated: getRecentDateStr(1),
           apkUrl: "https://u.pcloud.link/publink/show?code=XZKQRbJZTojVIUdWhtfU4P5rsIaAOFrURO6k",
           size: "23.0 MB",
-          rating: "5.0",
-          downloads: "1.0k",
           verified: true,
           icon: "icons/com.tvytech.ceirtaxchecker.ceir-icon.png",
           screenshots: [
@@ -4172,6 +4164,18 @@ const firebaseConfig = {
             if (Array.isArray(parsed) && parsed.length > 0) {
               let modified = false;
 
+              // Clean up any old static rating or downloads from existing stored apps
+              for (const app of parsed) {
+                if ("rating" in app) {
+                  delete app.rating;
+                  modified = true;
+                }
+                if ("downloads" in app) {
+                  delete app.downloads;
+                  modified = true;
+                }
+              }
+
               // Synchronize default apps: ensure canonical default apps always have their exact assets & metadata
               DEFAULT_APPS.forEach((defApp) => {
                 const existingIdx = parsed.findIndex((p) => 
@@ -4179,7 +4183,10 @@ const firebaseConfig = {
                   (p.name && defApp.name && p.name.trim().toLowerCase() === defApp.name.trim().toLowerCase())
                 );
                 if (existingIdx === -1) {
-                  parsed.push({ ...defApp });
+                  const toAdd = { ...defApp };
+                  delete toAdd.rating;
+                  delete toAdd.downloads;
+                  parsed.push(toAdd);
                   modified = true;
                 } else {
                   // Always overwrite canonical built-in default app fields to fix any stale or mismatched cache
@@ -4190,8 +4197,6 @@ const firebaseConfig = {
                     packageName: defApp.packageName,
                     icon: defApp.icon,
                     screenshots: defApp.screenshots,
-                    rating: (parsed[existingIdx] && parsed[existingIdx].rating) || defApp.rating,
-                    downloads: (parsed[existingIdx] && parsed[existingIdx].downloads) || defApp.downloads,
                     apkUrl: defApp.apkUrl,
                     version: defApp.version,
                     size: defApp.size,
@@ -4200,6 +4205,8 @@ const firebaseConfig = {
                     paid: defApp.paid,
                     updated: defApp.updated || parsed[existingIdx].updated || getRecentDateStr(2)
                   };
+                  delete parsed[existingIdx].rating;
+                  delete parsed[existingIdx].downloads;
                   modified = true;
                 }
               });
@@ -4544,13 +4551,13 @@ const firebaseConfig = {
           if (live && live.ratingCount > 0 && live.ratingSum !== undefined) {
             cardRating = (Number(live.ratingSum) / Number(live.ratingCount)).toFixed(1);
           } else {
-            cardRating = app.rating || "5.0";
+            cardRating = "—";
           }
 
           if (live && live.downloads !== undefined && live.downloads !== null) {
             cardDl = formatDownloads(live.downloads);
           } else {
-            cardDl = formatDownloads(app.downloads || "0");
+            cardDl = "—";
           }
 
           const iconSrc = resolveAssetUrl(app.icon);
@@ -4723,23 +4730,19 @@ const firebaseConfig = {
         const dlEl = document.getElementById("detailStatDownloads");
         if (!ratingEl || !dlEl) return;
 
-        if (data && (data.ratingCount > 0 || data.ratingSum > 0 || data.downloads !== undefined)) {
+        if (data && data.ratingCount > 0 && data.ratingSum !== undefined) {
           const count = Number(data.ratingCount) || 0;
           const sum = Number(data.ratingSum) || 0;
-          if (count > 0 && data.ratingSum !== undefined) {
-            const avg = (sum / count).toFixed(1);
-            ratingEl.textContent = `${avg} (${count})`;
-          } else {
-            ratingEl.textContent = app.rating || "5.0";
-          }
-          if (data.downloads !== undefined && data.downloads !== null) {
-            dlEl.textContent = formatDownloads(data.downloads);
-          } else {
-            dlEl.textContent = formatDownloads(app.downloads || "0");
-          }
+          const avg = count > 0 ? (sum / count).toFixed(1) : "—";
+          ratingEl.textContent = count > 0 ? `${avg} (${count})` : "—";
         } else {
-          ratingEl.textContent = app.rating || "5.0";
-          dlEl.textContent = formatDownloads(app.downloads || "0");
+          ratingEl.textContent = "—";
+        }
+
+        if (data && data.downloads !== undefined && data.downloads !== null) {
+          dlEl.textContent = formatDownloads(data.downloads);
+        } else {
+          dlEl.textContent = "—";
         }
       }
 
@@ -5229,7 +5232,7 @@ const firebaseConfig = {
 
         // Optimistically increment download count locally and update UI instantly
         if (!rtdbAppsCache[slug]) rtdbAppsCache[slug] = {};
-        const currentDl = Number(rtdbAppsCache[slug].downloads) || (Number(app.downloads) || 0);
+        const currentDl = Number(rtdbAppsCache[slug].downloads) || 0;
         rtdbAppsCache[slug].downloads = currentDl + 1;
         persistRtdbCache();
         updateLiveUIForApp(slug);
@@ -5949,13 +5952,11 @@ const firebaseConfig = {
           if (live && (live.ratingCount > 0 || live.downloads !== undefined)) {
             const count = Number(live.ratingCount) || 0;
             const sum = Number(live.ratingSum) || 0;
-            const avg = count > 0 ? (sum / count).toFixed(1) : (app.rating || "5.0");
-            const dl = formatDownloads(live.downloads !== undefined ? live.downloads : (app.downloads || "0"));
+            const avg = count > 0 ? (sum / count).toFixed(1) : "—";
+            const dl = (live.downloads !== undefined && live.downloads !== null) ? formatDownloads(live.downloads) : "—";
             liveStatsStr = `${avg} (${count}) | ${dl} downloads`;
           } else {
-            const staticRating = app.rating || "5.0";
-            const staticDl = formatDownloads(app.downloads || "0");
-            liveStatsStr = `${staticRating} (0) | ${staticDl} downloads`;
+            liveStatsStr = "— (0) | — downloads";
           }
 
           return `
@@ -6063,19 +6064,6 @@ const firebaseConfig = {
           return shot;
         });
 
-          const existingApp = editingAppIndex >= 0 ? apps[editingAppIndex] : null;
-          const liveData = rtdbAppsCache[getAppRtdbSlug({ packageName: pkg, name: name })];
-          let savedRating = existingApp?.rating || "5.0";
-          let savedDownloads = existingApp?.downloads || "0";
-          if (liveData) {
-            if (liveData.ratingCount > 0 && liveData.ratingSum !== undefined) {
-              savedRating = (Number(liveData.ratingSum) / Number(liveData.ratingCount)).toFixed(1);
-            }
-            if (liveData.downloads !== undefined && liveData.downloads !== null) {
-              savedDownloads = formatDownloads(liveData.downloads);
-            }
-          }
-
           const newApp = {
             name: name,
             developer: document.getElementById("formAppDev").value.trim() || "TVY-Tech",
@@ -6086,18 +6074,18 @@ const firebaseConfig = {
             updated: document.getElementById("formAppUpdated").value.trim() || formatIsoLocalDate(new Date()),
             apkUrl: document.getElementById("formAppApkUrl").value.trim(),
             size: document.getElementById("formAppSize").value.trim() || "0 MB",
-            rating: savedRating,
-            downloads: savedDownloads,
-          verified: document.getElementById("formAppVerified").checked,
-          icon: finalIconPath,
-          screenshots: finalScreenshots,
-          desc: document.getElementById("formAppDesc").value.trim(),
-          descEn: document.getElementById("formAppDescEn").value.trim(),
-          longDesc: document.getElementById("formAppLongDesc").value.trim(),
-          longDescEn: document.getElementById("formAppLongDescEn").value.trim(),
-          changelog: document.getElementById("formAppChangelog").value.trim(),
-          changelogEn: document.getElementById("formAppChangelogEn").value.trim()
-        };
+            verified: document.getElementById("formAppVerified").checked,
+            icon: finalIconPath,
+            screenshots: finalScreenshots,
+            desc: document.getElementById("formAppDesc").value.trim(),
+            descEn: document.getElementById("formAppDescEn").value.trim(),
+            longDesc: document.getElementById("formAppLongDesc").value.trim(),
+            longDescEn: document.getElementById("formAppLongDescEn").value.trim(),
+            changelog: document.getElementById("formAppChangelog").value.trim(),
+            changelogEn: document.getElementById("formAppChangelogEn").value.trim()
+          };
+          delete newApp.rating;
+          delete newApp.downloads;
 
         if (editingAppIndex >= 0) {
           apps[editingAppIndex] = newApp;
@@ -6290,6 +6278,8 @@ const firebaseConfig = {
       function sanitizeAppsForExport(apps) {
         return apps.map((app) => {
           const clean = { ...app };
+          delete clean.rating;
+          delete clean.downloads;
           clean.paid = !!clean.paid;
           const pkg = clean.packageName || "";
           const name = clean.name || "";
