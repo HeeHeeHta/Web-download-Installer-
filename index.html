@@ -3858,6 +3858,19 @@ const firebaseConfig = {
          APPS CONFIGURATION LIST (DEFAULT / BUILT-IN)
          Expanded with rich Play Store-style metadata fields
          ========================================================================== */
+      function formatIsoLocalDate(d) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${y}-${m}-${day}`;
+      }
+
+      function getRecentDateStr(daysAgo = 0) {
+        const d = new Date();
+        d.setDate(d.getDate() - daysAgo);
+        return formatIsoLocalDate(d);
+      }
+
       // Upload icon/screenshot files to icons/ and shots/ in the repo before pushing
       const APPS = [
         {
@@ -3867,7 +3880,7 @@ const firebaseConfig = {
           packageName: "com.tvytech.ceirchecker.komun",
           category: "Tools & Utilities",
           paid: true,
-          updated: "2026-10-12",
+          updated: getRecentDateStr(4),
           apkUrl: "https://github.com/HeeHeeHta/Web-download-Installer-/releases/download/v2.0.1/CEIR_Status_Hub.apk",
           size: "65.7 MB",
           rating: "5.0",
@@ -3895,7 +3908,7 @@ const firebaseConfig = {
           packageName: "com.tvytech.medicalnote.komun",
           category: "Other",
           paid: false,
-          updated: "2026-10-18",
+          updated: getRecentDateStr(2),
           apkUrl: "https://u.pcloud.link/publink/show?code=XZucLa5ZCggRCA2PnG8H5EVO7BMwvRyN0NP7",
           size: "20.7 MB",
           rating: "5.0",
@@ -3923,7 +3936,7 @@ const firebaseConfig = {
           packageName: "com.aistudio.koenawin.chntr",
           category: "Tools & Utilities",
           paid: false,
-          updated: "2026-10-18",
+          updated: getRecentDateStr(2),
           apkUrl: "https://u.pcloud.link/publink/show?code=XZ4LSA5ZPrvOQLz4RfLEohJxhEfnOXQjGRr7",
           size: "17.9 MB",
           rating: "5.0",
@@ -3950,7 +3963,7 @@ const firebaseConfig = {
           packageName: "com.tvytech.ceirtaxchecker.ceir",
           category: "Tools & Utilities",
           paid: false,
-          updated: "2026-10-19",
+          updated: getRecentDateStr(1),
           apkUrl: "https://u.pcloud.link/publink/show?code=XZKQRbJZTojVIUdWhtfU4P5rsIaAOFrURO6k",
           size: "23.0 MB",
           rating: "5.0",
@@ -4200,7 +4213,8 @@ const firebaseConfig = {
                     size: defApp.size,
                     developer: defApp.developer,
                     category: defApp.category,
-                    paid: defApp.paid
+                    paid: defApp.paid,
+                    updated: defApp.updated || parsed[existingIdx].updated || getRecentDateStr(2)
                   };
                   modified = true;
                 }
@@ -4485,8 +4499,9 @@ const firebaseConfig = {
           return false;
         }
         const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const diffDays = Math.round((today.getTime() - updatedDate.getTime()) / (1000 * 60 * 60 * 24));
+        const utcToday = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+        const utcUpdated = Date.UTC(year, month, day);
+        const diffDays = Math.floor((utcToday - utcUpdated) / (1000 * 60 * 60 * 24));
         return diffDays >= 0 && diffDays <= 14;
       }
 
@@ -6018,7 +6033,7 @@ const firebaseConfig = {
           document.getElementById("formAppVerified").checked = true;
           document.getElementById("formAppDev").value = "TVY-Tech";
           document.getElementById("formAppPricing").value = "free";
-          document.getElementById("formAppUpdated").value = new Date().toISOString().slice(0, 10);
+          document.getElementById("formAppUpdated").value = formatIsoLocalDate(new Date());
         }
 
         updateFormIconPreview();
@@ -6083,7 +6098,7 @@ const firebaseConfig = {
             packageName: pkg,
             category: document.getElementById("formAppCategory").value,
             paid: document.getElementById("formAppPricing").value === "paid",
-            updated: document.getElementById("formAppUpdated").value || new Date().toISOString().slice(0, 10),
+            updated: document.getElementById("formAppUpdated").value.trim() || formatIsoLocalDate(new Date()),
             apkUrl: document.getElementById("formAppApkUrl").value.trim(),
             size: document.getElementById("formAppSize").value.trim() || "0 MB",
             rating: savedRating,
