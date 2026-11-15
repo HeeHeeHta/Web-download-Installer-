@@ -4211,25 +4211,14 @@ const firebaseConfig = {
                   parsed.push(toAdd);
                   modified = true;
                 } else {
-                  // Always overwrite canonical built-in default app fields to fix any stale or mismatched cache
-                  parsed[existingIdx] = {
-                    ...parsed[existingIdx],
-                    ...defApp,
-                    name: defApp.name,
-                    packageName: defApp.packageName,
-                    icon: defApp.icon,
-                    screenshots: defApp.screenshots,
-                    apkUrl: defApp.apkUrl,
-                    version: defApp.version,
-                    size: defApp.size,
-                    developer: defApp.developer,
-                    category: defApp.category,
-                    paid: defApp.paid,
-                    updated: defApp.updated || parsed[existingIdx].updated || ""
-                  };
-                  delete parsed[existingIdx].rating;
-                  delete parsed[existingIdx].downloads;
-                  modified = true;
+                  if ("rating" in parsed[existingIdx]) {
+                    delete parsed[existingIdx].rating;
+                    modified = true;
+                  }
+                  if ("downloads" in parsed[existingIdx]) {
+                    delete parsed[existingIdx].downloads;
+                    modified = true;
+                  }
                 }
               });
 
