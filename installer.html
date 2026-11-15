@@ -52,6 +52,7 @@
         padding: 20px 16px;
         position: relative;
         overflow-x: hidden;
+        overflow-x: clip;
       }
 
       /* Liquid Glass Aurora Mesh Background */
@@ -61,6 +62,8 @@
         pointer-events: none;
         z-index: 0;
         overflow: hidden;
+        contain: strict;
+        transform: translateZ(0);
       }
 
       .aurora-orb,
@@ -101,11 +104,6 @@
         height: min(540px, 95vmax);
         background: radial-gradient(circle, rgba(99, 102, 241, 0.24) 0%, rgba(168, 85, 247, 0.12) 38%, rgba(168, 85, 247, 0.03) 56%, transparent 70%);
         animation: auroraMove3 30s ease-in-out infinite alternate;
-      }
-
-      .app-card {
-        content-visibility: auto;
-        contain-intrinsic-size: auto 128px;
       }
 
       @keyframes auroraMove1 {
@@ -153,13 +151,11 @@
       .lang-switcher {
         display: inline-flex;
         align-items: center;
-        background: rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.075);
         border: 1px solid rgba(255, 255, 255, 0.14);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 16px rgba(0, 0, 0, 0.25);
         border-radius: 9999px;
         padding: 3px;
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
         gap: 2px;
       }
 
@@ -197,12 +193,10 @@
         font-weight: 600;
         padding: 7px 14px;
         border-radius: 9999px;
-        background: rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.075);
         border: 1px solid var(--glass-border);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
-        -webkit-backdrop-filter: blur(16px);
-        backdrop-filter: blur(16px);
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
       }
 
       .back-link:hover {
@@ -219,12 +213,10 @@
         font-size: 12px;
         padding: 5px 12px;
         border-radius: 9999px;
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.065);
         border: 1px solid var(--glass-border-subtle);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
         color: var(--text-muted);
-        -webkit-backdrop-filter: blur(16px);
-        backdrop-filter: blur(16px);
       }
 
       .status-dot {
@@ -264,9 +256,7 @@
       .alert-banner {
         background: var(--warning-tint);
         border: 1px solid var(--warning-border);
-        box-shadow: inset 0 1px 0 rgba(251, 191, 36, 0.18), 0 16px 40px -12px rgba(0, 0, 0, 0.35);
-        -webkit-backdrop-filter: blur(24px) saturate(160%);
-        backdrop-filter: blur(24px) saturate(160%);
+        box-shadow: inset 0 1px 0 rgba(251, 191, 36, 0.18), 0 14px 34px -10px rgba(0, 0, 0, 0.35);
         border-radius: 20px;
         padding: 16px 18px;
         margin-bottom: 20px;
@@ -314,9 +304,7 @@
         display: none;
         background: var(--danger-tint);
         border: 1px solid var(--danger-border);
-        box-shadow: inset 0 1px 0 rgba(248, 113, 113, 0.2), 0 16px 40px -12px rgba(0, 0, 0, 0.4);
-        -webkit-backdrop-filter: blur(24px);
-        backdrop-filter: blur(24px);
+        box-shadow: inset 0 1px 0 rgba(248, 113, 113, 0.2), 0 14px 34px -10px rgba(0, 0, 0, 0.4);
         border-radius: 20px;
         padding: 16px 18px;
         margin-bottom: 20px;
@@ -336,9 +324,7 @@
         display: none;
         background: rgba(245, 158, 11, 0.12);
         border: 1px solid rgba(245, 158, 11, 0.35);
-        box-shadow: inset 0 1px 0 rgba(251, 191, 36, 0.25), 0 16px 40px -12px rgba(0, 0, 0, 0.4);
-        -webkit-backdrop-filter: blur(24px);
-        backdrop-filter: blur(24px);
+        box-shadow: inset 0 1px 0 rgba(251, 191, 36, 0.25), 0 14px 34px -10px rgba(0, 0, 0, 0.4);
         border-radius: 20px;
         padding: 16px 18px;
         margin-bottom: 20px;
@@ -355,11 +341,10 @@
 
       /* Liquid Glass Generic Card */
       .card {
-        background: var(--glass-bg);
+        contain: layout style paint;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.045) 100%);
         border: 1px solid var(--glass-border);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 44px -10px rgba(0, 0, 0, 0.4);
-        -webkit-backdrop-filter: blur(28px) saturate(160%);
-        backdrop-filter: blur(28px) saturate(160%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 14px 34px -10px rgba(0, 0, 0, 0.38);
         border-radius: 24px;
         padding: 22px;
         margin-bottom: 20px;
@@ -443,11 +428,10 @@
       }
 
       .step-card {
-        background: var(--glass-bg);
+        contain: layout style paint;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.045) 100%);
         border: 1px solid var(--glass-border);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 44px -10px rgba(0, 0, 0, 0.4);
-        -webkit-backdrop-filter: blur(28px) saturate(160%);
-        backdrop-filter: blur(28px) saturate(160%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 14px 34px -10px rgba(0, 0, 0, 0.38);
         border-radius: 24px;
         padding: 22px;
         position: relative;
@@ -532,11 +516,9 @@
         font-size: 14px;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, color 0.22s ease;
         border: none;
         font-family: inherit;
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
       }
 
       .btn svg {
@@ -752,11 +734,10 @@
 
       /* Monospace Terminal Log */
       .log-card {
-        background: rgba(6, 6, 12, 0.65);
+        contain: layout style paint;
+        background: rgba(8, 10, 20, 0.78);
         border: 1px solid var(--glass-border);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 20px 48px -12px rgba(0, 0, 0, 0.5);
-        -webkit-backdrop-filter: blur(28px);
-        backdrop-filter: blur(28px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 14px 36px -10px rgba(0, 0, 0, 0.45);
         border-radius: 24px;
         padding: 18px;
         margin-top: 22px;
@@ -871,13 +852,11 @@
       .mode-switcher {
         display: inline-flex;
         align-items: center;
-        background: rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.075);
         border: 1px solid rgba(255, 255, 255, 0.14);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.35);
         border-radius: 9999px;
         padding: 4px;
-        -webkit-backdrop-filter: blur(24px);
-        backdrop-filter: blur(24px);
         gap: 4px;
         position: relative;
         z-index: 31;
@@ -970,9 +949,7 @@
         gap: 10px;
         padding: 9px 12px;
         margin-bottom: 12px;
-        background: rgba(11, 11, 18, 0.94);
-        -webkit-backdrop-filter: blur(16px);
-        backdrop-filter: blur(16px);
+        background: rgba(11, 11, 18, 0.96);
         border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 14px;
         box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
@@ -1521,6 +1498,7 @@
       /* Thadingyut Festival of Lights Seasonal Theme */
       html.thadingyut {
         background-color: #0a0f2e;
+        overscroll-behavior-y: none;
       }
 
       body:not(.thadingyut) .thadingyut-layer {
@@ -1537,12 +1515,19 @@
         opacity: 0.15;
       }
 
+      body.thadingyut .aurora-orb,
+      body.thadingyut .aurora-blob {
+        animation: none !important;
+      }
+
       .thadingyut-layer {
         position: fixed;
         inset: 0;
         pointer-events: none;
         z-index: 0;
         overflow: hidden;
+        contain: strict;
+        transform: translateZ(0);
         background:
           radial-gradient(circle 600px at 50% 92%, rgba(245, 158, 11, 0.18), transparent 70%),
           radial-gradient(circle 350px at 50% 98%, rgba(251, 146, 60, 0.22), transparent 60%),
@@ -1572,10 +1557,11 @@
         position: absolute;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 44px;
-        height: 44px;
+        width: 72px;
+        height: 72px;
         border-radius: 50%;
-        filter: blur(14px);
+        -webkit-mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.45) 38%, transparent 72%);
+        mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.45) 38%, transparent 72%);
         opacity: 0.38;
         pointer-events: none;
         z-index: -1;
@@ -1593,10 +1579,11 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 26px;
-        height: 26px;
+        width: 42px;
+        height: 42px;
         border-radius: 50%;
-        filter: blur(8px);
+        -webkit-mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.45) 38%, transparent 72%);
+        mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.45) 38%, transparent 72%);
         pointer-events: none;
         opacity: 0.45;
         z-index: -1;
@@ -1604,13 +1591,11 @@
 
       .thadingyut-sparkle {
         position: absolute;
-        width: 3px;
-        height: 3px;
+        width: 7px;
+        height: 7px;
         border-radius: 50%;
-        background: #fef08a;
-        box-shadow: 0 0 6px rgba(254, 240, 138, 0.85);
+        background: radial-gradient(circle, #fef08a 0%, rgba(254, 240, 138, 0.45) 45%, transparent 72%);
         opacity: 0.3;
-        will-change: opacity, transform;
       }
 
       @media (max-width: 640px) {

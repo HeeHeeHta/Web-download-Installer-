@@ -70,6 +70,7 @@
         padding: 20px 16px;
         position: relative;
         overflow-x: hidden;
+        overflow-x: clip;
       }
 
       /* Liquid Glass Aurora Mesh Background */
@@ -79,6 +80,8 @@
         pointer-events: none;
         z-index: 0;
         overflow: hidden;
+        contain: strict;
+        transform: translateZ(0);
       }
 
       .aurora-orb,
@@ -158,13 +161,11 @@
       .lang-switcher {
         display: inline-flex;
         align-items: center;
-        background: rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.075);
         border: 1px solid rgba(255, 255, 255, 0.14);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 16px rgba(0, 0, 0, 0.25);
         border-radius: 9999px;
         padding: 3px;
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
         gap: 2px;
       }
 
@@ -202,12 +203,10 @@
         display: inline-flex;
         align-items: center;
         gap: 7px;
-        background: rgba(255, 255, 255, 0.07);
+        background: rgba(255, 255, 255, 0.08);
         color: rgba(255, 255, 255, 0.88);
         border: 1px solid rgba(255, 255, 255, 0.14);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 16px rgba(0, 0, 0, 0.2);
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
         border-radius: 9999px;
         padding: 5px 14px;
         font-size: 12.5px;
@@ -234,11 +233,9 @@
 
       /* Liquid Glass Banner Card */
       .banner-card {
-        background: var(--glass-bg);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.045) 100%);
         border: 1px solid var(--glass-border);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 20px 48px -12px rgba(0, 0, 0, 0.45);
-        -webkit-backdrop-filter: blur(28px) saturate(160%);
-        backdrop-filter: blur(28px) saturate(160%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 14px 34px -10px rgba(0, 0, 0, 0.4);
         border-radius: 24px;
         padding: 20px;
         margin: 20px 0 26px;
@@ -247,6 +244,7 @@
         gap: 14px;
         position: relative;
         overflow: hidden;
+        contain: layout style paint;
       }
 
       .banner-card::before,
@@ -308,12 +306,10 @@
         font-weight: 600;
         text-decoration: none;
         cursor: pointer;
-        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, color 0.22s ease;
         text-align: center;
         border: none;
         font-family: inherit;
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
       }
 
       .btn-download {
@@ -394,13 +390,10 @@
       }
 
       .app-card {
-        content-visibility: auto;
-        contain-intrinsic-size: auto 128px;
-        background: var(--glass-bg);
+        contain: layout style paint;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.045) 100%);
         border: 1px solid var(--glass-border);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 44px -10px rgba(0, 0, 0, 0.4);
-        -webkit-backdrop-filter: blur(28px) saturate(160%);
-        backdrop-filter: blur(28px) saturate(160%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 14px 34px -10px rgba(0, 0, 0, 0.38);
         border-radius: 24px;
         padding: 20px;
         position: relative;
@@ -409,10 +402,12 @@
         transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, background-color 0.25s ease;
       }
 
-      .app-card:hover {
-        background: var(--glass-bg-hover);
-        border-color: rgba(255, 255, 255, 0.22);
-        transform: translateY(-2px);
+      @media (hover: hover) and (pointer: fine) {
+        .app-card:hover {
+          background: var(--glass-bg-hover);
+          border-color: rgba(255, 255, 255, 0.22);
+          transform: translateY(-2px);
+        }
       }
 
       .app-card-layout {
@@ -787,11 +782,10 @@
       }
 
       .detail-card {
-        background: var(--glass-bg);
+        contain: layout style paint;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.045) 100%);
         border: 1px solid var(--glass-border);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 20px 48px -12px rgba(0, 0, 0, 0.45);
-        -webkit-backdrop-filter: blur(28px) saturate(160%);
-        backdrop-filter: blur(28px) saturate(160%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 14px 36px -10px rgba(0, 0, 0, 0.42);
         border-radius: 24px;
         padding: 24px;
         position: relative;
@@ -1075,8 +1069,8 @@
         position: absolute;
         inset: 0;
         background: rgba(6, 9, 18, 0.94);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         z-index: 1;
       }
 
@@ -1376,11 +1370,10 @@
       }
 
       .guide-card {
-        background: var(--glass-bg);
+        contain: layout style paint;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.045) 100%);
         border: 1px solid var(--glass-border);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 44px -10px rgba(0, 0, 0, 0.4);
-        -webkit-backdrop-filter: blur(28px) saturate(160%);
-        backdrop-filter: blur(28px) saturate(160%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 14px 34px -10px rgba(0, 0, 0, 0.38);
         border-radius: 24px;
         padding: 22px;
         position: relative;
@@ -1475,12 +1468,10 @@
         font-weight: 600;
         text-decoration: none;
         color: #FFFFFF;
-        background: rgba(255, 255, 255, 0.07);
+        background: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.16);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 14px rgba(0, 0, 0, 0.25);
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
-        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
         cursor: pointer;
       }
 
@@ -1558,12 +1549,10 @@
         font-weight: 500;
         text-decoration: none;
         color: rgba(255, 255, 255, 0.85);
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.065);
         border: 1px solid rgba(255, 255, 255, 0.12);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-        -webkit-backdrop-filter: blur(16px);
-        backdrop-filter: blur(16px);
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
       }
 
       .footer-pill-btn:hover {
@@ -1797,10 +1786,8 @@
         font-size: 13px;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        -webkit-backdrop-filter: blur(16px);
-        backdrop-filter: blur(16px);
       }
 
       .comments-expand-btn:hover {
@@ -1880,9 +1867,9 @@
         position: fixed;
         inset: 0;
         z-index: 1000;
-        background: rgba(8, 8, 16, 0.85);
-        -webkit-backdrop-filter: blur(28px) saturate(180%);
-        backdrop-filter: blur(28px) saturate(180%);
+        background: rgba(8, 8, 16, 0.88);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -2039,6 +2026,7 @@
       /* Thadingyut Festival of Lights Seasonal Theme */
       html.thadingyut {
         background-color: #0a0f2e;
+        overscroll-behavior-y: none;
       }
 
       body:not(.thadingyut) .thadingyut-layer {
@@ -2055,12 +2043,19 @@
         opacity: 0.15;
       }
 
+      body.thadingyut .aurora-orb,
+      body.thadingyut .aurora-blob {
+        animation: none !important;
+      }
+
       .thadingyut-layer {
         position: fixed;
         inset: 0;
         pointer-events: none;
         z-index: 0;
         overflow: hidden;
+        contain: strict;
+        transform: translateZ(0);
         background:
           radial-gradient(circle 600px at 50% 92%, rgba(245, 158, 11, 0.18), transparent 70%),
           radial-gradient(circle 350px at 50% 98%, rgba(251, 146, 60, 0.22), transparent 60%),
@@ -2090,10 +2085,11 @@
         position: absolute;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 44px;
-        height: 44px;
+        width: 72px;
+        height: 72px;
         border-radius: 50%;
-        filter: blur(14px);
+        -webkit-mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.45) 38%, transparent 72%);
+        mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.45) 38%, transparent 72%);
         opacity: 0.38;
         pointer-events: none;
         z-index: -1;
@@ -2111,10 +2107,11 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 26px;
-        height: 26px;
+        width: 42px;
+        height: 42px;
         border-radius: 50%;
-        filter: blur(8px);
+        -webkit-mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.45) 38%, transparent 72%);
+        mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.45) 38%, transparent 72%);
         pointer-events: none;
         opacity: 0.45;
         z-index: -1;
@@ -2122,13 +2119,11 @@
 
       .thadingyut-sparkle {
         position: absolute;
-        width: 3px;
-        height: 3px;
+        width: 7px;
+        height: 7px;
         border-radius: 50%;
-        background: #fef08a;
-        box-shadow: 0 0 6px rgba(254, 240, 138, 0.85);
+        background: radial-gradient(circle, #fef08a 0%, rgba(254, 240, 138, 0.45) 45%, transparent 72%);
         opacity: 0.3;
-        will-change: opacity, transform;
       }
 
       @media (max-width: 640px) {
@@ -3857,12 +3852,6 @@ const firebaseConfig = {
         return `${y}-${m}-${day}`;
       }
 
-      function getRecentDateStr(daysAgo = 0) {
-        const d = new Date();
-        d.setDate(d.getDate() - daysAgo);
-        return formatIsoLocalDate(d);
-      }
-
       // Upload icon/screenshot files to icons/ and shots/ in the repo before pushing
       const APPS = [
         {
@@ -3872,7 +3861,7 @@ const firebaseConfig = {
           packageName: "com.tvytech.ceirchecker.komun",
           category: "Tools & Utilities",
           paid: true,
-          updated: getRecentDateStr(4),
+          updated: "2026-10-22",
           apkUrl: "https://github.com/HeeHeeHta/Web-download-Installer-/releases/download/v2.0.1/CEIR_Status_Hub.apk",
           size: "65.7 MB",
           verified: true,
@@ -3898,7 +3887,7 @@ const firebaseConfig = {
           packageName: "com.tvytech.medicalnote.komun",
           category: "Other",
           paid: false,
-          updated: getRecentDateStr(2),
+          updated: "2026-10-18",
           apkUrl: "https://github.com/HeeHeeHta/Medical-Note/releases/download/v1.0.0/Medical.Note_1.0.0.apk",
           size: "20.7 MB",
           verified: true,
@@ -3924,7 +3913,7 @@ const firebaseConfig = {
           packageName: "com.aistudio.koenawin.chntr",
           category: "Tools & Utilities",
           paid: false,
-          updated: getRecentDateStr(2),
+          updated: "2026-10-18",
           apkUrl: "https://github.com/HeeHeeHta/Koe-Na-Win/releases/download/v1.0/_1.0.apk",
           size: "17.9 MB",
           verified: true,
@@ -3949,7 +3938,7 @@ const firebaseConfig = {
           packageName: "com.tvytech.ceirtaxchecker.ceir",
           category: "Tools & Utilities",
           paid: false,
-          updated: getRecentDateStr(1),
+          updated: "2026-10-19",
           apkUrl: "https://github.com/HeeHeeHta/Ceir-Tax-Checker/releases/download/v2.0.1/CEIR.Tax_2.0.1.apk",
           size: "23.0 MB",
           verified: true,
@@ -4236,7 +4225,7 @@ const firebaseConfig = {
                     developer: defApp.developer,
                     category: defApp.category,
                     paid: defApp.paid,
-                    updated: defApp.updated || parsed[existingIdx].updated || getRecentDateStr(2)
+                    updated: defApp.updated || parsed[existingIdx].updated || ""
                   };
                   delete parsed[existingIdx].rating;
                   delete parsed[existingIdx].downloads;
